@@ -71,7 +71,7 @@ export const AppointmentForm = () => {
             )}
           </div>
           
-          <div className="bg-soft-gray hidden lg:block rounded-sm overflow-hidden aspect-[4/3] relative">
+          <div className="bg-soft-gray hidden lg:block rounded-3xl overflow-hidden aspect-[4/3] relative">
             <img 
               alt="Clinic Location" 
               className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-multiply" 

@@ -46,7 +46,7 @@ const Slider = ({ before, after }: { before: string, after: string }) => {
   return (
     <div 
       ref={containerRef} 
-      className="relative aspect-square w-full rounded-sm overflow-hidden select-none bg-soft-gray"
+      className="relative aspect-square w-full rounded-3xl overflow-hidden select-none bg-soft-gray"
     >
       {/* Before Image (Base) */}
       <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" draggable={false} />

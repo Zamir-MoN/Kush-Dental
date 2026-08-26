@@ -10,7 +10,7 @@ export const Hero = () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     if (prefersReducedMotion) {
-      const els = heroRef.current?.querySelectorAll('.hero-anim, .hero-stagger, .hero-float');
+      const els = heroRef.current?.querySelectorAll('.hero-anim, .hero-stagger');
       els?.forEach(el => gsap.set(el, { opacity: 1, y: 0, scale: 1 }));
       return;
     }
@@ -40,19 +40,7 @@ export const Hero = () => {
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' },
         "-=0.8"
-      )
-      // 6. floating labels appear with stagger
-      .fromTo('.hero-float',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
-        "-=0.6"
       );
-
-      // Add gentle floating animation to labels
-      gsap.to('.hero-float-1', { y: -10, duration: 3, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0 });
-      gsap.to('.hero-float-2', { y: -12, duration: 3.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.5 });
-      gsap.to('.hero-float-3', { y: -8, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.2 });
-      gsap.to('.hero-float-4', { y: -15, duration: 4.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.7 });
 
     }, heroRef);
 
@@ -60,18 +48,18 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-[100vh] lg:min-h-[600px] flex items-center pt-24 pb-12 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container mx-auto overflow-hidden">
+    <section ref={heroRef} className="relative min-h-[100vh] lg:min-h-[600px] flex items-center pt-24 pb-12 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop max-w-container mx-auto overflow-hidden rounded-b-[3rem]">
       
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 hero-bg">
           <img 
-            src="https://lh3.googleusercontent.com/aida/AEtjO1WYQqZ_UCMoxARL5IWMscsOQaAdYX7D91CBbcHQlCvVPmQpyYDFNsxaSq24nAxIQSyAQ8hSiMU_VPMWmci0T4JT6UBg3dHefVo0VEWM2ZPPWbDy9kfVkgvDGjPR5jnB4cW4Kpymrwu0UwGaeVrEut4L6P3AoUKuSEOCjbOSY5xxN8oF77uadePQV9Ffr0W6FRoP5U--ZF23tRDgs74RcIvILBx4YJmH0kcX7jyP3LYNEYTZa8IyChOTJe79" 
+            src="https://apollointeriors.com/wp-content/uploads/2023/08/taupe-dental-chair-landscape-1536x1024-1.jpeg" 
             alt="Clinic Exterior" 
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="absolute inset-0 bg-primary/80" />
+        <div className="absolute inset-0 bg-primary/30" />
         <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none hero-bg">
           <img 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUqDV_o5Mgk5cIymlfC8vhqvA4dsbeJmrFy817pGmTz5vizSC3AJNzRbq6auUBJ4Kci4MXiKyQU5KLf9hEe5ceHSQUp7-8g-lOtS4jWh0qro_noDfYYsTtK3a4dRwjRVq4lIVllcNVDOqNmE9s1ESUHROgMXetwuCqwO7T2Ke8UEvAfCgpXdFZAk5gi4G-ClZQ7S4H0TSPis_mQpMNJCVR6ApK3uaX6gQQl3QjJRA7xNY0xQndwT8EoVNL-2VAKNrqN6k" 
@@ -85,7 +73,7 @@ export const Hero = () => {
         
         {/* Left Content */}
         <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-center order-2 lg:order-1 mt-8 lg:mt-0">
-          <div className="hero-card bg-primary/40 backdrop-blur-xl border border-primary/50 p-8 md:p-12 rounded-2xl shadow-sm">
+          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-8 md:p-12 rounded-2xl shadow-sm">
             <p className="label-small text-secondary mb-6">Kush Dental Clinic</p>
             
             <h1 className="font-display text-4xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-8">
@@ -121,26 +109,7 @@ export const Hero = () => {
               style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
             />
             
-            {/* Floating Labels */}
-            <div className="hero-float hero-float-1 absolute top-4 right-0 lg:-right-8 bg-primary/60 backdrop-blur-md border border-primary/50 px-4 py-2 rounded shadow-sm z-20">
-              <span className="label-small text-[10px]">Founder & Lead Surgeon</span>
-              <div className="h-px w-6 bg-secondary mt-1" />
-            </div>
-            
-            <div className="hero-float hero-float-2 absolute top-[30%] -left-4 lg:left-4 bg-primary/60 backdrop-blur-md border border-primary/50 px-4 py-2 rounded shadow-sm z-20">
-              <span className="label-small text-[10px]">15+ Years Excellence</span>
-              <div className="h-px w-6 bg-secondary mt-1" />
-            </div>
-            
-            <div className="hero-float hero-float-3 absolute bottom-[20%] -right-4 lg:right-8 bg-primary/60 backdrop-blur-md border border-primary/50 px-4 py-2 rounded shadow-sm z-20">
-              <span className="label-small text-[10px]">Master Clinician</span>
-              <div className="h-px w-6 bg-secondary mt-1" />
-            </div>
-            
-            <div className="hero-float hero-float-4 absolute bottom-[10%] left-0 lg:left-8 bg-primary/60 backdrop-blur-md border border-primary/50 px-4 py-2 rounded shadow-sm z-20">
-              <span className="label-small text-[10px]">Aesthetic Specialist</span>
-              <div className="h-px w-6 bg-secondary mt-1" />
-            </div>
+
           </div>
         </div>
 

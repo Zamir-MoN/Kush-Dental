@@ -1,13 +1,13 @@
 export const Footer = () => {
   return (
-    <footer className="bg-primary border-t border-border/30 pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
+    <footer className="bg-background border-t border-border/30 pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
       <div className="max-w-container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand & Text */}
           <div className="reveal-up">
             <a href="#" className="flex items-center gap-3 mb-6">
               <img src="/images/logo.png" alt="Kush Dental Logo" className="h-8 w-auto object-contain" />
-              <span className="font-display text-xl text-tertiary">Kush Dental Clinic</span>
+              <span className="font-display font-bold text-xl text-tertiary">Kush Dental Clinic</span>
             </a>
             <p className="text-neutral text-sm max-w-xs leading-relaxed">
               Exceptional Dental Care, Designed Around You. Integrating art and science.

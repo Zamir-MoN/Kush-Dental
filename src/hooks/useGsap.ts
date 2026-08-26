@@ -19,6 +19,24 @@ export const useScrollReveal = (ref: React.RefObject<HTMLElement | null>) => {
     const elements = ref.current.querySelectorAll('.reveal-up');
     
     const ctx = gsap.context(() => {
+      // Smooth section-level appearance
+      if (ref.current) {
+        gsap.fromTo(ref.current,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: ref.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            }
+          }
+        );
+      }
+
       elements.forEach((el) => {
         gsap.fromTo(el,
           { opacity: 0, y: 30 },

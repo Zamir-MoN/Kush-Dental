@@ -4,28 +4,28 @@ export const services = [
     title: "Cosmetic Dentistry",
     description: "Masterful smile design utilizing ultra-thin porcelain veneers, precise contouring, and advanced whitening techniques to achieve a flawless, natural aesthetic.",
     tags: ["Veneers", "Whitening", "Bonding"],
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1U0u-NgdexS3ULhx22bO5B9flUec5gx3JY0EHYfeztjI3pPIliFflV-lC6Y8yMIYWykUsARkQptVirm9-lVYshlTsEmDaTMvSxuqtMIdU8Yq6H7UFSTEwXk81E1GxUA5Euc13oJHT5H-4sImGpb8eBpY9vSpqJkDa4FeQpwhTsAP0QAu_CoypoUQWeJ4xhXbNxw-quPCaSPWE_nnOzvi0Ia6Zev039aqTneeHTPvnzIR02rSTxa_B7tkxJz"
+    image: "https://www.magnific.com/free-photos-vectors/cosmetic-dentistry"
   },
   {
     number: "02",
     title: "Restorative Care",
     description: "Comprehensive rehabilitation of oral function and structure through state-of-the-art implants, meticulously crafted crowns, and biomimetic restorative materials.",
     tags: ["Crowns", "Bridges", "Onlays"],
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1XqOslZPL39KyYNvK9o8DByQVbePICv9aiPcwctF8UlgUrgSh7GbheEO4FRuOiT6Yf7j8ZUd5dKMsu33naUS9lTHBOmpqeu_gxJDVSxTI8m9Ec8e7G6TmiY83qs23X4aXoW26122viJqZI-sWps_46bYo8XYA0znQcG5OHJHckunszcLnz8WlPEe7bIGpszVeshKqGFTUOJwuUCBRJJM2S6mee7TKyMITSW6U6nPriOUsdoaUxTo-_tAjko"
+    image: "https://www.dentagramclinic.com/blog/the-golden-ratio-in-dental-aesthetics-perfecting-smiles-with-dentagram-smile-design"
   },
   {
     number: "03",
     title: "Implantology",
     description: "Permanent, natural-looking tooth replacement utilizing advanced 3D guided surgery for unparalleled precision and immediate aesthetic results.",
     tags: ["Single Implants", "All-on-4", "Bone Grafting"],
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1Xc23jdamMHG6cWv0oarS5_6_myR0rkkJJcvDUGpQtwsMEqZ_1Thi9pPe_qCbtXe9NlPkLrkkcfizpWl1AVCpVPVmg9wnVV-cs-bcdZa8e001vvdXCtVMZZOqrM1wZuGxvx00ljxSGwuYUEH3tPniWgEjyO1OdMmsqz2qaIJIvmY6pMnbYehY1Z4_0gFR_0F7OfgeQN7n4e7n8OHGsPMrkQcxs-2CUtzB-vd8X3BxKgrZuPsIzGTZrldf6s"
+    image: "https://fellowsdental.co.uk/dental-implants/"
   },
   {
     number: "04",
     title: "Clear Aligners",
     description: "Discreet, removable orthodontic solutions designed to straighten your smile with precision and comfort using advanced 3D planning.",
     tags: ["Invisalign", "3D Planning", "Removable"],
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1Xc23jdamMHG6cWv0oarS5_6_myR0rkkJJcvDUGpQtwsMEqZ_1Thi9pPe_qCbtXe9NlPkLrkkcfizpWl1AVCpVPVmg9wnVV-cs-bcdZa8e001vvdXCtVMZZOqrM1wZuGxvx00ljxSGwuYUEH3tPniWgEjyO1OdMmsqz2qaIJIvmY6pMnbYehY1Z4_0gFR_0F7OfgeQN7n4e7n8OHGsPMrkQcxs-2CUtzB-vd8X3BxKgrZuPsIzGTZrldf6s"
+    image: "https://www.dentistryon66.com/images/blog/invisalign-yorkville-modern.jpg"
   },
   {
     number: "05",

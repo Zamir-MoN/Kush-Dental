@@ -32,16 +32,16 @@ export const Header = () => {
   return (
     <>
       <header 
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out border-b
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out
           ${isScrolled 
-            ? 'bg-primary/90 backdrop-blur-xl border-secondary/20 py-4 shadow-sm' 
-            : 'bg-transparent border-transparent py-4 md:py-6'
+            ? 'bg-primary/90 backdrop-blur-xl border-b border-secondary/20 py-4 shadow-sm' 
+            : 'bg-gradient-to-b from-background/90 via-background/50 to-transparent py-4 md:py-6'
           }`}
       >
         <div className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop flex justify-between items-center">
           <a href="#" className="flex items-center gap-3 md:gap-4 hover:opacity-80 transition-opacity duration-300">
             <img src="/images/logo.png" alt="Kush Dental Logo" className="h-8 md:h-10 w-auto object-contain" />
-            <span className="font-display text-xl md:text-2xl text-tertiary">Kush Dental Clinic</span>
+            <span className="font-display font-bold text-xl md:text-2xl text-tertiary">Kush Dental Clinic</span>
           </a>
 
           {/* Desktop Nav */}

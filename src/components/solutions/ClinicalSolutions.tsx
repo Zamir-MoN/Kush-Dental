@@ -55,7 +55,7 @@ export const ClinicalSolutions = () => {
 
                 {/* Image */}
                 <div className={`lg:col-span-6 ${isEven ? 'order-1' : 'order-1 lg:order-2'}`}>
-                  <div className="aspect-[4/3] lg:aspect-[16/10] bg-soft-gray overflow-hidden">
+                  <div className="aspect-[4/3] lg:aspect-[16/10] bg-soft-gray overflow-hidden rounded-3xl">
                     <img 
                       src={service.image} 
                       alt={service.title} 

@@ -24,7 +24,7 @@ export default {
         secondary: '#DCA51B',
         tertiary: '#111111',
         neutral: '#787776',
-        'off-white': '#FCF9F7',
+        'off-white': '#F9F5EF',
         'light-gray': '#F6F3F1',
         border: '#D9D7D4',
         'soft-gray': '#EAE8E6',
@@ -34,7 +34,7 @@ export default {
         "surface-dim": "#dcd9d8",
         "on-secondary-fixed-variant": "#5c4200",
         "error-container": "#ffdad6",
-        "background": "#fcf9f7",
+        "background": "#F9F5EF",
         "on-secondary-container": "#705100",
         "tertiary-fixed": "#e5e2e1",
         "on-tertiary-container": "#777575",
@@ -77,16 +77,16 @@ export default {
         "on-primary-fixed-variant": "#454747"
       },
       fontFamily: {
-        'display': ['"Creator Genius"', 'serif'],
+        'display': ['"Nunito"', 'sans-serif'],
         'body': ['"Hanken Grotesk"', 'sans-serif'],
         "label-sm": ["Inter", "sans-serif"],
         "body-lg": ["Inter", "sans-serif"],
-        "display-lg": ['"Creator Genius"', "serif"],
+        "display-lg": ['"Nunito"', "sans-serif"],
         "label-md": ["Inter", "sans-serif"],
-        "headline-lg-mobile": ['"Creator Genius"', "serif"],
+        "headline-lg-mobile": ['"Nunito"', "sans-serif"],
         "body-md": ["Inter", "sans-serif"],
-        "headline-md": ['"Creator Genius"', "serif"],
-        "headline-lg": ['"Creator Genius"', "serif"]
+        "headline-md": ['"Nunito"', "sans-serif"],
+        "headline-lg": ['"Nunito"', "sans-serif"]
       },
       spacing: {
         'unit': '8px',

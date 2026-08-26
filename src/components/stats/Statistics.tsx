@@ -7,7 +7,7 @@ export const Statistics = () => {
   useCounter(sectionRef);
 
   return (
-    <section ref={sectionRef} className="py-24 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-primary border-b border-border/30">
+    <section ref={sectionRef} className="py-24 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-background border-b border-border/30">
       <div className="max-w-container mx-auto text-center reveal-up">
         <div className="flex flex-col md:flex-row justify-center items-center gap-16 md:gap-32">
           

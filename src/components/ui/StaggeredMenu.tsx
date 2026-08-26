@@ -53,18 +53,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const preLayersRef = useRef<HTMLDivElement | null>(null);
   const preLayerElsRef = useRef<HTMLElement[]>([]);
 
-  const plusHRef = useRef<HTMLSpanElement | null>(null);
-  const plusVRef = useRef<HTMLSpanElement | null>(null);
+  const line1Ref = useRef<HTMLSpanElement | null>(null);
+  const line2Ref = useRef<HTMLSpanElement | null>(null);
+  const line3Ref = useRef<HTMLSpanElement | null>(null);
   const iconRef = useRef<HTMLSpanElement | null>(null);
-
-  const textInnerRef = useRef<HTMLSpanElement | null>(null);
-  const textWrapRef = useRef<HTMLSpanElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>(['Menu', 'Close']);
 
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
   const spinTweenRef = useRef<gsap.core.Timeline | null>(null);
-  const textCycleAnimRef = useRef<gsap.core.Tween | null>(null);
   const colorTweenRef = useRef<gsap.core.Tween | null>(null);
 
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -77,12 +73,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       const panel = panelRef.current;
       const preContainer = preLayersRef.current;
 
-      const plusH = plusHRef.current;
-      const plusV = plusVRef.current;
+      const line1 = line1Ref.current;
+      const line2 = line2Ref.current;
+      const line3 = line3Ref.current;
       const icon = iconRef.current;
-      const textInner = textInnerRef.current;
 
-      if (!panel || !plusH || !plusV || !icon || !textInner) return;
+      if (!panel || !line1 || !line2 || !line3 || !icon) return;
 
       let preLayers: HTMLElement[] = [];
       if (preContainer) {
@@ -96,11 +92,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         gsap.set(preContainer, { xPercent: 0, opacity: 1 });
       }
 
-      gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
-      gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
+      gsap.set([line1, line2, line3], { transformOrigin: '50% 50%', rotate: 0 });
       gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
-
-      gsap.set(textInner, { yPercent: 0 });
 
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
@@ -251,25 +244,25 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   const animateIcon = useCallback((opening: boolean) => {
     const icon = iconRef.current;
-    const h = plusHRef.current;
-    const v = plusVRef.current;
-    if (!icon || !h || !v) return;
+    const l1 = line1Ref.current;
+    const l2 = line2Ref.current;
+    const l3 = line3Ref.current;
+    if (!icon || !l1 || !l2 || !l3) return;
 
     spinTweenRef.current?.kill();
 
     if (opening) {
-      // ensure container never rotates
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
       spinTweenRef.current = gsap
-        .timeline({ defaults: { ease: 'power4.out' } })
-        .to(h, { rotate: 45, duration: 0.5 }, 0)
-        .to(v, { rotate: -45, duration: 0.5 }, 0);
+        .timeline({ defaults: { ease: 'power4.out', duration: 0.5 } })
+        .to(l1, { y: 9, rotate: 45 }, 0)
+        .to(l2, { opacity: 0 }, 0)
+        .to(l3, { y: -9, rotate: -45 }, 0);
     } else {
       spinTweenRef.current = gsap
-        .timeline({ defaults: { ease: 'power3.inOut' } })
-        .to(h, { rotate: 0, duration: 0.35 }, 0)
-        .to(v, { rotate: 90, duration: 0.35 }, 0)
-        .to(icon, { rotate: 0, duration: 0.001 }, 0);
+        .timeline({ defaults: { ease: 'power3.inOut', duration: 0.35 } })
+        .to(l1, { y: 0, rotate: 0 }, 0)
+        .to(l2, { opacity: 1 }, 0)
+        .to(l3, { y: 0, rotate: 0 }, 0);
     }
   }, []);
 
@@ -299,55 +292,24 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }
   }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
 
-  const animateText = useCallback((opening: boolean) => {
-    const inner = textInnerRef.current;
-    if (!inner) return;
-
-    textCycleAnimRef.current?.kill();
-
-    const currentLabel = opening ? 'Menu' : 'Close';
-    const targetLabel = opening ? 'Close' : 'Menu';
-    const cycles = 3;
-
-    const seq: string[] = [currentLabel];
-    let last = currentLabel;
-    for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Close' : 'Menu';
-      seq.push(last);
-    }
-    if (last !== targetLabel) seq.push(targetLabel);
-    seq.push(targetLabel);
-
-    setTextLines(seq);
-    gsap.set(inner, { yPercent: 0 });
-
-    const lineCount = seq.length;
-    const finalShift = ((lineCount - 1) / lineCount) * 100;
-
-    textCycleAnimRef.current = gsap.to(inner, {
-      yPercent: -finalShift,
-      duration: 0.5 + lineCount * 0.07,
-      ease: 'power4.out'
-    });
-  }, []);
-
   const toggleMenu = useCallback(() => {
-    const target = !openRef.current;
-    openRef.current = target;
-    setOpen(target);
-
-    if (target) {
+    if (busyRef.current) return;
+    if (!openRef.current) {
+      openRef.current = true;
+      setOpen(true);
       onMenuOpen?.();
       playOpen();
+      animateIcon(true);
+      animateColor(true);
     } else {
+      openRef.current = false;
+      setOpen(false);
       onMenuClose?.();
       playClose();
+      animateIcon(false);
+      animateColor(false);
     }
-
-    animateIcon(target);
-    animateColor(target);
-    animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [playOpen, playClose, animateIcon, animateColor, onMenuOpen, onMenuClose]);
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
@@ -357,9 +319,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       playClose();
       animateIcon(false);
       animateColor(false);
-      animateText(false);
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [playClose, animateIcon, animateColor, onMenuClose]);
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -425,7 +386,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
           <button
             ref={toggleBtnRef}
-            className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-display leading-none overflow-visible pointer-events-auto ${
+            className={`sm-toggle relative inline-flex items-center justify-center p-3 -mr-3 bg-transparent border-0 cursor-pointer overflow-visible pointer-events-auto ${
               open ? 'text-black' : 'text-tertiary'
             }`}
             aria-label={open ? 'Close menu' : 'Open menu'}
@@ -435,31 +396,21 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             type="button"
           >
             <span
-              ref={textWrapRef}
-              className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)] text-xl"
-              aria-hidden="true"
-            >
-              <span ref={textInnerRef} className="sm-toggle-textInner flex flex-col leading-none">
-                {textLines.map((l, i) => (
-                  <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
-                    {l}
-                  </span>
-                ))}
-              </span>
-            </span>
-
-            <span
               ref={iconRef}
-              className="sm-icon relative w-[20px] h-[20px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
+              className="sm-icon relative w-[28px] h-[20px] shrink-0 inline-block [will-change:transform]"
               aria-hidden="true"
             >
               <span
-                ref={plusHRef}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                ref={line1Ref}
+                className="absolute top-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
               />
               <span
-                ref={plusVRef}
-                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                ref={line2Ref}
+                className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[2px] bg-current rounded-[2px] [will-change:transform,opacity]"
+              />
+              <span
+                ref={line3Ref}
+                className="absolute bottom-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
               />
             </span>
           </button>

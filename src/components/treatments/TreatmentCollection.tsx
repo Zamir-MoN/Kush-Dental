@@ -15,7 +15,7 @@ export const TreatmentCollection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-section-mobile md:py-section-desktop px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-primary border-t border-border/30">
+    <section ref={sectionRef} className="py-section-mobile md:py-section-desktop px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-background border-t border-border/30">
       <div className="max-w-container mx-auto">
         <h2 className="font-display text-4xl lg:text-5xl mb-16 text-center reveal-up">
           Treatment Collection
@@ -37,7 +37,7 @@ export const TreatmentCollection = () => {
                   if (window.innerWidth > 1024) setExpandedIndex(null);
                 }}
               >
-                <div className="py-8 px-4 flex justify-between items-center bg-transparent hover:bg-light-gray transition-colors duration-300">
+                <div className="py-8 px-4 flex justify-between items-center bg-transparent transition-colors duration-300">
                   <div className="flex flex-col">
                     <span className="font-display text-2xl lg:text-3xl text-tertiary group-hover:text-secondary transition-colors duration-300">
                       {i + 1}. {treatment.title}
@@ -62,7 +62,7 @@ export const TreatmentCollection = () => {
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: 'easeInOut' }}
-                      className="overflow-hidden bg-light-gray"
+                      className="overflow-hidden bg-transparent"
                     >
                       <div className="px-4 pb-8 max-w-4xl">
                         <p className="text-neutral text-lg leading-relaxed mb-6">
