@@ -30,9 +30,8 @@ export const Booking = () => {
 
   const staggeredMenuItems = [
     { label: 'Services', ariaLabel: 'Go to services', link: '/#services' },
-    { label: 'About Us', ariaLabel: 'Learn about us', link: '/#about' },
-    { label: 'Blog', ariaLabel: 'Read our blog', link: '/#blog' },
-    { label: 'Case Studies', ariaLabel: 'View case studies', link: '/#case-studies' },
+    { label: 'About Us', ariaLabel: 'Learn about us', link: '/about' },
+    { label: 'Blog', ariaLabel: 'Read our blog', link: '/blog' },
     { label: 'Book Visit', ariaLabel: 'Book an appointment', link: '/book' }
   ];
 

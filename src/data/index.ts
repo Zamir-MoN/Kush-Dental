@@ -32,7 +32,7 @@ export const services = [
     title: "Maxillofacial Surgery",
     description: "Expert surgical interventions for complex jaw and facial conditions, prioritizing functional restoration and optimal aesthetic outcomes.",
     tags: ["Jaw Surgery", "Facial Trauma", "Reconstruction"],
-    image: "https://lh3.googleusercontent.com/aida/AEtjO1Wf5hihnPUrY-qQeqMy4IhhXhZW3DFJqcw5dvhMP_OUIuV7sPi4_qH4m3HGDJwvDTAJSOCef5hBrvowQq8g6fIvCG0Ugy1LvnFahsaeiIEqFJgcMgLoxs9tsYG0n3ZhsPfaeXBWKGf6aXZj59H3rZtGpo80pvUvFOikDadKypoICD-5s54IkaF665IL9t8Py1qrDZS-6JDaCE0FoL7mPZ8e0_jILmS7M0eKWubqS1DmMrBR_wjQFDY4f6s"
+    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
@@ -190,5 +190,62 @@ export const articlesList = [
     date: "Sep 05, 2024",
     title: "Case Study: Full Mouth Rehabilitation",
     excerpt: "A clinical breakdown of a complex restorative case utilizing biomimetic materials and 3D implant planning for optimal results."
+  }
+];
+
+export const blogPosts = [
+  {
+    id: 1,
+    title: "UX review presentations",
+    excerpt: "How do you create compelling presentations that wow your colleagues and impress your managers? Look no further.",
+    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+    category: "Design",
+    author: "Olivia Rhye",
+    date: "20 Jan 2022"
+  },
+  {
+    id: 2,
+    title: "Best books on scaling your startup",
+    excerpt: "This collection of the best startup books for scaling your startup are packed full with valuable insights and advice.",
+    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200&auto=format&fit=crop",
+    category: "Product",
+    author: "Phoenix Baker",
+    date: "19 Jul 2022"
+  },
+  {
+    id: 3,
+    title: "Building your API Stack",
+    excerpt: "The rise of RESTful APIs has been met by a rise in tools for creating, testing, and managing them.",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
+    category: "Development",
+    author: "Lana Steiner",
+    date: "18 Jan 2022"
+  },
+  {
+    id: 4,
+    title: "Bill Walsh leadership lessons",
+    excerpt: "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
+    category: "Leadership",
+    author: "Demi Wilkinson",
+    date: "16 Jan 2022"
+  },
+  {
+    id: 5,
+    title: "PM mental models",
+    excerpt: "Mental models are simple expressions of complex processes or relationships.",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop",
+    category: "Product",
+    author: "Candice Wu",
+    date: "15 Jan 2022"
+  },
+  {
+    id: 6,
+    title: "What is Wireframing?",
+    excerpt: "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
+    image: "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1200&auto=format&fit=crop",
+    category: "Design",
+    author: "Natali Craig",
+    date: "14 Jan 2022"
   }
 ];

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export const Footer = () => {
   return (
     <footer className="bg-background border-t border-border/30 pt-16 pb-8 px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
@@ -28,11 +30,11 @@ export const Footer = () => {
             <div>
               <h4 className="label-small text-tertiary mb-6">Quick Links</h4>
               <nav className="text-neutral text-sm flex flex-col space-y-3">
-                <a href="#services" className="hover:text-secondary transition-colors w-max cursor-hover">Services</a>
-                <a href="#about" className="hover:text-secondary transition-colors w-max cursor-hover">About Us</a>
-                <a href="#blog" className="hover:text-secondary transition-colors w-max cursor-hover">Blog</a>
-                <a href="#case-studies" className="hover:text-secondary transition-colors w-max cursor-hover">Case Studies</a>
-                <a href="#contact" className="hover:text-secondary transition-colors w-max cursor-hover">Contact</a>
+                <Link to="/" className="hover:text-secondary transition-colors w-max cursor-hover">Home</Link>
+                <Link to="/services" className="hover:text-secondary transition-colors w-max cursor-hover">Services</Link>
+                <Link to="/about" className="hover:text-secondary transition-colors w-max cursor-hover">About Us</Link>
+                <Link to="/blog" className="hover:text-secondary transition-colors w-max cursor-hover">Blog</Link>
+                <Link to="/book" className="hover:text-secondary transition-colors w-max cursor-hover">Contact</Link>
               </nav>
             </div>
             

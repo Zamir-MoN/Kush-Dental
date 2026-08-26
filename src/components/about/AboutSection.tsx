@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useScrollReveal, useCounter } from '../../hooks/useGsap';
+import { Link } from 'react-router-dom';
 
 export const AboutSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -45,9 +46,9 @@ export const AboutSection = () => {
             </div>
           </div>
           
-          <a href="#clinicians" className="label-small text-tertiary border-b border-tertiary pb-1 hover:text-secondary hover:border-secondary transition-colors cursor-hover">
+          <Link to="/about" className="label-small text-tertiary border-b border-tertiary pb-1 hover:text-secondary hover:border-secondary transition-colors cursor-hover">
             Meet Our Specialists
-          </a>
+          </Link>
         </div>
 
       </div>

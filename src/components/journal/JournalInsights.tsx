@@ -2,7 +2,8 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { featuredArticles, articlesList } from '../../data';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const JournalInsights = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,6 +16,12 @@ export const JournalInsights = () => {
   return (
     <section ref={sectionRef} id="blog" className="py-section-mobile md:py-section-desktop px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-primary border-b border-border/30">
       <div className="max-w-container mx-auto">
+        <div className="reveal-up mb-12">
+          <Link to="/" className="inline-flex items-center gap-2 hover:opacity-70 transition-opacity cursor-hover group">
+            <ArrowLeft className="w-5 h-5 text-secondary group-hover:-translate-x-1 transition-transform" />
+            <span className="text-tertiary font-medium text-lg">Back to Home</span>
+          </Link>
+        </div>
         <div className="text-center mb-16 reveal-up">
           <h2 className="font-display text-4xl lg:text-5xl mb-4">Journal & Insights</h2>
           <p className="text-neutral max-w-2xl mx-auto text-sm">
@@ -101,9 +108,9 @@ export const JournalInsights = () => {
               ))}
             </div>
 
-            <button className="mt-10 label-small text-tertiary border-b border-tertiary pb-1 hover:text-secondary hover:border-secondary transition-colors cursor-hover w-max">
+            <Link to="/blog" className="mt-10 inline-block label-small text-tertiary border-b border-tertiary pb-1 hover:text-secondary hover:border-secondary transition-colors cursor-hover w-max">
               View All Articles
-            </button>
+            </Link>
           </div>
 
         </div>
