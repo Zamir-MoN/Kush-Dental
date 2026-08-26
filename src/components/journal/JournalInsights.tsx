@@ -65,7 +65,7 @@ export const JournalInsights = () => {
           {/* Controls & Article List */}
           <div className="flex flex-col justify-center reveal-up" style={{ transitionDelay: '0.2s' }}>
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
-              <h3 className="font-display text-2xl text-tertiary">Featured Articles</h3>
+              <h3 className="font-display text-3xl lg:text-4xl text-tertiary">Featured Articles</h3>
               <div className="flex gap-3">
                 <button 
                   onClick={prevCard}
@@ -90,10 +90,10 @@ export const JournalInsights = () => {
                   onMouseEnter={() => setCurrentIndex(i)}
                 >
                   <span className="label-small text-border text-[10px] block mb-2 group-hover:text-neutral transition-colors">{article.date}</span>
-                  <h4 className="font-display text-xl text-tertiary group-hover:text-secondary transition-colors duration-300 mb-2">
+                  <h4 className="font-display text-2xl text-tertiary group-hover:text-secondary transition-colors duration-300 mb-2">
                     {article.title}
                   </h4>
-                  <p className="text-neutral text-xs line-clamp-2 leading-relaxed">
+                  <p className="text-neutral text-sm line-clamp-2 leading-relaxed">
                     {article.excerpt}
                   </p>
                   {i < articlesList.length - 1 && <div className="w-full h-px bg-border/30 mt-6" />}
