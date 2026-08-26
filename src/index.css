@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&family=Hanken+Grotesk:wght@400;600&family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap');
+
+@font-face {
+  font-family: 'Creator Genius';
+  src: url('/fonts/CreatorGenius.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #FFFFFF;
+    --secondary: #DCA51B;
+    --tertiary: #111111;
+    --neutral: #787776;
+    
+    --off-white: #FCF9F7;
+    --light-gray: #F6F3F1;
+    --border: #D9D7D4;
+    --soft-gray: #EAE8E6;
+    --dark-soft: #2A2A2A;
+
+    --container: 1440px;
+    --space-unit: 8px;
+    --section-gap: 160px;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-primary text-tertiary font-body;
+    overflow-x: hidden;
+  }
+  
+  /* Remove default margins for typography and apply font weights */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-normal;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop;
+  }
+  
+  .section-padding {
+    @apply py-section-mobile md:py-section-desktop;
+  }
+  
+  .label-small {
+    @apply font-body font-semibold text-[14px] leading-[18px] tracking-[0.1em] uppercase;
+  }
+}
+
+/* Custom Utilities for Animations (GSAP target classes) */
+.img-reveal {
+  clip-path: inset(100% 0 0 0);
+}
+
+.gold-border { border-color: #DCA51B; }
+.gold-bg { background-color: #DCA51B; }
+.gold-text { color: #DCA51B; }
+.ambient-shadow:hover { box-shadow: 0px 10px 30px rgba(0,0,0,0.06); }
+.input-glow:focus { box-shadow: 0 0 0 2px rgba(220, 165, 27, 0.2); border-color: #DCA51B; outline: none; }
