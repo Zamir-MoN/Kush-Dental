@@ -69,14 +69,26 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full relative z-10 h-full mt-12 lg:mt-0">
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 w-full relative z-10 h-full mt-12 lg:mt-0 min-h-[80vh] lg:min-h-0">
         
+        {/* Right Content (Doctor) - Absolute on mobile, relative on desktop */}
+        <div className="absolute inset-0 lg:relative lg:col-span-7 xl:col-span-6 flex items-end justify-center lg:justify-end h-full z-10 lg:order-2 pointer-events-none">
+          <div className="relative w-full h-full flex items-end justify-center lg:max-w-[500px]">
+            <img 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
+              alt="Dr. Alexander Kush" 
+              className="hero-doc w-[130%] max-w-none md:w-full h-full md:h-[110%] object-contain object-bottom scale-95 origin-bottom"
+              style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
+            />
+          </div>
+        </div>
+
         {/* Left Content */}
-        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-center order-2 lg:order-1 mt-8 lg:mt-0">
-          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-8 md:p-12 rounded-2xl shadow-sm">
-            <p className="label-small text-secondary mb-6">Kush Dental Clinic</p>
+        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-4 lg:pb-0 pt-[50vh] lg:pt-0">
+          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-6 md:p-12 rounded-2xl shadow-sm">
+            <p className="label-small text-secondary mb-4 lg:mb-6 uppercase tracking-wider font-bold">Kush Dental Clinic</p>
             
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-8">
+            <h1 className="font-display font-bold text-3xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-6 lg:mb-8">
               <span className="block overflow-hidden pb-2">
                 <span className="block hero-title-line">Exceptional Dental</span>
               </span>
@@ -88,28 +100,14 @@ export const Hero = () => {
               </span>
             </h1>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mt-4">
-              <button className="bg-secondary text-primary label-small px-8 py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-8 mt-2 lg:mt-4">
+              <button className="bg-secondary text-primary label-small px-6 lg:px-8 py-3 lg:py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover w-full sm:w-auto text-center font-bold">
                 Discover Our Clinic
               </button>
-              <a href="#about" className="label-small text-tertiary flex items-center gap-2 hover:text-secondary transition-colors cursor-hover">
+              <a href="#about" className="label-small text-tertiary flex items-center justify-center gap-2 hover:text-secondary transition-colors cursor-hover w-full sm:w-auto font-bold">
                 Learn More <ArrowDown className="w-4 h-4" />
               </a>
             </div>
-          </div>
-        </div>
-
-        {/* Right Content (Doctor) */}
-        <div className="lg:col-span-7 xl:col-span-6 flex items-end justify-center lg:justify-end h-full relative order-1 lg:order-2 h-[400px] lg:h-auto">
-          <div className="relative w-full max-w-[500px] h-full flex items-end justify-center">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
-              alt="Dr. Alexander Kush" 
-              className="hero-doc w-full h-[110%] object-contain object-bottom scale-95 origin-bottom"
-              style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
-            />
-            
-
           </div>
         </div>
 
