@@ -85,27 +85,26 @@ export const Hero = () => {
 
         {/* Left Content */}
         <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-0 pt-[30vh] lg:pt-0">
-          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-6 md:p-12 rounded-2xl shadow-sm">
-            <p className="label-small text-secondary mb-4 lg:mb-6 uppercase tracking-wider font-bold">Kush Dental Clinic</p>
+          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-5 md:p-12 rounded-2xl shadow-sm">
             
-            <h1 className="font-display font-bold text-3xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-6 lg:mb-8">
-              <span className="block overflow-hidden pb-2">
+            <h1 className="font-display font-bold text-2xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-4 lg:mb-8">
+              <span className="block overflow-hidden pb-1 lg:pb-2">
                 <span className="block hero-title-line">Exceptional Dental</span>
               </span>
-              <span className="block overflow-hidden pb-2">
+              <span className="block overflow-hidden pb-1 lg:pb-2">
                 <span className="block hero-title-line">Care, Designed</span>
               </span>
-              <span className="block overflow-hidden pb-2">
+              <span className="block overflow-hidden pb-1 lg:pb-2">
                 <span className="block hero-title-line">Around You.</span>
               </span>
             </h1>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-8 mt-2 lg:mt-4">
-              <button className="bg-secondary text-primary label-small px-6 lg:px-8 py-3 lg:py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover w-full sm:w-auto text-center font-bold">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 lg:gap-8 mt-1 lg:mt-4">
+              <button className="bg-secondary text-primary label-small text-xs md:text-sm px-4 lg:px-8 py-2.5 lg:py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover w-full sm:w-auto text-center font-bold">
                 Discover Our Clinic
               </button>
-              <a href="#about" className="label-small text-tertiary flex items-center justify-center gap-2 hover:text-secondary transition-colors cursor-hover w-full sm:w-auto font-bold">
-                Learn More <ArrowDown className="w-4 h-4" />
+              <a href="#about" className="label-small text-xs md:text-sm text-tertiary flex items-center justify-center gap-2 hover:text-secondary transition-colors cursor-hover w-full sm:w-auto font-bold">
+                Learn More <ArrowDown className="w-3 h-3 md:w-4 md:h-4" />
               </a>
             </div>
           </div>
