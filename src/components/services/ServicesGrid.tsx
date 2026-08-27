@@ -73,10 +73,10 @@ export const ServicesGrid = () => {
   );
 
   return (
-    <section ref={sectionRef} className="py-16 bg-background relative z-10">
+    <section ref={sectionRef} className="pb-16 pt-0 bg-background relative z-10">
       
       {/* Sticky Filter */}
-      <div className="sticky top-[80px] z-40 bg-background/90 backdrop-blur-xl border-b border-border/30 py-6 mb-16 reveal-up">
+      <div className="sticky top-[64px] md:top-[72px] z-40 bg-background/90 backdrop-blur-xl border-b border-border/30 py-6 mb-16 reveal-up">
         <div className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop">
           <div className="flex overflow-x-auto pb-2 gap-4 scrollbar-hide snap-x items-center">
             {categories.map((cat) => (

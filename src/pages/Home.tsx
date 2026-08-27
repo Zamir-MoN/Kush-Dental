@@ -6,7 +6,7 @@ import { ClinicalSolutions } from '../components/solutions/ClinicalSolutions';
 import { TreatmentCollection } from '../components/treatments/TreatmentCollection';
 import { PrecisionSection } from '../components/precision/PrecisionSection';
 import { BeforeAfterSlider } from '../components/transformations/BeforeAfterSlider';
-import { MasterClinicians } from '../components/clinicians/MasterClinicians';
+
 import { PatientStories } from '../components/testimonials/PatientStories';
 import { JournalInsights } from '../components/journal/JournalInsights';
 import { Statistics } from '../components/stats/Statistics';
@@ -28,7 +28,7 @@ export const Home = () => {
         <TreatmentCollection />
         <PrecisionSection />
         <BeforeAfterSlider />
-        <MasterClinicians />
+
         <PatientStories />
         <JournalInsights />
         <Statistics />

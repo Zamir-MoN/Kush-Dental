@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { ArrowLeftRight } from 'lucide-react';
 
@@ -22,7 +22,9 @@ const Slider = ({ before, after }: { before: string, after: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const x = useMotionValue(0);
-  const clipWidth = useTransform(x, (val) => val);
+  
+  // Use useMotionTemplate to correctly interpolate the MotionValue into a string
+  const clipPath = useMotionTemplate`inset(0 0 0 ${x}px)`;
 
   // Initialize bounds on mount and resize
   useEffect(() => {
@@ -50,32 +52,34 @@ const Slider = ({ before, after }: { before: string, after: string }) => {
     >
       {/* Before Image (Base) */}
       <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-      <div className="absolute top-4 right-4 bg-tertiary/70 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
+      <div className="absolute top-4 left-4 bg-tertiary/70 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
         Before
       </div>
 
       {/* After Image (Clipped) */}
       <motion.div 
         className="absolute inset-0 z-10"
-        style={{ clipPath: `inset(0 calc(100% - ${clipWidth}px) 0 0)` }}
+        style={{ clipPath }}
       >
         <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-        <div className="absolute top-4 left-4 bg-secondary/90 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
+        <div className="absolute top-4 right-4 bg-secondary/90 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
           After
         </div>
       </motion.div>
 
       {/* Drag Handle */}
       <motion.div 
-        className="absolute top-0 bottom-0 z-20 w-1 bg-primary cursor-ew-resize touch-none hover:bg-secondary transition-colors"
+        className="absolute top-0 bottom-0 z-20 w-12 -ml-6 flex justify-center cursor-ew-resize touch-none group"
         style={{ x }}
         drag="x"
         dragConstraints={{ left: 0, right: containerWidth }}
         dragElastic={0}
         dragMomentum={false}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-primary rounded-full shadow-lg flex items-center justify-center border border-border pointer-events-none">
-          <ArrowLeftRight className="w-4 h-4 text-secondary" />
+        <div className="w-1 h-full bg-primary group-hover:bg-secondary transition-colors relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-primary rounded-full shadow-lg flex items-center justify-center border border-border pointer-events-none group-hover:scale-110 transition-transform">
+            <ArrowLeftRight className="w-4 h-4 text-secondary" />
+          </div>
         </div>
       </motion.div>
     </div>

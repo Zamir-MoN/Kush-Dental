@@ -6,45 +6,14 @@ export const Hero = () => {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Setup prefers-reduced-motion check
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Set all hero elements to their final visible state immediately, bypassing animations
+    if (!heroRef.current) return;
     
-    if (prefersReducedMotion) {
-      const els = heroRef.current?.querySelectorAll('.hero-anim, .hero-stagger');
-      els?.forEach(el => gsap.set(el, { opacity: 1, y: 0, scale: 1 }));
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
-
-      // 1. background image slowly fades in & scale 1.05 -> 1
-      tl.fromTo('.hero-bg', 
-        { opacity: 0, scale: 1.05 }, 
-        { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }
-      )
-      // 3. text fades upward
-      .fromTo('.hero-card',
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' },
-        "-=1.5"
-      )
-      // 4. heading words reveal individually (simulated with lines)
-      .fromTo('.hero-title-line',
-        { y: '100%' },
-        { y: '0%', duration: 1, stagger: 0.2, ease: 'power4.out' },
-        "-=1.0"
-      )
-      // 5. doctor portrait rises/fades
-      .fromTo('.hero-doc',
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' },
-        "-=0.8"
-      );
-
-    }, heroRef);
-
-    return () => ctx.revert();
+    gsap.set('.hero-bg', { opacity: 1, scale: 1 });
+    gsap.set('.hero-card', { opacity: 1, y: 0 });
+    gsap.set('.hero-title-line', { y: '0%' });
+    gsap.set('.hero-doc', { opacity: 1, y: 0 });
+    
   }, []);
 
   return (
@@ -60,13 +29,6 @@ export const Hero = () => {
           />
         </div>
         <div className="absolute inset-0 bg-primary/30" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none hero-bg">
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUqDV_o5Mgk5cIymlfC8vhqvA4dsbeJmrFy817pGmTz5vizSC3AJNzRbq6auUBJ4Kci4MXiKyQU5KLf9hEe5ceHSQUp7-8g-lOtS4jWh0qro_noDfYYsTtK3a4dRwjRVq4lIVllcNVDOqNmE9s1ESUHROgMXetwuCqwO7T2Ke8UEvAfCgpXdFZAk5gi4G-ClZQ7S4H0TSPis_mQpMNJCVR6ApK3uaX6gQQl3QjJRA7xNY0xQndwT8EoVNL-2VAKNrqN6k" 
-            alt="Gold Tooth Outline" 
-            className="w-1/2 md:w-1/3 h-auto object-contain"
-          />
-        </div>
       </div>
 
       <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 w-full relative z-10 h-full mt-12 lg:mt-0 min-h-[80vh] lg:min-h-0">
@@ -85,9 +47,9 @@ export const Hero = () => {
 
         {/* Left Content */}
         <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-0 pt-[30vh] lg:pt-0">
-          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-5 md:p-12 rounded-2xl shadow-sm">
+          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-4 md:p-12 rounded-2xl shadow-sm self-start lg:self-auto max-w-[90vw] md:max-w-none mb-4 md:mb-0">
             
-            <h1 className="font-display font-bold text-2xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-4 lg:mb-8">
+            <h1 className="font-display font-bold text-xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-3 lg:mb-8">
               <span className="block overflow-hidden pb-1 lg:pb-2">
                 <span className="block hero-title-line">Exceptional Dental</span>
               </span>
