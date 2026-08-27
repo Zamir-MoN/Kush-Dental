@@ -84,7 +84,7 @@ export const Hero = () => {
         </div>
 
         {/* Left Content */}
-        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-4 lg:pb-0 pt-[50vh] lg:pt-0">
+        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-0 pt-[30vh] lg:pt-0">
           <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-6 md:p-12 rounded-2xl shadow-sm">
             <p className="label-small text-secondary mb-4 lg:mb-6 uppercase tracking-wider font-bold">Kush Dental Clinic</p>
             
