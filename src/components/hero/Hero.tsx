@@ -34,14 +34,14 @@ export const Hero = () => {
 
       <div className="flex flex-col md:grid md:grid-cols-12 gap-6 lg:gap-8 w-full relative z-10 h-full mt-12 md:mt-0 min-h-[80vh] md:min-h-0 items-center md:items-end">
         
-        {/* Right Content (Doctor) - Bottom/Side anchor on tablet & desktop */}
-        <div className="absolute inset-0 md:relative md:col-span-6 lg:col-span-7 xl:col-span-6 flex items-end justify-center md:justify-end h-full z-10 md:order-2 pointer-events-none">
-          <div className="relative w-full h-full flex items-end justify-center md:justify-end max-w-[440px] lg:max-w-[500px]">
+        {/* Right Content (Doctor) - Higher vertical position on mobile so face & chest are completely visible */}
+        <div className="absolute inset-0 md:relative md:col-span-6 lg:col-span-7 xl:col-span-6 flex items-start sm:items-end justify-center md:justify-end h-full z-10 md:order-2 pointer-events-none pt-4 sm:pt-0">
+          <div className="relative w-full h-full flex items-start sm:items-end justify-center md:justify-end max-w-[360px] sm:max-w-[440px] lg:max-w-[500px]">
             <img 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
               alt="Dr. Alexander Kush" 
-              className="hero-doc w-[120%] md:w-full h-full md:h-[105%] lg:h-[110%] object-contain object-bottom origin-bottom"
-              style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
+              className="hero-doc w-[105%] sm:w-[120%] md:w-full h-[75%] sm:h-full md:h-[105%] lg:h-[110%] object-contain object-top sm:object-bottom origin-top sm:origin-bottom mt-2 sm:mt-0"
+              style={{ maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)' }}
             />
           </div>
         </div>
@@ -54,18 +54,18 @@ export const Hero = () => {
               Exceptional Dental Care, Designed Around You.
             </h1>
             
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 lg:gap-8 mt-2 lg:mt-4">
+            <div className="flex flex-wrap items-center gap-4 lg:gap-6 mt-3 lg:mt-4">
               <Link 
                 to="/book" 
-                className="bg-secondary text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center"
+                className="bg-secondary text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-6 lg:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center whitespace-nowrap inline-flex items-center justify-center"
               >
                 Discover Our Clinic
               </Link>
               <a 
                 href="#about" 
-                className="text-xs sm:text-sm text-tertiary uppercase tracking-wider flex items-center justify-center gap-2 hover:text-secondary transition-colors font-bold py-2 sm:py-0"
+                className="text-xs sm:text-sm text-tertiary uppercase tracking-wider inline-flex items-center gap-1.5 hover:text-secondary transition-colors font-bold py-2 whitespace-nowrap"
               >
-                Learn More <ArrowDown className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                Learn More <ArrowDown className="w-3.5 h-3.5 shrink-0" />
               </a>
             </div>
           </div>
