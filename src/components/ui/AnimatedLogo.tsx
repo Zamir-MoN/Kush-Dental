@@ -45,16 +45,7 @@ export const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
         transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
       />
 
-      {/* Left side notch line */}
-      <motion.path
-        d="M 41 106 L 47 164"
-        stroke="url(#gold-gradient)"
-        strokeWidth="9"
-        strokeLinecap="round"
-        initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-        animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.0, delay: 0.6, ease: "easeOut" }}
-      />
+
 
       {/* Center Crown Hair / Wave Accents */}
       <motion.path

@@ -19,7 +19,7 @@ const services = [
     category: 'Cosmetic',
     desc: 'Professional laser whitening treatments to brighten your smile safely and effectively in one visit.',
     icon: <Smile strokeWidth={1} className="w-8 h-8" />,
-    img: '',
+    img: '/images/services/cosmetic dentistry.png',
     col: 1
   },
   {
@@ -28,7 +28,7 @@ const services = [
     category: 'Surgical',
     desc: 'Permanent, natural-looking replacements for missing teeth, restoring full function and aesthetics.',
     icon: <ShieldCheck strokeWidth={1} className="w-8 h-8" />,
-    img: '',
+    img: '/images/services/dental implants.png',
     col: 2
   },
   {
@@ -46,7 +46,7 @@ const services = [
     category: 'Cosmetic',
     desc: 'Comprehensive cosmetic makeovers utilizing veneers and contouring for the perfect smile.',
     icon: <Smile strokeWidth={1} className="w-8 h-8" />,
-    img: '',
+    img: '/images/services/restorative care.png',
     col: 3,
     bgColor: 'bg-primary'
   },
@@ -56,7 +56,7 @@ const services = [
     category: 'Restorative',
     desc: 'Advanced endodontic therapy to save infected teeth, performed painlessly with cutting-edge techniques.',
     icon: <Microscope strokeWidth={1} className="w-8 h-8" />,
-    img: '',
+    img: '/images/services/root canal.png',
     col: 3
   }
 ];
