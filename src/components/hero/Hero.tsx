@@ -54,16 +54,16 @@ export const Hero = () => {
               Exceptional Dental Care, Designed Around You.
             </h1>
             
-            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6 mt-3 lg:mt-4 flex-nowrap">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 lg:gap-6 mt-4 lg:mt-6">
               <Link 
                 to="/book" 
-                className="bg-secondary text-white font-bold text-[11px] sm:text-xs md:text-sm uppercase tracking-wider px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center whitespace-nowrap shrink-0 inline-flex items-center justify-center"
+                className="bg-secondary text-white font-bold text-xs sm:text-xs md:text-sm uppercase tracking-wider px-6 lg:px-8 py-3.5 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center inline-flex items-center justify-center"
               >
                 Discover Our Clinic
               </Link>
               <a 
                 href="#about" 
-                className="text-[11px] sm:text-xs md:text-sm text-tertiary uppercase tracking-wider inline-flex items-center gap-1.5 hover:text-secondary transition-colors font-bold py-2 whitespace-nowrap shrink-0"
+                className="text-xs sm:text-xs md:text-sm text-tertiary uppercase tracking-wider inline-flex items-center justify-center sm:justify-start gap-1.5 hover:text-secondary transition-colors font-bold py-1.5 sm:py-2"
               >
                 Learn More <ArrowDown className="w-3.5 h-3.5 shrink-0" />
               </a>
