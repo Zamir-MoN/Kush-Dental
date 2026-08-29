@@ -16,10 +16,10 @@ export const AppointmentForm = () => {
   return (
     <section ref={sectionRef} className="py-section-mobile md:py-section-desktop px-4 sm:px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-light-gray">
       <div className="max-w-container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 bg-primary shadow-sm p-6 sm:p-10 lg:p-16 rounded-2xl sm:rounded-3xl reveal-up">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 bg-primary shadow-sm p-6 sm:p-8 md:p-10 lg:p-16 rounded-2xl sm:rounded-3xl reveal-up items-stretch">
           
           <div className="flex flex-col justify-center">
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl mb-6 sm:mb-10 text-tertiary">Request an Appointment</h2>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 sm:mb-8 md:mb-10 text-tertiary">Request an Appointment</h2>
             
             {submitted ? (
               <div className="bg-soft-gray p-8 rounded-sm text-center border border-border">
@@ -72,8 +72,8 @@ export const AppointmentForm = () => {
             )}
           </div>
           
-          {/* Right Column: 3D Reactive Interactive Map */}
-          <div className="w-full flex">
+          {/* Right Column: Interactive Clinic Map */}
+          <div className="w-full flex flex-col justify-stretch">
             <InteractiveClinicMap />
           </div>
           

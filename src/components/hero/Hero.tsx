@@ -32,32 +32,32 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-primary/30" />
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 w-full relative z-10 h-full mt-12 lg:mt-0 min-h-[80vh] lg:min-h-0">
+      <div className="flex flex-col md:grid md:grid-cols-12 gap-6 lg:gap-8 w-full relative z-10 h-full mt-12 md:mt-0 min-h-[80vh] md:min-h-0 items-center md:items-end">
         
-        {/* Right Content (Doctor) - Absolute on mobile, relative on desktop */}
-        <div className="absolute inset-0 lg:relative lg:col-span-7 xl:col-span-6 flex items-end justify-center lg:justify-end h-full z-10 lg:order-2 pointer-events-none">
-          <div className="relative w-full h-full flex items-end justify-center lg:max-w-[500px]">
+        {/* Right Content (Doctor) - Bottom/Side anchor on tablet & desktop */}
+        <div className="absolute inset-0 md:relative md:col-span-6 lg:col-span-7 xl:col-span-6 flex items-end justify-center md:justify-end h-full z-10 md:order-2 pointer-events-none">
+          <div className="relative w-full h-full flex items-end justify-center md:justify-end max-w-[440px] lg:max-w-[500px]">
             <img 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
               alt="Dr. Alexander Kush" 
-              className="hero-doc w-[130%] max-w-none md:w-full h-full md:h-[110%] object-contain object-bottom scale-95 origin-bottom"
+              className="hero-doc w-[120%] md:w-full h-full md:h-[105%] lg:h-[110%] object-contain object-bottom origin-bottom"
               style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}
             />
           </div>
         </div>
 
         {/* Left Content */}
-        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-4 lg:pb-0">
-          <div className="hero-card bg-white/80 md:bg-white/50 lg:bg-white/40 backdrop-blur-xl border border-white/60 p-6 sm:p-8 md:p-10 lg:p-12 rounded-[2rem] shadow-xl md:shadow-md w-full max-w-full sm:max-w-[460px] lg:max-w-none">
+        <div className="md:col-span-6 lg:col-span-5 xl:col-span-6 flex flex-col justify-end md:justify-center flex-1 order-2 md:order-1 mt-auto md:mt-0 z-20 pb-4 md:pb-6 lg:pb-0">
+          <div className="hero-card bg-white/75 md:bg-white/45 backdrop-blur-xl border border-white/60 p-5 sm:p-7 md:p-8 lg:p-12 rounded-[2rem] shadow-xl md:shadow-md w-full max-w-full md:max-w-[420px] lg:max-w-none">
             
-            <h1 className="font-display font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-[60px] xl:text-[68px] leading-[1.15] text-tertiary mb-4 sm:mb-6 lg:mb-8 tracking-tight">
+            <h1 className="font-display font-extrabold text-2xl sm:text-3xl md:text-3xl lg:text-[54px] xl:text-[64px] leading-[1.15] text-tertiary mb-4 sm:mb-5 lg:mb-8 tracking-tight">
               Exceptional Dental Care, Designed Around You.
             </h1>
             
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 lg:gap-8 mt-2 lg:mt-4">
               <Link 
                 to="/book" 
-                className="bg-secondary text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-6 lg:px-8 py-3.5 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center"
+                className="bg-secondary text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center"
               >
                 Discover Our Clinic
               </Link>
