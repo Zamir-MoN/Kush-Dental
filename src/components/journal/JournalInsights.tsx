@@ -32,7 +32,7 @@ export const JournalInsights = () => {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-24 items-center">
           
           {/* Animated Stack */}
-          <div className="relative w-full aspect-[4/3] max-w-[600px] mx-auto h-[400px] xl:h-[450px] reveal-up">
+          <div className="relative w-full max-w-[600px] mx-auto h-[360px] sm:h-[400px] xl:h-[450px] reveal-up">
             <AnimatePresence mode="popLayout">
               {featuredArticles.map((article, index) => {
                 const isCurrent = index === currentIndex;
@@ -53,15 +53,15 @@ export const JournalInsights = () => {
                     }}
                     exit={{ opacity: 0, y: -40, scale: 0.9 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className="absolute inset-0 bg-primary rounded-3xl shadow-md border border-border/30 flex flex-col overflow-hidden"
+                    className="absolute inset-0 bg-primary rounded-2xl sm:rounded-3xl shadow-md border border-border/30 flex flex-col overflow-hidden"
                   >
-                    <div className="h-1/2 w-full bg-soft-gray overflow-hidden">
+                    <div className="h-[48%] sm:h-1/2 w-full bg-soft-gray overflow-hidden">
                       <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
                     </div>
-                    <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                      <span className="label-small text-secondary mb-2 block">{article.category}</span>
-                      <h3 className="font-display text-2xl mb-3 text-tertiary">{article.title}</h3>
-                      <p className="text-neutral text-sm line-clamp-2">{article.excerpt}</p>
+                    <div className="p-5 sm:p-6 md:p-8 flex-1 flex flex-col justify-center">
+                      <span className="label-small text-secondary mb-1.5 sm:mb-2 block text-xs">{article.category}</span>
+                      <h3 className="font-display text-xl sm:text-2xl mb-2 sm:mb-3 text-tertiary">{article.title}</h3>
+                      <p className="text-neutral text-xs sm:text-sm line-clamp-2">{article.excerpt}</p>
                     </div>
                   </motion.div>
                 );

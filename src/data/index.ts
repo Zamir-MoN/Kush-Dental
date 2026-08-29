@@ -4,35 +4,35 @@ export const services = [
     title: "Cosmetic Dentistry",
     description: "Masterful smile design utilizing ultra-thin porcelain veneers, precise contouring, and advanced whitening techniques to achieve a flawless, natural aesthetic.",
     tags: ["Veneers", "Whitening", "Bonding"],
-    image: "https://www.magnific.com/free-photos-vectors/cosmetic-dentistry"
+    image: "/images/services/cosmetic dentistry.png"
   },
   {
     number: "02",
     title: "Restorative Care",
     description: "Comprehensive rehabilitation of oral function and structure through state-of-the-art implants, meticulously crafted crowns, and biomimetic restorative materials.",
     tags: ["Crowns", "Bridges", "Onlays"],
-    image: "https://www.dentagramclinic.com/blog/the-golden-ratio-in-dental-aesthetics-perfecting-smiles-with-dentagram-smile-design"
+    image: "/images/services/restorative care.png"
   },
   {
     number: "03",
     title: "Implantology",
     description: "Permanent, natural-looking tooth replacement utilizing advanced 3D guided surgery for unparalleled precision and immediate aesthetic results.",
     tags: ["Single Implants", "All-on-4", "Bone Grafting"],
-    image: "https://fellowsdental.co.uk/dental-implants/"
+    image: "/images/services/dental implants.png"
   },
   {
     number: "04",
     title: "Clear Aligners",
     description: "Discreet, removable orthodontic solutions designed to straighten your smile with precision and comfort using advanced 3D planning.",
     tags: ["Invisalign", "3D Planning", "Removable"],
-    image: "https://www.dentistryon66.com/images/blog/invisalign-yorkville-modern.jpg"
+    image: "/images/services/smile designing.png"
   },
   {
     number: "05",
     title: "Maxillofacial Surgery",
     description: "Expert surgical interventions for complex jaw and facial conditions, prioritizing functional restoration and optimal aesthetic outcomes.",
     tags: ["Jaw Surgery", "Facial Trauma", "Reconstruction"],
-    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop"
+    image: "/images/services/root canal.png"
   }
 ];
 
@@ -196,56 +196,56 @@ export const articlesList = [
 export const blogPosts = [
   {
     id: 1,
-    title: "UX review presentations",
-    excerpt: "How do you create compelling presentations that wow your colleagues and impress your managers? Look no further.",
-    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
-    category: "Design",
-    author: "Olivia Rhye",
-    date: "20 Jan 2022"
+    title: "Digital Smile Design: The Science of Facial Harmony",
+    excerpt: "How our clinic utilizes 3D facial mapping and Golden Ratio metrics to craft bespoke porcelain veneers that naturally flatter your unique features.",
+    image: "/images/blog/blog1.jpg",
+    category: "Cosmetics",
+    author: "Dr. Alexander Kush",
+    date: "24 Aug 2026"
   },
   {
     id: 2,
-    title: "Best books on scaling your startup",
-    excerpt: "This collection of the best startup books for scaling your startup are packed full with valuable insights and advice.",
-    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200&auto=format&fit=crop",
-    category: "Product",
-    author: "Phoenix Baker",
-    date: "19 Jul 2022"
+    title: "3D CBCT Guided Surgery: Why Dental Implants Last a Lifetime",
+    excerpt: "Exploring the micron-level precision of computer-guided osteotomy and biocompatible titanium integration for permanent tooth replacement.",
+    image: "/images/blog/blog2.jpg",
+    category: "Implantology",
+    author: "Dr. Michael Chang",
+    date: "19 Jul 2026"
   },
   {
     id: 3,
-    title: "Building your API Stack",
-    excerpt: "The rise of RESTful APIs has been met by a rise in tools for creating, testing, and managing them.",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
-    category: "Development",
-    author: "Lana Steiner",
-    date: "18 Jan 2022"
+    title: "The Invisible Revolution: Clear Aligners vs. Traditional Braces",
+    excerpt: "Understanding the digital staging and comfort advantages of smart-track clear orthodontic aligners for adult smile transformation.",
+    image: "/images/blog/blog3.jpg",
+    category: "Orthodontics",
+    author: "Dr. Sarah Jenkins",
+    date: "12 Jun 2026"
   },
   {
     id: 4,
-    title: "Bill Walsh leadership lessons",
-    excerpt: "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
-    category: "Leadership",
-    author: "Demi Wilkinson",
-    date: "16 Jan 2022"
+    title: "Minimally Invasive Maxillofacial Surgery & Recovery",
+    excerpt: "Advanced surgical techniques for orthognathic correction, wisdom tooth extractions, and rapid tissue healing with PRF therapy.",
+    image: "/images/blog/blog4.jpg",
+    category: "Oral Surgery",
+    author: "Dr. Michael Chang",
+    date: "04 May 2026"
   },
   {
     id: 5,
-    title: "PM mental models",
-    excerpt: "Mental models are simple expressions of complex processes or relationships.",
-    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop",
-    category: "Product",
-    author: "Candice Wu",
-    date: "15 Jan 2022"
+    title: "Biomimetic Restorations: Preserving Natural Tooth Vitality",
+    excerpt: "How microscopic adhesive dentistry and monolithic ceramic restorations eliminate the need for aggressive root canals and heavy grinding.",
+    image: "/images/blog/blog5.jpg",
+    category: "Restorative",
+    author: "Dr. Alexander Kush",
+    date: "18 Apr 2026"
   },
   {
     id: 6,
-    title: "What is Wireframing?",
-    excerpt: "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
-    image: "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1200&auto=format&fit=crop",
-    category: "Design",
-    author: "Natali Craig",
-    date: "14 Jan 2022"
+    title: "Next-Gen Intraoral Scanning: No More Messy Impression Molds",
+    excerpt: "Discover how high-speed optical scanning capture true-color digital impressions in under 60 seconds with sub-millimeter precision.",
+    image: "/images/blog/blog6.jpg",
+    category: "Technology",
+    author: "Dr. Sarah Jenkins",
+    date: "02 Mar 2026"
   }
 ];

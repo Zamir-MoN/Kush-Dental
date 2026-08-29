@@ -23,20 +23,20 @@ export const PatientStories = () => {
           {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
             <motion.div 
               key={i}
-              className="w-[320px] shrink-0 bg-primary p-8 rounded-3xl border border-border/50 border-t-4 border-t-secondary shadow-sm"
+              className="w-[280px] sm:w-[320px] shrink-0 bg-primary p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/50 border-t-4 border-t-secondary shadow-sm"
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
             >
-              <div className="flex gap-1 text-secondary mb-6">
+              <div className="flex gap-1 text-secondary mb-4 sm:mb-6">
                 {[1, 2, 3, 4, 5].map(star => (
-                  <svg key={star} className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <svg key={star} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 ))}
               </div>
-              <p className="text-neutral italic text-sm leading-relaxed mb-6">
+              <p className="text-neutral italic text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-4 sm:line-clamp-none">
                 "{testimonial.text}"
               </p>
-              <p className="label-small text-tertiary">
+              <p className="label-small text-tertiary text-xs sm:text-sm">
                 — {testimonial.author}
               </p>
             </motion.div>

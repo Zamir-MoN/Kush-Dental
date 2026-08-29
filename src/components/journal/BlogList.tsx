@@ -5,7 +5,7 @@ import { blogPosts } from '../../data';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const categories = ['View all', 'Design', 'Product', 'Development', 'Customer Support', 'Leadership', 'Management', 'Interviews'];
+const categories = ['View all', 'Cosmetics', 'Implantology', 'Orthodontics', 'Oral Surgery', 'Restorative', 'Technology'];
 
 export const BlogList = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -26,11 +26,11 @@ export const BlogList = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-16 reveal-up">
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-tertiary tracking-tight font-medium">Untitled Blog</h1>
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-tertiary tracking-tight font-medium">Clinical Insights & Journal</h1>
         
         <div className="flex flex-col items-start lg:items-end gap-4 text-left lg:text-right">
           <p className="text-neutral text-base max-w-sm">
-            New product features, the latest in technology, solutions, and updates.
+            Expert articles, surgical breakthroughs, and aesthetic smile design perspectives by our lead dentists.
           </p>
           <div className="flex w-full sm:w-auto gap-3">
             <input 

@@ -17,14 +17,14 @@ export const AboutHero = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
         <div className="reveal-up">
-          <h1 className="font-display text-5xl md:text-[72px] leading-tight text-tertiary mb-stack-md">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[72px] leading-tight text-tertiary mb-stack-md">
             Redefining the<br/>
             <span className="text-secondary">Dental Experience</span>
           </h1>
-          <p className="font-body text-lg text-neutral mb-stack-lg max-w-lg">
+          <p className="font-body text-base sm:text-lg text-neutral mb-stack-lg max-w-lg leading-relaxed">
             We blend clinical excellence with premium hospitality. Step into a serene environment designed to eliminate anxiety and deliver unparalleled care.
           </p>
-          <a href="#" className="inline-flex items-center justify-center bg-transparent border border-tertiary text-tertiary font-label text-sm font-medium rounded-xl px-8 py-4 hover:bg-black/5 transition-colors cursor-hover">
+          <a href="#" className="inline-flex items-center justify-center bg-transparent border border-tertiary text-tertiary font-label text-sm font-medium rounded-xl px-6 sm:px-8 py-3.5 sm:py-4 hover:bg-black/5 transition-colors cursor-hover">
             Our Philosophy
           </a>
         </div>

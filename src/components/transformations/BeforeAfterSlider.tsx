@@ -5,16 +5,22 @@ import { ArrowLeftRight } from 'lucide-react';
 
 const transformations = [
   {
-    before: "https://lh3.googleusercontent.com/aida-public/AB6AXuBgzF_Mzh1YJ7M9CNmIbjIC8HNiIRpQy53-GxL_QfAdzaz5Hhsnmh6PCm9pY5eol4vctcJ9BaQteMGLgflKO1WKQeS9dxWvPqsfsBc7VnyN22fF99RYbVV-CLlZLUiP7oLKRXayP-vwy3iHwX4fgPnppB0NOaHyLQGW7-QPa2eonXDLEZTARfOOacspF0SIpH2PF4JDh2RLqkbWMRziVOJapijrHolvydARLisLnAoaNG8OKND6PvN6Rw",
-    after: "https://lh3.googleusercontent.com/aida-public/AB6AXuCBS5VUqYCscZO7nPeuMXtcwXxWIC_53-ogbhrJggHNy23HtkyCfoWVlXow0Lhmb4I1xkKfHtzwlbIyypLY6PczeQKo9l1rvg8NwroMVstNROGBSV8J_P74RbQlHDWcxj1C8jKWx60AlyeFu2UH03VxNpGSXDdAlbL4gfXnyRP6P8MXv1oyN3_FJJSQdTOvGH6iMBYUVkpadALdpPCs7VZj_K6EoA8Sn54iucPvDEKSARwts_4WeWQLxA"
+    title: "Porcelain Veneer Smile Makeover",
+    subtitle: "Severe discoloration & misalignment corrected",
+    before: "/images/transformations/case1-before.jpg",
+    after: "/images/transformations/case1-after.jpg"
   },
   {
-    before: "https://lh3.googleusercontent.com/aida-public/AB6AXuAmIGaTJcAUYC1BDPQdGyRYPyfkiPS_tsZezmvzXO_xILT6EDDRMgicvZ8cat2xzQkc3ZQP5iiATTYez6yRk49_ot0nfUpxBspy2D8XvGNKqA-8766V8xUrm0U3WvCWk0WmA6DTRv5bM-qTYgQ5s7CYEnXoSe8MsLUaNSGkbyzFN6QE-7BBjenWVXEJLSZ7NnYKn_s-mcFZK6sFREtclugWR2fCcNVjz6CK_MZcM86iQKXII5KpE1tXZg",
-    after: "https://lh3.googleusercontent.com/aida-public/AB6AXuAOeFi7tqH0NUouOk1N1931fNXTFgjd5F-U66uZ9Ihag8rc-rRMMpDnZcye6UyfRt-fX6bXpyq90yfuxO97wlkL8RE3Gu1eoNN1YXtQwZPrhTFWITEQoFBWynyOsY5bRE8jjxEgpRbHSKUG1LEFlQ2_jvF3ethikDpjuOAVVRh-EZKfI7e3ZWBd5I7Xd4dppNWA-2oZU590fhgTvAeOZnwca9E4cZ6EKuBEo9KyPT7j6zhfVB2PjuvBoQ"
+    title: "Laser Whitening & Alignment",
+    subtitle: "Deep stain removal & space closure",
+    before: "/images/transformations/case2-before.jpg",
+    after: "/images/transformations/case2-after.jpg"
   },
   {
-    before: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhiFjxNPFTjvXrbd7dJjUQapcMCe01tOM1Jm1AAIl5guf9_YQI43Ikr8mKIU3SLNnY7o4ZxcA0TxLyBnpxiqE-7wJFJHPEbq19j5dYF8WZAx4dcyYAbIEJHKBcllg0DjnCCcaXkl3ddF_USWm5UyZf61uliNhQibcFtP0JRHC7EF6R2oufGHXxFuIYP6lhJpeEbyFKwTth1yVfEtg6caAiNdYCI6Lm7B1N6UGkxobGkF04uH2j-PcAnA",
-    after: "https://lh3.googleusercontent.com/aida-public/AB6AXuAUpnRi5sesTNL46CHrx6ohwm8eQGGcmtNi8jrKScQSBSuFi5fpufpiSR1mv128hqjbV7MX5LBchLeFrFQyMSD3K7vebqcEmebhe-4qQ9RdDpR0wgdnSupLkqWqnAPfn4y4vI-6rH6ixTSM8BQb2AcSS55MxKg3zQmoRBAFmj1Erv0cFONTsOeNDqLCNp6PPRUVA7eazKmLqM6AnC6EfnyclkynBgZK5InntizEhsLNnUkeEnUbM1rKDA"
+    title: "Cosmetic Edge Bonding & Veneers",
+    subtitle: "Worn incisal edges & enamel repair",
+    before: "/images/transformations/case3-before.jpg",
+    after: "/images/transformations/case3-after.jpg"
   }
 ];
 

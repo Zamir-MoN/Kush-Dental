@@ -99,7 +99,7 @@ export const ServicesGrid = () => {
       <div className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop pb-24">
         
         {/* Using standard grid for filtering since Masonry layout with fixed columns breaks easily with filtered items */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <AnimatePresence>
             {filteredServices.map((service, index) => (
               <motion.div
@@ -109,11 +109,11 @@ export const ServicesGrid = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                className={`group rounded-3xl overflow-hidden border border-border/30 flex flex-col cursor-hover shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 ${service.bgColor || 'bg-white'}`}
+                className={`group rounded-2xl sm:rounded-3xl overflow-hidden border border-border/30 flex flex-col cursor-hover shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 ${service.bgColor || 'bg-white'}`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
                 {service.img && (
-                  <div className="h-64 w-full overflow-hidden relative bg-light-gray">
+                  <div className="h-48 sm:h-64 w-full overflow-hidden relative bg-light-gray">
                     <img 
                       src={service.img} 
                       alt={service.title} 
@@ -121,26 +121,26 @@ export const ServicesGrid = () => {
                     />
                   </div>
                 )}
-                <div className="p-8 md:p-10 flex flex-col flex-1">
-                  <div className="w-16 h-16 rounded-full bg-light-gray flex items-center justify-center mb-8 text-secondary group-hover:bg-secondary group-hover:text-primary transition-colors duration-500">
+                <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-1">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-light-gray flex items-center justify-center mb-6 sm:mb-8 text-secondary group-hover:bg-secondary group-hover:text-primary transition-colors duration-500">
                     {service.icon}
                   </div>
                   
-                  <span className="label-small tracking-widest uppercase text-neutral mb-3 block text-xs">
+                  <span className="label-small tracking-widest uppercase text-neutral mb-2 sm:mb-3 block text-xs">
                     {service.category}
                   </span>
                   
-                  <h3 className="font-display text-2xl md:text-3xl text-tertiary mb-4">
+                  <h3 className="font-display text-xl sm:text-2xl md:text-3xl text-tertiary mb-3 sm:mb-4">
                     {service.title}
                   </h3>
                   
-                  <p className="text-neutral leading-relaxed mb-8 text-sm md:text-base">
+                  <p className="text-neutral leading-relaxed mb-6 sm:mb-8 text-sm md:text-base">
                     {service.desc}
                   </p>
                   
-                  <div className="mt-auto flex items-center text-tertiary font-medium group-hover:text-secondary transition-colors">
+                  <div className="mt-auto flex items-center text-tertiary font-medium group-hover:text-secondary transition-colors text-sm sm:text-base">
                     Explore Treatment 
-                    <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+                    <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-2" />
                   </div>
                 </div>
               </motion.div>

@@ -36,11 +36,11 @@ export const WhyClinic = () => {
           Why Kush Dental Clinic
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {features.map((feature, i) => (
             <motion.div 
               key={i}
-              className="reveal-up bg-primary p-8 rounded-3xl border-t-2 border-transparent transition-colors cursor-hover shadow-sm flex flex-col"
+              className="reveal-up bg-primary p-6 sm:p-8 rounded-2xl sm:rounded-3xl border-t-2 border-transparent transition-colors cursor-hover shadow-sm flex flex-col"
               style={{ transitionDelay: `${i * 0.1}s` }}
               whileHover={{ 
                 y: -4, 
@@ -49,12 +49,12 @@ export const WhyClinic = () => {
               }}
             >
               <motion.span 
-                className="font-display text-5xl text-secondary mb-6 block"
+                className="font-display text-4xl sm:text-5xl text-secondary mb-4 sm:mb-6 block"
                 whileHover={{ x: 4 }}
               >
                 {feature.num}
               </motion.span>
-              <h3 className="font-display text-2xl mb-4 text-tertiary transition-colors duration-300">
+              <h3 className="font-display text-xl sm:text-2xl mb-3 sm:mb-4 text-tertiary transition-colors duration-300">
                 {feature.title}
               </h3>
               <p className="text-neutral text-sm leading-relaxed">

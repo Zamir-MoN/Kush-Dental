@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Hero = () => {
   const heroRef = useRef<HTMLElement>(null);
@@ -46,27 +47,25 @@ export const Hero = () => {
         </div>
 
         {/* Left Content */}
-        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-0 pt-[30vh] lg:pt-0">
-          <div className="hero-card bg-primary/20 backdrop-blur-md border border-primary/40 p-4 md:p-12 rounded-2xl shadow-sm self-start lg:self-auto max-w-[90vw] md:max-w-none mb-4 md:mb-0">
+        <div className="lg:col-span-5 xl:col-span-6 flex flex-col justify-end lg:justify-center flex-1 order-2 lg:order-1 mt-auto lg:mt-0 z-20 pb-4 lg:pb-0">
+          <div className="hero-card bg-white/80 md:bg-white/50 lg:bg-white/40 backdrop-blur-xl border border-white/60 p-6 sm:p-8 md:p-10 lg:p-12 rounded-[2rem] shadow-xl md:shadow-md w-full max-w-full sm:max-w-[460px] lg:max-w-none">
             
-            <h1 className="font-display font-bold text-xl md:text-5xl lg:text-[72px] leading-[1.1] text-tertiary mb-3 lg:mb-8">
-              <span className="block overflow-hidden pb-1 lg:pb-2">
-                <span className="block hero-title-line">Exceptional Dental</span>
-              </span>
-              <span className="block overflow-hidden pb-1 lg:pb-2">
-                <span className="block hero-title-line">Care, Designed</span>
-              </span>
-              <span className="block overflow-hidden pb-1 lg:pb-2">
-                <span className="block hero-title-line">Around You.</span>
-              </span>
+            <h1 className="font-display font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-[60px] xl:text-[68px] leading-[1.15] text-tertiary mb-4 sm:mb-6 lg:mb-8 tracking-tight">
+              Exceptional Dental Care, Designed Around You.
             </h1>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 lg:gap-8 mt-1 lg:mt-4">
-              <button className="bg-secondary text-primary label-small text-xs md:text-sm px-4 lg:px-8 py-2.5 lg:py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover w-full sm:w-auto text-center font-bold">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 lg:gap-8 mt-2 lg:mt-4">
+              <Link 
+                to="/book" 
+                className="bg-secondary text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-6 lg:px-8 py-3.5 sm:py-3.5 lg:py-4 rounded-xl hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center"
+              >
                 Discover Our Clinic
-              </button>
-              <a href="#about" className="label-small text-xs md:text-sm text-tertiary flex items-center justify-center gap-2 hover:text-secondary transition-colors cursor-hover w-full sm:w-auto font-bold">
-                Learn More <ArrowDown className="w-3 h-3 md:w-4 md:h-4" />
+              </Link>
+              <a 
+                href="#about" 
+                className="text-xs sm:text-sm text-tertiary uppercase tracking-wider flex items-center justify-center gap-2 hover:text-secondary transition-colors font-bold py-2 sm:py-0"
+              >
+                Learn More <ArrowDown className="w-3.5 h-3.5 md:w-4 md:h-4" />
               </a>
             </div>
           </div>
