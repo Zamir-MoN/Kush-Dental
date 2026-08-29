@@ -12,9 +12,7 @@ export const Hero = () => {
     
     gsap.set('.hero-bg', { opacity: 1, scale: 1 });
     gsap.set('.hero-card', { opacity: 1, y: 0 });
-    gsap.set('.hero-title-line', { y: '0%' });
     gsap.set('.hero-doc', { opacity: 1, y: 0 });
-    
   }, []);
 
   return (

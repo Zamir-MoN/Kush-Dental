@@ -3,6 +3,21 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
+// Custom Creator Signature Mark
+console.log(
+  `%c
+               .---.
+              /     \\
+             | () () |
+              \\  ^  /
+               |||||
+               |||||
+  
+     ⚡ P A N G O S O R O S ⚡
+  `,
+  'color: #DCA51B; font-family: monospace; font-size: 13px; font-weight: bold; text-shadow: 0 0 8px rgba(220,165,27,0.6);'
+);
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
