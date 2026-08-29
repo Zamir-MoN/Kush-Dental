@@ -22,7 +22,7 @@ console.log(
 ⠀⠀⠀⠀⠀⢠⣶⣯⣤⣤⣤⣤⡴⠶⠶⣼⣿⣿⣷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠁⠀⠀
   
-     ૮(•͈⌔•͈)ა  PANGOSOROS  ૮(•͈⌔•͈)ა
+             P A N G O S O R O S
   `,
   'color: #DCA51B; font-family: monospace; font-size: 13px; font-weight: bold; text-shadow: 0 0 8px rgba(220,165,27,0.6);'
 );
