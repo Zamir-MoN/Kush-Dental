@@ -48,7 +48,7 @@ export const Hero = () => {
         <div className="md:col-span-6 lg:col-span-5 xl:col-span-6 flex flex-col justify-end md:justify-center flex-1 order-2 md:order-1 mt-auto md:mt-0 z-20 pb-4 md:pb-6 lg:pb-0">
           <div className="hero-card bg-white/75 md:bg-white/45 backdrop-blur-xl border border-white/60 p-5 sm:p-7 md:p-8 lg:p-12 rounded-[2rem] shadow-xl md:shadow-md w-full max-w-full md:max-w-[420px] lg:max-w-none">
             
-            <h1 className="font-display font-extrabold text-2xl sm:text-3xl md:text-3xl lg:text-[54px] xl:text-[64px] leading-[1.15] text-tertiary mb-4 sm:mb-5 lg:mb-8 tracking-tight">
+            <h1 className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-[52px] xl:text-[60px] leading-[1.2] text-tertiary mb-4 sm:mb-5 lg:mb-8 tracking-tight">
               Exceptional Dental Care, Designed Around You.
             </h1>
             
