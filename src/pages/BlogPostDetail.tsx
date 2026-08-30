@@ -109,7 +109,7 @@ export const BlogPostDetail = () => {
               <img 
                 src={post.authorAvatar} 
                 alt={post.author} 
-                className="w-12 h-12 rounded-full object-cover border-2 border-secondary/40 shadow-sm"
+                className="w-12 h-12 rounded-full object-cover object-top border-2 border-secondary/40 shadow-sm"
               />
               <div>
                 <p className="font-display font-bold text-base text-tertiary leading-tight">{post.author}</p>
@@ -258,7 +258,7 @@ export const BlogPostDetail = () => {
               <img 
                 src={post.authorAvatar} 
                 alt={post.author} 
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-secondary shadow-md shrink-0"
+                className="w-20 h-20 rounded-2xl object-cover object-top border-2 border-secondary shadow-md shrink-0"
               />
               <div className="flex-1">
                 <span className="inline-block px-3 py-0.5 bg-secondary/15 text-secondary text-[11px] font-bold uppercase tracking-wider rounded-full mb-1.5">

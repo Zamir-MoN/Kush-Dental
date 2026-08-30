@@ -101,7 +101,7 @@ export const clinicians = [
     title: "Founder & Lead Aesthetic Dentist",
     desc: "Renowned for his meticulous approach to cosmetic dentistry, Dr. Kush brings over two decades of international experience in crafting flawless, natural smiles.",
     tags: ["Aesthetic Dentistry", "Veneers"],
-    img: "https://lh3.googleusercontent.com/aida/AEtjO1Wf5hihnPUrY-qQeqMy4IhhXhZW3DFJqcw5dvhMP_OUIuV7sPi4_qH4m3HGDJwvDTAJSOCef5hBrvowQq8g6fIvCG0Ugy1LvnFahsaeiIEqFJgcMgLoxs9tsYG0n3ZhsPfaeXBWKGf6aXZj59H3rZtGpo80pvUvFOikDadKypoICD-5s54IkaF665IL9t8Py1qrDZS-6JDaCE0FoL7mPZ8e0_jILmS7M0eKWubqS1DmMrBR_wjQFDY4f6s"
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24"
   },
   {
     id: 'doc2',
@@ -109,7 +109,7 @@ export const clinicians = [
     title: "Prosthodontist Specialist",
     desc: "An expert in complex restorative procedures, Dr. Jenkins focuses on restoring full dental function while maintaining peak aesthetic standards.",
     tags: ["Restorative", "Crowns & Bridges"],
-    img: "https://lh3.googleusercontent.com/aida/AEtjO1UgIGZ-xF2589DZsS9LZ34pKOOMeBeGwO5t59mdgugHsp8yMb3e9T1Mkhoc2myUmwIEUyUVeAdCRj2MTFqctPtK-WdTL8Di7U49yf1bfLzkOyqgaPidyQ8JOK6QfnlmDYBzF2RTST3cbUqyGrd45t5BtYE8tAzP9fl5X-9B_nfgvK8WVYicKHnsmv1JFs5lRBMjFm7JpUP0iYitZGbEQuQhomgSXSWOh5i6EANvkgUbPD79QlZwd1bj6A53"
+    img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: 'doc3',
@@ -117,7 +117,7 @@ export const clinicians = [
     title: "Master Implantologist",
     desc: "Leading the clinic in advanced surgical techniques and 3D guided implantology for predictable and lasting results.",
     tags: ["Implantology", "Oral Surgery"],
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBmMr6HxpfQtoFuYvUOVUjWeuV8eIJNZ56GN7NuJt12aIYO3UpgCAqBfAUZzPWrCNU8-WeaVklDwOCCfQpx3h_0cX17OcKOJMG6q__kFbAGX5taY7b7zPPskKmogjxwKC0yCFZylU_h9RpoJhGiI_PK1sYcSV8vDILcFudB6tZiEmrwHI64VM9a0MyhFgOhRfuMx6fUN16CBIUZfICCeh0cTmVm3arm9dXg7PSd4pXQRD53qlJqks04eQ"
+    img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
   }
 ];
 

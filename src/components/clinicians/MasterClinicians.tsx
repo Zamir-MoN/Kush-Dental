@@ -33,7 +33,7 @@ export const MasterClinicians = () => {
                       : 'opacity-60 grayscale filter blur-[1px] hover:opacity-80 hover:grayscale-0 hover:blur-none hover:scale-100'
                     }`}
                 >
-                  <img src={clinician.img} alt={clinician.name} className="w-full h-full object-cover" />
+                  <img src={clinician.img} alt={clinician.name} className="w-full h-full object-cover object-top" />
                 </button>
               );
             })}
@@ -50,7 +50,7 @@ export const MasterClinicians = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top"
               />
             </AnimatePresence>
           </div>
