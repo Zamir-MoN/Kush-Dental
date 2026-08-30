@@ -6,7 +6,7 @@ export const AboutOrigin = () => {
   useScrollReveal(sectionRef);
 
   return (
-    <section ref={sectionRef} className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-stack-lg md:py-32">
+    <section id="origin" ref={sectionRef} className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-stack-lg md:py-32">
       <div className="bg-white/85 backdrop-blur-xl border border-white/30 rounded-[24px] p-8 md:p-16 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center">
           <div className="reveal-up order-2 md:order-1 h-[300px] md:h-[400px] rounded-[20px] overflow-hidden">
