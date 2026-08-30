@@ -55,12 +55,14 @@ export const JournalInsights = () => {
                     transition={{ duration: 0.5, ease: 'easeOut' }}
                     className="absolute inset-0 bg-primary rounded-2xl sm:rounded-3xl shadow-md border border-border/30 flex flex-col overflow-hidden"
                   >
-                    <div className="h-[48%] sm:h-1/2 w-full bg-soft-gray overflow-hidden">
-                      <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
-                    </div>
+                    <Link to={`/blog/${index + 1}`} className="block h-[48%] sm:h-1/2 w-full bg-soft-gray overflow-hidden">
+                      <img src={article.image} alt={article.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </Link>
                     <div className="p-5 sm:p-6 md:p-8 flex-1 flex flex-col justify-center">
                       <span className="label-small text-secondary mb-1.5 sm:mb-2 block text-xs">{article.category}</span>
-                      <h3 className="font-display text-xl sm:text-2xl mb-2 sm:mb-3 text-tertiary">{article.title}</h3>
+                      <Link to={`/blog/${index + 1}`} className="block font-display text-xl sm:text-2xl mb-2 sm:mb-3 text-tertiary hover:text-secondary transition-colors">
+                        {article.title}
+                      </Link>
                       <p className="text-neutral text-xs sm:text-sm line-clamp-2">{article.excerpt}</p>
                     </div>
                   </motion.div>
@@ -91,9 +93,10 @@ export const JournalInsights = () => {
 
             <div className="space-y-6">
               {articlesList.map((article, i) => (
-                <div 
+                <Link 
+                  to={`/blog/${i + 1}`}
                   key={i} 
-                  className="group cursor-hover"
+                  className="group block cursor-hover"
                   onMouseEnter={() => setCurrentIndex(i)}
                 >
                   <span className="label-small text-border text-[10px] block mb-2 group-hover:text-neutral transition-colors">{article.date}</span>
@@ -104,7 +107,7 @@ export const JournalInsights = () => {
                     {article.excerpt}
                   </p>
                   {i < articlesList.length - 1 && <div className="w-full h-px bg-border/30 mt-6" />}
-                </div>
+                </Link>
               ))}
             </div>
 

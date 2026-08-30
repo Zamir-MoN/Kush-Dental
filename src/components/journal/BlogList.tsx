@@ -72,9 +72,9 @@ export const BlogList = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="group cursor-pointer flex flex-col"
+            className="group flex flex-col"
           >
-            <div className="relative h-[240px] md:h-[280px] rounded-[16px] overflow-hidden mb-6">
+            <Link to={`/blog/${post.id}`} className="block relative h-[240px] md:h-[280px] rounded-[16px] overflow-hidden mb-6 cursor-pointer">
               <img 
                 src={post.image} 
                 alt={post.title} 
@@ -90,20 +90,22 @@ export const BlogList = () => {
                   {post.category}
                 </span>
               </div>
-            </div>
+            </Link>
             
-            <div className="flex justify-between items-start gap-4">
-              <h3 className="font-display text-2xl text-tertiary font-bold mb-3 group-hover:text-secondary transition-colors">
-                {post.title}
-              </h3>
-              <ArrowUpRight className="w-6 h-6 text-tertiary shrink-0 opacity-0 -translate-y-2 translate-x-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
-            </div>
-            <p className="text-neutral text-base line-clamp-2 mb-6">
-              {post.excerpt}
-            </p>
-            <span className="inline-flex items-center gap-1 text-sm font-semibold text-tertiary group-hover:text-secondary transition-colors mt-auto">
+            <Link to={`/blog/${post.id}`} className="block">
+              <div className="flex justify-between items-start gap-4">
+                <h3 className="font-display text-2xl text-tertiary font-bold mb-3 group-hover:text-secondary transition-colors">
+                  {post.title}
+                </h3>
+                <ArrowUpRight className="w-6 h-6 text-tertiary shrink-0 opacity-0 -translate-y-2 translate-x-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
+              </div>
+              <p className="text-neutral text-base line-clamp-2 mb-6">
+                {post.excerpt}
+              </p>
+            </Link>
+            <Link to={`/blog/${post.id}`} className="inline-flex items-center gap-1 text-sm font-semibold text-tertiary group-hover:text-secondary transition-colors mt-auto w-max cursor-pointer">
               Read post <ArrowUpRight className="w-4 h-4 ml-1" />
-            </span>
+            </Link>
           </motion.article>
         ))}
       </div>

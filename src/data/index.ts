@@ -193,7 +193,32 @@ export const articlesList = [
   }
 ];
 
-export const blogPosts = [
+export interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  image: string;
+  category: string;
+  author: string;
+  authorRole: string;
+  authorAvatar: string;
+  date: string;
+  readTime: string;
+  tags: string[];
+  introduction: string;
+  sections: {
+    heading: string;
+    body: string[];
+    highlight?: string;
+  }[];
+  quote?: {
+    text: string;
+    author: string;
+  };
+  keyTakeaways: string[];
+}
+
+export const blogPosts: BlogPost[] = [
   {
     id: 1,
     title: "Digital Smile Design: The Science of Facial Harmony",
@@ -201,7 +226,39 @@ export const blogPosts = [
     image: "/images/blog/blog1.jpg",
     category: "Cosmetics",
     author: "Dr. Alexander Kush",
-    date: "24 Aug 2026"
+    authorRole: "Lead Aesthetic Prosthodontist & Founder",
+    authorAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24",
+    date: "24 Aug 2026",
+    readTime: "5 min read",
+    tags: ["Cosmetics", "Digital Smile Design", "Porcelain Veneers", "Facial Aesthetics"],
+    introduction: "Modern cosmetic dentistry is no longer a one-size-fits-all discipline. At Kush Dental Clinic, our Digital Smile Design (DSD) philosophy blends high-definition facial videography, Golden Ratio anatomical proportions, and microscopic ceramic craftsmanship to build smiles that appear effortlessly natural.",
+    sections: [
+      {
+        heading: "The Geometric Golden Ratio in Dental Aesthetics",
+        body: [
+          "Every face possesses intrinsic symmetry and proportions that govern visual harmony. Using 3D facial scanning, we analyze the interpupillary line, lip dynamic curvature during authentic laughter, and the phonetic midline.",
+          "Rather than imposing unnaturally bright or blocky teeth, we evaluate micro-translucency, incisal edge contours, and surface texture to reflect ambient light just like virgin enamel."
+        ],
+        highlight: "By mapping 48 distinct facial anatomical landmarks, each restoration is engineered to complement your natural smile dynamics."
+      },
+      {
+        heading: "From Digital Mock-up to Ultra-Thin Porcelain",
+        body: [
+          "Before any physical tooth alteration takes place, patients experience a 3D trial smile—a physical resin mock-up placed non-invasively directly over their teeth. This allows you to evaluate speech, aesthetics, and smile dynamics in real time.",
+          "Once perfected, our master ceramists craft handcrafted lithium disilicate or feldspathic porcelain veneers as thin as 0.2mm, requiring minimal to zero removal of healthy tooth structure."
+        ]
+      }
+    ],
+    quote: {
+      text: "A truly luxurious smile should never announce itself as artificial; it should look like the smile you were always meant to have.",
+      author: "Dr. Alexander Kush"
+    },
+    keyTakeaways: [
+      "Custom 3D facial mapping ensures tailored symmetry with lip dynamics.",
+      "Trial smile mock-ups allow full aesthetic preview before treatment begins.",
+      "Minimal-prep porcelain veneers (0.2mm) preserve maximum natural enamel.",
+      "Custom multi-layered ceramics mimic natural tooth translucency and light reflection."
+    ]
   },
   {
     id: 2,
@@ -210,7 +267,39 @@ export const blogPosts = [
     image: "/images/blog/blog2.jpg",
     category: "Implantology",
     author: "Dr. Michael Chang",
-    date: "19 Jul 2026"
+    authorRole: "Oral & Maxillofacial Implant Specialist",
+    authorAvatar: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400&auto=format&fit=crop",
+    date: "19 Jul 2026",
+    readTime: "6 min read",
+    tags: ["Implantology", "3D CBCT", "Guided Surgery", "Restorative"],
+    introduction: "Dental implants represent the pinnacle of modern restorative science. With low-dose Cone Beam Computed Tomography (CBCT) and surgical guide fabrication, our surgeons place implants with sub-millimeter precision, achieving bone integration rates exceeding 99%.",
+    sections: [
+      {
+        heading: "Micron Precision with Computer-Guided Guides",
+        body: [
+          "Traditional freehand implant placement leaves room for minor angulation variances. In contrast, 3D computer-guided surgery utilizes virtual pre-planning software to pinpoint the exact depth, angulation, and bone density prior to incision.",
+          "A custom 3D-printed surgical stent guides the osteotomy drill with robotic consistency, shielding surrounding nerves and sinus cavities."
+        ],
+        highlight: "Virtual 3D surgical planning reduces chair time by 50% and virtually eliminates postoperative discomfort."
+      },
+      {
+        heading: "Biocompatible Titanium & Zirconia Integration",
+        body: [
+          "We exclusively utilize Grade 4 cold-worked titanium and monolithic zirconia abutments with hydrophilic nanostructured surfaces. This accelerates osseointegration, forming a permanent biological union with your jawbone.",
+          "The result is a restoration that looks, chews, and feels indistinguishable from a healthy natural tooth."
+        ]
+      }
+    ],
+    quote: {
+      text: "Precision implantology is about predictability: when biology and digital engineering align, implants endure for a lifetime.",
+      author: "Dr. Michael Chang"
+    },
+    keyTakeaways: [
+      "CBCT scans provide 3D cross-sectional views of bone volume and nerve pathways.",
+      "CAD/CAM surgical stents guarantee flawless implant trajectory and depth.",
+      "Minimally invasive flapless techniques ensure accelerated tissue recovery.",
+      "Grade 4 biocompatible titanium promotes rapid bone osseointegration."
+    ]
   },
   {
     id: 3,
@@ -219,7 +308,38 @@ export const blogPosts = [
     image: "/images/blog/blog3.jpg",
     category: "Orthodontics",
     author: "Dr. Sarah Jenkins",
-    date: "12 Jun 2026"
+    authorRole: "Chief Orthodontist & Dentofacial Orthopedist",
+    authorAvatar: "https://images.unsplash.com/photo-1594824813626-d62152865917?q=80&w=400&auto=format&fit=crop",
+    date: "12 Jun 2026",
+    readTime: "4 min read",
+    tags: ["Orthodontics", "Clear Aligners", "Smile Staging", "Adult Dentistry"],
+    introduction: "Orthodontic care has evolved far beyond metal brackets and painful wire adjustments. Clear aligner therapy combines medical-grade smart polymers with algorithmic force distribution to discretely straighten teeth with comfort and speed.",
+    sections: [
+      {
+        heading: "How SmartTrack Material Drives Controlled Tooth Movement",
+        body: [
+          "Clear aligners are engineered from multi-layer polyurethane resins that deliver gentle, continuous orthodontic forces over a 7-to-10 day cycle per tray.",
+          "Because aligners are removable, patients maintain immaculate oral hygiene without dietary restrictions, significantly lowering the risk of enamel demineralization during treatment."
+        ],
+        highlight: "Advanced 3D simulation maps each millimeter of movement before your first tray is ever manufactured."
+      },
+      {
+        heading: "Predictable Outcomes for Complex Malocclusions",
+        body: [
+          "With specialized composite attachments and interproximal reduction (IPR) planning, aligners now treat deep bites, open bites, crossbites, and severe crowding just as effectively as fixed appliances."
+        ]
+      }
+    ],
+    quote: {
+      text: "Straightening your teeth should seamlessly integrate into your professional life without drawing unwanted attention.",
+      author: "Dr. Sarah Jenkins"
+    },
+    keyTakeaways: [
+      "Virtually invisible aligners designed for professional and social discretion.",
+      "Removable for effortless brushing, flossing, and unhindered dining.",
+      "Custom 3D staging software predicts your final smile prior to treatment.",
+      "Shorter clinic visits with fewer unexpected emergency appointments."
+    ]
   },
   {
     id: 4,
@@ -228,7 +348,35 @@ export const blogPosts = [
     image: "/images/blog/blog4.jpg",
     category: "Oral Surgery",
     author: "Dr. Michael Chang",
-    date: "04 May 2026"
+    authorRole: "Oral & Maxillofacial Surgeon",
+    authorAvatar: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400&auto=format&fit=crop",
+    date: "04 May 2026",
+    readTime: "5 min read",
+    tags: ["Oral Surgery", "Maxillofacial", "PRF Therapy", "Recovery"],
+    introduction: "Modern oral surgery emphasizes tissue preservation and biological enhancement. By integrating Platelet-Rich Fibrin (PRF) and piezo-electric ultrasonic bone surgery, our patients experience expedited recovery times and minimal swelling.",
+    sections: [
+      {
+        heading: "Ultrasonic Piezo Surgery vs. Mechanical Drills",
+        body: [
+          "Piezoelectric surgery utilizes micro-vibrational ultrasonic frequencies to cut mineralized bone while preserving fragile soft tissues, blood vessels, and nerves untouched.",
+          "This selective cut feature drastically reduces bleeding, post-op edema, and thermal osteonecrosis."
+        ]
+      },
+      {
+        heading: "Biological Healing with Autologous PRF Therapy",
+        body: [
+          "By drawing a small vial of the patient's blood and spinning it in a centrifuge, we create a concentrated fibrin clot rich in natural growth factors and leukocytes.",
+          "Placed into extraction sockets and surgical sites, PRF accelerates soft tissue closure and halts post-surgical discomfort naturally."
+        ],
+        highlight: "PRF biologically seals surgical sites, cutting typical recovery windows by more than half."
+      }
+    ],
+    keyTakeaways: [
+      "Piezo-electric cutting prevents soft tissue and nerve injury.",
+      "Autologous PRF therapy accelerates natural healing and bone regeneration.",
+      "Virtually painless extractions with twilight conscious sedation.",
+      "Reduced recovery downtime allows immediate return to everyday routine."
+    ]
   },
   {
     id: 5,
@@ -237,7 +385,38 @@ export const blogPosts = [
     image: "/images/blog/blog5.jpg",
     category: "Restorative",
     author: "Dr. Alexander Kush",
-    date: "18 Apr 2026"
+    authorRole: "Lead Aesthetic Prosthodontist & Founder",
+    authorAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24",
+    date: "18 Apr 2026",
+    readTime: "5 min read",
+    tags: ["Restorative", "Biomimetic Dentistry", "Onlays", "Microscopic"],
+    introduction: "Biomimetic dentistry is the philosophy of reconstructing damaged teeth using materials and techniques that replicate the natural biomechanics, flexibility, and elasticity of real tooth structure.",
+    sections: [
+      {
+        heading: "Moving Beyond Destructive Full Crowns",
+        body: [
+          "Traditional full-coverage crowns sacrifice up to 70% of healthy peripheral tooth structure to fit a bulky cap. Biomimetic protocols replace only the decayed portion with ceramic inlays, onlays, and bonded veneers.",
+          "Under high-powered surgical microscopes, our dentists preserve pulp vitality and seal dentin immediately against bacterial ingress."
+        ],
+        highlight: "Preserving natural tooth structure is the single most effective way to prevent future tooth loss and root canals."
+      },
+      {
+        heading: "Advanced Stress-Reduced Direct Composites",
+        body: [
+          "Layered composite resins matched with dual-cure adhesives prevent polymerization shrinkage and micro-fractures, resulting in restorations that flex harmoniously with natural bite forces."
+        ]
+      }
+    ],
+    quote: {
+      text: "Nature got it right the first time. Our job as modern dentists is to mimic nature, not replace it aggressively.",
+      author: "Dr. Alexander Kush"
+    },
+    keyTakeaways: [
+      "Preserves 3x more natural tooth structure than standard dental crowns.",
+      "Immediate dentin sealing prevents post-operative sensitivity.",
+      "High-power dental microscopy ensures micron-level marginal fit.",
+      "Biomimetic ceramics closely replicate natural enamel elasticity and wear."
+    ]
   },
   {
     id: 6,
@@ -246,6 +425,27 @@ export const blogPosts = [
     image: "/images/blog/blog6.jpg",
     category: "Technology",
     author: "Dr. Sarah Jenkins",
-    date: "02 Mar 2026"
+    authorRole: "Chief Orthodontist & Dentofacial Orthopedist",
+    authorAvatar: "https://images.unsplash.com/photo-1594824813626-d62152865917?q=80&w=400&auto=format&fit=crop",
+    date: "02 Mar 2026",
+    readTime: "4 min read",
+    tags: ["Technology", "Intraoral Scanning", "Digital Impression", "CAD/CAM"],
+    introduction: "The era of uncomfortable gag-inducing impression trays filled with cold alginate putty is officially over. Our clinic utilizes ultra-fast 3D intraoral optical scanners that render photorealistic models of your dentition in real time.",
+    sections: [
+      {
+        heading: "Sub-Millimeter Optical Accuracy in 60 Seconds",
+        body: [
+          "Our intraoral scanning wand captures over 3,000 frames per second using structured light triangulation. It builds an exact color 3D digital model of your teeth, gums, and bite alignment instantly on our chairside monitors.",
+          "This digital file is transmitted instantaneously to our CAD/CAM milling laboratory, eliminating shipping delays and material shrinkage errors."
+        ],
+        highlight: "Digital impressions eliminate distortion completely, ensuring flawless crowns and aligner fit on the very first try."
+      }
+    ],
+    keyTakeaways: [
+      "100% gag-free, instantaneous digital optical scan.",
+      "Sub-millimeter precision guarantees tight, leak-proof restoration margins.",
+      "Direct CAD/CAM milling integration drastically shortens turnaround times.",
+      "Patients can view their 3D smile in true color and explore treatment options chairside."
+    ]
   }
 ];
