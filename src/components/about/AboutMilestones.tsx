@@ -115,31 +115,31 @@ export const AboutMilestones = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="max-w-container mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-stack-lg md:py-28 overflow-hidden"
+      className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 overflow-hidden"
     >
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-16 md:mb-24">
-        <span className="inline-block px-4 py-1.5 bg-secondary/10 rounded-full font-body text-xs sm:text-sm font-semibold text-secondary mb-4 tracking-widest uppercase">
-          Our Journey
+      <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
+        <span className="inline-block px-4 py-1.5 bg-[#FAF7F2] border border-[#DCA51B]/30 rounded-full font-sans text-xs font-bold text-[#DCA51B] mb-3.5 tracking-widest uppercase">
+          OUR JOURNEY
         </span>
-        <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-tertiary tracking-tight">
+        <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl text-zinc-900 tracking-tight">
           Experience & Milestones
         </h2>
-        <div className="w-16 h-1 bg-secondary mx-auto mt-5 rounded-full" />
+        <div className="w-12 h-0.5 bg-[#DCA51B] mx-auto mt-4 rounded-full" />
       </div>
 
       {/* Timeline Tree */}
       <div className="relative max-w-4xl mx-auto">
         {/* Background Track Line */}
-        <div className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-secondary/20 rounded-full" />
+        <div className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-[#E8E2D5] rounded-full" />
 
         {/* Animated Active Progress Line */}
         <div 
           ref={lineRef}
-          className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-secondary rounded-full shadow-[0_0_8px_rgba(220,165,27,0.5)] origin-top" 
+          className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-[#DCA51B] rounded-full shadow-[0_0_8px_rgba(220,165,27,0.5)] origin-top" 
         />
 
-        <div className="flex flex-col gap-10 md:gap-16">
+        <div className="flex flex-col gap-8 md:gap-14">
           {milestones.map((item, index) => {
             const isEven = index % 2 === 0;
 
@@ -155,7 +155,7 @@ export const AboutMilestones = () => {
               >
                 {/* Center / Left Node */}
                 <div className="absolute left-[23px] md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
-                  <div className="milestone-node w-5 h-5 rounded-full bg-secondary border-[3px] border-background shadow-[0_0_12px_rgba(220,165,27,0.6)] transition-transform duration-300 hover:scale-125" />
+                  <div className="milestone-node w-5 h-5 rounded-full bg-[#DCA51B] border-[3px] border-white shadow-[0_0_12px_rgba(220,165,27,0.5)] transition-transform duration-300 hover:scale-125" />
                 </div>
 
                 {/* Empty Spacer on Opposite Side (Desktop) */}
@@ -167,14 +167,14 @@ export const AboutMilestones = () => {
                     isEven ? 'md:text-right' : 'md:text-left'
                   }`}
                 >
-                  <div className="bg-white/80 backdrop-blur-md p-5 sm:p-6 rounded-[20px] border border-border/40 hover:border-secondary/40 shadow-sm hover:shadow-md transition-all duration-300 group">
-                    <span className="inline-block font-display font-extrabold text-lg sm:text-xl text-secondary mb-1 tracking-tight">
+                  <div className="luxury-card p-6 sm:p-7 rounded-3xl group cursor-default">
+                    <span className="inline-block font-serif font-bold text-lg sm:text-xl text-[#DCA51B] mb-1 tracking-tight">
                       {item.year}
                     </span>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-tertiary mb-2 group-hover:text-secondary transition-colors duration-200">
+                    <h3 className="font-serif font-bold text-lg sm:text-xl text-zinc-900 mb-2 group-hover:text-[#DCA51B] transition-colors duration-200">
                       {item.title}
                     </h3>
-                    <p className="font-body text-sm sm:text-base text-neutral leading-relaxed">
+                    <p className="font-sans text-sm sm:text-base text-zinc-600 leading-relaxed font-light">
                       {item.description}
                     </p>
                   </div>

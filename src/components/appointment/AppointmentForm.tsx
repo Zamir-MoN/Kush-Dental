@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { InteractiveClinicMap } from './InteractiveClinicMap';
+import { Sparkles, Calendar, Clock, Phone, CheckCircle2 } from 'lucide-react';
 
 export const AppointmentForm = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,70 +11,121 @@ export const AppointmentForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setTimeout(() => setSubmitted(false), 4500);
   };
 
   return (
-    <section ref={sectionRef} className="py-section-mobile md:py-section-desktop px-4 sm:px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-light-gray">
-      <div className="max-w-container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 bg-primary shadow-sm p-6 sm:p-8 md:p-10 lg:p-16 rounded-2xl sm:rounded-3xl reveal-up items-stretch">
+    <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] overflow-hidden">
+      <div className="max-w-[1400px] mx-auto">
+        
+        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20 reveal-up">
+          <div className="inline-flex items-center gap-2 mb-3.5">
+            <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
+            <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
+              SCHEDULE YOUR VISIT
+            </span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
+            Request a Consultation
+          </h2>
+          <p className="text-zinc-600 text-sm sm:text-base font-sans font-light leading-relaxed">
+            Our private patient concierge will reach out promptly to organize your bespoke appointment.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white shadow-xl p-6 sm:p-10 lg:p-14 rounded-3xl reveal-up items-stretch border border-[#E8E2D5]">
           
-          <div className="flex flex-col justify-center">
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 sm:mb-8 md:mb-10 text-tertiary">Request an Appointment</h2>
+          {/* Left Column: Form */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
             
             {submitted ? (
-              <div className="bg-soft-gray p-8 rounded-sm text-center border border-border">
-                <h3 className="font-display text-2xl text-secondary mb-2">Request Received</h3>
-                <p className="text-neutral text-sm">Our concierge will contact you shortly to confirm your preferred time.</p>
+              <div className="bg-[#FAF7F2] p-8 sm:p-12 rounded-3xl text-center border border-[#DCA51B]/40 flex flex-col items-center">
+                <div className="w-16 h-16 rounded-full bg-[#DCA51B]/15 border border-[#DCA51B] flex items-center justify-center mb-5">
+                  <CheckCircle2 className="w-8 h-8 text-[#DCA51B]" />
+                </div>
+                <h3 className="font-serif font-bold text-2xl sm:text-3xl text-zinc-900 mb-3">Request Confirmed</h3>
+                <p className="text-zinc-600 text-sm sm:text-base max-w-md font-sans leading-relaxed font-light">
+                  Thank you. Our patient concierge will contact you within 2 hours to confirm your tailored consultation with Dr. Alexander Kush.
+                </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="label-small text-neutral block mb-2">Full Name</label>
+                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 block mb-2 font-sans">
+                    Full Name
+                  </label>
                   <input 
                     required
-                    className="w-full border-b border-border bg-transparent py-2 focus:outline-none focus:border-secondary transition-colors text-sm text-tertiary" 
+                    placeholder="e.g. Eleanor Vance"
+                    className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-sm text-zinc-900 font-sans" 
                     type="text" 
                   />
                 </div>
-                <div>
-                  <label className="label-small text-neutral block mb-2">Email Address</label>
-                  <input 
-                    required
-                    className="w-full border-b border-border bg-transparent py-2 focus:outline-none focus:border-secondary transition-colors text-sm text-tertiary" 
-                    type="email" 
-                  />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 block mb-2 font-sans">
+                      Email Address
+                    </label>
+                    <input 
+                      required
+                      placeholder="eleanor@example.com"
+                      className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-sm text-zinc-900 font-sans" 
+                      type="email" 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 block mb-2 font-sans">
+                      Phone Number
+                    </label>
+                    <input 
+                      required
+                      placeholder="+1 (555) 000-0000"
+                      className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-sm text-zinc-900 font-sans" 
+                      type="tel" 
+                    />
+                  </div>
                 </div>
+
                 <div>
-                  <label className="label-small text-neutral block mb-2">Phone Number</label>
-                  <input 
-                    required
-                    className="w-full border-b border-border bg-transparent py-2 focus:outline-none focus:border-secondary transition-colors text-sm text-tertiary" 
-                    type="tel" 
-                  />
-                </div>
-                <div>
-                  <label className="label-small text-neutral block mb-2">Preferred Treatment</label>
-                  <select className="w-full border-b border-border bg-transparent py-2 focus:outline-none focus:border-secondary transition-colors text-sm text-tertiary">
-                    <option>Cosmetic Consultation</option>
-                    <option>General Checkup</option>
-                    <option>Implant Consultation</option>
-                    <option>Clear Aligners</option>
+                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 block mb-2 font-sans">
+                    Desired Treatment / Consultation
+                  </label>
+                  <select className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-sm text-zinc-900 font-sans cursor-pointer">
+                    <option>Cosmetic Smile Design & Porcelain Veneers</option>
+                    <option>Complete Restorative Care & Ceramic Crowns</option>
+                    <option>3D Guided Dental Implantology</option>
+                    <option>Clear Aligner Orthodontics</option>
+                    <option>Routine Comprehensive Examination & Hygiene</option>
                   </select>
                 </div>
                 
                 <button 
                   type="submit"
-                  className="bg-secondary text-primary label-small px-8 py-4 rounded hover:bg-[#c49216] transition-colors duration-300 cursor-hover shadow-sm w-full mt-4"
+                  className="btn-gold-luxury w-full mt-2 cursor-pointer group"
                 >
-                  Submit Request
+                  <Calendar className="w-4 h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
+                  <span>SUBMIT CONSULTATION REQUEST</span>
                 </button>
               </form>
             )}
+
+            {/* Quick Clinic Info */}
+            <div className="grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-[#E8E2D5] text-xs text-zinc-600 font-sans">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                <span>Mon – Sat: 8:00 AM – 7:00 PM</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                <span>Direct: +1 (310) 555-0199</span>
+              </div>
+            </div>
+
           </div>
           
           {/* Right Column: Interactive Clinic Map */}
-          <div className="w-full flex flex-col justify-stretch">
+          <div className="lg:col-span-6 w-full flex flex-col justify-stretch min-h-[380px] lg:min-h-[460px]">
             <InteractiveClinicMap />
           </div>
           

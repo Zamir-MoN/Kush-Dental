@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowLeftRight } from 'lucide-react';
+import { ArrowLeftRight, Sparkles } from 'lucide-react';
 
 const transformations = [
   {
@@ -24,15 +24,13 @@ const transformations = [
   }
 ];
 
-const Slider = ({ before, after }: { before: string, after: string }) => {
+const Slider = ({ before, after, title, subtitle }: { before: string, after: string, title: string, subtitle: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const x = useMotionValue(0);
   
-  // Use useMotionTemplate to correctly interpolate the MotionValue into a string
   const clipPath = useMotionTemplate`inset(0 0 0 ${x}px)`;
 
-  // Initialize bounds on mount and resize
   useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.offsetWidth);
@@ -42,7 +40,6 @@ const Slider = ({ before, after }: { before: string, after: string }) => {
     const handleResize = () => {
       if (containerRef.current) {
         setContainerWidth(containerRef.current.offsetWidth);
-        // Reset to center on resize
         x.set(containerRef.current.offsetWidth / 2);
       }
     };
@@ -52,42 +49,53 @@ const Slider = ({ before, after }: { before: string, after: string }) => {
   }, [x]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="relative aspect-square w-full rounded-3xl overflow-hidden select-none bg-soft-gray"
-    >
-      {/* Before Image (Base) */}
-      <img src={before} alt="Before" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-      <div className="absolute top-4 left-4 bg-tertiary/70 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
-        Before
+    <div className="reveal-up luxury-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between group cursor-default">
+      <div 
+        ref={containerRef} 
+        className="relative aspect-square w-full rounded-2xl overflow-hidden select-none bg-[#FAF7F2] mb-5 shadow-inner border border-[#E8E2D5]"
+      >
+        {/* Before Image */}
+        <img src={before} alt="Before Treatment" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+        <div className="absolute top-3.5 left-3.5 bg-[#141518]/85 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-md tracking-wider uppercase font-sans border border-white/10">
+          Before
+        </div>
+
+        {/* After Image */}
+        <motion.div 
+          className="absolute inset-0 z-10"
+          style={{ clipPath }}
+        >
+          <img src={after} alt="After Treatment" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+          <div className="absolute top-3.5 right-3.5 bg-[#DCA51B] text-[#141518] text-[10px] font-extrabold px-3 py-1 rounded-md tracking-wider uppercase font-sans shadow-md">
+            After
+          </div>
+        </motion.div>
+
+        {/* Drag Handle */}
+        <motion.div 
+          className="absolute top-0 bottom-0 z-20 w-12 -ml-6 flex justify-center cursor-ew-resize touch-none group"
+          style={{ x }}
+          drag="x"
+          dragConstraints={{ left: 0, right: containerWidth }}
+          dragElastic={0}
+          dragMomentum={false}
+        >
+          <div className="w-1 h-full bg-[#DCA51B] relative shadow-md">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#DCA51B] pointer-events-none group-hover:scale-110 transition-transform">
+              <ArrowLeftRight className="w-4 h-4 text-[#DCA51B]" />
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* After Image (Clipped) */}
-      <motion.div 
-        className="absolute inset-0 z-10"
-        style={{ clipPath }}
-      >
-        <img src={after} alt="After" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-        <div className="absolute top-4 right-4 bg-secondary/90 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase">
-          After
-        </div>
-      </motion.div>
-
-      {/* Drag Handle */}
-      <motion.div 
-        className="absolute top-0 bottom-0 z-20 w-12 -ml-6 flex justify-center cursor-ew-resize touch-none group"
-        style={{ x }}
-        drag="x"
-        dragConstraints={{ left: 0, right: containerWidth }}
-        dragElastic={0}
-        dragMomentum={false}
-      >
-        <div className="w-1 h-full bg-primary group-hover:bg-secondary transition-colors relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-primary rounded-full shadow-lg flex items-center justify-center border border-border pointer-events-none group-hover:scale-110 transition-transform">
-            <ArrowLeftRight className="w-4 h-4 text-secondary" />
-          </div>
-        </div>
-      </motion.div>
+      <div className="px-2 pb-2">
+        <h3 className="font-serif font-bold text-xl text-zinc-900 mb-1.5 group-hover:text-[#DCA51B] transition-colors leading-snug">
+          {title}
+        </h3>
+        <p className="text-zinc-500 text-xs font-sans font-light">
+          {subtitle}
+        </p>
+      </div>
     </div>
   );
 };
@@ -97,15 +105,32 @@ export const BeforeAfterSlider = () => {
   useScrollReveal(sectionRef);
 
   return (
-    <section ref={sectionRef} className="py-section-mobile md:py-section-desktop px-margin-mobile md:px-margin-tablet lg:px-margin-desktop bg-off-white">
-      <div className="max-w-container mx-auto">
-        <h2 className="font-display text-4xl lg:text-5xl mb-12 text-center reveal-up">
-          Transformations
-        </h2>
+    <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-t border-[#E8E2D5] overflow-hidden">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20 reveal-up">
+          <div className="inline-flex items-center gap-2 mb-3.5">
+            <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
+            <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
+              REAL PATIENT OUTCOMES
+            </span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
+            Smile Transformations
+          </h2>
+          <p className="text-zinc-600 text-sm sm:text-base font-sans font-light leading-relaxed">
+            Slide horizontally to reveal before and after results crafted with microscopic precision and biomimetic dental artistry.
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-up" style={{ transitionDelay: '0.2s' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {transformations.map((transform, i) => (
-            <Slider key={i} before={transform.before} after={transform.after} />
+            <Slider 
+              key={i} 
+              before={transform.before} 
+              after={transform.after} 
+              title={transform.title}
+              subtitle={transform.subtitle}
+            />
           ))}
         </div>
       </div>

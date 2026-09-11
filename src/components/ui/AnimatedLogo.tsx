@@ -14,7 +14,7 @@ export const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
 }) => {
   return (
     <svg
-      viewBox="0 0 200 200"
+      viewBox="0 0 100 100"
       width={size}
       height={size}
       className={className}
@@ -22,98 +22,56 @@ export const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#DCA51B" />
-          <stop offset="50%" stopColor="#F3C343" />
-          <stop offset="100%" stopColor="#C49216" />
+        <linearGradient id="champagne-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#C9A050" />
+          <stop offset="50%" stopColor="#DFBE7A" />
+          <stop offset="100%" stopColor="#B88B38" />
         </linearGradient>
-        <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Main Outer Tooth Contour (Left Root & Outer Arch) */}
+      {/* Smooth Soft Curved Tooth Outline */}
       <motion.path
-        d="M 75 162 C 60 145 42 115 37 80 C 33 55 45 32 68 25 C 88 20 102 38 120 38 C 138 38 152 28 160 40 C 168 52 165 95 155 125 C 145 152 138 165 137 165"
-        stroke="url(#gold-gradient)"
-        strokeWidth="9"
+        d="M 28 20 C 40 16, 45 27, 50 27 C 55 27, 60 16, 72 20 C 85 24, 86 52, 79 72 C 73 88, 62 86, 56 75 C 53 69, 47 69, 44 75 C 38 86, 27 88, 21 72 C 14 52, 15 24, 28 20 Z"
+        stroke="url(#champagne-gold)"
+        strokeWidth="3.6"
         strokeLinecap="round"
         strokeLinejoin="round"
         initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
         animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
       />
 
-
-
-      {/* Center Crown Hair / Wave Accents */}
-      <motion.path
-        d="M 60 38 C 72 48 95 56 115 48"
-        stroke="url(#gold-gradient)"
-        strokeWidth="5.5"
-        strokeLinecap="round"
-        initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-        animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.9, delay: 0.9, ease: "easeOut" }}
-      />
-      <motion.path
-        d="M 60 46 C 75 56 95 59 108 53"
-        stroke="url(#gold-gradient)"
-        strokeWidth="4"
-        strokeLinecap="round"
-        initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-        animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.9, delay: 1.1, ease: "easeOut" }}
-      />
-
-      {/* Left Eye */}
-      <motion.rect
-        x="71"
-        y="80"
-        width="8.5"
-        height="8.5"
-        rx="2"
-        fill="url(#gold-gradient)"
+      {/* Soft Smiling Face - Left Eye */}
+      <motion.circle
+        cx="39"
+        cy="46"
+        r="2.8"
+        fill="url(#champagne-gold)"
         initial={animate ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
         animate={animate ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.3, type: "spring" }}
+        transition={{ duration: 0.4, delay: 0.8, ease: "easeOut" }}
       />
 
-      {/* Right Eye */}
-      <motion.rect
-        x="126"
-        y="80"
-        width="8.5"
-        height="8.5"
-        rx="2"
-        fill="url(#gold-gradient)"
+      {/* Soft Smiling Face - Right Eye */}
+      <motion.circle
+        cx="61"
+        cy="46"
+        r="2.8"
+        fill="url(#champagne-gold)"
         initial={animate ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
         animate={animate ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.4, type: "spring" }}
+        transition={{ duration: 0.4, delay: 0.9, ease: "easeOut" }}
       />
 
-      {/* Warm Smile Curve */}
+      {/* Soft Curved Smile */}
       <motion.path
-        d="M 76 98 C 74 128 128 128 130 98"
-        stroke="url(#gold-gradient)"
-        strokeWidth="9"
+        d="M 39 56 C 42 64, 58 64, 61 56"
+        stroke="url(#champagne-gold)"
+        strokeWidth="3.2"
         strokeLinecap="round"
         initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
         animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.1, delay: 1.5, ease: "backOut" }}
-      />
-
-      {/* Bottom Center Root Arch */}
-      <motion.path
-        d="M 94 163 C 98 147 104 147 114 163"
-        stroke="url(#gold-gradient)"
-        strokeWidth="8.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-        animate={animate ? { pathLength: 1, opacity: 1 } : { pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.7, ease: "easeOut" }}
+        transition={{ duration: 0.7, delay: 1.0, ease: "easeOut" }}
       />
     </svg>
   );

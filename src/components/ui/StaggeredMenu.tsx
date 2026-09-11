@@ -303,6 +303,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       animateIcon(true);
       animateColor(true);
     } else {
+      if (document.activeElement && panelRef.current?.contains(document.activeElement)) {
+        (document.activeElement as HTMLElement).blur();
+      }
       openRef.current = false;
       setOpen(false);
       onMenuClose?.();
@@ -314,6 +317,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
+      if (document.activeElement && panelRef.current?.contains(document.activeElement)) {
+        (document.activeElement as HTMLElement).blur();
+      }
       openRef.current = false;
       setOpen(false);
       onMenuClose?.();
@@ -420,9 +426,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         <aside
           id="staggered-menu-panel"
           ref={panelRef}
-          className="staggered-menu-panel absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px] pointer-events-auto"
+          className="staggered-menu-panel absolute top-0 right-0 h-full bg-[#FAF7F2] flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px] pointer-events-auto"
           style={{ WebkitBackdropFilter: 'blur(12px)' }}
           aria-hidden={!open}
+          inert={!open}
         >
           <div className="sm-panel-inner flex-1 flex flex-col gap-5">
             <ul
@@ -434,11 +441,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 items.map((it, idx) => (
                   <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
                     <Link
-                      className="sm-panel-item whitespace-nowrap relative text-tertiary font-display text-4xl md:text-[3rem] cursor-pointer leading-none tracking-tight transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em] mb-2"
+                      className="sm-panel-item whitespace-nowrap relative text-[#141518] hover:text-[#DCA51B] font-display text-4xl md:text-[3rem] cursor-pointer leading-none tracking-tight transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em] mb-2"
                       to={it.link}
                       aria-label={it.ariaLabel}
                       data-index={idx + 1}
-                      onClick={() => {
+                      onClick={(e) => {
+                        (e.currentTarget as HTMLElement).blur();
                         if (closeOnClickAway) closeMenu();
                       }}
                     >
