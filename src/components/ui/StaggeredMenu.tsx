@@ -11,6 +11,13 @@ export interface StaggeredMenuSocialItem {
   label: string;
   link: string;
 }
+export interface StaggeredMenuRef {
+  toggle: () => void;
+  open: () => void;
+  close: () => void;
+  isOpen: () => boolean;
+}
+
 export interface StaggeredMenuProps {
   position?: 'left' | 'right';
   colors?: string[];
@@ -25,11 +32,12 @@ export interface StaggeredMenuProps {
   isFixed?: boolean;
   changeMenuColorOnOpen?: boolean;
   closeOnClickAway?: boolean;
+  hideToggle?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
 }
 
-export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
+export const StaggeredMenu = React.forwardRef<StaggeredMenuRef, StaggeredMenuProps>(({
   position = 'right',
   colors = ['#DCA51B', '#EAE8E6'],
   items = [],
@@ -37,7 +45,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   displaySocials = true,
   displayItemNumbering = true,
   className,
-
+  hideToggle = false,
   menuButtonColor = '#111111',
   openMenuButtonColor = '#111111',
   changeMenuColorOnOpen = true,
@@ -46,7 +54,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   closeOnClickAway = true,
   onMenuOpen,
   onMenuClose
-}: StaggeredMenuProps) => {
+}, ref) => {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -79,7 +87,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       const line3 = line3Ref.current;
       const icon = iconRef.current;
 
-      if (!panel || !line1 || !line2 || !line3 || !icon) return;
+      if (!panel) return;
 
       let preLayers: HTMLElement[] = [];
       if (preContainer) {
@@ -90,11 +98,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       const offscreen = position === 'left' ? -100 : 100;
       gsap.set([panel, ...preLayers], { xPercent: offscreen, opacity: 1 });
       if (preContainer) {
-        gsap.set(preContainer, { xPercent: 0, opacity: 1 });
+        gsap.set(preContainer, { xPercent: 0, opacity: 1, visibility: 'hidden' });
+      }
+      if (panel) {
+        gsap.set(panel, { visibility: 'hidden' });
       }
 
-      gsap.set([line1, line2, line3], { transformOrigin: '50% 50%', rotate: 0 });
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+      if (line1 && line2 && line3 && icon) {
+        gsap.set([line1, line2, line3], { transformOrigin: '50% 50%', rotate: 0 });
+        gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
+      }
 
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
@@ -194,6 +207,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const playOpen = useCallback(() => {
     if (busyRef.current) return;
     busyRef.current = true;
+    const panel = panelRef.current;
+    const preContainer = preLayersRef.current;
+    if (preContainer) gsap.set(preContainer, { visibility: 'visible' });
+    if (panel) gsap.set(panel, { visibility: 'visible' });
     const tl = buildOpenTimeline();
     if (tl) {
       tl.eventCallback('onComplete', () => {
@@ -211,7 +228,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     itemEntranceTweenRef.current?.kill();
 
     const panel = panelRef.current;
-    const layers = preLayerElsRef.current;
+    const preContainer = preLayersRef.current;
+    const layers = preContainer
+      ? (Array.from(preContainer.querySelectorAll('.sm-prelayer')) as HTMLElement[])
+      : preLayerElsRef.current;
     if (!panel) return;
 
     const all: HTMLElement[] = [...layers, panel];
@@ -225,6 +245,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       ease: 'power3.in',
       overwrite: 'auto',
       onComplete: () => {
+        if (preContainer) gsap.set(preContainer, { visibility: 'hidden' });
+        if (panel) gsap.set(panel, { visibility: 'hidden' });
         const itemEls = Array.from(panel.querySelectorAll('.sm-panel-itemLabel')) as HTMLElement[];
         if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
 
@@ -329,6 +351,15 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }
   }, [playClose, animateIcon, animateColor, onMenuClose]);
 
+  React.useImperativeHandle(ref, () => ({
+    toggle: toggleMenu,
+    open: () => {
+      if (!openRef.current) toggleMenu();
+    },
+    close: closeMenu,
+    isOpen: () => openRef.current
+  }), [toggleMenu, closeMenu]);
+
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
 
@@ -351,7 +382,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   return (
     <div
-      className={`sm-scope z-[100] ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden pointer-events-none' : 'w-full h-full'}`}
+      className={`sm-scope z-[100] ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'} ${!open ? 'hidden pointer-events-none' : 'pointer-events-auto'}`}
     >
       <div
         className={
@@ -383,45 +414,47 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           })()}
         </div>
 
-        <header
-          className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-4 bg-transparent pointer-events-none z-20"
-          aria-label="Main navigation header"
-        >
-          <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
-            
-          </div>
-
-          <button
-            ref={toggleBtnRef}
-            className={`sm-toggle relative inline-flex items-center justify-center p-3 -mr-3 bg-transparent border-0 cursor-pointer overflow-visible pointer-events-auto ${
-              open ? 'text-black' : 'text-tertiary'
-            }`}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
+        {!hideToggle && (
+          <header
+            className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-4 bg-transparent pointer-events-none z-20"
+            aria-label="Main navigation header"
           >
-            <span
-              ref={iconRef}
-              className="sm-icon relative w-[28px] h-[20px] shrink-0 inline-block [will-change:transform]"
-              aria-hidden="true"
+            <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
+              
+            </div>
+
+            <button
+              ref={toggleBtnRef}
+              className={`sm-toggle relative inline-flex items-center justify-center p-3 -mr-3 bg-transparent border-0 cursor-pointer overflow-visible pointer-events-auto ${
+                open ? 'text-black' : 'text-tertiary'
+              }`}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="staggered-menu-panel"
+              onClick={toggleMenu}
+              type="button"
             >
               <span
-                ref={line1Ref}
-                className="absolute top-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
-              />
-              <span
-                ref={line2Ref}
-                className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[2px] bg-current rounded-[2px] [will-change:transform,opacity]"
-              />
-              <span
-                ref={line3Ref}
-                className="absolute bottom-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
-              />
-            </span>
-          </button>
-        </header>
+                ref={iconRef}
+                className="sm-icon relative w-[28px] h-[20px] shrink-0 inline-block [will-change:transform]"
+                aria-hidden="true"
+              >
+                <span
+                  ref={line1Ref}
+                  className="absolute top-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
+                />
+                <span
+                  ref={line2Ref}
+                  className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[2px] bg-current rounded-[2px] [will-change:transform,opacity]"
+                />
+                <span
+                  ref={line3Ref}
+                  className="absolute bottom-0 left-0 w-full h-[2px] bg-current rounded-[2px] [will-change:transform]"
+                />
+              </span>
+            </button>
+          </header>
+        )}
 
         <aside
           id="staggered-menu-panel"
@@ -431,6 +464,17 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           aria-hidden={!open}
           inert={!open}
         >
+          {/* Drawer Close Button */}
+          <button
+            onClick={closeMenu}
+            className="absolute top-5 right-5 sm:top-6 sm:right-6 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#EFE9DF]/80 hover:bg-[#E8E2D5] flex items-center justify-center text-[#141518] transition-colors cursor-pointer select-none z-30"
+            aria-label="Close menu"
+            type="button"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
           <div className="sm-panel-inner flex-1 flex flex-col gap-5">
             <ul
               className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
@@ -538,6 +582,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       `}</style>
     </div>
   );
-};
+});
 
 export default StaggeredMenu;

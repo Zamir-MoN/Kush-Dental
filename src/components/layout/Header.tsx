@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
-import StaggeredMenu from '../ui/StaggeredMenu';
+import StaggeredMenu, { type StaggeredMenuRef } from '../ui/StaggeredMenu';
 
 export const Header = () => {
+  const staggeredMenuRef = useRef<StaggeredMenuRef>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
@@ -95,15 +96,29 @@ export const Header = () => {
               </Link>
             </div>
 
-            {/* Mobile/Tablet CTA Area (offset from hamburger menu toggle) */}
-            <div className="lg:hidden flex items-center mr-11 sm:mr-14 shrink-0">
+            {/* Mobile/Tablet CTA Area & 3-Lines Menu Toggle (PROPERLY INSIDE PILL) */}
+            <div className="lg:hidden flex items-center gap-2 sm:gap-2.5 shrink-0">
               <Link 
                 to="/book" 
                 className="btn-gold-luxury py-1.5 px-2.5 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
               >
-                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <Calendar className="w-3.5 h-3.5 shrink-0" />
                 <span className="whitespace-nowrap">BOOK A VISIT</span>
               </Link>
+
+              {/* Perfectly centered 3-Lines Button inside the Header Pill */}
+              <button
+                type="button"
+                onClick={() => {
+                  staggeredMenuRef.current?.toggle();
+                }}
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex flex-col items-center justify-center gap-[4.5px] p-1.5 hover:bg-[#EFE9DF] text-[#141518] transition-colors cursor-pointer select-none shrink-0"
+                aria-label="Toggle navigation menu"
+              >
+                <span className="w-4 sm:w-4.5 h-[2px] bg-[#141518] rounded-full" />
+                <span className="w-4 sm:w-4.5 h-[2px] bg-[#141518] rounded-full" />
+                <span className="w-4 sm:w-4.5 h-[2px] bg-[#141518] rounded-full" />
+              </button>
             </div>
 
           </div>
@@ -113,12 +128,12 @@ export const Header = () => {
       {/* Mobile Staggered Drawer */}
       <div className="lg:hidden z-[100] relative">
         <StaggeredMenu
+          ref={staggeredMenuRef}
+          hideToggle={true}
           position="right"
           items={staggeredMenuItems}
           displaySocials={false}
           colors={['#DCA51B', '#191A1E']}
-          menuButtonColor="#111111"
-          openMenuButtonColor="#111111"
           accentColor="#DCA51B"
           isFixed={true}
         />
