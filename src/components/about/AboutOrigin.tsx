@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { Sparkles } from 'lucide-react';
+
 
 export const AboutOrigin = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,23 +20,14 @@ export const AboutOrigin = () => {
           </div>
 
           <div className="reveal-up order-1 lg:order-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#DCA51B]/30 mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-[#DCA51B]" />
-              <span className="text-[#DCA51B] text-xs font-bold tracking-widest uppercase font-sans">
-                OUR ORIGIN
-              </span>
-            </div>
+
 
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 mb-6 leading-tight">
-              Contemporary Care with a <span className="italic font-normal text-[#DCA51B]">Human Touch.</span>
+              Gentle Dental Care with a <span className="italic font-normal text-[#DCA51B]">Human Touch.</span>
             </h2>
 
-            <p className="font-sans text-base text-zinc-600 mb-5 leading-relaxed font-light">
-              Founded on the principle that healthcare should feel hospitable and tranquil, Kush Dental Clinic was born from a desire to transform the dental experience into a rejuvenating ritual of well-being.
-            </p>
-
             <p className="font-sans text-base text-zinc-600 leading-relaxed font-light">
-              We stripped away the cold, sterile clinical norms and rebuilt our practice around patient comfort, empathetic communication, and world-class digital precision.
+              We founded Kush Dental Clinic to make every visit relaxed, painless, and welcoming. From routine cleanings to smile makeovers, our focus is always on your comfort and long-term oral health.
             </p>
           </div>
 

@@ -25,13 +25,13 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // 1. Initialize Lenis Smooth Scroll Engine
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.8, // Crisp, responsive scroll duration (eliminates sluggish inertia delay)
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // standard exponential ease-out
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.8,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.6,
       infinite: false
     });
 
@@ -45,7 +45,7 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
 
     // 3. Smooth anchor link interceptor
     const handleAnchorClick = (e: MouseEvent) => {
@@ -81,17 +81,28 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
 
   // 4. Scroll to top on route change smoothly and refresh triggers
   useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
-    } else {
+    const resetScroll = () => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
       window.scrollTo(0, 0);
-    }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
 
-    const timer = setTimeout(() => {
+    resetScroll();
+    const t1 = setTimeout(resetScroll, 50);
+    const t2 = setTimeout(resetScroll, 150);
+    const t3 = setTimeout(() => {
+      resetScroll();
       ScrollTrigger.refresh();
-    }, 150);
+    }, 300);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [location.pathname]);
 
   const scrollTo = (target: string | number | HTMLElement, options?: any) => {

@@ -1,7 +1,17 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { Link } from 'react-router-dom';
-import { Sparkles, Search, BookOpen, ShieldCheck, Microscope, Layers } from 'lucide-react';
+import { 
+  Search, 
+  X
+} from 'lucide-react';
+import { 
+  ToothSparkleIcon, 
+  DentalShieldIcon, 
+  DentalMirrorIcon, 
+  DentalCrownIcon 
+} from '../common/DentalIcons';
+import { AnimatedWaveContours } from '../common/AnimatedWaveContours';
 
 interface BlogHeroProps {
   searchQuery: string;
@@ -9,98 +19,145 @@ interface BlogHeroProps {
   totalArticles: number;
 }
 
-export const BlogHero = ({ searchQuery, setSearchQuery, totalArticles }: BlogHeroProps) => {
+export const BlogHero: React.FC<BlogHeroProps> = ({ 
+  searchQuery, 
+  setSearchQuery, 
+  totalArticles 
+}) => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+
+  const popularTopics = [
+    'Teeth Whitening',
+    'Dental Implants',
+    'Clear Aligners',
+    'Teeth Cleaning'
+  ];
+
+  const editorialCredentials = [
+    {
+      icon: ToothSparkleIcon,
+      title: "Helpful Guides",
+      subtitle: "Easy patient guides"
+    },
+    {
+      icon: DentalShieldIcon,
+      title: "Doctor Verified",
+      subtitle: "Written by dentists"
+    },
+    {
+      icon: DentalMirrorIcon,
+      title: "Preventive Care",
+      subtitle: "Enamel & oral hygiene"
+    },
+    {
+      icon: DentalCrownIcon,
+      title: "Full Dental Care",
+      subtitle: "Restorations & implants"
+    }
+  ];
 
   return (
     <section 
       ref={sectionRef} 
-      className="w-full bg-[#121316] text-white pt-28 sm:pt-36 pb-16 lg:pb-24 relative overflow-hidden"
+      className="w-full bg-[#FAF7F2] text-zinc-900 pt-28 sm:pt-36 pb-16 lg:pb-24 relative overflow-hidden border-b border-[#E8E2D5]"
     >
-      {/* Background Topographic Ambient Waves */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
-        <svg className="w-full h-full object-cover" viewBox="0 0 1000 700" fill="none">
-          <path d="M-50 150 C200 80 400 350 700 250 C900 180 1050 350 1200 280" stroke="#DCA51B" strokeWidth="1.2" />
-          <path d="M-50 230 C200 160 400 430 700 330 C900 260 1050 430 1200 360" stroke="#DCA51B" strokeWidth="1.2" />
-          <path d="M-50 310 C200 240 400 510 700 410 C900 340 1050 510 1200 440" stroke="#DCA51B" strokeWidth="1.2" />
-        </svg>
-      </div>
+      {/* Background Topographic Wave Contours (Golden Luxury Wave Flow) */}
+      <AnimatedWaveContours />
 
-      {/* Subtle Radial Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#DCA51B]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Radial Gold Ambient Glow */}
+      <div className="absolute top-1/6 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-[#DCA51B]/[0.05] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         
-        {/* Breadcrumb Navigation */}
-        <div className="reveal-up mb-8 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-400 font-sans">
+        {/* 1. Centered Breadcrumb Navigation */}
+        <div className="reveal-up mb-5 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">
           <Link to="/" className="hover:text-[#DCA51B] transition-colors">Home</Link>
-          <span className="text-zinc-600">/</span>
-          <span className="text-[#DCA51B]">Clinical Journal & Insights</span>
+          <span className="text-zinc-300">/</span>
+          <span className="text-[#DCA51B]">Blog</span>
         </div>
 
-        {/* Hero Main Header Content */}
+        {/* 2. Grand Scholarly Editorial Masthead */}
         <div className="max-w-4xl mx-auto text-center reveal-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#DCA51B]/15 border border-[#DCA51B]/30 mb-6 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-[#DCA51B]" />
-            <span className="text-[#DCA51B] tracking-[0.22em] text-xs uppercase font-bold font-sans">
-              EVIDENCE-BASED PERSPECTIVES • CLINICAL JOURNAL
-            </span>
-          </div>
-
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.12] text-white mb-6 tracking-tight">
-            Surgical Breakthroughs & <br className="hidden sm:inline" />
-            <span className="italic font-light">Aesthetic Mastery</span><span className="text-[#DCA51B]">.</span>
+          
+          {/* Main Headline */}
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-normal leading-[1.1] text-zinc-900 mb-5 tracking-tight">
+            Dental Health &amp; <br />
+            <span className="italic font-normal text-[#DCA51B]">Smile Care Guides</span><span className="text-[#DCA51B]">.</span>
           </h1>
 
-          <p className="text-zinc-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-sans font-light mb-10">
-            Peer-reviewed perspectives, 3D guided surgical analyses, and biomimetic smile design methodologies authored directly by our resident dental surgeons.
+          {/* Subtitle */}
+          <p className="text-zinc-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-sans font-light mb-9">
+            Clear dental advice, treatment guides, and simple oral health tips from our experienced dental team.
           </p>
 
-          {/* Search Box in Hero */}
-          <div className="max-w-xl mx-auto relative mb-12">
-            <div className="relative flex items-center bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-1.5 focus-within:border-[#DCA51B] focus-within:ring-2 focus-within:ring-[#DCA51B]/25 transition-all shadow-xl">
-              <Search className="w-5 h-5 text-zinc-400 ml-4 shrink-0" />
+          {/* 3. Bespoke Floating Search Hub */}
+          <div className="max-w-2xl mx-auto relative mb-5">
+            <div className="relative flex items-center bg-white border border-[#E8E2D5] focus-within:border-[#DCA51B] focus-within:ring-2 focus-within:ring-[#DCA51B]/20 rounded-2xl p-1.5 transition-all shadow-sm">
+              <Search className="w-5 h-5 text-[#DCA51B] ml-4 shrink-0" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search clinical topics, treatments, authors, or tags..."
-                className="w-full bg-transparent text-white placeholder-zinc-400 px-4 py-3 text-sm sm:text-base focus:outline-none"
+                placeholder="Search dental topics, treatments, or questions..."
+                className="w-full bg-transparent text-zinc-900 placeholder-zinc-400 px-4 py-3 text-sm sm:text-base focus:outline-none font-sans"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="mr-3 text-xs font-semibold text-zinc-400 hover:text-white px-2.5 py-1 bg-white/10 rounded-lg transition-colors cursor-pointer"
+                  className="mr-3 inline-flex items-center gap-1 text-xs font-bold text-zinc-500 hover:text-zinc-900 px-2.5 py-1.5 bg-[#FAF7F2] hover:bg-zinc-100 rounded-lg transition-colors cursor-pointer border border-[#E8E2D5]"
                 >
-                  Clear
+                  <X className="w-3 h-3" />
+                  <span>Clear</span>
                 </button>
               )}
             </div>
+
+            {/* Search Match Counter */}
             {searchQuery && (
-              <p className="text-xs text-zinc-400 mt-2 text-left sm:text-center">
-                Showing results matching "<span className="text-[#DCA51B]">{searchQuery}</span>" ({totalArticles} articles found)
+              <p className="text-xs text-zinc-500 mt-2 text-center font-sans">
+                Showing results matching "<span className="text-[#DCA51B] font-bold">{searchQuery}</span>" ({totalArticles} articles found)
               </p>
             )}
           </div>
 
-          {/* Quick Highlight Pillars / Ticker */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-white/10">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 text-zinc-300 text-xs sm:text-sm font-sans font-medium text-center sm:text-left">
-              <BookOpen className="w-4 h-4 text-[#DCA51B] shrink-0" />
-              <span>6 In-Depth Papers</span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 text-zinc-300 text-xs sm:text-sm font-sans font-medium text-center sm:text-left">
-              <ShieldCheck className="w-4 h-4 text-[#DCA51B] shrink-0" />
-              <span>100% Peer-Reviewed</span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 text-zinc-300 text-xs sm:text-sm font-sans font-medium text-center sm:text-left">
-              <Microscope className="w-4 h-4 text-[#DCA51B] shrink-0" />
-              <span>Biomimetic Science</span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 text-zinc-300 text-xs sm:text-sm font-sans font-medium text-center sm:text-left">
-              <Layers className="w-4 h-4 text-[#DCA51B] shrink-0" />
-              <span>5 Clinical Branches</span>
+          {/* Quick Popular Topics Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-10 text-xs text-zinc-500 font-sans">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-zinc-400 mr-1">Trending Topics:</span>
+            {popularTopics.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => setSearchQuery(topic)}
+                className={`px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-medium text-xs ${
+                  searchQuery.toLowerCase() === topic.toLowerCase()
+                    ? 'bg-[#141518] text-white border-[#141518]'
+                    : 'bg-white hover:bg-[#FAF7F2] text-zinc-700 hover:text-zinc-900 border-[#E8E2D5] hover:border-[#DCA51B]/50'
+                }`}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
+
+          {/* 4. Scholarly Editorial Credentials Banner */}
+          <div className="bg-white rounded-3xl border border-[#E8E2D5] p-6 sm:p-7 shadow-sm max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#E8E2D5] text-center">
+              {editorialCredentials.map((cred, idx) => {
+                const Icon = cred.icon;
+                return (
+                  <div key={idx} className={`${idx !== 0 ? 'pt-4 md:pt-0 md:pl-4' : 'pt-2 md:pt-0'}`}>
+                    <div className="flex items-center justify-center gap-2 mb-1.5">
+                      <Icon className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                      <p className="font-serif text-sm sm:text-base font-bold text-zinc-900">
+                        {cred.title}
+                      </p>
+                    </div>
+                    <p className="text-[11px] text-zinc-500 font-sans">
+                      {cred.subtitle}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 

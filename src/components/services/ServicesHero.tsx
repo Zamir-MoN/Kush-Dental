@@ -19,7 +19,7 @@ export const ServicesHero = () => {
         </p>
         
         <div className="pt-6 flex flex-wrap gap-4">
-          <Link to="/book" className="bg-secondary text-primary font-display font-medium px-8 py-4 rounded-3xl hover:bg-[#c49216] transition-colors shadow-lg cursor-hover">
+          <Link to="/book" className="btn-gold-luxury px-8 py-4 text-xs">
             Schedule Consultation
           </Link>
           <button className="border border-border/50 text-tertiary font-display font-medium px-8 py-4 rounded-3xl hover:bg-white/50 transition-colors cursor-hover bg-transparent">
@@ -29,7 +29,7 @@ export const ServicesHero = () => {
       </div>
 
       {/* Image Column */}
-      <div className="flex-1 w-full h-[400px] lg:h-[600px] rounded-[3rem] overflow-hidden relative shadow-2xl reveal-up" style={{ transitionDelay: '200ms' }}>
+      <div className="flex-1 w-full h-[400px] lg:h-[600px] rounded-[3rem] overflow-hidden relative shadow-2xl reveal-up">
         <img 
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDtIayIbXrMuVUNVxDVRHOnPdKQncxbrMRmqaCsubNksdfOIusjPFzKsb4TJI3HkzV4wO2zvf9VwEN3DbJ3nijuYTr5VmPP5j1Q8YauvGiIpmgAJ1CkbR9SxR9enOArq-_tkr8rTlFGAsQCr2r3sXiSPOkRfa9HWjQP8yNsTnKI8GrjceCiy8e-IakYjjgIoNcKrl0jOeoEmykaXONbfWVn5WpZNLIlp7wXlW0VYhwrNprAYpglN_q" 
           alt="Modern Dental Room"

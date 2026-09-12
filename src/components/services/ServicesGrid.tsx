@@ -2,74 +2,82 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowUpRight, Sparkles, ShieldCheck, Smile, Activity, Microscope, CheckCircle2, X, Calendar, Clock, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, X, Calendar, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { 
+  DentalMirrorIcon, 
+  ToothSparkleIcon, 
+  DentalImplantIcon, 
+  SmileCurveIcon, 
+  DentalCrownIcon, 
+  ToothIcon 
+} from '../common/DentalIcons';
 
 const services = [
   {
     id: 1,
     number: '01',
-    title: 'Professional Dental Cleaning & Hygiene',
+    title: 'Professional Teeth Cleaning',
     category: 'Preventive',
-    desc: 'Advanced ultrasonic scaling, biofilm removal, and diamond polishing to preserve healthy gums, strengthen enamel, and maintain radiant breath.',
-    benefits: ['Subgingival plaque & tartar removal', 'Laser gum health assessment', 'Custom enamel remineralization'],
+    desc: 'Ultrasonic cleaning and polishing to protect your gum health.',
+    benefits: ['Plaque & tartar removal', 'Gum health check'],
     duration: '45-60 mins',
-    icon: Sparkles,
+    icon: DentalMirrorIcon,
     img: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=900&auto=format&fit=crop',
   },
   {
     id: 2,
     number: '02',
-    title: 'Cosmetic Laser Teeth Whitening',
+    title: 'Laser Teeth Whitening',
     category: 'Cosmetic',
-    desc: 'Medical-grade laser teeth whitening safely brightening your natural smile by up to 8 shades in a single relaxing session with zero sensitivity.',
-    benefits: ['Immediate, radiant results in one visit', 'Formulated for sensitive teeth', 'Custom take-home touchup kit'],
+    desc: 'In-office whitening brightening teeth up to 8 shades in one visit.',
+    benefits: ['Bright results in one visit', 'Gentle on sensitive teeth'],
     duration: '60 mins',
-    icon: Smile,
+    icon: ToothSparkleIcon,
     img: '/images/services/cosmetic dentistry.png',
   },
   {
     id: 3,
     number: '03',
-    title: '3D Computer-Guided Dental Implants',
+    title: '3D Dental Implants',
     category: 'Surgical',
-    desc: 'Permanent, state-of-the-art titanium and ceramic implant placement utilizing 3D CBCT digital precision for lifetime structural stability.',
-    benefits: ['Sub-millimeter surgical accuracy', 'Virtually painless digital workflow', 'Preserves natural jawbone density'],
+    desc: 'Computer-guided dental implants for permanent, natural function.',
+    benefits: ['Looks and feels like real teeth', 'Permanent bone-safe solution'],
     duration: 'Phased Care',
-    icon: ShieldCheck,
+    icon: DentalImplantIcon,
     img: '/images/services/dental implants.png',
   },
   {
     id: 4,
     number: '04',
-    title: 'Custom Porcelain Veneers & Makeovers',
+    title: 'Custom Porcelain Veneers',
     category: 'Cosmetic',
-    desc: 'Ultra-thin handcrafted porcelain shells custom-sculpted by master ceramists to correct discoloration, gaps, and chips with lifelike translucency.',
-    benefits: ['Stain-resistant high-luster porcelain', 'Minimally invasive enamel preservation', '3D digital smile simulation'],
-    duration: '2-3 Visits',
-    icon: Smile,
+    desc: 'Custom porcelain covers to fix chips and discoloration naturally.',
+    benefits: ['Stain-resistant porcelain', 'Protects natural enamel'],
+    duration: '2 Visits',
+    icon: SmileCurveIcon,
     img: '/images/services/restorative care.png',
   },
   {
     id: 5,
     number: '05',
-    title: 'Microscopic Endodontics (Root Canal)',
+    title: 'Gentle Root Canal Therapy',
     category: 'Restorative',
-    desc: 'Gentle, pain-free endodontic therapy utilizing high-power surgical microscopes and 3D imaging to save natural teeth from deep infection.',
-    benefits: ['100% painless modern anesthesia protocols', 'High-magnification surgical precision', 'Biocompatible ceramic root seals'],
+    desc: 'Pain-free care to treat tooth infection and save your natural tooth.',
+    benefits: ['Painless local numbing', 'Saves your natural tooth'],
     duration: '1-2 Visits',
-    icon: Microscope,
+    icon: DentalCrownIcon,
     img: '/images/services/root canal.png',
   },
   {
     id: 6,
     number: '06',
-    title: 'Surgical Wisdom Tooth Extraction',
+    title: 'Wisdom Tooth Removal',
     category: 'Surgical',
-    desc: 'Comfortable, minimally invasive oral surgery for impacted or problematic third molars under luxury sedation and rapid recovery protocols.',
-    benefits: ['Sedation options for complete relaxation', 'Minimally invasive piezosurgery tools', 'Accelerated PRF healing protocols'],
+    desc: 'Comfortable wisdom tooth extractions with gentle sedation.',
+    benefits: ['Calm sedation options', 'Fast and gentle recovery'],
     duration: '45 mins',
-    icon: Activity,
+    icon: ToothIcon,
     img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=900&auto=format&fit=crop',
   }
 ];
@@ -143,48 +151,33 @@ export const ServicesGrid = () => {
           </div>
         </div>
 
-        {/* Clean Luxury Landscape Services Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-10">
-          <AnimatePresence mode="popLayout">
-            {filteredServices.map((service, i) => {
+        {/* Landscape Services Cards Grid (2-Column Horizontal Cards) */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className={`w-full ${filteredServices.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8'}`}
+          >
+            {filteredServices.map((service) => {
               const Icon = service.icon;
               return (
-                <motion.div
+                <div
                   key={service.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.98, y: 18 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1, 
-                    y: 0, 
-                    transition: { 
-                      duration: 0.45, 
-                      delay: i * 0.04,
-                      ease: [0.16, 1, 0.3, 1] as const
-                    } 
-                  }}
-                  exit={{ 
-                    opacity: 0, 
-                    scale: 0.96, 
-                    y: 8, 
-                    transition: { 
-                      duration: 0.22, 
-                      ease: [0.16, 1, 0.3, 1] as const
-                    } 
-                  }}
-                  whileHover={{ y: -5, transition: { duration: 0.25, ease: 'easeOut' } }}
-                  className="luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group cursor-pointer"
+                  className="luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group cursor-pointer border border-[#E8E2D5]/70 hover:border-[#DCA51B]/40 bg-white hover:-translate-y-1"
                   onClick={() => setSelectedService(service)}
                 >
                   
                   {/* Left Column: Landscape Image Container */}
-                  <div className="sm:w-[44%] lg:w-[42%] min-h-[220px] sm:min-h-[280px] relative overflow-hidden bg-[#FAF7F2] shrink-0">
+                  <div className="sm:w-[48%] relative overflow-hidden bg-[#FAF7F2] shrink-0 min-h-[220px] sm:min-h-full">
                     <img 
                       src={service.img} 
                       alt={service.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-60 pointer-events-none" />
 
                     {/* Category Tag */}
                     <div className="absolute top-4 left-4">
@@ -194,7 +187,7 @@ export const ServicesGrid = () => {
                     </div>
 
                     {/* Duration Badge */}
-                    <div className="absolute bottom-3 left-4">
+                    <div className="absolute bottom-3.5 left-4">
                       <span className="px-2.5 py-1 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium rounded-lg flex items-center gap-1.5 shadow-sm font-sans">
                         <Clock className="w-3 h-3 text-[#DCA51B]" />
                         <span>{service.duration}</span>
@@ -203,11 +196,11 @@ export const ServicesGrid = () => {
                   </div>
 
                   {/* Right Column: Service Content & Actions */}
-                  <div className="sm:w-[56%] lg:w-[58%] p-6 sm:p-7 flex flex-col justify-between">
+                  <div className="sm:w-[52%] p-5 sm:p-6 lg:p-7 flex flex-col justify-between">
                     <div>
                       {/* Top Meta Row with Icon & Index */}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] transition-colors duration-300">
+                      <div className="flex items-center justify-between mb-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] transition-colors duration-300">
                           <Icon className="w-4 h-4" />
                         </div>
                         <span className="text-xs font-semibold text-neutral/80 font-sans tracking-wider">
@@ -216,12 +209,12 @@ export const ServicesGrid = () => {
                       </div>
 
                       {/* Service Title */}
-                      <h3 className="font-serif font-bold text-xl sm:text-[22px] text-tertiary group-hover:text-[#DCA51B] transition-colors leading-snug mb-2.5">
+                      <h3 className="font-serif font-bold text-lg sm:text-xl text-tertiary group-hover:text-[#DCA51B] transition-colors leading-snug mb-2">
                         {service.title}
                       </h3>
 
                       {/* Description */}
-                      <p className="text-neutral text-xs sm:text-sm leading-relaxed mb-4 font-sans font-light line-clamp-3">
+                      <p className="text-neutral text-xs sm:text-[13px] leading-relaxed mb-3.5 font-sans font-light line-clamp-2">
                         {service.desc}
                       </p>
 
@@ -237,7 +230,7 @@ export const ServicesGrid = () => {
                     </div>
 
                     {/* Bottom Actions Row */}
-                    <div className="pt-4 flex items-center justify-between gap-3" onClick={(e) => e.stopPropagation()}>
+                    <div className="pt-3.5 flex items-center justify-between gap-3" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => setSelectedService(service)}
                         className="text-xs font-bold uppercase tracking-wider text-tertiary hover:text-[#DCA51B] transition-colors inline-flex items-center gap-1 cursor-pointer py-1 group/details"
@@ -248,7 +241,7 @@ export const ServicesGrid = () => {
 
                       <Link
                         to="/book"
-                        className="group/btn bg-[#DCA51B] hover:bg-[#C49216] text-[#121316] font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md hover:shadow-[#DCA51B]/20 transition-all duration-300 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                        className="btn-gold-luxury group/btn px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5"
                       >
                         <span>Book Visit</span>
                         <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
@@ -257,11 +250,11 @@ export const ServicesGrid = () => {
 
                   </div>
 
-                </motion.div>
+                </div>
               );
             })}
-          </AnimatePresence>
-        </div>
+          </motion.div>
+        </AnimatePresence>
 
       </div>
 

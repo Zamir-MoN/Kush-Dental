@@ -1,6 +1,14 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { 
+  ToothSparkleIcon, 
+  DentalMirrorIcon, 
+  SmileCurveIcon, 
+  ToothIcon, 
+  DentalImplantIcon, 
+  DentalScanIcon 
+} from '../common/DentalIcons';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -8,38 +16,45 @@ interface Milestone {
   year: string;
   title: string;
   description: string;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const milestones: Milestone[] = [
   {
     year: '2008',
     title: 'Dental Surgery Distinction',
-    description: 'Graduated with highest honors in Dental Surgery (BDS), receiving clinical recognition for academic and operative excellence.'
+    description: 'Graduated with clinical honors in Dental Surgery (BDS).',
+    icon: ToothIcon
   },
   {
     year: '2010',
-    title: 'Advanced Clinical Training',
-    description: 'Completed specialized clinical fellowship in complex prosthodontics, aesthetic restorations, and comprehensive oral care.'
+    title: 'Advanced Smile Design',
+    description: 'Specialized in aesthetic smile restorations and biomimetic care.',
+    icon: SmileCurveIcon
   },
   {
     year: '2012',
     title: 'Founded Kush Dental Clinic',
-    description: 'Opened the doors to our flagship clinic, pioneering hospitality-centered dentistry in a calm, luxurious setting.'
+    description: 'Established Kush Dental for comfortable, gentle dental treatments.',
+    icon: DentalMirrorIcon
   },
   {
     year: '2015',
-    title: 'Aesthetic & 3D Guided Mastery',
-    description: 'Integrated advanced CBCT 3D digital imaging, computer-guided implantology, and ultra-thin porcelain veneer artistry.'
+    title: '3D Guided Implants',
+    description: 'Introduced low-radiation 3D imaging and computer-guided implants.',
+    icon: DentalImplantIcon
   },
   {
     year: '2020',
-    title: '10,000+ Smiles Restored',
-    description: 'Celebrated the landmark milestone of transforming and rejuvenating over 10,000 confident patient smiles.'
+    title: '10,000+ Restored Smiles',
+    description: 'Surpassed 10,000 healthy, natural smiles restored for patients.',
+    icon: ToothSparkleIcon
   },
   {
     year: '2024',
-    title: 'Digital Platform & AI Suite',
-    description: 'Launched our state-of-the-art digital smile simulation suites and comprehensive virtual consultation platform.'
+    title: 'Digital Scanner Suites',
+    description: 'Integrated 3D intraoral scanners and same-day digital crown milling.',
+    icon: DentalScanIcon
   }
 ];
 
@@ -115,13 +130,10 @@ export const AboutMilestones = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 overflow-hidden"
+      className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-14 pb-16 sm:pb-24 overflow-hidden"
     >
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
-        <span className="inline-block px-4 py-1.5 bg-[#FAF7F2] border border-[#DCA51B]/30 rounded-full font-sans text-xs font-bold text-[#DCA51B] mb-3.5 tracking-widest uppercase">
-          OUR JOURNEY
-        </span>
         <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl text-zinc-900 tracking-tight">
           Experience & Milestones
         </h2>
@@ -142,6 +154,7 @@ export const AboutMilestones = () => {
         <div className="flex flex-col gap-8 md:gap-14">
           {milestones.map((item, index) => {
             const isEven = index % 2 === 0;
+            const Icon = item.icon;
 
             return (
               <div
@@ -168,9 +181,14 @@ export const AboutMilestones = () => {
                   }`}
                 >
                   <div className="luxury-card p-6 sm:p-7 rounded-3xl group cursor-default">
-                    <span className="inline-block font-serif font-bold text-lg sm:text-xl text-[#DCA51B] mb-1 tracking-tight">
-                      {item.year}
-                    </span>
+                    <div className={`flex items-center gap-2.5 mb-2 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                      <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className="font-serif font-bold text-lg sm:text-xl text-[#DCA51B] tracking-tight">
+                        {item.year}
+                      </span>
+                    </div>
                     <h3 className="font-serif font-bold text-lg sm:text-xl text-zinc-900 mb-2 group-hover:text-[#DCA51B] transition-colors duration-200">
                       {item.title}
                     </h3>

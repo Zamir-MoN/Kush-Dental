@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { InteractiveClinicMap } from './InteractiveClinicMap';
-import { Sparkles, Calendar, Clock, Phone, CheckCircle2 } from 'lucide-react';
+import { Calendar, Clock, Phone, CheckCircle2 } from 'lucide-react';
 
 export const AppointmentForm = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -18,18 +18,12 @@ export const AppointmentForm = () => {
     <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         
-        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20 reveal-up">
-          <div className="inline-flex items-center gap-2 mb-3.5">
-            <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
-            <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
-              SCHEDULE YOUR VISIT
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
-            Request a Consultation
+        <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16 reveal-up">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-3 tracking-tight">
+            Book Your Dental Visit
           </h2>
           <p className="text-zinc-600 text-sm sm:text-base font-sans font-light leading-relaxed">
-            Our private patient concierge will reach out promptly to organize your bespoke appointment.
+            Schedule your checkup, cleaning, or cosmetic consultation.
           </p>
         </div>
 
@@ -45,7 +39,7 @@ export const AppointmentForm = () => {
                 </div>
                 <h3 className="font-serif font-bold text-2xl sm:text-3xl text-zinc-900 mb-3">Request Confirmed</h3>
                 <p className="text-zinc-600 text-sm sm:text-base max-w-md font-sans leading-relaxed font-light">
-                  Thank you. Our patient concierge will contact you within 2 hours to confirm your tailored consultation with Dr. Alexander Kush.
+                  Thank you! Our dental team will contact you shortly to confirm your appointment time.
                 </p>
               </div>
             ) : (
@@ -92,11 +86,12 @@ export const AppointmentForm = () => {
                     Desired Treatment / Consultation
                   </label>
                   <select className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-sm text-zinc-900 font-sans cursor-pointer">
-                    <option>Cosmetic Smile Design & Porcelain Veneers</option>
-                    <option>Complete Restorative Care & Ceramic Crowns</option>
-                    <option>3D Guided Dental Implantology</option>
-                    <option>Clear Aligner Orthodontics</option>
-                    <option>Routine Comprehensive Examination & Hygiene</option>
+                    <option>Routine Dental Checkup & Teeth Cleaning</option>
+                    <option>Cosmetic Teeth Whitening & Porcelain Veneers</option>
+                    <option>Dental Implants & Tooth Replacement</option>
+                    <option>Clear Aligners & Teeth Straightening</option>
+                    <option>Ceramic Dental Crowns & Fillings</option>
+                    <option>Emergency Toothache & Pain Relief</option>
                   </select>
                 </div>
                 
@@ -105,7 +100,7 @@ export const AppointmentForm = () => {
                   className="btn-gold-luxury w-full mt-2 cursor-pointer group"
                 >
                   <Calendar className="w-4 h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
-                  <span>SUBMIT CONSULTATION REQUEST</span>
+                  <span>BOOK DENTAL APPOINTMENT</span>
                 </button>
               </form>
             )}

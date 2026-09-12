@@ -41,50 +41,55 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete }) => {
           className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#FAF7F2] text-[#18181B] select-none"
         >
           {/* Soft Diffused Ambient Warmth */}
-          <div className="absolute w-[500px] h-[500px] bg-[#C9A050]/[0.06] rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute w-[500px] h-[500px] bg-[#DCA51B]/[0.08] rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center px-4">
             
-            {/* Animated Soft Champagne Gold Logo */}
+            {/* Animated Official Gold Logo */}
             <motion.div
               initial={{ scale: 0.94, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative mb-6"
             >
-              <AnimatedLogo size={110} className="w-24 h-24 sm:w-28 sm:h-28" />
+              <AnimatedLogo size={120} className="w-28 h-28 sm:w-32 sm:h-32" />
             </motion.div>
 
-            {/* Brand Title & Delicate Subtitle */}
+            {/* Brand Title matching BrandLogo */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25, duration: 0.6 }}
               className="text-center mb-8"
             >
-              <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#18181B] tracking-tight mb-1.5">
-                Kush Dental Clinic
-              </h2>
-              <p className="text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.26em] uppercase text-[#8C867E]">
-                Care • Comfort • Confidence
+              <div className="flex items-baseline justify-center gap-1.5">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#141518] tracking-tight">
+                  Kush Dental
+                </h2>
+                <span className="font-serif text-xl sm:text-2xl font-medium italic text-[#DCA51B]">
+                  Clinic
+                </span>
+              </div>
+              <p className="font-sans text-[9px] sm:text-[10px] font-semibold tracking-[0.24em] text-zinc-400 uppercase mt-1">
+                Precision Dentistry
               </p>
             </motion.div>
 
             {/* Soft-Toned Progress Bar */}
             <div className="w-48 sm:w-64 flex flex-col items-center gap-2.5">
-              {/* Soft Cream Track & Champagne Gold Fill */}
-              <div className="w-full h-[1.5px] bg-[#E8E2D5] rounded-full overflow-hidden relative">
+              {/* Soft Cream Track & Honey Gold Fill */}
+              <div className="w-full h-[2px] bg-[#E8E2D5] rounded-full overflow-hidden relative">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#C9A050] via-[#DFBE7A] to-[#C9A050] rounded-full"
+                  className="h-full bg-gradient-to-r from-[#DCA51B] via-[#F5D77F] to-[#DCA51B] rounded-full"
                   style={{ width: `${progress}%` }}
                   transition={{ ease: "easeOut" }}
                 />
               </div>
 
               {/* Status Typography */}
-              <div className="w-full flex justify-between items-center text-[10px] uppercase tracking-[0.2em] text-[#8C867E] font-medium font-sans">
-                <span className="text-[#A47F35]">INITIALIZING</span>
-                <span className="font-sans text-[#18181B] font-semibold">{progress}%</span>
+              <div className="w-full flex justify-between items-center text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-medium font-sans">
+                <span className="text-[#DCA51B] font-bold">INITIALIZING</span>
+                <span className="font-sans text-[#141518] font-bold">{progress}%</span>
               </div>
             </div>
 

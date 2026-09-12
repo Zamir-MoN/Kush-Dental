@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FinalCTA } from '../components/appointment/FinalCTA';
 import { blogPosts } from '../data';
+import { useLenis } from '../components/ui/SmoothScroll';
 import { 
   ArrowLeft, 
   ArrowUpRight, 
@@ -12,22 +13,26 @@ import {
   Copy, 
   Check, 
   Bookmark, 
-  Sparkles,
   ChevronRight
 } from 'lucide-react';
+import { ToothSparkleIcon } from '../components/common/DentalIcons';
 
 export const BlogPostDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const { scrollTo } = useLenis();
 
   const postId = Number(id);
   const post = blogPosts.find((p) => p.id === postId) || blogPosts[0];
   const relatedPosts = blogPosts.filter((p) => p.id !== post.id).slice(0, 2);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id]);
+    scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [id, scrollTo]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -40,15 +45,17 @@ export const BlogPostDetail = () => {
       <main className="pt-36 pb-20 max-w-container mx-auto px-margin-mobile text-center">
         <h1 className="font-display font-bold text-4xl text-tertiary mb-4">Post Not Found</h1>
         <p className="font-body text-neutral mb-8">The clinical article you are looking for does not exist or has been moved.</p>
-        <Link to="/blog" className="inline-flex items-center gap-2 bg-secondary text-white font-bold text-sm px-6 py-3.5 rounded-xl hover:bg-[#c49216] transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Return to Clinical Journal
+        <Link to="/blog" className="btn-gold-luxury inline-flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-6 py-3.5 rounded-xl cursor-pointer">
+          <ArrowLeft className="w-4 h-4 text-[#141518]" /> Return to Blog
         </Link>
       </main>
     );
   }
 
   return (
-    <main className="w-full flex-grow pt-28 md:pt-36 pb-16 bg-[#FAF7F2]">
+    <main className="w-full flex-grow pt-28 md:pt-36 bg-[#FAF7F2]">
+      {/* Content wrapper with bottom padding before FinalCTA */}
+      <div className="pb-16 sm:pb-24">
       {/* Navigation & Breadcrumb */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -57,13 +64,13 @@ export const BlogPostDetail = () => {
             className="inline-flex items-center gap-2 text-[#141518] hover:text-[#DCA51B] font-medium text-xs sm:text-sm transition-colors group cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#DCA51B] group-hover:-translate-x-1 transition-transform" />
-            <span className="font-sans font-semibold">Back to Clinical Journal</span>
+            <span className="font-sans font-semibold">Back to Blog</span>
           </button>
 
           <nav className="flex items-center gap-2 text-xs text-zinc-500 font-sans">
             <Link to="/" className="hover:text-zinc-900 transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3 text-[#E8E2D5]" />
-            <Link to="/blog" className="hover:text-zinc-900 transition-colors">Journal</Link>
+            <Link to="/blog" className="hover:text-zinc-900 transition-colors">Blog</Link>
             <ChevronRight className="w-3 h-3 text-[#E8E2D5]" />
             <span className="text-[#DCA51B] font-medium truncate max-w-[150px] sm:max-w-none">{post.category}</span>
           </nav>
@@ -140,7 +147,7 @@ export const BlogPostDetail = () => {
 
             <Link
               to="/book"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#DCA51B] text-[#141518] text-xs font-bold uppercase tracking-wider hover:bg-[#c49216] transition-colors shadow-sm font-sans"
+              className="hidden sm:inline-flex btn-gold-luxury py-2 px-4 text-xs font-bold tracking-wider rounded-xl cursor-pointer"
             >
               Consult Author
             </Link>
@@ -168,7 +175,7 @@ export const BlogPostDetail = () => {
         {/* Introduction Callout */}
         <div className="luxury-card border-l-4 border-l-[#DCA51B] p-6 sm:p-8 rounded-r-3xl rounded-l-md shadow-sm mb-10">
           <div className="flex items-center gap-2 text-[#DCA51B] font-bold text-xs uppercase tracking-wider mb-2 font-sans">
-            <Sparkles className="w-4 h-4" />
+            <ToothSparkleIcon className="w-4 h-4" />
             <span>Clinical Overview</span>
           </div>
           <p className="font-sans text-base sm:text-lg text-zinc-800 leading-relaxed font-normal">
@@ -258,7 +265,7 @@ export const BlogPostDetail = () => {
               <h4 className="font-serif font-bold text-xl text-[#141518]">{post.author}</h4>
               <p className="font-sans text-xs text-[#DCA51B] font-semibold mb-3">{post.authorRole}</p>
               <p className="font-sans text-sm text-zinc-600 leading-relaxed mb-4 font-light">
-                Dedicated to biological tissue preservation, bespoke smile aesthetics, and patient-centered hospitality. Providing clinical leadership across cosmetic and reconstructive procedures.
+                Dedicated to gentle dental care, natural smile restorations, and patient comfort.
               </p>
               <Link
                 to="/book"
@@ -276,7 +283,7 @@ export const BlogPostDetail = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <span className="text-[#DCA51B] text-xs font-bold tracking-widest uppercase block mb-1 font-sans">Further Reading</span>
-            <h3 className="font-serif font-bold text-2xl sm:text-3xl text-[#141518]">Related Clinical Articles</h3>
+            <h3 className="font-serif font-bold text-2xl sm:text-3xl text-[#141518]">Related Dental Articles</h3>
           </div>
           <Link 
             to="/blog" 
@@ -316,8 +323,9 @@ export const BlogPostDetail = () => {
           ))}
         </div>
       </section>
+      </div>
 
-      {/* Final CTA Banner */}
+      {/* Final CTA Banner (Seamlessly touches Footer with zero gap) */}
       <FinalCTA />
     </main>
   );

@@ -81,24 +81,24 @@ export const FeaturedPostSpotlight = ({ post }: FeaturedPostSpotlightProps) => {
 
             {/* Author Footer & CTA */}
             <div className="pt-6 border-t border-[#E8E2D5] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <img
                   src={post.authorAvatar}
                   alt={post.author}
-                  className="w-11 h-11 rounded-full object-cover object-top border-2 border-[#DCA51B]/40 shadow-sm"
+                  className="w-11 h-11 rounded-full object-cover object-top border-2 border-[#DCA51B]/40 shadow-sm shrink-0"
                 />
-                <div>
-                  <p className="font-serif font-bold text-sm text-[#141518]">{post.author}</p>
-                  <p className="font-sans text-xs text-zinc-500">{post.authorRole}</p>
+                <div className="min-w-0">
+                  <p className="font-serif font-bold text-sm text-[#141518] truncate">{post.author}</p>
+                  <p className="font-sans text-xs text-zinc-500 truncate">{post.authorRole}</p>
                 </div>
               </div>
 
               <Link
                 to={`/blog/${post.id}`}
-                className="inline-flex items-center justify-center gap-2 bg-[#141518] hover:bg-[#DCA51B] text-white hover:text-[#141518] font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-md group cursor-pointer font-sans"
+                className="inline-flex items-center justify-center gap-2 bg-[#141518] hover:bg-[#DCA51B] text-white hover:text-[#141518] font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-md group cursor-pointer font-sans whitespace-nowrap shrink-0"
               >
-                <span>Read Study</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <span className="whitespace-nowrap">Read Study</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
 

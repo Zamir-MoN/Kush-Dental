@@ -2,8 +2,15 @@ import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { treatments } from '../../data';
-import { ChevronDown, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { 
+  ToothSparkleIcon, 
+  SmileCurveIcon, 
+  DentalImplantIcon, 
+  DentalCrownIcon, 
+  DentalShieldIcon 
+} from '../common/DentalIcons';
 
 export const TreatmentCollection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,28 +22,33 @@ export const TreatmentCollection = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
+  const getTreatmentIcon = (index: number) => {
+    switch(index) {
+      case 0: return SmileCurveIcon;
+      case 1: return ToothSparkleIcon;
+      case 2: return DentalImplantIcon;
+      case 3: return DentalShieldIcon;
+      default: return DentalCrownIcon;
+    }
+  };
+
   return (
     <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-t border-[#E8E2D5] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         
-        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20 reveal-up">
-          <div className="inline-flex items-center gap-2 mb-3.5">
-            <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
-            <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
-              PORTFOLIO OF CARE
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
-            Curated Treatment Collection
+        <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16 reveal-up">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-3 tracking-tight">
+            Treatment Collection
           </h2>
           <p className="text-zinc-600 text-sm sm:text-base font-sans font-light leading-relaxed">
-            Meticulously customized clinical protocols tailored to preserve biological enamel and optimize smile harmony.
+            Personalized treatments for lasting oral health and natural smiles.
           </p>
         </div>
         
         <div className="space-y-3 max-w-4xl mx-auto reveal-up">
           {treatments.map((treatment, i) => {
             const isExpanded = expandedIndex === i;
+            const TreatmentIcon = getTreatmentIcon(i);
             
             return (
               <div 
@@ -51,13 +63,18 @@ export const TreatmentCollection = () => {
                   className="py-5 sm:py-6 px-5 sm:px-8 flex justify-between items-center cursor-pointer select-none"
                   onClick={() => toggleAccordion(i)}
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6">
-                    <span className="font-serif font-bold text-xl sm:text-2xl text-zinc-900">
-                      0{i + 1}. {treatment.title}
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-sans font-bold tracking-widest text-[#DCA51B] uppercase">
-                      {treatment.subtitle}
-                    </span>
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] flex items-center justify-center shrink-0">
+                      <TreatmentIcon className="w-4 h-4" />
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+                      <span className="font-serif font-bold text-lg sm:text-xl text-zinc-900">
+                        0{i + 1}. {treatment.title}
+                      </span>
+                      <span className="text-[10px] sm:text-xs font-sans font-bold tracking-widest text-[#DCA51B] uppercase">
+                        {treatment.subtitle}
+                      </span>
+                    </div>
                   </div>
                   
                   <motion.div

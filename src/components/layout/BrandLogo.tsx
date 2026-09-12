@@ -12,54 +12,47 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   isDark = false,
   size = 'md' 
 }) => {
-  const iconSize = size === 'sm' ? 32 : size === 'lg' ? 46 : 38;
+  const imgSizeClass = size === 'sm' 
+    ? 'w-6 h-6' 
+    : size === 'lg' 
+    ? 'w-10 h-10 sm:w-12 sm:h-12' 
+    : 'w-7 h-7 sm:w-8.5 sm:h-8.5';
   
   return (
-    <Link to="/" className={`flex items-center gap-3.5 group cursor-pointer select-none ${className}`}>
-      {/* Smiling Gold Tooth Icon */}
+    <Link to="/" className={`flex items-center gap-2 sm:gap-2.5 group cursor-pointer select-none ${className}`}>
+      {/* Official Dental Tooth Mark from user's provided logo */}
       <div className="relative shrink-0 flex items-center justify-center">
-        <svg 
-          width={iconSize} 
-          height={iconSize} 
-          viewBox="0 0 100 100" 
-          fill="none" 
-          xmlns="http://www.w3.org/2000/svg"
-          className="transition-transform duration-300 group-hover:scale-105"
-        >
-          {/* Smooth Rounded Tooth Outline */}
-          <path 
-            d="M 28 20 C 40 16, 45 27, 50 27 C 55 27, 60 16, 72 20 C 85 24, 86 52, 79 72 C 73 88, 62 86, 56 75 C 53 69, 47 69, 44 75 C 38 86, 27 88, 21 72 C 14 52, 15 24, 28 20 Z" 
-            stroke="#DCA51B" 
-            strokeWidth="4" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            fill="none"
-          />
-          {/* Smiling Face - Left Eye */}
-          <circle cx="39" cy="46" r="2.8" fill="#DCA51B" />
-          {/* Smiling Face - Right Eye */}
-          <circle cx="61" cy="46" r="2.8" fill="#DCA51B" />
-          {/* Smiling Face - Curved Warm Smile */}
-          <path 
-            d="M 39 56 C 42 64, 58 64, 61 56" 
-            stroke="#DCA51B" 
-            strokeWidth="3.5" 
-            strokeLinecap="round" 
-          />
-        </svg>
+        <img 
+          src="/logo.png" 
+          alt="Kush Dental Clinic Logo" 
+          className={`${imgSizeClass} object-contain transition-transform duration-300 group-hover:scale-105`}
+        />
       </div>
 
-      {/* Brand Text & Tagline */}
-      <div className="flex flex-col justify-center">
-        <span className={`font-sans font-extrabold tracking-tight leading-none transition-colors ${
-          size === 'sm' ? 'text-lg' : size === 'lg' ? 'text-2xl' : 'text-xl md:text-[22px]'
-        } ${isDark ? 'text-white' : 'text-[#121316]'}`}>
-          Kush Dental Clinic
-        </span>
-        <span className={`text-[9px] sm:text-[10px] font-sans font-bold tracking-[0.24em] uppercase mt-1 transition-colors ${
-          isDark ? 'text-[#DCA51B]' : 'text-zinc-500'
-        }`}>
-          CARE • COMFORT • CONFIDENCE
+      {/* Brand Typography in Elegant Serif & Minimal Luxury Hierarchy */}
+      <div className="flex flex-col justify-center text-left">
+        <div className="flex items-baseline gap-1 sm:gap-1.5 leading-none">
+          <span 
+            className={`font-serif font-bold tracking-tight transition-colors ${
+              size === 'sm' ? 'text-sm' : size === 'lg' ? 'text-2xl sm:text-3xl' : 'text-[15px] sm:text-[19px]'
+            } ${isDark ? 'text-white' : 'text-[#141518]'}`}
+          >
+            Kush Dental
+          </span>
+          <span 
+            className={`font-serif font-normal italic ${
+              size === 'sm' ? 'text-[11px]' : size === 'lg' ? 'text-lg' : 'text-xs sm:text-sm'
+            } text-[#DCA51B]`}
+          >
+            Clinic
+          </span>
+        </div>
+        <span 
+          className={`font-sans font-medium tracking-[0.16em] sm:tracking-[0.2em] uppercase leading-tight ${
+            size === 'sm' ? 'text-[6.5px]' : size === 'lg' ? 'text-[9.5px]' : 'text-[7px] sm:text-[8px]'
+          } text-zinc-400 mt-0.5`}
+        >
+          Precision Dentistry
         </span>
       </div>
     </Link>

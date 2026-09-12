@@ -2,36 +2,36 @@ export const services = [
   {
     number: "01",
     title: "Cosmetic Dentistry",
-    description: "Masterful smile design utilizing ultra-thin porcelain veneers, precise contouring, and advanced whitening techniques to achieve a flawless, natural aesthetic.",
+    description: "Veneers, whitening, and smile contouring for a radiant smile.",
     tags: ["Veneers", "Whitening", "Bonding"],
     image: "/images/services/cosmetic dentistry.png"
   },
   {
     number: "02",
     title: "Restorative Care",
-    description: "Comprehensive rehabilitation of oral function and structure through state-of-the-art implants, meticulously crafted crowns, and biomimetic restorative materials.",
-    tags: ["Crowns", "Bridges", "Onlays"],
+    description: "Natural-looking crowns and fillings to repair damaged teeth.",
+    tags: ["Dental Crowns", "Bridges", "Tooth Fillings"],
     image: "/images/services/restorative care.png"
   },
   {
     number: "03",
-    title: "Implantology",
-    description: "Permanent, natural-looking tooth replacement utilizing advanced 3D guided surgery for unparalleled precision and immediate aesthetic results.",
-    tags: ["Single Implants", "All-on-4", "Bone Grafting"],
+    title: "Dental Implants",
+    description: "Permanent tooth replacements that look and chew like natural teeth.",
+    tags: ["Single Implants", "Full Arch", "Bone Grafting"],
     image: "/images/services/dental implants.png"
   },
   {
     number: "04",
     title: "Clear Aligners",
-    description: "Discreet, removable orthodontic solutions designed to straighten your smile with precision and comfort using advanced 3D planning.",
-    tags: ["Invisalign", "3D Planning", "Removable"],
+    description: "Comfortable clear trays to gently straighten your teeth.",
+    tags: ["Invisalign", "Teeth Straightening", "Comfort Fit"],
     image: "/images/services/smile designing.png"
   },
   {
     number: "05",
-    title: "Maxillofacial Surgery",
-    description: "Expert surgical interventions for complex jaw and facial conditions, prioritizing functional restoration and optimal aesthetic outcomes.",
-    tags: ["Jaw Surgery", "Facial Trauma", "Reconstruction"],
+    title: "Oral Surgery",
+    description: "Gentle wisdom tooth extractions with anxiety-free sedation.",
+    tags: ["Wisdom Teeth", "Extractions", "Gentle Care"],
     image: "/images/services/root canal.png"
   }
 ];
@@ -39,58 +39,53 @@ export const services = [
 export const treatments = [
   {
     title: "Porcelain Veneers",
-    subtitle: "Ultra-thin custom aesthetics",
-    description: "Ultra-thin, custom-made shells of tooth-colored materials designed to cover the front surface of teeth. Meticulously handcrafted by master ceramists to provide a flawless, natural appearance that perfectly complements your facial features.",
+    subtitle: "Custom smile enhancements",
+    description: "Ultra-thin porcelain shells to fix chips, stains, and gaps naturally.",
     benefits: [
-      "Highly stain-resistant and exceptionally durable",
-      "Custom shade and shape matching for unparalleled aesthetics",
-      "Minimally invasive preparation preserving natural tooth structure"
+      "Stain-resistant and durable",
+      "Custom shade-matched enamel"
     ],
-    metadata: ["Cosmetic", "Duration: 2-3 Visits", "Long Lasting (10-15+ years)"]
+    metadata: ["Cosmetic", "2 Visits", "10-15 Years"]
   },
   {
     title: "Teeth Whitening",
-    subtitle: "Professional stain removal",
-    description: "Professional treatments to brighten your smile and remove deep-set stains safely, achieving up to 8 shades whiter in a single visit using our proprietary light-activated technology.",
+    subtitle: "In-office laser brightening",
+    description: "In-office whitening brightening teeth up to 8 shades in one visit.",
     benefits: [
-      "Formulated for reduced sensitivity and maximum comfort",
-      "Immediate, dramatic results visible instantly",
-      "Custom take-home maintenance trays included"
+      "Gentle on tooth enamel",
+      "Instant bright results"
     ],
-    metadata: ["Cosmetic", "Duration: 1 Visit (90 mins)", "Immediate Results"]
+    metadata: ["Cosmetic", "60 Mins", "Instant Results"]
   },
   {
     title: "Dental Implants",
-    subtitle: "Permanent structural replacement",
-    description: "Permanent, state-of-the-art replacements for missing teeth that look, feel, and function completely like natural teeth while preserving essential jawbone health and facial structure.",
+    subtitle: "Permanent tooth replacement",
+    description: "Permanent titanium fixture and ceramic crown for missing teeth.",
     benefits: [
-      "3D-guided placement for absolute surgical precision",
-      "Biocompatible titanium integration for lifelong stability",
-      "Prevents bone loss and shifting of adjacent teeth"
+      "Chews and feels like real teeth",
+      "Protects healthy jawbone"
     ],
-    metadata: ["Restorative", "Duration: Phased (3-6 Months)", "Lifetime Solution"]
+    metadata: ["Restorative", "Phased Care", "Lifetime"]
   },
   {
-    title: "Invisalign",
-    subtitle: "Discreet digital orthodontics",
-    description: "Clear aligner therapy for discreet and comfortable orthodontic correction. Your entire tooth movement sequence is mapped digitally in 3D for optimal precision and predictable outcomes.",
+    title: "Invisalign Clear Aligners",
+    subtitle: "Discreet teeth straightening",
+    description: "Nearly invisible aligners that straighten teeth without metal brackets.",
     benefits: [
-      "Virtually invisible, smooth, and comfortable smart-track material",
-      "Removable for easy eating and uncompromised oral hygiene",
-      "Fewer clinic visits compared to traditional braces"
+      "Removable for eating & brushing",
+      "Gentle, wire-free comfort"
     ],
-    metadata: ["Orthodontics", "Duration: 6-18 Months", "Removable"]
+    metadata: ["Orthodontics", "6-12 Months", "Removable"]
   },
   {
-    title: "Ceramic Crowns",
-    subtitle: "Biomimetic restorations",
-    description: "Strong, highly aesthetic restorations designed to protect, cover, and restore the shape of damaged teeth. Crafted from advanced zirconia or lithium disilicate for a seamless match.",
+    title: "Ceramic Dental Crowns",
+    subtitle: "Protective tooth restoration",
+    description: "Durable custom caps to strengthen and protect cracked or worn teeth.",
     benefits: [
-      "Restores original tooth strength and functional bite",
-      "Lifelike translucency indistinguishable from natural enamel",
-      "Digital impressions for a perfect, comfortable fit"
+      "Sub-micron ceramic precision",
+      "Seamless natural appearance"
     ],
-    metadata: ["Restorative", "Duration: 2 Visits", "Highly Durable"]
+    metadata: ["Restorative", "1-2 Visits", "Durable"]
   }
 ];
 
@@ -98,48 +93,48 @@ export const clinicians = [
   {
     id: 'doc1',
     name: "Dr. Alexander Kush",
-    title: "Founder & Lead Aesthetic Dentist",
-    desc: "Renowned for his meticulous approach to cosmetic dentistry, Dr. Kush brings over two decades of international experience in crafting flawless, natural smiles.",
-    tags: ["Aesthetic Dentistry", "Veneers"],
+    title: "Chief Dental Surgeon & Founder",
+    desc: "Over 15 years of dedicated clinical experience in cosmetic smile makeovers and gentle dental care.",
+    tags: ["Cosmetic Dentistry", "Veneers"],
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24"
   },
   {
     id: 'doc2',
     name: "Dr. Sarah Jenkins",
     title: "Prosthodontist Specialist",
-    desc: "An expert in complex restorative procedures, Dr. Jenkins focuses on restoring full dental function while maintaining peak aesthetic standards.",
+    desc: "Specializing in dental crowns, bridges, and full mouth restorative comfort.",
     tags: ["Restorative", "Crowns & Bridges"],
     img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: 'doc3',
     name: "Dr. Michael Chang",
-    title: "Master Implantologist",
-    desc: "Leading the clinic in advanced surgical techniques and 3D guided implantology for predictable and lasting results.",
+    title: "Implant Surgeon",
+    desc: "Expert in 3D computer-guided dental implants and gentle tooth extractions.",
     tags: ["Implantology", "Oral Surgery"],
     img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
 export const testimonials = [
-  { text: "An absolute paradigm shift in dental care. The attention to detail and level of comfort is unmatched.", author: "E. R." },
-  { text: "My smile makeover exceeded every expectation. Dr. Kush is truly an artist.", author: "M. T." },
-  { text: "The technology here is incredible. Everything was so seamless and painless.", author: "J. D." },
-  { text: "Highly recommend the concierge service. Truly luxury care.", author: "A. S." }
+  { text: "Pain-free teeth cleaning and gentle dentists. Best dental clinic experience I've had.", author: "Elena R." },
+  { text: "My porcelain veneers look completely natural. I finally smile with confidence.", author: "Marcus T." },
+  { text: "The 3D dental implant procedure was fast, calm, and painless.", author: "James D." },
+  { text: "Friendly staff, spotless clean rooms, and zero wait time. Highly recommended.", author: "Aria S." }
 ];
 
 export const faqs = [
   {
-    question: "Do you offer sedation dentistry?",
-    answer: "Yes, we offer various levels of sedation dentistry, from nitrous oxide to IV sedation, ensuring a completely relaxed and anxiety-free experience."
+    question: "Do you offer painless or sedation dentistry?",
+    answer: "Yes. We offer gentle local numbing and mild sedation options to keep your dental visit relaxed and comfortable."
   },
   {
-    question: "How long do veneers typically last?",
-    answer: "With proper care, porcelain veneers can last 10-15 years or longer. We use only the highest grade materials for optimal longevity."
+    question: "How long do porcelain veneers last?",
+    answer: "With daily brushing and regular dental cleanings, quality porcelain veneers last 10 to 15 years or longer."
   },
   {
-    question: "What is your consultation process?",
-    answer: "Our consultation involves a comprehensive evaluation using 3D imaging, a deep discussion of your aesthetic goals, and a customized digital treatment plan."
+    question: "How do I book my first dental checkup?",
+    answer: "You can book online in under a minute or call our clinic desk. We will examine your teeth and explain every option clearly."
   }
 ];
 
@@ -309,7 +304,7 @@ export const blogPosts: BlogPost[] = [
     category: "Orthodontics",
     author: "Dr. Sarah Jenkins",
     authorRole: "Chief Orthodontist & Dentofacial Orthopedist",
-    authorAvatar: "https://images.unsplash.com/photo-1594824813626-d62152865917?q=80&w=400&auto=format&fit=crop",
+    authorAvatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop",
     date: "12 Jun 2026",
     readTime: "4 min read",
     tags: ["Orthodontics", "Clear Aligners", "Smile Staging", "Adult Dentistry"],
@@ -426,7 +421,7 @@ export const blogPosts: BlogPost[] = [
     category: "Technology",
     author: "Dr. Sarah Jenkins",
     authorRole: "Chief Orthodontist & Dentofacial Orthopedist",
-    authorAvatar: "https://images.unsplash.com/photo-1594824813626-d62152865917?q=80&w=400&auto=format&fit=crop",
+    authorAvatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop",
     date: "02 Mar 2026",
     readTime: "4 min read",
     tags: ["Technology", "Intraoral Scanning", "Digital Impression", "CAD/CAM"],

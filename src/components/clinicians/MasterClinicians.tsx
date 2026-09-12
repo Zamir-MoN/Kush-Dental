@@ -17,7 +17,7 @@ export const MasterClinicians = () => {
           Master Clinicians
         </h2>
         
-        <div className="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 relative reveal-up" style={{ transitionDelay: '0.2s' }}>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 relative reveal-up">
           
           {/* Thumbnails (Left) */}
           <div className="flex md:flex-col gap-6 z-10 flex-wrap justify-center md:order-1 order-2">

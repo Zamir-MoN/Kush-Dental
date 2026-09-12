@@ -154,8 +154,14 @@
 
   .btn-gold-luxury:hover {
     background: #C49216;
+    color: #141518;
     box-shadow: 0 8px 24px rgba(220, 165, 27, 0.38);
     transform: translateY(-2px);
+  }
+
+  .btn-gold-luxury svg {
+    color: currentColor;
+    stroke: currentColor;
   }
 
   .btn-gold-luxury:hover::before {
@@ -219,4 +225,200 @@
 .icon-subtle-pulse {
   animation: icon-pulse 3s ease-in-out infinite;
 }
+
+/* Slow, Smooth & Soft Topographic Wave Flow Animations */
+@keyframes waveSlowDrift1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-18px, -12px, 0);
+  }
+}
+
+@keyframes waveSlowDrift2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(16px, 10px, 0);
+  }
+}
+
+@keyframes waveSlowDrift3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-14px, 14px, 0);
+  }
+}
+
+@keyframes waveSlowDrift4 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(15px, -10px, 0);
+  }
+}
+
+@keyframes waveSlowDrift5 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-12px, -8px, 0);
+  }
+}
+
+@keyframes waveSlowBreathing {
+  0%, 100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.22;
+  }
+  50% {
+    transform: scale(1.015) translate3d(0, -6px, 0);
+    opacity: 0.32;
+  }
+}
+
+.animate-wave-container {
+  animation: waveSlowBreathing 18s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-wave-1 {
+  animation: waveSlowDrift1 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-wave-2 {
+  animation: waveSlowDrift2 19s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-wave-3 {
+  animation: waveSlowDrift3 16s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-wave-4 {
+  animation: waveSlowDrift4 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-wave-5 {
+  animation: waveSlowDrift5 17s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Continuous Kinetic Wave Flow Animations */
+@keyframes waveFlowTranslate1 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes waveFlowTranslate2 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes waveFlowTranslate3 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes waveSwayGentle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+.animate-wave-flow-container {
+  animation: waveSwayGentle 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-wave-flow-fast {
+  animation: waveFlowTranslate1 22s linear infinite;
+  will-change: transform;
+}
+
+.animate-wave-flow-med {
+  animation: waveFlowTranslate2 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-wave-flow-slow {
+  animation: waveFlowTranslate3 42s linear infinite;
+  will-change: transform;
+}
+
+/* Water Drop Ripple Animations */
+@keyframes waterDropRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.04);
+    opacity: 0.85;
+  }
+  25% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes waterDropImpact {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  5% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0.9;
+  }
+  15% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.3;
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-water-ripple {
+  animation: waterDropRipple 6.5s cubic-bezier(0.18, 0.85, 0.4, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-water-impact {
+  animation: waterDropImpact 6.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  will-change: transform, opacity;
+}
+
 

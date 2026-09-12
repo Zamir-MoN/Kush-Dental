@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { faqs } from '../../data';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { Plus, Sparkles } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 export const FAQ = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -16,18 +16,12 @@ export const FAQ = () => {
     <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-white border-b border-[#E8E2D5] overflow-hidden">
       <div className="max-w-3xl mx-auto">
         
-        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-20 reveal-up">
-          <div className="inline-flex items-center gap-2 mb-3.5">
-            <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
-            <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
-              COMMON INQUIRIES
-            </span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
+        <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16 reveal-up">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-3 tracking-tight">
             Frequently Asked Questions
           </h2>
           <p className="text-zinc-600 text-sm sm:text-base font-sans font-light leading-relaxed">
-            Clear answers regarding our bespoke treatments, 3D diagnostic technology, and appointment protocol.
+            Simple answers to common questions about visits, treatments, and care.
           </p>
         </div>
         

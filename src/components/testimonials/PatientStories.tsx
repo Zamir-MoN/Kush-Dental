@@ -1,22 +1,16 @@
 import { motion } from 'framer-motion';
 import { testimonials } from '../../data';
-import { Sparkles, Star, CheckCircle2 } from 'lucide-react';
+import { Star, CheckCircle2 } from 'lucide-react';
 
 export const PatientStories = () => {
   return (
     <section className="py-20 sm:py-28 lg:py-32 bg-[#FAF7F2] border-y border-[#E8E2D5] overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-14 text-center">
-        <div className="inline-flex items-center gap-2 mb-3.5">
-          <Sparkles className="w-4 h-4 text-[#DCA51B] icon-subtle-pulse" />
-          <span className="text-[#DCA51B] font-bold text-xs tracking-[0.22em] uppercase font-sans">
-            TESTIMONIALS & REVIEWS
-          </span>
-        </div>
-        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-4 tracking-tight">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-12 text-center">
+        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-3 tracking-tight">
           Patient Stories
         </h2>
         <p className="text-zinc-600 text-sm sm:text-base font-sans font-light max-w-xl mx-auto leading-relaxed">
-          Hear from patients who have experienced our bespoke approach to clinical serenity and aesthetic perfection.
+          Real feedback from patients who trust Kush Dental Clinic.
         </p>
       </div>
 

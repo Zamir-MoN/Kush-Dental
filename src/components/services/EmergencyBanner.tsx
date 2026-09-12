@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { Phone, AlertCircle, Clock, ShieldCheck } from 'lucide-react';
+import { Phone, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { DentalShieldIcon } from '../common/DentalIcons';
 
 export const EmergencyBanner = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -17,19 +18,12 @@ export const EmergencyBanner = () => {
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
           
           <div className="flex-1">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#DCA51B]/15 border border-[#DCA51B]/30 mb-4">
-              <AlertCircle className="w-3.5 h-3.5 text-[#DCA51B] icon-subtle-pulse" />
-              <span className="text-[#DCA51B] tracking-[0.2em] text-xs uppercase font-bold font-sans">
-                SAME-DAY PRIORITY CARE
-              </span>
-            </div>
-
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white mb-4 leading-tight font-normal">
-              Emergency & Urgent Dental Care<span className="text-[#DCA51B]">.</span>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white mb-3 leading-tight font-normal">
+              Emergency &amp; Urgent Dental Care<span className="text-[#DCA51B]">.</span>
             </h2>
 
-            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-sans font-light mb-6">
-              Experiencing severe acute pain, a fractured restoration, or a dental emergency? Our dedicated concierge team provides immediate triage and priority treatment slots.
+            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-sans font-light mb-5">
+              Toothache or broken tooth? We provide immediate same-day appointments to relieve your pain.
             </p>
 
             <div className="flex flex-wrap gap-4 text-xs text-zinc-400 font-sans">
@@ -38,7 +32,7 @@ export const EmergencyBanner = () => {
                 <span>Immediate 2-Hour Response</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#DCA51B]" />
+                <DentalShieldIcon className="w-4 h-4 text-[#DCA51B]" />
                 <span>On-Site 3D Diagnostic Scans</span>
               </div>
             </div>

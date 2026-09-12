@@ -15,7 +15,7 @@ export const Footer = () => {
                 <BrandLogo isDark={true} size="md" />
               </div>
               <p className="text-zinc-400 text-sm max-w-sm leading-relaxed font-sans mb-8">
-                Exceptional dental care designed around you. We seamlessly integrate the art of facial aesthetics with advanced digital dental science.
+                Gentle dental care, modern treatments, and healthy, confident smiles for the whole family.
               </p>
             </div>
 

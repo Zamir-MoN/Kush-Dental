@@ -3,8 +3,34 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <meta id="viewport-meta" name="viewport" content="width=768, initial-scale=1.0" />
+  <script>
+    (function () {
+      function setTabletViewport() {
+        var meta = document.getElementById('viewport-meta');
+        if (!meta) return;
+        
+        // Check screen width and inner width
+        var screenW = window.screen ? window.screen.width : window.innerWidth;
+        var winW = window.innerWidth;
+        var deviceW = Math.min(screenW, winW);
+        
+        // Target tablet layout width
+        var tabletWidth = 768;
+        
+        if (deviceW < tabletWidth) {
+          var scale = (deviceW / tabletWidth).toFixed(4);
+          meta.setAttribute('content', 'width=' + tabletWidth + ', initial-scale=' + scale + ', minimum-scale=' + scale + ', maximum-scale=3.0, user-scalable=yes');
+        } else {
+          meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        }
+      }
+      setTabletViewport();
+      window.addEventListener('resize', setTabletViewport);
+      window.addEventListener('orientationchange', setTabletViewport);
+    })();
+  </script>
   <meta name="description"
     content="Kush Dental Clinic - Precision Dentistry. Excellence in Every Smile." />
   <link rel="preconnect" href="https://fonts.googleapis.com">

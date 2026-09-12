@@ -104,38 +104,26 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
       </div>
 
       {/* Grid of Clinical Articles */}
-      {gridPosts.length > 0 ? (
-        <div className={`grid gap-8 lg:gap-10 ${gridPosts.length === 1 ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'}`}>
-          <AnimatePresence mode="popLayout">
-            {gridPosts.map((post, i) => (
-              <motion.article
+      <AnimatePresence mode="wait">
+        {gridPosts.length > 0 ? (
+          <motion.div
+            key={activeCategory + (searchQuery || '')}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className={`w-full ${gridPosts.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch'}`}
+          >
+            {gridPosts.map((post) => (
+              <article
                 key={post.id}
-                layout
-                initial={{ opacity: 0, scale: 0.98, y: 18 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: 0,
-                  transition: { 
-                    duration: 0.45, 
-                    delay: i * 0.04,
-                    ease: [0.16, 1, 0.3, 1] as const
-                  }
-                }}
-                exit={{ 
-                  opacity: 0, 
-                  scale: 0.96, 
-                  y: 8,
-                  transition: { 
-                    duration: 0.22, 
-                    ease: [0.16, 1, 0.3, 1] as const
-                  }
-                }}
-                whileHover={{ y: -5, transition: { duration: 0.25, ease: 'easeOut' } }}
-                className="group luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row"
+                className="group luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row h-full w-full hover:-translate-y-1"
               >
-                {/* Left Image Column */}
-                <Link to={`/blog/${post.id}`} className="sm:w-[44%] lg:w-[42%] min-h-[220px] sm:min-h-[270px] relative overflow-hidden bg-[#FAF7F2] shrink-0 cursor-pointer">
+                {/* Left Image Column (Uniform Aspect & Height) */}
+                <Link 
+                  to={`/blog/${post.id}`} 
+                  className="sm:w-[44%] lg:w-[42%] h-[230px] sm:h-auto min-h-[230px] sm:min-h-full relative overflow-hidden bg-[#FAF7F2] shrink-0 cursor-pointer block"
+                >
                   <img
                     src={post.image}
                     alt={post.title}
@@ -144,14 +132,14 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none" />
 
                   {/* Badges Over Image */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-sm font-sans">
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="px-3 py-1 bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[10.5px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-sm font-sans">
                       {post.category}
                     </span>
                   </div>
 
-                  <div className="absolute bottom-3 left-4">
-                    <span className="px-2.5 py-1 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium rounded-lg flex items-center gap-1 font-sans">
+                  <div className="absolute bottom-3 left-3.5">
+                    <span className="px-2.5 py-0.5 bg-black/75 backdrop-blur-md text-white text-[10.5px] font-medium rounded-lg flex items-center gap-1 font-sans">
                       <Clock className="w-3 h-3 text-[#DCA51B]" />
                       {post.readTime}
                     </span>
@@ -159,44 +147,50 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                 </Link>
 
                 {/* Right Content Column */}
-                <div className="sm:w-[56%] lg:w-[58%] p-6 sm:p-7 flex flex-col justify-between">
-                  <div>
+                <div className="sm:w-[56%] lg:w-[58%] p-5 sm:p-6 flex flex-col justify-between flex-1 min-w-0">
+                  <div className="flex-1 flex flex-col">
                     {/* Publication Date & Author Avatar Line */}
-                    <div className="flex items-center justify-between gap-2 mb-3.5">
-                      <div className="flex items-center gap-2.5">
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                      <div className="flex items-center gap-2 min-w-0">
                         <img
                           src={post.authorAvatar}
                           alt={post.author}
-                          className="w-7 h-7 rounded-full object-cover object-top border border-[#DCA51B]/50"
+                          className="w-6 h-6 rounded-full object-cover object-top border border-[#DCA51B]/50 shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop";
+                          }}
                         />
-                        <span className="text-xs font-semibold text-[#141518] font-sans">
+                        <span className="text-[11.5px] font-semibold text-[#141518] font-sans truncate">
                           {post.author}
                         </span>
                       </div>
-                      <span className="text-[11px] text-zinc-500 flex items-center gap-1 font-medium font-sans">
+                      <span className="text-[10.5px] text-zinc-500 flex items-center gap-1 font-medium font-sans shrink-0">
                         <Calendar className="w-3 h-3 text-[#DCA51B]" />
                         {post.date}
                       </span>
                     </div>
 
                     {/* Title */}
-                    <Link to={`/blog/${post.id}`} className="block group/title">
-                      <h3 className="font-serif font-bold text-xl sm:text-[22px] text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-snug mb-3">
+                    <Link to={`/blog/${post.id}`} className="block group/title mb-2">
+                      <h3 className="font-serif font-bold text-base sm:text-lg text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-snug line-clamp-2 min-h-[2.75rem] flex items-center">
                         {post.title}
                       </h3>
                     </Link>
 
                     {/* Excerpt */}
-                    <p className="font-sans text-zinc-600 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4 font-light">
+                    <p className="font-sans text-zinc-600 text-xs sm:text-[13px] line-clamp-2 leading-relaxed mb-3 font-light">
                       {post.excerpt}
                     </p>
                   </div>
 
-                  {/* Card Bottom: Tags & Link */}
-                  <div className="pt-4 border-t border-[#E8E2D5] flex items-center justify-between gap-3">
-                    <div className="flex flex-wrap gap-1">
+                  {/* Card Bottom: Tags & Link (Pinned strictly at bottom) */}
+                  <div className="mt-auto pt-3 border-t border-[#E8E2D5] flex items-center justify-between gap-2 min-w-0">
+                    <div className="flex items-center gap-1.5 overflow-hidden flex-nowrap min-w-0">
                       {post.tags.slice(0, 2).map(tag => (
-                        <span key={tag} className="text-[10px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2 py-0.5 rounded font-medium font-sans">
+                        <span 
+                          key={tag} 
+                          className="text-[9.5px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2 py-0.5 rounded font-medium font-sans whitespace-nowrap truncate max-w-[110px]"
+                        >
                           #{tag}
                         </span>
                       ))}
@@ -204,7 +198,7 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
 
                     <Link
                       to={`/blog/${post.id}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#DCA51B] group-hover:translate-x-1 transition-transform shrink-0 cursor-pointer font-sans"
+                      className="inline-flex items-center gap-1 text-[11.5px] font-bold uppercase tracking-wider text-[#DCA51B] group-hover:translate-x-1 transition-transform shrink-0 cursor-pointer font-sans"
                     >
                       <span>Read Case</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -212,29 +206,36 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                   </div>
                 </div>
 
-              </motion.article>
+              </article>
             ))}
-          </AnimatePresence>
-        </div>
-      ) : (
-        /* Empty State */
-        <div className="luxury-card rounded-3xl p-12 text-center my-8">
-          <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] mx-auto mb-4">
-            <Sparkles className="w-8 h-8" />
-          </div>
-          <h3 className="font-serif text-2xl text-[#141518] mb-2">No Matching Articles Found</h3>
-          <p className="font-sans text-zinc-600 text-sm max-w-md mx-auto mb-6 leading-relaxed font-light">
-            We couldn't find any clinical publications matching your filter criteria. Try clearing search filters or selecting another specialty.
-          </p>
-          <button
-            onClick={handleResetFilters}
-            className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#141518] text-white hover:bg-[#DCA51B] hover:text-[#141518] font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md cursor-pointer font-sans"
+          </motion.div>
+        ) : (
+          /* Empty State */
+          <motion.div 
+            key="empty"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="luxury-card rounded-3xl p-12 text-center my-8"
           >
-            <RefreshCw className="w-4 h-4" />
-            <span>View All Clinical Articles</span>
-          </button>
-        </div>
-      )}
+            <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] mx-auto mb-4">
+              <Sparkles className="w-8 h-8" />
+            </div>
+            <h3 className="font-serif text-2xl text-[#141518] mb-2">No Matching Articles Found</h3>
+            <p className="font-sans text-zinc-600 text-sm max-w-md mx-auto mb-6 leading-relaxed font-light">
+              We couldn't find any clinical publications matching your filter criteria. Try clearing search filters or selecting another specialty.
+            </p>
+            <button
+              onClick={handleResetFilters}
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#141518] text-white hover:bg-[#DCA51B] hover:text-[#141518] font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md cursor-pointer font-sans"
+            >
+              <RefreshCw className="w-4 h-4" />
+              <span>View All Clinical Articles</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Middle VIP Digest Banner */}
       <div className="reveal-up">

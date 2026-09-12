@@ -55,7 +55,7 @@ export const InteractiveClinicMap: React.FC = () => {
           href="https://maps.google.com/?q=Dental+Clinic" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full bg-secondary text-primary font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 hover:bg-[#c49216] transition-all duration-300 shadow-sm active:scale-[0.98] text-center"
+          className="btn-gold-luxury w-full py-3.5 px-4 text-xs flex items-center justify-center gap-2 text-center"
         >
           <Navigation className="w-3.5 h-3.5 shrink-0" /> Get Directions on Google Maps
         </a>

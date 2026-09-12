@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Calendar } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import StaggeredMenu from '../ui/StaggeredMenu';
 
@@ -17,87 +18,95 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Swiss Minimal Luxury Typography: Clean Title-case links
   const navLinks = [
-    { name: 'HOME', to: '/' },
-    { name: 'SERVICES', to: '/services' },
-    { name: 'ABOUT US', to: '/about' },
-    { name: 'BLOG', to: '/blog' },
+    { name: 'Home', to: '/' },
+    { name: 'Services', to: '/services' },
+    { name: 'About Us', to: '/about' },
+    { name: 'Blog', to: '/blog' },
   ];
 
   const staggeredMenuItems = [
-    { label: 'HOME', ariaLabel: 'Go to home', link: '/' },
-    { label: 'SERVICES', ariaLabel: 'Go to services', link: '/services' },
-    { label: 'ABOUT US', ariaLabel: 'Learn about us', link: '/about' },
-    { label: 'BLOG', ariaLabel: 'Read our blog', link: '/blog' },
-    { label: 'BOOK A VISIT', ariaLabel: 'Book an appointment', link: '/book' }
+    { label: 'Home', ariaLabel: 'Go to home', link: '/' },
+    { label: 'Services', ariaLabel: 'Go to services', link: '/services' },
+    { label: 'About Us', ariaLabel: 'Learn about us', link: '/about' },
+    { label: 'Blog', ariaLabel: 'Read our blog', link: '/blog' },
+    { label: 'Book a Visit', ariaLabel: 'Book an appointment', link: '/book' }
   ];
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-[#FAF7F2]/95 backdrop-blur-md shadow-sm border-b border-[#E8E2D5]/80 py-3.5 sm:py-4' 
-            : 'bg-[#FAF7F2] border-b border-[#E8E2D5]/40 py-4 sm:py-5'
-        }`}
-      >
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 flex justify-between items-center w-full">
-          
-          {/* 1. Left Brand Logo */}
-          <div className="flex items-center">
-            <BrandLogo size="md" />
+      <header className="fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-none px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-3.5">
+        <div className="max-w-[1380px] mx-auto w-full pointer-events-auto">
+          {/* Floating Luxury Island Container */}
+          <div 
+            className={`relative w-full rounded-2xl sm:rounded-3xl transition-all duration-300 flex items-center justify-between border ${
+              isScrolled 
+                ? 'bg-[#FAF7F2]/95 backdrop-blur-2xl border-[#E8E2D5] shadow-[0_12px_36px_rgba(20,21,24,0.1)] py-2 sm:py-2.5 px-3.5 sm:px-6' 
+                : 'bg-[#FAF7F2]/90 backdrop-blur-xl border-[#E8E2D5]/80 shadow-[0_8px_30px_rgba(20,21,24,0.06)] py-2.5 sm:py-3 px-4 sm:px-6'
+            }`}
+          >
+            {/* Subtle Luxury Top Gold Sheen */}
+            <div className="absolute top-0 left-10 right-10 h-[1.5px] bg-gradient-to-r from-transparent via-[#DCA51B]/40 to-transparent pointer-events-none rounded-full" />
+            
+            {/* 1. Brand Identity Crest */}
+            <div className="flex items-center shrink-0">
+              <BrandLogo size="md" />
+            </div>
+
+            {/* 2. Center Nav Items: Swiss Minimal Luxury (Refined Medium Sans, Title-case) */}
+            <nav className="hidden lg:flex items-center bg-[#EFE9DF]/65 border border-[#E8E2D5]/80 rounded-full p-1 shadow-inner">
+              {navLinks.map((link) => {
+                const isActive = link.to === '/' 
+                  ? location.pathname === '/' 
+                  : (!link.to.includes('#') && location.pathname.startsWith(link.to));
+
+                return (
+                  <Link 
+                    key={link.name}
+                    to={link.to} 
+                    className={`relative px-4 sm:px-5 py-1.5 rounded-full font-sans text-[13.5px] tracking-[0.01em] transition-colors duration-200 z-10 select-none ${
+                      isActive 
+                        ? 'text-[#141518] font-semibold' 
+                        : 'text-zinc-600 hover:text-[#141518] font-medium'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div 
+                        layoutId="activeHeaderPill"
+                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#E8E2D5]/80 -z-10" 
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                      />
+                    )}
+                    <span>{link.name}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* 3. Right Area: Golden CTA Button */}
+            <div className="hidden lg:flex items-center shrink-0">
+              <Link 
+                to="/book" 
+                className="btn-gold-luxury py-2 px-5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-2"
+              >
+                <Calendar className="w-3.5 h-3.5 shrink-0" />
+                <span>BOOK A VISIT</span>
+              </Link>
+            </div>
+
+            {/* Mobile/Tablet CTA Area (offset from hamburger menu toggle) */}
+            <div className="lg:hidden flex items-center mr-11 sm:mr-14 shrink-0">
+              <Link 
+                to="/book" 
+                className="btn-gold-luxury py-1.5 px-2.5 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
+              >
+                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <span className="whitespace-nowrap">BOOK A VISIT</span>
+              </Link>
+            </div>
+
           </div>
-
-          {/* 2. Center Nav Items */}
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
-            {navLinks.map((link) => {
-              const isActive = link.to === '/' 
-                ? location.pathname === '/' 
-                : (!link.to.includes('#') && location.pathname.startsWith(link.to));
-
-              return (
-                <Link 
-                  key={link.name}
-                  to={link.to} 
-                  className={`text-xs font-extrabold tracking-[0.16em] uppercase transition-all duration-200 relative py-2 ${
-                    isActive 
-                      ? 'text-[#DCA51B]' 
-                      : 'text-[#222222] hover:text-[#DCA51B]'
-                  }`}
-                >
-                  {link.name}
-                  {isActive && (
-                    <motion.span 
-                      layoutId="activeHeaderUnderline"
-                      className="absolute bottom-0 left-0 w-full h-[2.5px] bg-[#DCA51B] rounded-full shadow-sm" 
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* 3. Right Area: Direct Book a Visit Button */}
-          <div className="hidden sm:flex items-center">
-            <Link 
-              to="/book" 
-              className="bg-[#DCA51B] hover:bg-[#C49216] text-[#121316] font-extrabold text-xs uppercase tracking-wider px-6 sm:px-7 py-3 rounded-full shadow-md hover:shadow-lg hover:shadow-[#DCA51B]/25 transition-all duration-300 active:scale-95 cursor-pointer inline-flex items-center justify-center font-sans"
-            >
-              BOOK A VISIT
-            </Link>
-          </div>
-
-          {/* Mobile CTA Area */}
-          <div className="lg:hidden flex items-center gap-3">
-            <Link 
-              to="/book" 
-              className="bg-[#DCA51B] text-[#121316] font-extrabold text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm"
-            >
-              BOOK A VISIT
-            </Link>
-          </div>
-
         </div>
       </header>
 
