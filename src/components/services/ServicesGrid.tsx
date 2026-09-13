@@ -159,19 +159,19 @@ export const ServicesGrid = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className={`w-full ${filteredServices.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8'}`}
+            className={`w-full ${filteredServices.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8 auto-rows-fr'}`}
           >
             {filteredServices.map((service) => {
               const Icon = service.icon;
               return (
                 <div
                   key={service.id}
-                  className="luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group cursor-pointer border border-[#E8E2D5]/70 hover:border-[#DCA51B]/40 bg-white hover:-translate-y-1"
+                  className="luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group cursor-pointer border border-[#E8E2D5]/70 hover:border-[#DCA51B]/40 bg-white hover:-translate-y-1 h-full"
                   onClick={() => setSelectedService(service)}
                 >
                   
                   {/* Left Column: Landscape Image Container */}
-                  <div className="sm:w-[48%] relative overflow-hidden bg-[#FAF7F2] shrink-0 min-h-[220px] sm:min-h-full">
+                  <div className="sm:w-[46%] lg:w-[48%] relative overflow-hidden bg-[#FAF7F2] shrink-0 min-h-[220px] sm:min-h-0 sm:h-full">
                     <img 
                       src={service.img} 
                       alt={service.title} 
@@ -196,8 +196,8 @@ export const ServicesGrid = () => {
                   </div>
 
                   {/* Right Column: Service Content & Actions */}
-                  <div className="sm:w-[52%] p-5 sm:p-6 lg:p-7 flex flex-col justify-between">
-                    <div>
+                  <div className="sm:w-[54%] lg:w-[52%] p-5 sm:p-6 lg:p-7 flex flex-col justify-between h-full flex-grow">
+                    <div className="flex flex-col flex-grow">
                       {/* Top Meta Row with Icon & Index */}
                       <div className="flex items-center justify-between mb-2.5">
                         <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] transition-colors duration-300">
@@ -208,18 +208,18 @@ export const ServicesGrid = () => {
                         </span>
                       </div>
 
-                      {/* Service Title */}
-                      <h3 className="font-serif font-bold text-lg sm:text-xl text-tertiary group-hover:text-[#DCA51B] transition-colors leading-snug mb-2">
+                      {/* Service Title with Uniform 2-Line Height Alignment */}
+                      <h3 className="font-serif font-bold text-lg sm:text-xl text-tertiary group-hover:text-[#DCA51B] transition-colors leading-snug mb-2 min-h-[3rem] sm:min-h-[3.25rem] flex items-center">
                         {service.title}
                       </h3>
 
-                      {/* Description */}
-                      <p className="text-neutral text-xs sm:text-[13px] leading-relaxed mb-3.5 font-sans font-light line-clamp-2">
+                      {/* Description with Uniform Height */}
+                      <p className="text-neutral text-xs sm:text-[13px] leading-relaxed mb-3.5 font-sans font-light line-clamp-2 min-h-[2.5rem] sm:min-h-[2.6rem]">
                         {service.desc}
                       </p>
 
-                      {/* Key Clinical Advantages */}
-                      <div className="space-y-1.5 pb-4 border-b border-border/40">
+                      {/* Key Clinical Advantages with Consistent Bottom Alignment */}
+                      <div className="space-y-1.5 pb-4 border-b border-border/40 mt-auto">
                         {service.benefits.slice(0, 2).map((benefit, idx) => (
                           <div key={idx} className="flex items-center gap-2 text-xs font-sans text-tertiary">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
@@ -230,7 +230,7 @@ export const ServicesGrid = () => {
                     </div>
 
                     {/* Bottom Actions Row */}
-                    <div className="pt-3.5 flex items-center justify-between gap-3" onClick={(e) => e.stopPropagation()}>
+                    <div className="pt-3.5 flex items-center justify-between gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => setSelectedService(service)}
                         className="text-xs font-bold uppercase tracking-wider text-tertiary hover:text-[#DCA51B] transition-colors inline-flex items-center gap-1 cursor-pointer py-1 group/details"
