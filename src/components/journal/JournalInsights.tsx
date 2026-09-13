@@ -14,7 +14,11 @@ import {
 import { DentalMirrorIcon } from '../common/DentalIcons';
 import { Link } from 'react-router-dom';
 
-export const JournalInsights: React.FC = () => {
+interface JournalInsightsProps {
+  showFilters?: boolean;
+}
+
+export const JournalInsights: React.FC<JournalInsightsProps> = ({ showFilters = false }) => {
   const [activeCategory, setActiveCategory] = useState<string>('All Topics');
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
@@ -68,25 +72,27 @@ export const JournalInsights: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Interactive Category Filter Bar */}
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-10 sm:mb-12 no-scrollbar reveal-up">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold font-sans tracking-wider uppercase transition-all duration-300 whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? 'bg-[#141518] text-[#DCA51B] shadow-md border border-[#DCA51B]/40 scale-102'
-                    : 'bg-white text-zinc-600 hover:text-zinc-900 border border-[#E8E2D5] hover:border-[#DCA51B]/40'
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
+        {/* 2. Interactive Category Filter Bar (Hidden on Home Page) */}
+        {showFilters && (
+          <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-10 sm:mb-12 no-scrollbar reveal-up">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold font-sans tracking-wider uppercase transition-all duration-300 whitespace-nowrap cursor-pointer ${
+                    isActive
+                      ? 'bg-[#141518] text-[#DCA51B] shadow-md border border-[#DCA51B]/40 scale-102'
+                      : 'bg-white text-zinc-600 hover:text-zinc-900 border border-[#E8E2D5] hover:border-[#DCA51B]/40'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* 3. New Editorial Layout */}
         <AnimatePresence mode="wait">
