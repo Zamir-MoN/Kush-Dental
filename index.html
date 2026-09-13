@@ -4,13 +4,33 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/logo.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="Kush Dental Clinic - Precision Dentistry. Excellence in Every Smile." />
+  <meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function () {
+      function setTabletViewport() {
+        var meta = document.getElementById('viewport-meta');
+        if (!meta) return;
+        var targetWidth = 768;
+        var w = window.innerWidth || document.documentElement.clientWidth || screen.width;
+        if (w < targetWidth) {
+          var scale = (w / targetWidth).toFixed(4);
+          meta.setAttribute('content', 'width=' + targetWidth + ', initial-scale=' + scale + ', minimum-scale=' + scale + ', maximum-scale=2.0, user-scalable=yes');
+        } else {
+          meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        }
+      }
+      setTabletViewport();
+      window.addEventListener('resize', setTabletViewport);
+      window.addEventListener('orientationchange', setTabletViewport);
+    })();
+  </script>
+  <meta name="description" content="Kush Dental Clinic - Precision Dentistry. Excellence in Every Smile." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Syne:wght@600;700;800;900&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
-  <title>Kush Dental Clinic | Luxury Precision Dentistry</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Syne:wght@600;700;800;900&family=Cabinet+Grotesk:wght@700;800;900&display=swap"
+    rel="stylesheet">
+  <title>Kush Dental Clinic</title>
 </head>
 
 <body>
