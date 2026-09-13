@@ -23,15 +23,16 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // 1. Initialize Lenis Smooth Scroll Engine
+    // 1. Initialize Lenis Smooth Scroll Engine (High-performance native touch bypass)
     const lenis = new Lenis({
-      duration: 0.8, // Crisp, responsive scroll duration (eliminates sluggish inertia delay)
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // standard exponential ease-out
+      duration: 0.8, // Crisp, responsive wheel scroll on desktop
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.05,
-      touchMultiplier: 1.6,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 0, // Never hijack native touch momentum
+      syncTouch: false,   // Allow 100% native 120Hz/60Hz compositor scrolling on touch/tablet/mobile
       infinite: false
     });
 

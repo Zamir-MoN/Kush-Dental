@@ -79,8 +79,8 @@ function App() {
       {/* Global Page Loader with Animated SVG Tooth Logo */}
       {loading && <PageLoader onComplete={() => setLoading(false)} />}
 
-      {/* Global Warm Ambience Filter */}
-      <div className="fixed inset-0 pointer-events-none z-[9999] bg-[#DCA51B]/[0.04] mix-blend-multiply" />
+      {/* Global Warm Ambience Filter (Hardware-composited, zero GPU raster penalty) */}
+      <div className="fixed inset-0 pointer-events-none z-[9999] bg-[#DCA51B]/[0.02]" />
       
       <Router>
         <SmoothScroll>

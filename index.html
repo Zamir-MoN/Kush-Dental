@@ -7,21 +7,15 @@
   <meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
     (function () {
-      function setTabletViewport() {
+      var targetWidth = 768;
+      var deviceWidth = Math.min(window.screen.width, window.screen.height);
+      if (deviceWidth > 0 && deviceWidth < targetWidth) {
+        var scale = (deviceWidth / targetWidth).toFixed(4);
         var meta = document.getElementById('viewport-meta');
-        if (!meta) return;
-        var targetWidth = 768;
-        var w = window.innerWidth || document.documentElement.clientWidth || screen.width;
-        if (w < targetWidth) {
-          var scale = (w / targetWidth).toFixed(4);
-          meta.setAttribute('content', 'width=' + targetWidth + ', initial-scale=' + scale + ', minimum-scale=' + scale + ', maximum-scale=2.0, user-scalable=yes');
-        } else {
-          meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        if (meta) {
+          meta.setAttribute('content', 'width=' + targetWidth + ', initial-scale=' + scale + ', maximum-scale=3.0');
         }
       }
-      setTabletViewport();
-      window.addEventListener('resize', setTabletViewport);
-      window.addEventListener('orientationchange', setTabletViewport);
     })();
   </script>
   <meta name="description" content="Kush Dental Clinic - Precision Dentistry. Excellence in Every Smile." />
