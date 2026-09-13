@@ -92,7 +92,7 @@ export const treatments = [
 export const clinicians = [
   {
     id: 'doc1',
-    name: "Dr. Alexander Kush",
+    name: "Dr. Amit Kumar",
     title: "Chief Dental Surgeon & Founder",
     desc: "Over 15 years of dedicated clinical experience in cosmetic smile makeovers and gentle dental care.",
     tags: ["Cosmetic Dentistry", "Veneers"],
@@ -220,7 +220,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: "How our clinic utilizes 3D facial mapping and Golden Ratio metrics to craft bespoke porcelain veneers that naturally flatter your unique features.",
     image: "/images/blog/blog1.jpg",
     category: "Cosmetics",
-    author: "Dr. Alexander Kush",
+    author: "Dr. Amit Kumar",
     authorRole: "Lead Aesthetic Prosthodontist & Founder",
     authorAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24",
     date: "24 Aug 2026",
@@ -246,7 +246,7 @@ export const blogPosts: BlogPost[] = [
     ],
     quote: {
       text: "A truly luxurious smile should never announce itself as artificial; it should look like the smile you were always meant to have.",
-      author: "Dr. Alexander Kush"
+      author: "Dr. Amit Kumar"
     },
     keyTakeaways: [
       "Custom 3D facial mapping ensures tailored symmetry with lip dynamics.",
@@ -379,7 +379,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: "How microscopic adhesive dentistry and monolithic ceramic restorations eliminate the need for aggressive root canals and heavy grinding.",
     image: "/images/blog/blog5.jpg",
     category: "Restorative",
-    author: "Dr. Alexander Kush",
+    author: "Dr. Amit Kumar",
     authorRole: "Lead Aesthetic Prosthodontist & Founder",
     authorAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24",
     date: "18 Apr 2026",
@@ -404,7 +404,7 @@ export const blogPosts: BlogPost[] = [
     ],
     quote: {
       text: "Nature got it right the first time. Our job as modern dentists is to mimic nature, not replace it aggressively.",
-      author: "Dr. Alexander Kush"
+      author: "Dr. Amit Kumar"
     },
     keyTakeaways: [
       "Preserves 3x more natural tooth structure than standard dental crowns.",
@@ -441,6 +441,88 @@ export const blogPosts: BlogPost[] = [
       "Sub-millimeter precision guarantees tight, leak-proof restoration margins.",
       "Direct CAD/CAM milling integration drastically shortens turnaround times.",
       "Patients can view their 3D smile in true color and explore treatment options chairside."
+    ]
+  },
+  {
+    id: 7,
+    title: "Accelerated Orthodontics: Cutting Treatment Time in Half",
+    excerpt: "How photobiomodulation light therapy and micro-osteoperforations enable teeth to move safely and comfortably at twice the standard speed.",
+    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1200&auto=format&fit=crop",
+    category: "Orthodontics",
+    author: "Dr. Sarah Jenkins",
+    authorRole: "Chief Orthodontist & Dentofacial Orthopedist",
+    authorAvatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop",
+    date: "28 May 2026",
+    readTime: "5 min read",
+    tags: ["Orthodontics", "Accelerated Treatment", "Photobiomodulation", "Bite Correction"],
+    introduction: "For working professionals and adults seeking smile alignment, traditional two-year timelines are often a major hurdle. With modern accelerated orthodontics, biological stimulation technologies shorten treatment durations to just 6 to 9 months safely.",
+    sections: [
+      {
+        heading: "The Science of High-Frequency Cellular Remodeling",
+        body: [
+          "Photobiomodulation uses gentle near-infrared light pulses to stimulate mitochondrial ATP production in surrounding alveolar bone cells.",
+          "This enhances bone remodeling kinetics without increasing applied mechanical force, ensuring teeth glide smoothly with minimal soreness."
+        ],
+        highlight: "Accelerated cellular remodeling allows tray change cycles to drop from 14 days down to just 5 days."
+      },
+      {
+        heading: "Micro-Osteoperforations (MOPs) for Stubborn Rotations",
+        body: [
+          "In complex cases involving severely rotated premolars or impacted canines, micro-osteoperforations trigger localized cytokine expression.",
+          "This temporary regional acceleratory phenomenon (RAP) unlocks stubborn tooth movement while preserving bone density."
+        ]
+      }
+    ],
+    quote: {
+      text: "Accelerated orthodontics respects biology while delivering results in months rather than years.",
+      author: "Dr. Sarah Jenkins"
+    },
+    keyTakeaways: [
+      "Reduces overall orthodontic treatment time by up to 50%.",
+      "Photobiomodulation enhances natural cellular bone remodeling safely.",
+      "Minimizes orthodontic discomfort and prevents root resorption.",
+      "Compatible with both clear aligners and lingual appliances."
+    ]
+  },
+  {
+    id: 9,
+    title: "Orthodontic Retention: The Lifetime Guide to Keeping Your Smile Flawless",
+    excerpt: "Why teeth have biological memory and how modern bonded lingual wires combined with nocturnal Essix retainers secure your results forever.",
+    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1200&auto=format&fit=crop",
+    category: "Orthodontics",
+    author: "Dr. Amit Kumar",
+    authorRole: "Lead Aesthetic Prosthodontist & Founder",
+    authorAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24",
+    date: "08 Mar 2026",
+    readTime: "4 min read",
+    tags: ["Orthodontics", "Retainers", "Smile Preservation", "Oral Health"],
+    introduction: "Completing active orthodontic treatment is an exciting milestone, but the true key to long-term success lies in the retention phase. Periodontal ligament fibers possess elasticity that can pull teeth back toward their original positions without proper post-care.",
+    sections: [
+      {
+        heading: "The Dual-Retention Gold Standard",
+        body: [
+          "At Kush Dental, we employ a dual-retention protocol: a micro-thin bonded wire behind the lower anterior teeth, paired with a custom clear vacuum-formed retainer for nighttime wear.",
+          "This dual barrier prevents both rotational relapse and gradual physiological mesial drift over decades."
+        ],
+        highlight: "Dual retention guarantees your smile stays exactly as straight as the day braces or aligners came off."
+      },
+      {
+        heading: "Retainer Care and Digital Backup Archiving",
+        body: [
+          "With our digital intraoral scan archives, we retain 3D digital records of your finished smile indefinitely.",
+          "If you ever misplace a retainer, a replacement can be 3D printed within 24 hours without retaking impressions."
+        ]
+      }
+    ],
+    quote: {
+      text: "Retention is not an afterthought; it is the insurance policy that protects your smile investment for a lifetime.",
+      author: "Dr. Amit Kumar"
+    },
+    keyTakeaways: [
+      "Dual retention (bonded + nighttime removable) provides 100% relapse prevention.",
+      "Periodontal fibers require 9-12 months of stabilization to reorganize fully.",
+      "Digital 3D file archiving allows instant replacement retainers on demand.",
+      "Simple maintenance checks every 12 months guarantee lasting alignment."
     ]
   }
 ];

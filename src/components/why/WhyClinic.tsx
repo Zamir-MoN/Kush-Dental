@@ -90,7 +90,7 @@ export const WhyClinic: React.FC = () => {
                 Expert Dental Surgeons &amp; Specialists
               </h3>
               <p className="text-zinc-300 text-sm sm:text-[15px] leading-relaxed font-sans font-light max-w-xl">
-                Led by Dr. Alexander Kush, our team delivers personalized, gentle care for every treatment.
+                Led by Dr. Amit Kumar, our team delivers personalized, gentle care for every treatment.
               </p>
             </div>
 

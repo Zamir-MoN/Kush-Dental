@@ -83,12 +83,12 @@ export const AboutSection: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <img 
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
-                    alt="Dr. Alexander Kush" 
+                    alt="Dr. Amit Kumar" 
                     className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-[#DCA51B]/50 shadow-sm"
                   />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="font-serif font-bold text-sm sm:text-base text-white">Dr. Alexander Kush</h4>
+                      <h4 className="font-serif font-bold text-sm sm:text-base text-white">Dr. Amit Kumar</h4>
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B]" />
                     </div>
                     <p className="text-xs text-zinc-300 font-sans">Chief Dental Surgeon &amp; Aesthetic Specialist</p>

@@ -97,10 +97,10 @@ export const AboutHero: React.FC = () => {
           </div>
 
           {/* Card 2: Center - Chief Specialist Focal Portrait (Span 4, Featured) */}
-          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border-2 border-[#DCA51B]/70 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 h-[300px] sm:h-[370px] -mt-0 md:-mt-4 reveal-up z-20">
+          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border-2 border-[#DCA51B]/70 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 h-[350px] sm:h-[425px] md:h-[440px] -mt-0 md:-mt-4 reveal-up z-20">
             <img 
               src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop" 
-              alt="Dr. Alexander Kush & Lead Specialists" 
+              alt="Dr. Amit Kumar & Lead Specialists" 
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
@@ -117,7 +117,7 @@ export const AboutHero: React.FC = () => {
             <div className="absolute bottom-5 left-4 right-4 bg-black/40 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/25 shadow-xl flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h4 className="font-serif font-bold text-base text-white">Dr. Alexander Kush &amp; Team</h4>
+                  <h4 className="font-serif font-bold text-base text-white">Dr. Amit Kumar &amp; Team</h4>
                   <CheckCircle2 className="w-4 h-4 text-[#DCA51B]" />
                 </div>
                 <p className="text-[11px] text-zinc-300 font-sans mt-0.5">Licensed Dental Surgeons &amp; Specialists</p>

@@ -4,6 +4,8 @@ interface AnimatedWaveContoursProps {
   className?: string;
   opacity?: string;
   strokeColor?: string;
+  strokeWidth?: number;
+  speed?: 'normal' | 'water';
 }
 
 // 5 mathematically periodic cubic bezier waves (period = 1440, repeated across 2880 for seamless infinite flow)
@@ -20,14 +22,22 @@ const PATH_5 = "M 0 418.9 C 80.0 415.4, 160.0 408.3, 240.0 394.6 C 320.0 380.9, 
 export const AnimatedWaveContours: React.FC<AnimatedWaveContoursProps> = ({
   className = '',
   opacity = 'opacity-25',
-  strokeColor = '#DCA51B'
+  strokeColor = '#DCA51B',
+  strokeWidth = 1.2,
+  speed = 'normal',
 }) => {
+  const isWater = speed === 'water';
+  const containerAnimClass = isWater ? 'animate-wave-sway-water' : 'animate-wave-flow-container';
+  const fastAnimClass = isWater ? 'animate-wave-flow-water-fast' : 'animate-wave-flow-fast';
+  const medAnimClass = isWater ? 'animate-wave-flow-water-med' : 'animate-wave-flow-med';
+  const slowAnimClass = isWater ? 'animate-wave-flow-water-slow' : 'animate-wave-flow-slow';
+
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden ${opacity} ${className}`}>
-      <div className="absolute inset-0 w-full h-full animate-wave-flow-container">
-        {/* Layer 1: Fast Surface Currents (22s continuous seamless flow) */}
+      <div className={`absolute inset-0 w-full h-full ${containerAnimClass}`}>
+        {/* Layer 1: Fast Surface Currents (continuous seamless flow) */}
         <svg 
-          className="absolute top-0 bottom-0 left-0 w-[200%] h-full animate-wave-flow-fast" 
+          className={`absolute top-0 bottom-0 left-0 w-[200%] h-full ${fastAnimClass}`} 
           viewBox="0 0 2880 600" 
           preserveAspectRatio="none" 
           fill="none"
@@ -35,20 +45,20 @@ export const AnimatedWaveContours: React.FC<AnimatedWaveContoursProps> = ({
           <path 
             d={PATH_1} 
             stroke={strokeColor} 
-            strokeWidth="1.2" 
+            strokeWidth={strokeWidth} 
             vectorEffect="non-scaling-stroke" 
           />
           <path 
             d={PATH_3} 
             stroke={strokeColor} 
-            strokeWidth="1.2" 
+            strokeWidth={strokeWidth} 
             vectorEffect="non-scaling-stroke" 
           />
         </svg>
 
-        {/* Layer 2: Medium Harmonic Currents (32s continuous seamless flow) */}
+        {/* Layer 2: Medium Harmonic Currents (continuous seamless flow) */}
         <svg 
-          className="absolute top-0 bottom-0 left-0 w-[200%] h-full animate-wave-flow-med" 
+          className={`absolute top-0 bottom-0 left-0 w-[200%] h-full ${medAnimClass}`} 
           viewBox="0 0 2880 600" 
           preserveAspectRatio="none" 
           fill="none"
@@ -56,20 +66,20 @@ export const AnimatedWaveContours: React.FC<AnimatedWaveContoursProps> = ({
           <path 
             d={PATH_2} 
             stroke={strokeColor} 
-            strokeWidth="1.2" 
+            strokeWidth={strokeWidth} 
             vectorEffect="non-scaling-stroke" 
           />
           <path 
             d={PATH_4} 
             stroke={strokeColor} 
-            strokeWidth="1.2" 
+            strokeWidth={strokeWidth} 
             vectorEffect="non-scaling-stroke" 
           />
         </svg>
 
-        {/* Layer 3: Deep Ambient Base Current (42s continuous seamless flow) */}
+        {/* Layer 3: Deep Ambient Base Current (continuous seamless flow) */}
         <svg 
-          className="absolute top-0 bottom-0 left-0 w-[200%] h-full animate-wave-flow-slow" 
+          className={`absolute top-0 bottom-0 left-0 w-[200%] h-full ${slowAnimClass}`} 
           viewBox="0 0 2880 600" 
           preserveAspectRatio="none" 
           fill="none"
@@ -77,7 +87,7 @@ export const AnimatedWaveContours: React.FC<AnimatedWaveContoursProps> = ({
           <path 
             d={PATH_5} 
             stroke={strokeColor} 
-            strokeWidth="1.2" 
+            strokeWidth={strokeWidth} 
             vectorEffect="non-scaling-stroke" 
           />
         </svg>

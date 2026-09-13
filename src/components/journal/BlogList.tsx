@@ -1,9 +1,9 @@
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { blogPosts, type BlogPost } from '../../data';
-import { ArrowUpRight, Calendar, Clock, Sparkles, RefreshCw } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ArrowUpRight, Calendar, Clock, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { FeaturedPostSpotlight } from './FeaturedPostSpotlight';
 import { BlogNewsletter } from './BlogNewsletter';
 import { EditorialStandards } from './EditorialStandards';
@@ -19,12 +19,34 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
 
-  const [activeCategory, setActiveCategory] = useState('View all');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
 
-  // Filtered Posts
+  // Derive active category from URL search params (or default to 'View all')
+  const activeCategory = useMemo(() => {
+    if (!categoryParam) return 'View all';
+    const matched = categories.find(
+      c => c.toLowerCase() === categoryParam.toLowerCase()
+    );
+    return matched || 'View all';
+  }, [categoryParam]);
+
+  const handleSelectCategory = (cat: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (cat === 'View all') {
+        next.delete('category');
+      } else {
+        next.set('category', cat);
+      }
+      return next;
+    }, { replace: true });
+  };
+
+  // Filtered Posts matching selected category and search query
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post: BlogPost) => {
-      const matchesCategory = activeCategory === 'View all' || post.category === activeCategory;
+      const matchesCategory = activeCategory === 'View all' || post.category.toLowerCase() === activeCategory.toLowerCase();
       
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch = !q || (
@@ -39,45 +61,34 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
     });
   }, [activeCategory, searchQuery]);
 
-  // Featured post is the first one in the dataset when on 'View all' without search
-  const featuredPost = (activeCategory === 'View all' && !searchQuery) 
-    ? blogPosts[0] 
-    : null;
+  // Featured spotlight card updates dynamically with the selected category!
+  const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
 
-  // Grid posts (exclude featuredPost if it's shown in spotlight)
-  const gridPosts = featuredPost 
-    ? filteredPosts.filter(p => p.id !== featuredPost.id)
-    : filteredPosts;
+  // Grid posts: remaining posts after the featured spotlight (e.g. 5 remaining posts on 'View all')
+  const gridPosts = filteredPosts.length > 1 ? filteredPosts.slice(1) : [];
 
   const handleResetFilters = () => {
-    setActiveCategory('View all');
+    handleSelectCategory('View all');
     setSearchQuery('');
   };
 
   return (
-    <section ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-12 md:py-16">
+    <section ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-8 md:py-12">
       
-      {/* Featured Spotlight (Only shown on primary default view) */}
-      {featuredPost && (
-        <div className="reveal-up">
-          <FeaturedPostSpotlight post={featuredPost} />
-        </div>
-      )}
-
-      {/* Categories Filter Bar */}
-      <div className="flex justify-center mb-12 reveal-up">
+      {/* Categories Filter Bar (Positioned prominently at top of listings) */}
+      <div className="flex justify-center mb-10 sm:mb-12">
         <div className="bg-[#FCFBF8] rounded-2xl p-2 sm:p-2.5 border border-[#E8E2D5] shadow-sm flex items-center overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 max-w-full">
           {categories.map((cat) => {
             const count = cat === 'View all' 
               ? blogPosts.length 
-              : blogPosts.filter(p => p.category === cat).length;
+              : blogPosts.filter(p => p.category.toLowerCase() === cat.toLowerCase()).length;
 
-            const isActive = activeCategory === cat;
+            const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
 
             return (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => handleSelectCategory(cat)}
                 className={`relative px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 flex items-center gap-2 cursor-pointer font-sans ${
                   isActive
                     ? 'text-white'
@@ -103,7 +114,23 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
         </div>
       </div>
 
-      {/* Grid of Clinical Articles */}
+      {/* Featured Spotlight Card (Smoothly updates when category changes) */}
+      <AnimatePresence mode="wait">
+        {featuredPost && (
+          <motion.div
+            key={featuredPost.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="mb-14 lg:mb-18"
+          >
+            <FeaturedPostSpotlight post={featuredPost} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Grid of Remaining Clinical Articles */}
       <AnimatePresence mode="wait">
         {gridPosts.length > 0 ? (
           <motion.div
@@ -112,130 +139,153 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className={`w-full ${gridPosts.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch'}`}
+            className="w-full mb-16"
           >
-            {gridPosts.map((post) => (
-              <article
-                key={post.id}
-                className="group luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row h-full w-full hover:-translate-y-1"
-              >
-                {/* Left Image Column (Uniform Aspect & Height) */}
-                <Link 
-                  to={`/blog/${post.id}`} 
-                  className="sm:w-[44%] lg:w-[42%] h-[230px] sm:h-auto min-h-[230px] sm:min-h-full relative overflow-hidden bg-[#FAF7F2] shrink-0 cursor-pointer block"
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#E8E2D5]">
+              <h3 className="font-serif font-bold text-xl sm:text-2xl text-zinc-900">
+                More Clinical Publications
+              </h3>
+              <span className="text-xs text-zinc-500 font-sans font-medium">
+                {gridPosts.length} additional publication{gridPosts.length > 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="flex flex-col gap-8 lg:gap-10 w-full">
+            {gridPosts.map((post, idx) => {
+              const isEven = idx % 2 === 0;
+
+              return (
+                <article
+                  key={post.id}
+                  className={`group luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-[#E8E2D5] hover:border-[#DCA51B]/50 flex flex-col ${
+                    isEven ? 'md:flex-row' : 'md:flex-row-reverse'
+                  } w-full bg-[#FCFBF8] hover:-translate-y-1`}
                 >
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none" />
+                  {/* Image Side (Alternating Left/Right) */}
+                  <Link 
+                    to={`/blog/${post.id}`} 
+                    className="md:w-[44%] lg:w-[42%] min-h-[260px] sm:min-h-[300px] md:min-h-[330px] relative overflow-hidden bg-[#141518] shrink-0 cursor-pointer block"
+                  >
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
 
-                  {/* Badges Over Image */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="px-3 py-1 bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[10.5px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-sm font-sans">
-                      {post.category}
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-3 left-3.5">
-                    <span className="px-2.5 py-0.5 bg-black/75 backdrop-blur-md text-white text-[10.5px] font-medium rounded-lg flex items-center gap-1 font-sans">
-                      <Clock className="w-3 h-3 text-[#DCA51B]" />
-                      {post.readTime}
-                    </span>
-                  </div>
-                </Link>
-
-                {/* Right Content Column */}
-                <div className="sm:w-[56%] lg:w-[58%] p-5 sm:p-6 flex flex-col justify-between flex-1 min-w-0">
-                  <div className="flex-1 flex flex-col">
-                    {/* Publication Date & Author Avatar Line */}
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <img
-                          src={post.authorAvatar}
-                          alt={post.author}
-                          className="w-6 h-6 rounded-full object-cover object-top border border-[#DCA51B]/50 shrink-0"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop";
-                          }}
-                        />
-                        <span className="text-[11.5px] font-semibold text-[#141518] font-sans truncate">
-                          {post.author}
-                        </span>
-                      </div>
-                      <span className="text-[10.5px] text-zinc-500 flex items-center gap-1 font-medium font-sans shrink-0">
-                        <Calendar className="w-3 h-3 text-[#DCA51B]" />
-                        {post.date}
+                    {/* Category Tag on Image */}
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3.5 py-1.5 bg-[#141518]/90 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-md font-sans">
+                        {post.category}
                       </span>
                     </div>
 
-                    {/* Title */}
-                    <Link to={`/blog/${post.id}`} className="block group/title mb-2">
-                      <h3 className="font-serif font-bold text-base sm:text-lg text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-snug line-clamp-2 min-h-[2.75rem] flex items-center">
-                        {post.title}
-                      </h3>
-                    </Link>
+                    {/* Reading Duration Tag */}
+                    <div className="absolute bottom-4 left-4">
+                      <span className="px-3 py-1 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium rounded-lg flex items-center gap-1.5 font-sans border border-white/10">
+                        <Clock className="w-3.5 h-3.5 text-[#DCA51B]" />
+                        {post.readTime}
+                      </span>
+                    </div>
+                  </Link>
 
-                    {/* Excerpt */}
-                    <p className="font-sans text-zinc-600 text-xs sm:text-[13px] line-clamp-2 leading-relaxed mb-3 font-light">
-                      {post.excerpt}
-                    </p>
-                  </div>
+                  {/* Editorial Content Side */}
+                  <div className="md:w-[56%] lg:w-[58%] p-6 sm:p-8 lg:p-10 flex flex-col justify-between flex-1 min-w-0 bg-[#FCFBF8]">
+                    <div className="flex-1 flex flex-col">
+                      
+                      {/* Top Author Info & Date */}
+                      <div className="flex items-center justify-between gap-3 mb-3.5">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <img
+                            src={post.authorAvatar}
+                            alt={post.author}
+                            className="w-7 h-7 rounded-full object-cover object-top border border-[#DCA51B]/60 shadow-xs shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop";
+                            }}
+                          />
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <span className="text-xs font-bold text-[#141518] font-serif truncate">
+                              {post.author}
+                            </span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
+                          </div>
+                        </div>
 
-                  {/* Card Bottom: Tags & Link (Pinned strictly at bottom) */}
-                  <div className="mt-auto pt-3 border-t border-[#E8E2D5] flex items-center justify-between gap-2 min-w-0">
-                    <div className="flex items-center gap-1.5 overflow-hidden flex-nowrap min-w-0">
-                      {post.tags.slice(0, 2).map(tag => (
-                        <span 
-                          key={tag} 
-                          className="text-[9.5px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2 py-0.5 rounded font-medium font-sans whitespace-nowrap truncate max-w-[110px]"
-                        >
-                          #{tag}
+                        <span className="text-xs text-zinc-500 flex items-center gap-1.5 font-medium font-sans shrink-0">
+                          <Calendar className="w-3.5 h-3.5 text-[#DCA51B]" />
+                          {post.date}
                         </span>
-                      ))}
+                      </div>
+
+                      {/* Main Title */}
+                      <Link to={`/blog/${post.id}`} className="block group/title mb-3">
+                        <h3 className="font-serif font-bold text-xl sm:text-2xl lg:text-[25px] text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-[1.26]">
+                          {post.title}
+                        </h3>
+                      </Link>
+
+                      {/* Excerpt */}
+                      <p className="font-sans text-zinc-600 text-sm sm:text-base line-clamp-3 leading-relaxed mb-5 font-light">
+                        {post.excerpt}
+                      </p>
+
+                      {/* Tag Pills */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.tags.slice(0, 3).map(tag => (
+                          <span 
+                            key={tag} 
+                            className="text-[11px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2.5 py-1 rounded-lg font-medium font-sans"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    <Link
-                      to={`/blog/${post.id}`}
-                      className="inline-flex items-center gap-1 text-[11.5px] font-bold uppercase tracking-wider text-[#DCA51B] group-hover:translate-x-1 transition-transform shrink-0 cursor-pointer font-sans"
-                    >
-                      <span>Read Case</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
+                    {/* Bottom Author Role & Read Action */}
+                    <div className="pt-4 border-t border-[#E8E2D5] flex items-center justify-between gap-3">
+                      <span className="text-xs text-zinc-500 font-sans truncate font-medium">
+                        {post.authorRole}
+                      </span>
 
-              </article>
-            ))}
-          </motion.div>
-        ) : (
-          /* Empty State */
-          <motion.div 
-            key="empty"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="luxury-card rounded-3xl p-12 text-center my-8"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] mx-auto mb-4">
-              <Sparkles className="w-8 h-8" />
+                      <Link
+                        to={`/blog/${post.id}`}
+                        className="inline-flex items-center gap-2 bg-[#141518] hover:bg-[#DCA51B] text-white hover:text-[#141518] font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-sm group-hover:shadow-md cursor-pointer font-sans shrink-0"
+                      >
+                        <span>Read Study</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Link>
+                    </div>
+
+                  </div>
+
+                </article>
+              );
+            })}
             </div>
-            <h3 className="font-serif text-2xl text-[#141518] mb-2">No Matching Articles Found</h3>
-            <p className="font-sans text-zinc-600 text-sm max-w-md mx-auto mb-6 leading-relaxed font-light">
-              We couldn't find any clinical publications matching your filter criteria. Try clearing search filters or selecting another specialty.
-            </p>
-            <button
-              onClick={handleResetFilters}
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#141518] text-white hover:bg-[#DCA51B] hover:text-[#141518] font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md cursor-pointer font-sans"
-            >
-              <RefreshCw className="w-4 h-4" />
-              <span>View All Clinical Articles</span>
-            </button>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
+
+      {/* Empty State when no articles match */}
+      {!featuredPost && filteredPosts.length === 0 && (
+        <div className="luxury-card rounded-3xl p-12 text-center my-8">
+          <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] mx-auto mb-4">
+            <Sparkles className="w-8 h-8" />
+          </div>
+          <h3 className="font-serif text-2xl text-[#141518] mb-2">No Matching Articles Found</h3>
+          <p className="font-sans text-zinc-600 text-sm max-w-md mx-auto mb-6 leading-relaxed font-light">
+            We couldn't find any clinical publications matching your filter criteria. Try clearing search filters or selecting another specialty.
+          </p>
+          <button
+            onClick={handleResetFilters}
+            className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#141518] text-white hover:bg-[#DCA51B] hover:text-[#141518] font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md cursor-pointer font-sans"
+          >
+            <RefreshCw className="w-4 h-4" />
+            <span>View All Clinical Articles</span>
+          </button>
+        </div>
+      )}
 
       {/* Middle VIP Digest Banner */}
       <div className="reveal-up">

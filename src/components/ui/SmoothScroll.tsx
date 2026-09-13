@@ -80,31 +80,63 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  // 4. Scroll to top on route change smoothly and refresh triggers
+  // 4. Handle route change & smooth anchor hash navigation (e.g. #gallery)
   useEffect(() => {
-    const resetScroll = () => {
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(0, { immediate: true });
-      }
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
+    if (location.hash) {
+      const scrollToHash = () => {
+        const targetElement = document.querySelector(location.hash);
+        if (targetElement) {
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(targetElement as HTMLElement, {
+              offset: -70,
+              duration: 1.2,
+              easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+            });
+          } else {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+          ScrollTrigger.refresh();
+          return true;
+        }
+        return false;
+      };
 
-    resetScroll();
-    const t1 = setTimeout(resetScroll, 50);
-    const t2 = setTimeout(resetScroll, 150);
-    const t3 = setTimeout(() => {
+      // Try immediately and after route transition animation finishes
+      scrollToHash();
+      const t1 = setTimeout(scrollToHash, 100);
+      const t2 = setTimeout(scrollToHash, 300);
+      const t3 = setTimeout(scrollToHash, 550);
+
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
+    } else {
+      const resetScroll = () => {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { immediate: true });
+        }
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+
       resetScroll();
-      ScrollTrigger.refresh();
-    }, 300);
+      const t1 = setTimeout(resetScroll, 50);
+      const t2 = setTimeout(resetScroll, 150);
+      const t3 = setTimeout(() => {
+        resetScroll();
+        ScrollTrigger.refresh();
+      }, 300);
 
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, [location.pathname]);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
+    }
+  }, [location.pathname, location.hash]);
 
   const scrollTo = (target: string | number | HTMLElement, options?: any) => {
     if (lenisRef.current) {

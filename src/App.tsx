@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { LoadingProvider, useLoading } from './context/LoadingContext';
 import { Home } from './pages/Home';
 import { Booking } from './pages/Booking';
 import { Services } from './pages/Services';
@@ -71,13 +72,27 @@ const AnimatedRoutes = () => {
   );
 };
 
-function App() {
-  const [loading, setLoading] = useState(true);
+function AppContent() {
+  const [showLoader, setShowLoader] = useState(true);
+  const { setIsLoaded } = useLoading();
+
+  const handleLoadingComplete = () => {
+    setIsLoaded(true);
+  };
+
+  const handleLoaderDestroyed = () => {
+    setShowLoader(false);
+  };
 
   return (
     <>
       {/* Global Page Loader with Animated SVG Tooth Logo */}
-      {loading && <PageLoader onComplete={() => setLoading(false)} />}
+      {showLoader && (
+        <PageLoader 
+          onComplete={handleLoadingComplete} 
+          onDestroy={handleLoaderDestroyed} 
+        />
+      )}
 
       {/* Global Warm Ambience Filter (Hardware-composited, zero GPU raster penalty) */}
       <div className="fixed inset-0 pointer-events-none z-[9999] bg-[#DCA51B]/[0.02]" />
@@ -101,6 +116,14 @@ function App() {
         </SmoothScroll>
       </Router>
     </>
+  );
+}
+
+function App() {
+  return (
+    <LoadingProvider>
+      <AppContent />
+    </LoadingProvider>
   );
 }
 

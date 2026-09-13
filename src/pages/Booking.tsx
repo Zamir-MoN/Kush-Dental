@@ -60,7 +60,7 @@ export const Booking = () => {
               Book Your Dental Visit<span className="text-[#DCA51B]">.</span>
             </h1>
             <p className="text-zinc-600 text-sm sm:text-base font-sans font-light max-w-2xl leading-relaxed">
-              Choose your treatment and pick a convenient appointment date and time with Dr. Alexander Kush.
+              Choose your treatment and pick a convenient appointment date and time with Dr. Amit Kumar.
             </p>
           </Reveal>
 

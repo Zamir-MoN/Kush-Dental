@@ -17,6 +17,7 @@ interface GalleryItem {
   category: 'Treatment Suites' | 'Patient Lounge' | 'Digital 3D Labs' | 'Sterilization';
   description: string;
   image: string;
+  images?: string[];
   features: string[];
   span?: string;
 }
@@ -28,6 +29,12 @@ const galleryItems: GalleryItem[] = [
     category: 'Treatment Suites',
     description: 'Quiet surgical suites with ergonomic chairs and overhead entertainment.',
     image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1200&auto=format&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1629909615184-74f495363b67?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1200&auto=format&fit=crop'
+    ],
     features: ['Whisper-quiet handpieces', 'Low-dose sensors', 'Overhead 4K display'],
     span: 'md:col-span-8 md:row-span-2'
   },
@@ -37,6 +44,10 @@ const galleryItems: GalleryItem[] = [
     category: 'Patient Lounge',
     description: 'Calming reception lounge with private seating and herbal teas.',
     image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1200&auto=format&fit=crop'
+    ],
     features: ['Organic tea & espresso bar', 'Calm ambient soundscape', 'Private seating'],
     span: 'md:col-span-4'
   },
@@ -78,19 +89,165 @@ const galleryItems: GalleryItem[] = [
   }
 ];
 
-const categories = ['All Spaces', 'Treatment Suites', 'Patient Lounge', 'Digital 3D Labs', 'Sterilization'] as const;
+interface DynamicGalleryCardProps {
+  item: GalleryItem;
+  idx: number;
+  isLarge: string;
+  onOpenLightbox: (idx: number, photoIdx: number) => void;
+}
+
+const DynamicGalleryCard: React.FC<DynamicGalleryCardProps> = ({
+  item,
+  idx,
+  isLarge,
+  onOpenLightbox
+}) => {
+  const images = item.images && item.images.length > 0 ? item.images : [item.image];
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-cycle through images dynamically every 3.5 seconds
+  useEffect(() => {
+    if (images.length <= 1 || isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [images.length, isHovered]);
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev + 1) % images.length);
+  };
+
+  return (
+    <div
+      onClick={() => onOpenLightbox(idx, currentIdx)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative rounded-3xl overflow-hidden border border-[#E8E2D5] bg-[#141518] shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col justify-end min-h-[260px] sm:min-h-[320px] ${isLarge}`}
+    >
+      {/* Dynamic Background Images with Smooth Crossfade & Ken Burns Scale */}
+      <div className="absolute inset-0 overflow-hidden bg-[#141518]">
+        {images.map((imgSrc, imgIdx) => (
+          <img
+            key={imgSrc}
+            src={imgSrc}
+            alt={`${item.title} - View ${imgIdx + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out ${
+              imgIdx === currentIdx
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-108 pointer-events-none'
+            }`}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-300 group-hover:via-black/35" />
+      </div>
+
+      {/* Top Floating Badge & Multi-Angle Counter */}
+      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 rounded-full bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider font-sans border border-white/10 shadow-sm">
+            {item.category}
+          </span>
+          {images.length > 1 && (
+            <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-semibold font-sans border border-white/15 shadow-sm flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#DCA51B] animate-pulse" />
+              <span>{images.length} Dynamic Views</span>
+            </span>
+          )}
+        </div>
+
+        <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110">
+          <Eye className="w-4 h-4" />
+        </span>
+      </div>
+
+      {/* Manual Quick Navigation Chevrons on Hover */}
+      {images.length > 1 && (
+        <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+          <button
+            onClick={handlePrev}
+            className="w-8 h-8 rounded-full bg-black/60 hover:bg-[#DCA51B] hover:text-[#141518] text-white flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100 transition-all duration-200 border border-white/20 cursor-pointer shadow-md"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleNext}
+            className="w-8 h-8 rounded-full bg-black/60 hover:bg-[#DCA51B] hover:text-[#141518] text-white flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100 transition-all duration-200 border border-white/20 cursor-pointer shadow-md"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Bottom Content Title & View Indicators */}
+      <div className="relative z-10 p-5 sm:p-6 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h3 className="font-serif font-bold text-lg sm:text-xl text-white group-hover:text-[#DCA51B] transition-colors leading-snug">
+            {item.title}
+          </h3>
+          <p className="text-zinc-300 text-xs font-sans font-light mt-1 max-w-sm line-clamp-1">
+            {item.description}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0">
+          {images.length > 1 && (
+            <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentIdx(i);
+                  }}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    i === currentIdx
+                      ? 'w-5 bg-[#DCA51B]'
+                      : 'w-1.5 bg-white/40 hover:bg-white/70'
+                  }`}
+                  aria-label={`View photo ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          <span className="text-xs font-sans text-zinc-300 group-hover:text-white flex items-center gap-1 transition-colors">
+            <span>Explore</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const categories = ['View All', 'Treatment Suites', 'Patient Lounge', 'Digital 3D Labs', 'Sterilization'] as const;
 type CategoryFilter = (typeof categories)[number];
 
 export const AboutGallery: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
 
-  const [activeCategory, setActiveCategory] = useState<CategoryFilter>('All Spaces');
+  const [activeCategory, setActiveCategory] = useState<CategoryFilter>('View All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxPhotoIndex, setLightboxPhotoIndex] = useState<number>(0);
 
-  const filteredItems = activeCategory === 'All Spaces'
+  const filteredItems = activeCategory === 'View All'
     ? galleryItems
     : galleryItems.filter(item => item.category === activeCategory);
+
+  const handleOpenLightbox = (idx: number, photoIdx: number = 0) => {
+    setLightboxIndex(idx);
+    setLightboxPhotoIndex(photoIdx);
+  };
 
   // Close lightbox with ESC key
   useEffect(() => {
@@ -147,7 +304,7 @@ export const AboutGallery: React.FC = () => {
           <div className="inline-flex items-center p-1.5 rounded-2xl bg-white border border-[#E8E2D5] shadow-xs">
             {categories.map((category) => {
               const isActive = activeCategory === category;
-              const count = category === 'All Spaces' 
+              const count = category === 'View All' 
                 ? galleryItems.length 
                 : galleryItems.filter(i => i.category === category).length;
 
@@ -184,45 +341,16 @@ export const AboutGallery: React.FC = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-stretch"
           >
             {filteredItems.map((item, idx) => {
-              const isLarge = activeCategory === 'All Spaces' && item.span ? item.span : 'md:col-span-6 lg:col-span-4';
+              const isLarge = activeCategory === 'View All' && item.span ? item.span : 'md:col-span-6 lg:col-span-4';
 
               return (
-                <div
+                <DynamicGalleryCard
                   key={item.id}
-                  onClick={() => setLightboxIndex(idx)}
-                  className={`group relative rounded-3xl overflow-hidden border border-[#E8E2D5] bg-white shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col justify-end min-h-[260px] sm:min-h-[300px] ${isLarge}`}
-                >
-                  {/* Background Image */}
-                  <div className="absolute inset-0 overflow-hidden bg-[#FAF7F2]">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300 group-hover:via-black/35" />
-                  </div>
-
-                  {/* Top Floating Badge & Quick View Pill */}
-                  <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-                    <span className="px-3 py-1 rounded-full bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider font-sans border border-white/10 shadow-sm">
-                      {item.category}
-                    </span>
-
-                    <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110">
-                      <Eye className="w-4 h-4" />
-                    </span>
-                  </div>
-
-                  {/* Bottom Content Title */}
-                  <div className="relative z-10 p-5 sm:p-6 text-white flex items-end justify-between gap-3">
-                    <h3 className="font-serif font-bold text-lg sm:text-xl text-white group-hover:text-[#DCA51B] transition-colors leading-snug">
-                      {item.title}
-                    </h3>
-                    <span className="shrink-0 text-xs font-sans text-zinc-300 group-hover:text-white flex items-center gap-1 transition-colors">
-                      <span>View</span>
-                    </span>
-                  </div>
-                </div>
+                  item={item}
+                  idx={idx}
+                  isLarge={isLarge}
+                  onOpenLightbox={handleOpenLightbox}
+                />
               );
             })}
           </motion.div>
@@ -265,9 +393,9 @@ export const AboutGallery: React.FC = () => {
                 {/* Left: High-Res Image View with Navigation */}
                 <div className="lg:w-[62%] relative bg-[#141518] min-h-[300px] sm:min-h-[400px] lg:min-h-[500px] flex items-center justify-center overflow-hidden group">
                   <img 
-                    src={activeLightboxItem.image} 
+                    src={activeLightboxItem.images?.[lightboxPhotoIndex] || activeLightboxItem.image} 
                     alt={activeLightboxItem.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-all duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 

@@ -370,6 +370,27 @@
   will-change: transform;
 }
 
+/* Dynamic Water Flow Speeds */
+.animate-wave-flow-water-fast {
+  animation: waveFlowTranslate1 14s linear infinite;
+  will-change: transform;
+}
+
+.animate-wave-flow-water-med {
+  animation: waveFlowTranslate2 20s linear infinite;
+  will-change: transform;
+}
+
+.animate-wave-flow-water-slow {
+  animation: waveFlowTranslate3 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-wave-sway-water {
+  animation: waveSwayGentle 9s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* Water Drop Ripple Animations */
 @keyframes waterDropRipple {
   0% {
@@ -421,4 +442,75 @@
   will-change: transform, opacity;
 }
 
+/* Newsletter Section Animated Waves */
+@keyframes newsletterWaveFlow1 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
 
+@keyframes newsletterWaveFlow2 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes newsletterFloat1 {
+  0%, 100% {
+    transform: translateY(0px) scaleY(1);
+  }
+  50% {
+    transform: translateY(-9px) scaleY(1.04);
+  }
+}
+
+@keyframes newsletterFloat2 {
+  0%, 100% {
+    transform: translateY(0px) scaleY(1);
+  }
+  50% {
+    transform: translateY(9px) scaleY(0.96);
+  }
+}
+
+@keyframes newsletterGlowPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+.animate-newsletter-flow-1 {
+  animation: newsletterWaveFlow1 20s linear infinite;
+  will-change: transform;
+}
+
+.animate-newsletter-flow-2 {
+  animation: newsletterWaveFlow2 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-newsletter-float-1 {
+  animation: newsletterFloat1 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-newsletter-float-2 {
+  animation: newsletterFloat2 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-newsletter-glow {
+  animation: newsletterGlowPulse 6s ease-in-out infinite;
+  will-change: opacity, transform;
+}

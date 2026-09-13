@@ -4,9 +4,10 @@ import { AnimatedLogo } from './AnimatedLogo';
 
 interface PageLoaderProps {
   onComplete?: () => void;
+  onDestroy?: () => void;
 }
 
-export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete }) => {
+export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy }) => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -16,18 +17,24 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete }) => {
         if (prev >= 100) {
           clearInterval(interval);
           setTimeout(() => {
-            setIsVisible(false);
+            // Signal landing page to begin smooth classic appearing animation
             if (onComplete) onComplete();
-          }, 500);
+            setIsVisible(false);
+
+            // Clean up loader from DOM after exit fade completes
+            setTimeout(() => {
+              if (onDestroy) onDestroy();
+            }, 750);
+          }, 350);
           return 100;
         }
         const jump = prev > 80 ? 4 : (prev > 45 ? 3 : 2);
         return Math.min(prev + jump, 100);
       });
-    }, 45);
+    }, 40);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, [onComplete, onDestroy]);
 
   return (
     <AnimatePresence>

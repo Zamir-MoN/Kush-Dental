@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowLeftRight } from 'lucide-react';
+import { ArrowLeftRight, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const transformations = [
   {
@@ -166,6 +167,17 @@ export const BeforeAfterSlider = () => {
               subtitle={transform.subtitle}
             />
           ))}
+        </div>
+
+        {/* Redirect to Our Modern Suites Gallery */}
+        <div className="text-center mt-12 lg:mt-16 reveal-up">
+          <Link
+            to="/about#gallery"
+            className="btn-outline-luxury px-8 py-3.5 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 group transition-all shadow-xs hover:shadow-md"
+          >
+            <span>Our Modern Suites</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>

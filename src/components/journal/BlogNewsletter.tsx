@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, CheckCircle2, ArrowRight } from 'lucide-react';
+import { AnimatedWaveContours } from '../common/AnimatedWaveContours';
 
 export const BlogNewsletter = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +16,11 @@ export const BlogNewsletter = () => {
 
   return (
     <div className="relative my-20 overflow-hidden rounded-[32px] bg-[#121316] text-white p-8 sm:p-12 lg:p-16 border border-white/10 shadow-2xl">
-      {/* Background Gold Ambient Waves */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden animate-wave-container">
-        <svg className="w-full h-full object-cover" viewBox="0 0 900 400" fill="none">
-          <path className="animate-wave-1" d="M0 100 C300 20 600 250 900 120" stroke="#DCA51B" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-          <path className="animate-wave-3" d="M0 200 C300 120 600 350 900 220" stroke="#DCA51B" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-        </svg>
-      </div>
+      {/* Background Topographic Wave Contours (Exact multi-line water contour wave flow) */}
+      <AnimatedWaveContours opacity="opacity-55" strokeColor="#DCA51B" strokeWidth={1.35} speed="water" />
+
+      {/* Background Gold Ambient Glowing Core */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[320px] bg-[#DCA51B]/15 rounded-full blur-[100px] pointer-events-none animate-newsletter-glow" />
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
 

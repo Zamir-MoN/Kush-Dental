@@ -13,19 +13,19 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md' 
 }) => {
   const imgSizeClass = size === 'sm' 
-    ? 'w-6 h-6' 
+    ? 'w-8 h-8' 
     : size === 'lg' 
-    ? 'w-10 h-10 sm:w-12 sm:h-12' 
-    : 'w-7 h-7 sm:w-8.5 sm:h-8.5';
+    ? 'w-12 h-12 sm:w-14 sm:h-14' 
+    : 'w-9 h-9 sm:w-10 sm:h-10';
   
   return (
-    <Link to="/" className={`flex items-center gap-2 sm:gap-2.5 group cursor-pointer select-none ${className}`}>
-      {/* Official Dental Tooth Mark from user's provided logo */}
+    <Link to="/" className={`flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none ${className}`}>
+      {/* Official Dental Tooth Mark with High-Contrast Luxury Emblem */}
       <div className="relative shrink-0 flex items-center justify-center">
         <img 
-          src="/logo.png" 
+          src="/favicon-512.png" 
           alt="Kush Dental Clinic Logo" 
-          className={`${imgSizeClass} object-contain transition-transform duration-300 group-hover:scale-105`}
+          className={`${imgSizeClass} object-contain rounded-xl shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(220,165,27,0.4)]`}
         />
       </div>
 

@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import StaggeredMenu, { type StaggeredMenuRef } from '../ui/StaggeredMenu';
+import { useLoading } from '../../context/LoadingContext';
 
 export const Header = () => {
+  const { isLoaded } = useLoading();
   const staggeredMenuRef = useRef<StaggeredMenuRef>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -38,7 +40,12 @@ export const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-none px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-3.5">
-        <div className="max-w-[1380px] mx-auto w-full pointer-events-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: -18 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -18 }}
+          transition={{ duration: 0.85, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-[1380px] mx-auto w-full pointer-events-auto"
+        >
           {/* Floating Luxury Island Container */}
           <div 
             className={`relative w-full rounded-2xl sm:rounded-3xl transition-all duration-300 flex items-center justify-between border ${
@@ -122,7 +129,7 @@ export const Header = () => {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       </header>
 
       {/* Mobile Staggered Drawer */}

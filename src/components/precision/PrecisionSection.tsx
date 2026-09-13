@@ -138,7 +138,7 @@ export const PrecisionSection: React.FC = () => {
                 Safe, Minimally Invasive &amp; Digitally Guided Care
               </p>
               <p className="text-xs text-zinc-500 font-sans">
-                Every scan and treatment plan is reviewed in person by Dr. Alexander Kush.
+                Every scan and treatment plan is reviewed in person by Dr. Amit Kumar.
               </p>
             </div>
           </div>
