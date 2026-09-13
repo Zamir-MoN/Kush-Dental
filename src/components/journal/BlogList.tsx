@@ -64,8 +64,21 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
   // Featured spotlight card updates dynamically with the selected category!
   const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
 
-  // Grid posts: remaining posts after the featured spotlight (e.g. 5 remaining posts on 'View all')
-  const gridPosts = filteredPosts.length > 1 ? filteredPosts.slice(1) : [];
+  // Grid posts logic:
+  // If filteredPosts has more than 1 article, show remaining articles in this category.
+  // If filteredPosts has only 1 article (e.g. Implantology, Cosmetics, Oral Surgery, Restorative, Technology),
+  // provide related clinical studies across other specialties so the bottom content always appears rich, complete, and engaging!
+  const isSinglePostCategory = filteredPosts.length === 1 && activeCategory !== 'View all';
+
+  const displayGridPosts = useMemo(() => {
+    if (filteredPosts.length > 1) {
+      return filteredPosts.slice(1);
+    }
+    if (isSinglePostCategory && featuredPost) {
+      return blogPosts.filter((p: BlogPost) => p.id !== featuredPost.id).slice(0, 3);
+    }
+    return [];
+  }, [filteredPosts, isSinglePostCategory, featuredPost]);
 
   const handleResetFilters = () => {
     handleSelectCategory('View all');
@@ -132,7 +145,7 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
 
       {/* Grid of Remaining Clinical Articles */}
       <AnimatePresence mode="wait">
-        {gridPosts.length > 0 ? (
+        {displayGridPosts.length > 0 ? (
           <motion.div
             key={activeCategory + (searchQuery || '')}
             initial={{ opacity: 0, y: 10 }}
@@ -141,16 +154,27 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
             transition={{ duration: 0.22, ease: 'easeOut' }}
             className="w-full mb-16"
           >
-            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#E8E2D5]">
-              <h3 className="font-serif font-bold text-xl sm:text-2xl text-zinc-900">
-                More Clinical Publications
-              </h3>
-              <span className="text-xs text-zinc-500 font-sans font-medium">
-                {gridPosts.length} additional publication{gridPosts.length > 1 ? 's' : ''}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-[#E8E2D5] gap-2">
+              <div>
+                <h3 className="font-serif font-bold text-xl sm:text-2xl text-zinc-900">
+                  {isSinglePostCategory 
+                    ? 'Related Studies & Clinical Publications' 
+                    : activeCategory === 'View all'
+                    ? 'More Clinical Publications'
+                    : `More ${activeCategory} Publications`}
+                </h3>
+                {isSinglePostCategory && (
+                  <p className="text-xs sm:text-sm text-zinc-500 font-sans mt-1 font-light">
+                    Featured study for {activeCategory}. Explore complementary clinical research across our specialties below.
+                  </p>
+                )}
+              </div>
+              <span className="text-xs text-zinc-500 font-sans font-medium shrink-0">
+                {displayGridPosts.length} publication{displayGridPosts.length > 1 ? 's' : ''}
               </span>
             </div>
             <div className="flex flex-col gap-8 lg:gap-10 w-full">
-            {gridPosts.map((post, idx) => {
+            {displayGridPosts.map((post, idx) => {
               const isEven = idx % 2 === 0;
 
               return (
@@ -288,14 +312,24 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
       )}
 
       {/* Middle VIP Digest Banner */}
-      <div className="reveal-up">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <BlogNewsletter />
-      </div>
+      </motion.div>
 
       {/* Editorial Standards & Guarantees */}
-      <div className="reveal-up">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <EditorialStandards />
-      </div>
+      </motion.div>
 
     </section>
   );
