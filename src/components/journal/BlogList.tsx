@@ -182,12 +182,12 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                   key={post.id}
                   className={`group luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-[#E8E2D5] hover:border-[#DCA51B]/50 flex flex-col ${
                     isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-                  } w-full bg-[#FCFBF8] hover:-translate-y-1`}
+                  } w-full bg-[#FCFBF8] hover:-translate-y-1 md:h-[360px] lg:h-[370px]`}
                 >
-                  {/* Image Side (Alternating Left/Right) */}
+                  {/* Image Side (Alternating Left/Right with Uniform Dimensions) */}
                   <Link 
                     to={`/blog/${post.id}`} 
-                    className="md:w-[44%] lg:w-[42%] min-h-[260px] sm:min-h-[300px] md:min-h-[330px] relative overflow-hidden bg-[#141518] shrink-0 cursor-pointer block"
+                    className="md:w-[42%] lg:w-[40%] h-[240px] sm:h-[280px] md:h-full relative overflow-hidden bg-[#141518] shrink-0 cursor-pointer block"
                   >
                     <img
                       src={post.image}
@@ -213,11 +213,11 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                   </Link>
 
                   {/* Editorial Content Side */}
-                  <div className="md:w-[56%] lg:w-[58%] p-6 sm:p-8 lg:p-10 flex flex-col justify-between flex-1 min-w-0 bg-[#FCFBF8]">
-                    <div className="flex-1 flex flex-col">
+                  <div className="md:w-[58%] lg:w-[60%] p-6 sm:p-7 lg:p-8 flex flex-col justify-between flex-1 min-w-0 bg-[#FCFBF8] h-full">
+                    <div className="flex-1 flex flex-col justify-start">
                       
                       {/* Top Author Info & Date */}
-                      <div className="flex items-center justify-between gap-3 mb-3.5">
+                      <div className="flex items-center justify-between gap-3 mb-2.5 shrink-0">
                         <div className="flex items-center gap-2.5 min-w-0">
                           <img
                             src={post.authorAvatar}
@@ -241,24 +241,24 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                         </span>
                       </div>
 
-                      {/* Main Title */}
-                      <Link to={`/blog/${post.id}`} className="block group/title mb-3">
-                        <h3 className="font-serif font-bold text-xl sm:text-2xl lg:text-[25px] text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-[1.26]">
+                      {/* Main Title with Standardized 2-Line Height Alignment */}
+                      <Link to={`/blog/${post.id}`} className="block group/title mb-2">
+                        <h3 className="font-serif font-bold text-xl sm:text-2xl lg:text-[23px] text-[#141518] group-hover:text-[#DCA51B] transition-colors duration-200 leading-[1.24] line-clamp-2 min-h-[3.2rem] sm:min-h-[3.6rem] flex items-center">
                           {post.title}
                         </h3>
                       </Link>
 
-                      {/* Excerpt */}
-                      <p className="font-sans text-zinc-600 text-sm sm:text-base line-clamp-3 leading-relaxed mb-5 font-light">
+                      {/* Excerpt with Uniform 2-Line Height */}
+                      <p className="font-sans text-zinc-600 text-xs sm:text-[13.5px] line-clamp-2 leading-relaxed mb-3 font-light min-h-[2.4rem] sm:min-h-[2.6rem]">
                         {post.excerpt}
                       </p>
 
                       {/* Tag Pills */}
-                      <div className="flex flex-wrap gap-2 mb-4">
+                      <div className="flex flex-wrap gap-1.5 mb-2.5 h-6 overflow-hidden">
                         {post.tags.slice(0, 3).map(tag => (
                           <span 
                             key={tag} 
-                            className="text-[11px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2.5 py-1 rounded-lg font-medium font-sans"
+                            className="text-[10.5px] bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-600 px-2.5 py-0.5 rounded-md font-medium font-sans leading-none flex items-center"
                           >
                             #{tag}
                           </span>
@@ -267,7 +267,7 @@ export const BlogList = ({ searchQuery, setSearchQuery }: BlogListProps) => {
                     </div>
 
                     {/* Bottom Author Role & Read Action */}
-                    <div className="pt-4 border-t border-[#E8E2D5] flex items-center justify-between gap-3">
+                    <div className="pt-3 border-t border-[#E8E2D5] flex items-center justify-between gap-3 mt-auto shrink-0">
                       <span className="text-xs text-zinc-500 font-sans truncate font-medium">
                         {post.authorRole}
                       </span>
