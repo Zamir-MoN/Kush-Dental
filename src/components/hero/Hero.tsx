@@ -62,7 +62,7 @@ export const Hero: React.FC = () => {
         initial={{ opacity: 0, y: 55, scale: 0.97 }}
         animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 55, scale: 0.97 }}
         transition={{ duration: 1.15, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="flex absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-10 2xl:right-16 bottom-0 z-20 pointer-events-none w-[50%] sm:w-[46%] md:w-[42%] lg:w-[43%] xl:w-[41%] 2xl:w-[39%] max-w-[270px] sm:max-w-[360px] md:max-w-[440px] lg:max-w-[540px] xl:max-w-[620px] 2xl:max-w-[680px] h-[72%] sm:h-[78%] md:h-[84%] lg:h-[89%] xl:h-[94%] max-h-[760px] 2xl:max-h-[860px] items-end justify-end"
+        className="flex absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-10 2xl:right-16 bottom-0 z-20 pointer-events-none w-[46%] sm:w-[42%] md:w-[38%] lg:w-[38%] xl:w-[36%] 2xl:w-[34%] max-w-[240px] sm:max-w-[320px] md:max-w-[390px] lg:max-w-[470px] xl:max-w-[530px] 2xl:max-w-[580px] h-[66%] sm:h-[72%] md:h-[76%] lg:h-[80%] xl:h-[83%] max-h-[640px] 2xl:max-h-[720px] items-end justify-end"
       >
         <img 
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
@@ -75,7 +75,7 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 18, x: -12, scale: 0.94 }}
           animate={isLoaded ? { opacity: 1, y: 0, x: 0, scale: 1 } : { opacity: 0, y: 18, x: -12, scale: 0.94 }}
           transition={{ duration: 0.85, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden md:flex absolute bottom-4 lg:bottom-6 -left-6 lg:-left-12 pointer-events-auto bg-black/40 backdrop-blur-md border border-white/20 hover:border-[#DCA51B]/50 rounded-2xl p-2.5 sm:p-3 shadow-2xl items-center gap-2.5 transition-colors duration-300"
+          className="hidden md:flex absolute bottom-4 lg:bottom-6 -left-4 lg:-left-8 pointer-events-auto bg-black/40 backdrop-blur-md border border-white/20 hover:border-[#DCA51B]/50 rounded-2xl p-2.5 sm:p-3 shadow-2xl items-center gap-2.5 transition-colors duration-300"
         >
           <div className="w-8 h-8 rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-4 h-4 text-[#DCA51B]" />
