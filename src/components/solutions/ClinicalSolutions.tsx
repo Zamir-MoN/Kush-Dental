@@ -52,59 +52,19 @@ export const ClinicalSolutions = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-12 lg:gap-16">
+        <div className="flex flex-col gap-6 sm:gap-10 lg:gap-16 w-full">
           {services.map((service, i) => {
             const isEven = i % 2 !== 0;
             const ServiceIcon = getServiceIcon(i);
             return (
-              <div key={service.number} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center reveal-up">
+              <div 
+                key={service.number} 
+                className="w-full bg-[#FCFBF8] lg:bg-transparent rounded-3xl p-5 sm:p-7 lg:p-0 border border-[#E8E2D5] lg:border-none shadow-xs lg:shadow-none grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center reveal-up"
+              >
                 
-                {/* Text Content */}
-                <div className={`lg:col-span-6 ${isEven ? 'lg:pl-8 order-2' : 'lg:pr-8 order-2 lg:order-1'}`}>
-                  <span className="font-serif font-bold text-5xl sm:text-6xl lg:text-7xl text-[#E8E2D5] block leading-none select-none mb-2">
-                    {service.number}
-                  </span>
-                  
-                  <div className="relative z-10 -mt-5 lg:-mt-7">
-                    <div className="flex items-center gap-2.5 mb-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] flex items-center justify-center shrink-0">
-                        <ServiceIcon className="w-4 h-4" />
-                      </div>
-                      <h3 className="font-serif font-bold text-xl sm:text-2xl lg:text-3xl text-zinc-900 leading-tight">
-                        {service.title}
-                      </h3>
-                    </div>
-                    
-                    <p className="text-zinc-600 text-xs sm:text-sm lg:text-[15px] leading-relaxed mb-4 font-sans font-light">
-                      {service.description}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {service.tags.map((tag, idx) => (
-                        <span 
-                          key={idx}
-                          className="font-sans font-semibold text-[11px] uppercase tracking-wider bg-[#FAF7F2] text-zinc-700 border border-[#E8E2D5] px-3 py-1 rounded-lg"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <div className="flex flex-wrap items-center gap-4">
-                      <button 
-                        onClick={() => setSelectedService(service)}
-                        className="btn-outline-luxury group cursor-pointer text-xs py-2.5 px-6"
-                      >
-                        <span>EXPLORE SERVICE</span>
-                        <ArrowRight className="w-4 h-4 text-[#DCA51B] group-hover:text-[#141518] group-hover:translate-x-1.5 transition-all duration-300" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <div className={`lg:col-span-6 ${isEven ? 'order-1' : 'order-1 lg:order-2'}`}>
-                  <div className="aspect-[4/3] lg:aspect-[16/11] max-h-[360px] bg-[#FAF7F2] overflow-hidden rounded-3xl shadow-lg border border-[#E8E2D5] group">
+                {/* Image (Mobile First, Desktop Alternating) */}
+                <div className={`w-full lg:col-span-6 ${isEven ? 'order-1' : 'order-1 lg:order-2'}`}>
+                  <div className="w-full aspect-[16/10] sm:aspect-[4/3] lg:aspect-[16/11] max-h-[360px] bg-[#FAF7F2] overflow-hidden rounded-2xl sm:rounded-3xl shadow-sm lg:shadow-lg border border-[#E8E2D5] group">
                     <img 
                       src={service.image} 
                       alt={service.title} 
@@ -112,6 +72,53 @@ export const ClinicalSolutions = () => {
                       decoding="async"
                       className="w-full h-full object-cover img-reveal-anim transition-transform duration-700 group-hover:scale-105"
                     />
+                  </div>
+                </div>
+
+                {/* Text Content */}
+                <div className={`w-full lg:col-span-6 ${isEven ? 'lg:pl-8 order-2' : 'lg:pr-8 order-2 lg:order-1'}`}>
+                  {/* Service Number Badge & Icon Header */}
+                  <div className="flex items-center justify-between mb-3 lg:mb-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-white lg:bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] flex items-center justify-center shrink-0 shadow-2xs">
+                        <ServiceIcon className="w-4 h-4" />
+                      </div>
+                      <span className="text-[#DCA51B] tracking-[0.16em] text-xs uppercase font-bold font-sans">
+                        SERVICE {service.number}
+                      </span>
+                    </div>
+                    <span className="font-serif font-bold text-3xl sm:text-4xl lg:text-6xl text-[#E8E2D5] select-none leading-none">
+                      {service.number}
+                    </span>
+                  </div>
+                  
+                  <h3 className="font-serif font-bold text-xl sm:text-2xl lg:text-3xl text-zinc-900 leading-tight mb-2.5">
+                    {service.title}
+                  </h3>
+                  
+                  <p className="text-zinc-600 text-xs sm:text-sm lg:text-[15px] leading-relaxed mb-4 font-sans font-light">
+                    {service.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-5 lg:mb-6">
+                    {service.tags.map((tag, idx) => (
+                      <span 
+                        key={idx}
+                        className="font-sans font-semibold text-[11px] uppercase tracking-wider bg-white lg:bg-[#FAF7F2] text-zinc-700 border border-[#E8E2D5] px-3 py-1 rounded-lg"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <button 
+                      onClick={() => setSelectedService(service)}
+                      className="btn-outline-luxury w-full sm:w-auto justify-center group cursor-pointer text-xs py-3 sm:py-2.5 px-6 rounded-xl flex items-center gap-2 font-sans font-semibold"
+                    >
+                      <span>EXPLORE SERVICE</span>
+                      <ArrowRight className="w-4 h-4 text-[#DCA51B] group-hover:text-[#141518] group-hover:translate-x-1.5 transition-all duration-300" />
+                    </button>
                   </div>
                 </div>
 
