@@ -24,11 +24,12 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy })
       return;
     }
 
-    // Snappy, luxury progress reveal (~1.0 second for real users)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const startTime = performance.now();
-    const duration = 1050;
+    const duration = isMobile ? 680 : 950;
 
     let frameId: number;
+    let lastRenderedPercent = 0;
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -38,7 +39,11 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy })
       const eased = 1 - Math.pow(1 - progressRatio, 3);
       const currentPercent = Math.min(Math.round(eased * 100), 100);
 
-      setProgress(currentPercent);
+      // Throttle React state updates to prevent main thread blocking (TBT)
+      if (currentPercent - lastRenderedPercent >= 5 || progressRatio >= 1) {
+        lastRenderedPercent = currentPercent;
+        setProgress(currentPercent);
+      }
 
       if (progressRatio < 1) {
         frameId = requestAnimationFrame(animate);
@@ -48,8 +53,8 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy })
           setIsVisible(false);
           setTimeout(() => {
             if (onDestroy) onDestroy();
-          }, 450);
-        }, 150);
+          }, 350);
+        }, 120);
       }
     };
 
@@ -109,9 +114,8 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy })
               {/* Soft Cream Track & Honey Gold Fill */}
               <div className="w-full h-[2px] bg-[#E8E2D5] rounded-full overflow-hidden relative">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#DCA51B] via-[#F5D77F] to-[#DCA51B] rounded-full"
+                  className="h-full bg-gradient-to-r from-[#DCA51B] via-[#F5D77F] to-[#DCA51B] rounded-full transition-all duration-150 ease-out"
                   style={{ width: `${progress}%` }}
-                  transition={{ ease: "easeOut" }}
                 />
               </div>
 

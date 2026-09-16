@@ -8,6 +8,8 @@ import { useLoading } from '../../context/LoadingContext';
 
 export const Hero: React.FC = () => {
   const { isLoaded } = useLoading();
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isReady = isLoaded || isMobile;
 
   return (
     <section className="relative w-full pt-20 sm:pt-24 lg:pt-24 xl:pt-26 min-h-[520px] lg:h-screen lg:min-h-[620px] lg:max-h-[900px] 2xl:max-h-[1020px] bg-[#141518] overflow-hidden flex flex-col justify-center">
@@ -17,9 +19,9 @@ export const Hero: React.FC = () => {
         
         {/* Right Side: Natural Clinic Interior Background with Gentle Scale & Exposure Fade */}
         <motion.div 
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={isLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: isMobile ? 1 : 0, scale: isMobile ? 1 : 1.08 }}
+          animate={isReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
+          transition={{ duration: isMobile ? 0.3 : 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 lg:left-[38%] right-0 h-full overflow-hidden"
         >
           <img 
@@ -42,7 +44,7 @@ export const Hero: React.FC = () => {
         {/* Diagonal Slanted Dark Obsidian Backdrop (Desktop only) */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
-          animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+          animate={isReady ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
           transition={{ duration: 0.9, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           className="hidden lg:block relative z-10 w-[59%] xl:w-[57%] h-full bg-[#141518]"
           style={{
@@ -66,9 +68,9 @@ export const Hero: React.FC = () => {
 
       {/* 2. Doctor Visual on Right (Tastefully enlarged, majestic presence with entrance glide) */}
       <motion.div 
-        initial={{ opacity: 0, y: 55, scale: 0.96 }}
-        animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 55, scale: 0.96 }}
-        transition={{ duration: 1.0, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 55, scale: isMobile ? 1 : 0.96 }}
+        animate={isReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 55, scale: 0.96 }}
+        transition={{ duration: isMobile ? 0.3 : 1.0, delay: isMobile ? 0 : 0.15, ease: [0.16, 1, 0.3, 1] }}
         className="flex absolute right-0 sm:right-2 md:right-4 lg:right-6 xl:right-10 2xl:right-16 bottom-0 z-20 pointer-events-none w-[46%] sm:w-[42%] md:w-[38%] lg:w-[38%] xl:w-[36%] 2xl:w-[34%] max-w-[240px] sm:max-w-[320px] md:max-w-[390px] lg:max-w-[470px] xl:max-w-[530px] 2xl:max-w-[580px] h-[66%] sm:h-[72%] md:h-[76%] lg:h-[80%] xl:h-[83%] max-h-[640px] 2xl:max-h-[720px] items-end justify-end"
       >
         <img 
@@ -85,8 +87,8 @@ export const Hero: React.FC = () => {
         {/* Floating Doctor Credentials Badge */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.88, y: 15 }}
-          animate={isLoaded ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.88, y: 15 }}
-          transition={{ duration: 0.7, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          animate={isReady ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.88, y: 15 }}
+          transition={{ duration: 0.7, delay: isMobile ? 0.2 : 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="hidden md:flex absolute bottom-4 lg:bottom-6 -left-4 lg:-left-8 pointer-events-auto bg-black/40 backdrop-blur-md border border-white/20 hover:border-[#DCA51B]/50 rounded-2xl p-2.5 sm:p-3 shadow-2xl items-center gap-2.5 transition-colors duration-300"
         >
           <div className="w-8 h-8 rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 flex items-center justify-center shrink-0">
@@ -115,25 +117,25 @@ export const Hero: React.FC = () => {
               {/* Bold, Grand Headline with Cascading Staggered Reveal */}
               <h1 className="font-serif text-[28px] sm:text-5xl lg:text-[54px] xl:text-[66px] 2xl:text-[76px] leading-[1.08] sm:leading-[1.06] text-white tracking-tight mb-2 sm:mb-3.5 overflow-hidden">
                 <motion.span 
-                  initial={{ opacity: 0, y: 35 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
-                  transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 35 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.75, delay: isMobile ? 0 : 0.15, ease: [0.16, 1, 0.3, 1] }}
                   className="block"
                 >
                   Excellence
                 </motion.span>
                 <motion.span 
-                  initial={{ opacity: 0, y: 35 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
-                  transition={{ duration: 0.75, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 35 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.75, delay: isMobile ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
                   className="block"
                 >
                   in Every
                 </motion.span>
                 <motion.span 
-                  initial={{ opacity: 0, y: 35 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
-                  transition={{ duration: 0.75, delay: 0.40, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 35 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.75, delay: isMobile ? 0 : 0.40, ease: [0.16, 1, 0.3, 1] }}
                   className="block"
                 >
                   <span className="italic font-normal">Smile</span><span className="text-[#DCA51B]">.</span>
@@ -142,9 +144,9 @@ export const Hero: React.FC = () => {
 
               {/* Clear Subtitle */}
               <motion.p 
-                initial={{ opacity: 0, y: 16 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                transition={{ duration: 0.7, delay: 0.52, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 16 }}
+                animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                transition={{ duration: isMobile ? 0.3 : 0.7, delay: isMobile ? 0 : 0.52, ease: [0.16, 1, 0.3, 1] }}
                 className="text-zinc-200 font-sans font-light text-[11px] sm:text-base lg:text-[16px] leading-snug sm:leading-relaxed mb-3 sm:mb-5 max-w-[215px] sm:max-w-xl"
               >
                 Gentle dental care, modern 3D technology, and natural smiles crafted to last.
@@ -152,9 +154,9 @@ export const Hero: React.FC = () => {
 
               {/* Action Button (Single Option) */}
               <motion.div 
-                initial={{ opacity: 0, y: 18, scale: 0.96 }}
-                animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 18, scale: 0.96 }}
-                transition={{ duration: 0.7, delay: 0.62, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 18, scale: isMobile ? 1 : 0.96 }}
+                animate={isReady ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 18, scale: 0.96 }}
+                transition={{ duration: isMobile ? 0.3 : 0.7, delay: isMobile ? 0 : 0.62, ease: [0.16, 1, 0.3, 1] }}
                 className="flex items-center mb-3 sm:mb-5"
               >
                 <Link 
@@ -168,9 +170,9 @@ export const Hero: React.FC = () => {
 
               {/* Social Proof Review Pill */}
               <motion.div 
-                initial={{ opacity: 0, y: 14 }}
-                animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-                transition={{ duration: 0.6, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 14 }}
+                animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+                transition={{ duration: isMobile ? 0.3 : 0.6, delay: isMobile ? 0 : 0.72, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-flex items-center gap-1 sm:gap-2.5 py-1 sm:py-1.5 px-2 sm:px-3.5 rounded-full bg-white/[0.06] border border-white/12 backdrop-blur-md mb-3 sm:mb-5"
               >
                 <div className="flex items-center text-[#DCA51B] gap-0.5 sm:gap-1">
@@ -190,9 +192,9 @@ export const Hero: React.FC = () => {
                 
                 {/* Stat 1 */}
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.65, delay: 0.80, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 0.80, ease: [0.16, 1, 0.3, 1] }}
                   className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
                 >
                   <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
@@ -208,9 +210,9 @@ export const Hero: React.FC = () => {
 
                 {/* Stat 2 */}
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.65, delay: 0.90, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 0.90, ease: [0.16, 1, 0.3, 1] }}
                   className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
                 >
                   <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
@@ -226,9 +228,9 @@ export const Hero: React.FC = () => {
 
                 {/* Stat 3 */}
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.65, delay: 1.00, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
+                  animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 1.00, ease: [0.16, 1, 0.3, 1] }}
                   className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
                 >
                   <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
