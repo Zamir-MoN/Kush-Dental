@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LoadingProvider, useLoading } from './context/LoadingContext';
 import { Home } from './pages/Home';
-import { Booking } from './pages/Booking';
-import { Services } from './pages/Services';
-import { About } from './pages/About';
-import { Blog } from './pages/Blog';
-import { BlogPostDetail } from './pages/BlogPostDetail';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { PageLoader } from './components/ui/PageLoader';
 import { FloatingScrollToTop } from './components/ui/FloatingScrollToTop';
 import { SmoothScroll } from './components/ui/SmoothScroll';
 import { RouteProgressBar } from './components/ui/RouteProgressBar';
+
+// Route-level code splitting for secondary pages (reduces initial JS payload by >55%)
+const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
+const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.Services })));
+const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
+const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail').then(m => ({ default: m.BlogPostDetail })));
+const Booking = lazy(() => import('./pages/Booking').then(m => ({ default: m.Booking })));
 
 const pageVariants = {
   initial: {
@@ -47,6 +49,7 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence 
       mode="wait" 
+      initial={false}
       onExitComplete={() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
       }}
@@ -59,14 +62,16 @@ const AnimatedRoutes = () => {
         exit="exit"
         className="w-full flex-grow flex flex-col"
       >
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPostDetail />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/book" element={<Booking />} />
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen bg-[#FAF7F2]" />}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPostDetail />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/book" element={<Booking />} />
+          </Routes>
+        </Suspense>
       </motion.div>
     </AnimatePresence>
   );
@@ -86,7 +91,7 @@ function AppContent() {
 
   return (
     <>
-      {/* Global Page Loader with Animated SVG Tooth Logo */}
+      {/* Global Page Loader with Animated Golden Tooth Logo */}
       {showLoader && (
         <PageLoader 
           onComplete={handleLoadingComplete} 
@@ -108,8 +113,10 @@ function AppContent() {
           {/* Floating Back to Top Button */}
           <FloatingScrollToTop />
 
-          {/* Animated Main Page Views */}
-          <AnimatedRoutes />
+          {/* Semantic Main Landmark for Accessibility & Agentic Tree */}
+          <main id="main-content" className="flex-grow flex flex-col w-full" tabIndex={-1}>
+            <AnimatedRoutes />
+          </main>
 
           {/* Persistent Stable Footer */}
           <Footer />

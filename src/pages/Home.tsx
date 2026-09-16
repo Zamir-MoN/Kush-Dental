@@ -14,20 +14,20 @@ import { FinalCTA } from '../components/appointment/FinalCTA';
 
 export const Home = () => {
   return (
-    <main className="w-full">
+    <div className="w-full">
       <Hero />
-      <AboutSection />
-      <WhyClinic />
-      <ClinicalSolutions />
-      <TreatmentCollection />
-      <PrecisionSection />
-      <BeforeAfterSlider />
-      <PatientStories />
-      <JournalInsights />
-      <Statistics />
-      <FAQ />
-      <AppointmentForm />
-      <FinalCTA />
-    </main>
+      <div className="content-visibility-auto"><AboutSection /></div>
+      <div className="content-visibility-auto"><WhyClinic /></div>
+      <div className="content-visibility-auto"><ClinicalSolutions /></div>
+      <div className="content-visibility-auto"><TreatmentCollection /></div>
+      <div className="content-visibility-auto"><PrecisionSection /></div>
+      <div className="content-visibility-auto"><BeforeAfterSlider /></div>
+      <div className="content-visibility-auto"><PatientStories /></div>
+      <div className="content-visibility-auto"><JournalInsights /></div>
+      <div className="content-visibility-auto"><Statistics /></div>
+      <div className="content-visibility-auto"><FAQ /></div>
+      <div className="content-visibility-auto"><AppointmentForm /></div>
+      <div className="content-visibility-auto"><FinalCTA /></div>
+    </div>
   );
 };

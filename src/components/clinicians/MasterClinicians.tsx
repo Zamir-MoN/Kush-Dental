@@ -33,7 +33,7 @@ export const MasterClinicians = () => {
                       : 'opacity-60 grayscale filter blur-[1px] hover:opacity-80 hover:grayscale-0 hover:blur-none hover:scale-100'
                     }`}
                 >
-                  <img src={clinician.img} alt={clinician.name} className="w-full h-full object-cover object-top" />
+                  <img src={clinician.img} alt={clinician.name} loading="lazy" decoding="async" className="w-full h-full object-cover object-top" />
                 </button>
               );
             })}

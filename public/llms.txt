@@ -1,0 +1,22 @@
+﻿# Kush Dental Clinic
+
+> Kush Dental Clinic is a premier dental practice specializing in gentle, pain-free dentistry, digital smile design, and 3D diagnostics.
+
+## Pages
+- [Home](http://localhost:5173/): Comprehensive dental care, modern 3D diagnostics, treatment showcases, and patient stories.
+- [Services](http://localhost:5173/services): All dental treatments including preventive dentistry, cosmetic smile design, dental implants, Invisalign, and autologous PRF biological healing.
+- [About Us](http://localhost:5173/about): Our clinical team, modern treatment suites, and gentle care philosophy.
+- [Journal](http://localhost:5173/blog): Oral health guides, treatment comparisons, and smile makeover insights.
+- [Book Appointment](http://localhost:5173/book): Schedule your private dental consultation.
+
+## Key Services
+- Digital Smile Design & Veneers
+- Pain-Free Anesthesia & Sedation
+- 3D CBCT Imaging & Guided Implantology
+- Biological PRF Healing & Regeneration
+- Invisalign Clear Orthodontics
+- Restorative & Preventive Family Dentistry
+
+## Contact
+- Email: concierge@kushdental.com
+- Hours: Monday - Saturday, 9:00 AM - 7:00 PM

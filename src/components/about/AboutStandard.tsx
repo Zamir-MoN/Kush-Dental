@@ -11,7 +11,7 @@ export const AboutStandard = () => {
   useScrollReveal(sectionRef);
 
   return (
-    <section id="standard" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 sm:pt-24 pb-8 sm:pb-14">
+    <section id="standard" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-10 sm:pt-14 lg:pt-16 pb-6 sm:pb-10 scroll-mt-24 sm:scroll-mt-28">
       <div className="text-center mb-12 sm:mb-14 reveal-up">
 
         <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900">The Kush Standard</h2>

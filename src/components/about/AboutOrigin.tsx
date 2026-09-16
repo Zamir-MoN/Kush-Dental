@@ -7,11 +7,11 @@ export const AboutOrigin = () => {
   useScrollReveal(sectionRef);
 
   return (
-    <section id="origin" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24">
-      <div className="luxury-card rounded-3xl p-6 sm:p-10 lg:p-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+    <section id="origin" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-10 sm:py-14 lg:py-16 scroll-mt-24 sm:scroll-mt-28">
+      <div className="luxury-card rounded-3xl p-6 sm:p-10 lg:p-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
-          <div className="reveal-up order-2 lg:order-1 h-[320px] sm:h-[420px] rounded-2xl overflow-hidden border border-[#E8E2D5] shadow-md group">
+          <div className="reveal-up order-2 lg:order-1 h-[260px] sm:h-[320px] lg:h-[360px] rounded-2xl overflow-hidden border border-[#E8E2D5] shadow-md group">
             <img 
               alt="Doctor Consultation" 
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AnimatedLogo } from '../ui/AnimatedLogo';
 
 interface BrandLogoProps {
   className?: string;
@@ -12,6 +13,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   isDark = false,
   size = 'md' 
 }) => {
+  const pixelSize = size === 'sm' ? 32 : size === 'lg' ? 48 : 38;
   const imgSizeClass = size === 'sm' 
     ? 'w-8 h-8' 
     : size === 'lg' 
@@ -20,12 +22,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   
   return (
     <Link to="/" className={`flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none ${className}`}>
-      {/* Official Dental Tooth Mark with High-Contrast Luxury Emblem */}
+      {/* Official Dental Tooth Mark - Pure Vector Logo, No Container/Layout Box */}
       <div className="relative shrink-0 flex items-center justify-center">
-        <img 
-          src="/favicon-512.png" 
-          alt="Kush Dental Clinic Logo" 
-          className={`${imgSizeClass} object-contain rounded-xl shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(220,165,27,0.4)]`}
+        <AnimatedLogo 
+          animate={false} 
+          size={pixelSize} 
+          className={`${imgSizeClass} transition-transform duration-300 group-hover:scale-105`} 
         />
       </div>
 
@@ -50,7 +52,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         <span 
           className={`font-sans font-medium tracking-[0.16em] sm:tracking-[0.2em] uppercase leading-tight ${
             size === 'sm' ? 'text-[6.5px]' : size === 'lg' ? 'text-[9.5px]' : 'text-[7px] sm:text-[8px]'
-          } text-zinc-400 mt-0.5`}
+          } ${isDark ? 'text-zinc-400' : 'text-[#6E6961]'} mt-0.5`}
         >
           Precision Dentistry
         </span>

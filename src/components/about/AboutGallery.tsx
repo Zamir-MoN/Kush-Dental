@@ -280,7 +280,7 @@ export const AboutGallery: React.FC = () => {
     <section 
       id="gallery" 
       ref={sectionRef} 
-      className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-t border-[#E8E2D5] relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-18 xl:py-20 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-t border-[#E8E2D5] relative overflow-hidden scroll-mt-24 sm:scroll-mt-28"
     >
       {/* Background Decorative Accents */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#DCA51B]/[0.035] rounded-full blur-3xl pointer-events-none" />
@@ -421,7 +421,7 @@ export const AboutGallery: React.FC = () => {
                 </div>
 
                 {/* Right: Room Specifications & Highlights */}
-                <div className="lg:w-[38%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto bg-white">
+                <div data-lenis-prevent className="lg:w-[38%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar overscroll-contain bg-white">
                   <div>
                     <span className="inline-block px-3 py-1 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] text-xs font-bold uppercase tracking-wider font-sans mb-3">
                       {activeLightboxItem.category}

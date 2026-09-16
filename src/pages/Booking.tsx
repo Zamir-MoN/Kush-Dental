@@ -159,18 +159,18 @@ export const Booking = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Full Name</label>
-                      <input required type="text" placeholder="Johnathan Doe" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
+                      <label htmlFor="booking-full-name" className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Full Name</label>
+                      <input id="booking-full-name" name="fullName" aria-label="Full Name" required type="text" placeholder="Johnathan Doe" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
                     </div>
                     
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Phone Number</label>
-                      <input required type="tel" placeholder="+1 (555) 000-0000" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
+                      <label htmlFor="booking-phone" className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Phone Number</label>
+                      <input id="booking-phone" name="phone" aria-label="Phone Number" required type="tel" placeholder="+1 (555) 000-0000" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
                     </div>
                     
                     <div className="flex flex-col gap-2 md:col-span-2">
-                      <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Email Address</label>
-                      <input required type="email" placeholder="john@example.com" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
+                      <label htmlFor="booking-email" className="text-xs font-bold uppercase tracking-widest text-zinc-500 font-sans">Email Address</label>
+                      <input id="booking-email" name="email" aria-label="Email Address" required type="email" placeholder="john@example.com" className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3.5 font-sans text-sm text-zinc-900 input-glow transition-all" />
                     </div>
 
                   </div>

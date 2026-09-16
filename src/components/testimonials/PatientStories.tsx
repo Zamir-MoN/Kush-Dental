@@ -4,27 +4,27 @@ import { Star, CheckCircle2 } from 'lucide-react';
 
 export const PatientStories = () => {
   return (
-    <section className="py-20 sm:py-28 lg:py-32 bg-[#FAF7F2] border-y border-[#E8E2D5] overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-12 text-center">
-        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 leading-tight mb-3 tracking-tight">
+    <section className="py-12 sm:py-16 lg:py-18 xl:py-20 bg-[#FAF7F2] border-y border-[#E8E2D5] overflow-hidden scroll-mt-24 sm:scroll-mt-28">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-8 sm:mb-10 text-center">
+        <h2 className="font-serif text-3xl sm:text-4xl lg:text-[44px] text-zinc-900 leading-tight mb-2 tracking-tight">
           Patient Stories
         </h2>
-        <p className="text-zinc-600 text-sm sm:text-base font-sans font-light max-w-xl mx-auto leading-relaxed">
+        <p className="text-zinc-600 text-xs sm:text-sm lg:text-base font-sans font-light max-w-xl mx-auto leading-relaxed">
           Real feedback from patients who trust Kush Dental Clinic.
         </p>
       </div>
 
       <div className="relative">
         <motion.div 
-          className="flex gap-6 px-4 sm:px-6 lg:px-12 w-max"
+          className="flex gap-5 px-4 sm:px-6 lg:px-12 w-max"
           animate={{ x: ["0%", "-50%"] }}
           transition={{ ease: "linear", duration: 35, repeat: Infinity }}
         >
           {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
             <motion.div 
               key={i}
-              className="w-[310px] sm:w-[360px] shrink-0 luxury-card p-7 sm:p-8 rounded-3xl flex flex-col justify-between group cursor-default"
-              whileHover={{ y: -6 }}
+              className="w-[280px] sm:w-[320px] shrink-0 luxury-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between group cursor-default"
+              whileHover={{ y: -4 }}
             >
               <div>
                 <div className="flex items-center justify-between mb-5">

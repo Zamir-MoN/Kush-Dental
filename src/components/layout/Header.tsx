@@ -41,29 +41,29 @@ export const Header = () => {
     <>
       <header className="fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-none px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-3.5">
         <motion.div 
-          initial={{ opacity: 0, y: -18 }}
-          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -18 }}
-          transition={{ duration: 0.85, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-[1380px] mx-auto w-full pointer-events-auto"
+          initial={{ opacity: 0, y: -30 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto pointer-events-auto"
         >
-          {/* Floating Luxury Island Container */}
+          {/* Floating Luxury Island Container - Solid Rich Sandstone / Deep Warm Ivory (#E5DDD0) */}
           <div 
             className={`relative w-full rounded-2xl sm:rounded-3xl transition-all duration-300 flex items-center justify-between border ${
               isScrolled 
-                ? 'bg-[#FAF7F2]/95 backdrop-blur-2xl border-[#E8E2D5] shadow-[0_12px_36px_rgba(20,21,24,0.1)] py-2 sm:py-2.5 px-3.5 sm:px-6' 
-                : 'bg-[#FAF7F2]/90 backdrop-blur-xl border-[#E8E2D5]/80 shadow-[0_8px_30px_rgba(20,21,24,0.06)] py-2.5 sm:py-3 px-4 sm:px-6'
+                ? 'bg-[#E0D7C8] border-[#C4B29C] shadow-[0_16px_42px_rgba(20,21,24,0.15)] py-2 sm:py-2.5 px-3.5 sm:px-6' 
+                : 'bg-[#E5DDD0] border-[#CFBFAB] shadow-[0_12px_36px_rgba(20,21,24,0.12),0_2px_8px_rgba(20,21,24,0.06)] py-2.5 sm:py-3 px-4 sm:px-6'
             }`}
           >
             {/* Subtle Luxury Top Gold Sheen */}
-            <div className="absolute top-0 left-10 right-10 h-[1.5px] bg-gradient-to-r from-transparent via-[#DCA51B]/40 to-transparent pointer-events-none rounded-full" />
+            <div className="absolute top-0 left-10 right-10 h-[1.5px] bg-gradient-to-r from-transparent via-[#DCA51B]/60 to-transparent pointer-events-none rounded-full" />
             
-            {/* 1. Brand Identity Crest */}
+            {/* 1. Brand Identity Crest - Pure Tooth Logo on Rich Sandstone */}
             <div className="flex items-center shrink-0">
-              <BrandLogo size="md" />
+              <BrandLogo size="md" isDark={false} />
             </div>
 
-            {/* 2. Center Nav Items: Swiss Minimal Luxury (Refined Medium Sans, Title-case) */}
-            <nav className="hidden lg:flex items-center bg-[#EFE9DF]/65 border border-[#E8E2D5]/80 rounded-full p-1 shadow-inner">
+            {/* 2. Center Nav Items: Defined Sandstone Track (100% Solid) */}
+            <nav className="hidden lg:flex items-center bg-[#D6CBBA] border border-[#C2B5A2] rounded-full p-1 shadow-inner">
               {navLinks.map((link) => {
                 const isActive = link.to === '/' 
                   ? location.pathname === '/' 
@@ -75,14 +75,14 @@ export const Header = () => {
                     to={link.to} 
                     className={`relative px-4 sm:px-5 py-1.5 rounded-full font-sans text-[13.5px] tracking-[0.01em] transition-colors duration-200 z-10 select-none ${
                       isActive 
-                        ? 'text-[#141518] font-semibold' 
-                        : 'text-zinc-600 hover:text-[#141518] font-medium'
+                        ? 'text-[#141518] font-bold' 
+                        : 'text-[#423E38] hover:text-[#141518] font-medium'
                     }`}
                   >
                     {isActive && (
                       <motion.div 
                         layoutId="activeHeaderPill"
-                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#E8E2D5]/80 -z-10" 
+                        className="absolute inset-0 bg-[#DCA51B] rounded-full shadow-sm -z-10" 
                         transition={{ type: "spring", stiffness: 400, damping: 32 }}
                       />
                     )}
@@ -96,18 +96,18 @@ export const Header = () => {
             <div className="hidden lg:flex items-center shrink-0">
               <Link 
                 to="/book" 
-                className="btn-gold-luxury py-2 px-5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-2"
+                className="btn-gold-luxury py-2 px-5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-2 shadow-[0_4px_16px_rgba(220,165,27,0.35)]"
               >
                 <Calendar className="w-3.5 h-3.5 shrink-0" />
                 <span>BOOK A VISIT</span>
               </Link>
             </div>
 
-            {/* Mobile/Tablet CTA Area & 3-Lines Menu Toggle (PROPERLY INSIDE PILL) */}
+            {/* Mobile/Tablet CTA Area & 3-Lines Menu Toggle */}
             <div className="lg:hidden flex items-center gap-2 sm:gap-2.5 shrink-0">
               <Link 
                 to="/book" 
-                className="btn-gold-luxury py-1.5 px-2.5 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
+                className="btn-gold-luxury py-1.5 px-2.5 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-[0_3px_12px_rgba(220,165,27,0.3)]"
               >
                 <Calendar className="w-3.5 h-3.5 shrink-0" />
                 <span className="whitespace-nowrap">BOOK A VISIT</span>
@@ -119,7 +119,7 @@ export const Header = () => {
                 onClick={() => {
                   staggeredMenuRef.current?.toggle();
                 }}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex flex-col items-center justify-center gap-[4.5px] p-1.5 hover:bg-[#EFE9DF] text-[#141518] transition-colors cursor-pointer select-none shrink-0"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex flex-col items-center justify-center gap-[4.5px] p-1.5 hover:bg-[#D6CBBA] text-[#141518] transition-colors cursor-pointer select-none shrink-0"
                 aria-label="Toggle navigation menu"
               >
                 <span className="w-4 sm:w-4.5 h-[2px] bg-[#141518] rounded-full" />

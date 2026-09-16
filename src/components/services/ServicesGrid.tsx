@@ -112,7 +112,7 @@ export const ServicesGrid = () => {
   );
 
   return (
-    <section ref={sectionRef} className="py-16 lg:py-24 bg-[#FAF7F2] relative z-10 overflow-hidden">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-18 xl:py-20 bg-[#FAF7F2] relative z-10 overflow-hidden scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Category Navigation Pills with Sliding Obsidian Indicator */}
@@ -275,47 +275,54 @@ export const ServicesGrid = () => {
                 animate={{ top: '50%', left: '50%', x: '-50%', y: '-50%', opacity: 1 }}
                 exit={{ top: '100%', left: '50%', x: '-50%', y: 0, opacity: 0 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed w-[92%] max-w-2xl bg-[#FCFBF8] rounded-3xl z-[101] p-6 sm:p-10 max-h-[90vh] overflow-y-auto shadow-2xl border border-[#E8E2D5]"
+                className="fixed w-[92%] max-w-2xl bg-[#FCFBF8] rounded-3xl z-[101] max-h-[90vh] shadow-2xl border border-[#E8E2D5] flex flex-col overflow-hidden"
               >
                 <button 
                   onClick={() => setSelectedService(null)}
-                  className="absolute top-5 right-5 p-2 rounded-full hover:bg-[#FAF7F2] text-[#141518] transition-colors cursor-pointer"
+                  className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#141518] border border-[#E8E2D5] shadow-xs flex items-center justify-center transition-all cursor-pointer"
+                  aria-label="Close modal"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
-                
-                <span className="text-[#DCA51B] tracking-[0.2em] text-xs uppercase font-bold block mb-2 font-sans">
-                  {selectedService.category} SPECIALTY
-                </span>
-                
-                <h2 className="font-serif font-bold text-3xl sm:text-4xl mb-4 text-[#141518]">{selectedService.title}</h2>
-                
-                <div className="w-full aspect-[16/9] mb-6 rounded-2xl overflow-hidden bg-[#FAF7F2] shadow-md border border-[#E8E2D5]">
-                  <img src={selectedService.img} alt={selectedService.title} className="w-full h-full object-cover" />
-                </div>
-                
-                <p className="text-zinc-600 text-base sm:text-lg leading-relaxed mb-6 font-sans font-light">
-                  {selectedService.desc}
-                </p>
-                
-                <div className="mb-8">
-                  <h4 className="font-serif font-bold text-lg text-[#141518] mb-3">Key Clinical Advantages</h4>
-                  <div className="space-y-2.5">
-                    {selectedService.benefits.map((b: string, idx: number) => (
-                      <div key={idx} className="flex items-start gap-2.5 text-sm font-sans text-zinc-700">
-                        <CheckCircle2 className="w-4 h-4 text-[#DCA51B]" />
-                        <span>{b}</span>
-                      </div>
-                    ))}
+
+                {/* Scrollable Content Container */}
+                <div data-lenis-prevent className="flex-1 overflow-y-auto custom-scrollbar p-6 sm:p-9 overscroll-contain">
+                  <span className="text-[#DCA51B] tracking-[0.2em] text-xs uppercase font-bold block mb-2 font-sans">
+                    {selectedService.category} SPECIALTY
+                  </span>
+                  
+                  <h2 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-[#141518] pr-10">
+                    {selectedService.title}
+                  </h2>
+                  
+                  <div className="w-full max-h-[260px] aspect-[16/9] mb-5 rounded-2xl overflow-hidden bg-[#FAF7F2] shadow-md border border-[#E8E2D5]">
+                    <img src={selectedService.img} alt={selectedService.title} className="w-full h-full object-cover" />
+                  </div>
+                  
+                  <p className="text-zinc-600 text-sm sm:text-base leading-relaxed mb-6 font-sans font-light">
+                    {selectedService.desc}
+                  </p>
+                  
+                  <div className="mb-4">
+                    <h4 className="font-serif font-bold text-lg text-[#141518] mb-3">Key Clinical Advantages</h4>
+                    <div className="space-y-2.5">
+                      {selectedService.benefits.map((b: string, idx: number) => (
+                        <div key={idx} className="flex items-start gap-2.5 text-sm font-sans text-zinc-700">
+                          <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0 mt-0.5" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 
-                <div className="w-full border-t border-[#E8E2D5] pt-6 mt-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+                {/* Fixed Modal Action Footer */}
+                <div className="w-full border-t border-[#E8E2D5] bg-[#FCFBF8] px-6 sm:px-9 py-4 shrink-0 flex flex-col sm:flex-row justify-between items-center gap-3">
                   <span className="text-xs sm:text-sm text-zinc-500 font-sans">Duration: {selectedService.duration}</span>
                   <Link 
                     to="/book" 
                     onClick={() => setSelectedService(null)}
-                    className="btn-gold-luxury px-7 py-3.5 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans"
+                    className="btn-gold-luxury px-7 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans text-sm font-semibold"
                   >
                     <Calendar className="w-4 h-4 text-[#141518]" />
                     <span>BOOK CONSULTATION</span>

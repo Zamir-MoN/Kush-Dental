@@ -96,6 +96,9 @@ export const BlogHero: React.FC<BlogHeroProps> = ({
             <div className="relative flex items-center bg-white border border-[#E8E2D5] focus-within:border-[#DCA51B] focus-within:ring-2 focus-within:ring-[#DCA51B]/20 rounded-2xl p-1.5 transition-all shadow-sm">
               <Search className="w-5 h-5 text-[#DCA51B] ml-4 shrink-0" />
               <input
+                id="blog-search-input"
+                name="searchQuery"
+                aria-label="Search dental topics, treatments, or questions"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

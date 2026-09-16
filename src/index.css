@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
 
 @layer base {
   :root {
@@ -31,6 +34,7 @@
     color: #18181B;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 5.5rem;
   }
 
   html.lenis, html.lenis body {
@@ -67,6 +71,62 @@
   .font-serif-luxury {
     font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   }
+
+  /* Global Modern Luxury Scrollbar (Windows / Chrome / Safari) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FAF7F2;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D8CEBE;
+    border-radius: 9999px;
+    border: 2px solid #FAF7F2;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #DCA51B;
+  }
+
+  /* Firefox scrollbar defaults */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #D8CEBE #FAF7F2;
+  }
+}
+
+@layer utilities {
+  /* Thin Sleek Luxury Scrollbar for Modals & Dialogs */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 165, 27, 0.45) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 8px 0;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(220, 165, 27, 0.4);
+    border-radius: 9999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #DCA51B;
+  }
+
+  /* No Scrollbar Utility */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @layer components {
@@ -75,7 +135,7 @@
   }
   
   .section-padding {
-    @apply py-20 sm:py-24 lg:py-32;
+    @apply py-12 sm:py-16 lg:py-20;
   }
   
   .label-small {

@@ -46,6 +46,9 @@ export const BlogNewsletter = () => {
             <div className="relative flex-1">
               <Mail className="w-5 h-5 text-zinc-400 absolute left-4 top-1/2 -translate-y-1/2" />
               <input
+                id="newsletter-email"
+                name="newsletterEmail"
+                aria-label="Enter your email address"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

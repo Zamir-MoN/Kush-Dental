@@ -23,16 +23,23 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // 1. Initialize Lenis Smooth Scroll Engine (High-performance native touch bypass)
+    // On mobile screens, bypass Lenis to allow 100% native 120Hz compositor scrolling with zero CPU/RAF penalty
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      ScrollTrigger.refresh();
+      return () => {};
+    }
+
+    // 1. Initialize Lenis Smooth Scroll Engine on Desktop (Crisp, responsive wheel scroll)
     const lenis = new Lenis({
-      duration: 0.8, // Crisp, responsive wheel scroll on desktop
+      duration: 0.8,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 0, // Never hijack native touch momentum
-      syncTouch: false,   // Allow 100% native 120Hz/60Hz compositor scrolling on touch/tablet/mobile
+      touchMultiplier: 0,
+      syncTouch: false,
       infinite: false
     });
 
@@ -143,6 +150,11 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
       lenisRef.current.scrollTo(target, options);
     } else if (typeof target === 'number') {
       window.scrollTo({ top: target, behavior: 'smooth' });
+    } else if (typeof target === 'string') {
+      const el = document.querySelector(target);
+      el?.scrollIntoView({ behavior: 'smooth' });
+    } else if (target instanceof HTMLElement) {
+      target.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

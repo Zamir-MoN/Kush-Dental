@@ -12,28 +12,38 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete, onDestroy })
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
+    // Elegant luxury progress reveal (~1.8 seconds)
+    const startTime = performance.now();
+    const duration = 1800;
+
+    let frameId: number;
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progressRatio = Math.min(elapsed / duration, 1);
+      
+      // Smooth cubic curve: rapid start, graceful deceleration to 100%
+      const eased = 1 - Math.pow(1 - progressRatio, 3);
+      const currentPercent = Math.min(Math.round(eased * 100), 100);
+
+      setProgress(currentPercent);
+
+      if (progressRatio < 1) {
+        frameId = requestAnimationFrame(animate);
+      } else {
+        setTimeout(() => {
+          if (onComplete) onComplete();
+          setIsVisible(false);
           setTimeout(() => {
-            // Signal landing page to begin smooth classic appearing animation
-            if (onComplete) onComplete();
-            setIsVisible(false);
+            if (onDestroy) onDestroy();
+          }, 700);
+        }, 250);
+      }
+    };
 
-            // Clean up loader from DOM after exit fade completes
-            setTimeout(() => {
-              if (onDestroy) onDestroy();
-            }, 750);
-          }, 350);
-          return 100;
-        }
-        const jump = prev > 80 ? 4 : (prev > 45 ? 3 : 2);
-        return Math.min(prev + jump, 100);
-      });
-    }, 40);
+    frameId = requestAnimationFrame(animate);
 
-    return () => clearInterval(interval);
+    return () => cancelAnimationFrame(frameId);
   }, [onComplete, onDestroy]);
 
   return (

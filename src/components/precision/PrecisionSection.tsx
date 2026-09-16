@@ -62,59 +62,59 @@ export const PrecisionSection: React.FC = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="py-24 sm:py-32 lg:py-36 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-y border-[#E8E2D5] overflow-hidden relative"
+      className="py-12 sm:py-16 lg:py-18 xl:py-20 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-y border-[#E8E2D5] overflow-hidden relative scroll-mt-24 sm:scroll-mt-28"
     >
       <div className="max-w-[1400px] mx-auto relative z-10">
         
         {/* Simple & Classic Centered Masthead */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20 reveal-up">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 lg:mb-12 reveal-up">
           
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-zinc-900 leading-[1.15] tracking-tight mb-4">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-[44px] xl:text-5xl text-zinc-900 leading-[1.15] tracking-tight mb-3">
             Modern Technology, <span className="italic font-normal text-[#DCA51B]">Gentle Care</span>.
           </h2>
           
-          <p className="text-zinc-600 text-sm sm:text-base lg:text-lg font-sans font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-zinc-600 text-xs sm:text-sm lg:text-base font-sans font-light leading-relaxed max-w-2xl mx-auto">
             Advanced digital dental tools designed to make every visit gentle, accurate, and comfortable.
           </p>
         </div>
 
         {/* Clean, Classic 4-Pillar Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {features.map((item) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={item.num}
-                className="bg-white rounded-3xl border border-[#E8E2D5] hover:border-[#DCA51B]/50 p-7 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-default reveal-up"
-                whileHover={{ y: -5 }}
+                className="bg-white rounded-3xl border border-[#E8E2D5] hover:border-[#DCA51B]/50 p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-default reveal-up"
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.25 }}
               >
                 <div>
                   {/* Top Card Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-serif font-bold text-3xl sm:text-4xl text-[#DCA51B] block">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-serif font-bold text-2xl sm:text-3xl text-[#DCA51B] block">
                       {item.num}
                     </span>
-                    <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:scale-105 transition-all duration-300">
-                      <Icon className="w-5 h-5" />
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#FAF7F2] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:scale-105 transition-all duration-300">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#C49216] block font-sans mb-1.5">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#C49216] block font-sans mb-1">
                     {item.subtitle}
                   </span>
 
-                  <h3 className="font-serif font-bold text-xl sm:text-[22px] text-zinc-900 group-hover:text-[#C49216] transition-colors leading-snug mb-3">
+                  <h3 className="font-serif font-bold text-base sm:text-lg text-zinc-900 group-hover:text-[#C49216] transition-colors leading-snug mb-2">
                     {item.title}
                   </h3>
 
-                  <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed font-sans font-light mb-6">
+                  <p className="text-zinc-600 text-xs sm:text-[13px] leading-relaxed font-sans font-light mb-4">
                     {item.desc}
                   </p>
                 </div>
 
                 {/* Bottom Highlight Pills */}
-                <div className="pt-5 border-t border-[#E8E2D5] flex flex-col gap-2">
+                <div className="pt-4 border-t border-[#E8E2D5] flex flex-col gap-1.5">
                   {item.highlights.map((highlight, hIdx) => (
                     <div key={hIdx} className="flex items-center gap-2 text-xs text-zinc-700 font-sans">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
@@ -128,16 +128,16 @@ export const PrecisionSection: React.FC = () => {
         </div>
 
         {/* Subtle, Soft Assurance Banner */}
-        <div className="mt-12 lg:mt-16 rounded-2xl bg-white border border-[#E8E2D5] p-6 sm:p-7 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs reveal-up">
-          <div className="flex items-center gap-3.5 text-center sm:text-left">
-            <div className="w-10 h-10 rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] shrink-0 mx-auto sm:mx-0">
-              <DentalShieldIcon className="w-5 h-5" />
+        <div className="mt-8 sm:mt-10 rounded-2xl bg-white border border-[#E8E2D5] p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs reveal-up">
+          <div className="flex items-center gap-3 text-center sm:text-left">
+            <div className="w-9 h-9 rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] shrink-0 mx-auto sm:mx-0">
+              <DentalShieldIcon className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-sm font-bold text-zinc-900 font-sans">
+              <p className="text-xs sm:text-sm font-bold text-zinc-900 font-sans">
                 Safe, Minimally Invasive &amp; Digitally Guided Care
               </p>
-              <p className="text-xs text-zinc-500 font-sans">
+              <p className="text-[11px] text-zinc-500 font-sans">
                 Every scan and treatment plan is reviewed in person by Dr. Amit Kumar.
               </p>
             </div>
@@ -145,7 +145,7 @@ export const PrecisionSection: React.FC = () => {
 
           <div className="flex items-center gap-6 shrink-0">
             <div className="flex items-center gap-2 text-xs font-medium text-zinc-700 font-sans">
-              <SmileCurveIcon className="w-4 h-4 text-[#DCA51B]" />
+              <SmileCurveIcon className="w-3.5 h-3.5 text-[#DCA51B]" />
               <span>100% Patient Comfort Focus</span>
             </div>
           </div>
