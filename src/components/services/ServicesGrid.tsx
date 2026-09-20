@@ -297,7 +297,9 @@ export const ServicesGrid = () => {
                   </div>
 
                   {/* Image Column */}
-                  <div className="w-full sm:w-[45%] lg:w-[44%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-[#FAF7F2] shrink-0">
+                  <div className={`w-full sm:w-[45%] lg:w-[44%] min-h-[200px] sm:min-h-0 relative overflow-hidden shrink-0 ${
+                    isDark ? 'bg-[#141518]' : 'bg-white'
+                  }`}>
                     <img 
                       src={service.img} 
                       alt={service.title} 
@@ -343,12 +345,12 @@ export const ServicesGrid = () => {
                       </div>
                     )}
 
-                    {/* Elegant Curved Gold Divider (Inside Image Container to guarantee zero text obstruction) */}
+                    {/* Elegant Curved Gold Divider (Bleeding past column seam to guarantee zero visible straight lines) */}
                     {!isInverted ? (
-                      <div className="hidden sm:block absolute top-0 bottom-0 left-0 w-[36px] lg:w-[42px] z-10 pointer-events-none h-full">
-                        <svg className="w-full h-full" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
+                      <div className="hidden sm:block absolute top-0 bottom-0 -left-[3px] w-[40px] lg:w-[46px] z-10 pointer-events-none h-full overflow-visible">
+                        <svg className="w-full h-full overflow-visible" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
                           <path 
-                            d="M0,0 L0,320 C24,220 24,100 0,0 Z" 
+                            d="M-10,-5 L-10,325 L0,320 C24,220 24,100 0,0 L-10,-5 Z" 
                             fill={cardBg} 
                           />
                           <path 
@@ -360,10 +362,10 @@ export const ServicesGrid = () => {
                         </svg>
                       </div>
                     ) : (
-                      <div className="hidden sm:block absolute top-0 bottom-0 right-0 w-[36px] lg:w-[42px] z-10 pointer-events-none h-full">
-                        <svg className="w-full h-full" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
+                      <div className="hidden sm:block absolute top-0 bottom-0 -right-[3px] w-[40px] lg:w-[46px] z-10 pointer-events-none h-full overflow-visible">
+                        <svg className="w-full h-full overflow-visible" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
                           <path 
-                            d="M36,0 L36,320 C12,220 12,100 36,0 Z" 
+                            d="M46,-5 L46,325 L36,320 C12,220 12,100 36,0 L46,-5 Z" 
                             fill={cardBg} 
                           />
                           <path 
