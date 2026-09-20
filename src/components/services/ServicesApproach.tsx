@@ -91,16 +91,6 @@ export const ServicesApproach: React.FC = () => {
               
               {/* Refined Minimalist Bottom Gradient for depth */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-
-              {/* Single Subtle Caption Pill */}
-              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white">
-                <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20">
-                  <p className="text-xs font-semibold text-white font-sans">
-                    Private Surgical &amp; Aesthetic Operatory Suite
-                  </p>
-                </div>
-              </div>
-
             </div>
 
           </div>

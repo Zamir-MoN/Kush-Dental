@@ -149,20 +149,8 @@ const DynamicGalleryCard: React.FC<DynamicGalleryCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-300 group-hover:via-black/35" />
       </div>
 
-      {/* Top Floating Badge & Multi-Angle Counter */}
-      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-        <div className="flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider font-sans border border-white/10 shadow-sm">
-            {item.category}
-          </span>
-          {images.length > 1 && (
-            <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-semibold font-sans border border-white/15 shadow-sm flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#DCA51B] animate-pulse" />
-              <span>{images.length} Dynamic Views</span>
-            </span>
-          )}
-        </div>
-
+      {/* Top Action / Zoom */}
+      <div className="absolute top-4 right-4 z-10">
         <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110">
           <Eye className="w-4 h-4" />
         </span>

@@ -70,14 +70,6 @@ export const AboutSection: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent pointer-events-none" />
 
-              {/* Floating Suite Tag */}
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 flex items-center gap-2 shadow-lg">
-                <span className="w-2 h-2 rounded-full bg-[#DCA51B] animate-pulse" />
-                <span className="text-[11px] font-bold text-white font-sans tracking-wider uppercase">
-                  Private Consultation Suite
-                </span>
-              </div>
-
               {/* Bottom Inset Pill: Doctor Credentials (Transparent Glassmorphic) */}
               <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-md bg-black/35 backdrop-blur-md px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-between gap-3 transition-all duration-300 hover:border-[#DCA51B]/60">
                 <div className="flex items-center gap-2.5">

@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   ArrowRight, 
-  CheckCircle2, 
-  ShieldCheck
+  CheckCircle2 
 } from 'lucide-react';
-import { ToothSparkleIcon, DentalCrownIcon } from '../common/DentalIcons';
 import { AnimatedWaveContours } from '../common/AnimatedWaveContours';
 
 export const AboutHero: React.FC = () => {
@@ -81,14 +79,6 @@ export const AboutHero: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
 
-            {/* Floating Top Tag */}
-            <div className="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-[#E8E2D5] flex items-center gap-1.5 shadow-sm">
-              <ToothSparkleIcon className="w-3 h-3 text-[#DCA51B]" />
-              <span className="text-[10px] font-bold text-zinc-900 uppercase tracking-wider font-sans">
-                Modern Clinic Suites
-              </span>
-            </div>
-
             {/* Bottom Caption */}
             <div className="absolute bottom-4 left-4 right-4 text-white">
               <p className="font-serif font-bold text-base text-white">Private Operatory Rooms</p>
@@ -104,14 +94,6 @@ export const AboutHero: React.FC = () => {
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
-
-            {/* Top Badge */}
-            <div className="absolute top-3.5 left-3.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-[#DCA51B]/60 flex items-center gap-1.5 shadow-sm">
-              <ShieldCheck className="w-3 h-3 text-[#DCA51B]" />
-              <span className="text-[10px] font-bold text-[#DCA51B] uppercase tracking-wider font-sans">
-                Experienced Team
-              </span>
-            </div>
 
             {/* Bottom Inset Glass Pill */}
             <div className="absolute bottom-4 left-3 right-3 bg-black/40 backdrop-blur-md p-3 rounded-2xl border border-white/25 shadow-xl flex items-center justify-between">
@@ -136,14 +118,6 @@ export const AboutHero: React.FC = () => {
               className="w-full h-full object-cover filter brightness-[0.96] contrast-[1.02] transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
-
-            {/* Floating Top Tag */}
-            <div className="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-[#E8E2D5] flex items-center gap-1.5 shadow-sm">
-              <DentalCrownIcon className="w-3 h-3 text-[#DCA51B]" />
-              <span className="text-[10px] font-bold text-zinc-900 uppercase tracking-wider font-sans">
-                Dental Lab Precision
-              </span>
-            </div>
 
             {/* Bottom Caption */}
             <div className="absolute bottom-4 left-4 right-4 text-white">
