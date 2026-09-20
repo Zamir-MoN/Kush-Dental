@@ -72,6 +72,10 @@
     font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   }
 
+  .font-script {
+    font-family: 'Caveat', cursive;
+  }
+
   /* Global Modern Luxury Scrollbar (Windows / Chrome / Safari) */
   ::-webkit-scrollbar {
     width: 8px;

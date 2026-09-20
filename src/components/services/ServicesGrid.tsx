@@ -2,83 +2,129 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowUpRight, CheckCircle2, X, Calendar, Clock, ChevronRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CheckCircle2, X, Calendar, Clock, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { 
   DentalMirrorIcon, 
   ToothSparkleIcon, 
   DentalImplantIcon, 
-  SmileCurveIcon, 
   DentalCrownIcon, 
   ToothIcon 
 } from '../common/DentalIcons';
 
-const services = [
+interface ServiceItem {
+  id: number;
+  number: string;
+  title: string;
+  category: string;
+  categoryLabel: string;
+  desc: string;
+  benefits: string[];
+  duration: string;
+  icon: React.ComponentType<{ className?: string }>;
+  img: string;
+  isDark: boolean;
+  inverted: boolean;
+  scriptText?: string;
+  scriptPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  hasMedallion?: boolean;
+}
+
+const services: ServiceItem[] = [
   {
     id: 1,
     number: '01',
     title: 'Professional Teeth Cleaning',
     category: 'Preventive',
+    categoryLabel: 'PREVENTIVE CARE',
     desc: 'Ultrasonic cleaning and polishing to protect your gum health.',
-    benefits: ['Plaque & tartar removal', 'Gum health check'],
-    duration: '45-60 mins',
-    icon: DentalMirrorIcon,
-    img: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=900&auto=format&fit=crop',
+    benefits: ['Plaque & tartar removal', 'Gum health check', 'Fresher breath'],
+    duration: '45–60 mins',
+    icon: ToothSparkleIcon,
+    img: '/images/services/service-cleaning.jpg',
+    isDark: true,
+    inverted: false,
+    scriptText: 'Cleaner\nHealthier\nHappier',
+    scriptPosition: 'bottom-right'
   },
   {
     id: 2,
     number: '02',
     title: 'Laser Teeth Whitening',
     category: 'Cosmetic',
+    categoryLabel: 'COSMETIC',
     desc: 'In-office whitening brightening teeth up to 8 shades in one visit.',
-    benefits: ['Bright results in one visit', 'Gentle on sensitive teeth'],
+    benefits: ['Brighter, whiter smile', 'Safe & painless procedure', 'Instant confidence boost'],
     duration: '60 mins',
-    icon: ToothSparkleIcon,
-    img: '/images/services/cosmetic dentistry.png',
+    icon: Sparkles,
+    img: '/images/services/service-whitening.jpg',
+    isDark: false,
+    inverted: false,
+    scriptText: 'Whiter\nBrighter\nYou',
+    scriptPosition: 'top-right'
   },
   {
     id: 3,
     number: '03',
     title: '3D Dental Implants',
     category: 'Surgical',
+    categoryLabel: 'SURGICAL',
     desc: 'Computer-guided dental implants for permanent, natural function.',
-    benefits: ['Looks and feels like real teeth', 'Permanent bone-safe solution'],
+    benefits: ['Looks and feels like real teeth', 'Permanent bone-safe solution', 'Advanced 3D planning'],
     duration: 'Phased Care',
     icon: DentalImplantIcon,
-    img: '/images/services/dental implants.png',
+    img: '/images/services/service-implants.jpg',
+    isDark: false,
+    inverted: true,
+    scriptText: 'A Stronger\nSmile for\nLife',
+    scriptPosition: 'top-left'
   },
   {
     id: 4,
     number: '04',
     title: 'Custom Porcelain Veneers',
     category: 'Cosmetic',
+    categoryLabel: 'COSMETIC',
     desc: 'Custom porcelain covers to fix chips and discoloration naturally.',
-    benefits: ['Stain-resistant porcelain', 'Protects natural enamel'],
+    benefits: ['Stain-resistant porcelain', 'Natural-looking results', 'Long-lasting smile'],
     duration: '2 Visits',
-    icon: SmileCurveIcon,
+    icon: ToothIcon,
     img: '/images/services/restorative care.png',
+    isDark: true,
+    inverted: false,
+    hasMedallion: true
   },
   {
     id: 5,
     number: '05',
     title: 'Gentle Root Canal Therapy',
     category: 'Restorative',
+    categoryLabel: 'RESTORATIVE',
     desc: 'Pain-free care to treat tooth infection and save your natural tooth.',
-    benefits: ['Painless local numbing', 'Saves your natural tooth'],
-    duration: '1-2 Visits',
+    benefits: ['Painless local numbing', 'Saves your natural tooth', 'Reinforces tooth structure'],
+    duration: '1–2 Visits',
     icon: DentalCrownIcon,
     img: '/images/services/root canal.png',
+    isDark: false,
+    inverted: true,
+    scriptText: 'Painless\nLasting\nRelief',
+    scriptPosition: 'top-left'
   },
   {
     id: 6,
     number: '06',
     title: 'Wisdom Tooth Removal',
     category: 'Surgical',
+    categoryLabel: 'SURGICAL',
     desc: 'Comfortable wisdom tooth extractions with gentle sedation.',
-    benefits: ['Calm sedation options', 'Fast and gentle recovery'],
+    benefits: ['Calm sedation options', 'Fast and gentle recovery', 'Prevents misalignment'],
     duration: '45 mins',
-    icon: ToothIcon,
+    icon: DentalMirrorIcon,
     img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=900&auto=format&fit=crop',
+    isDark: true,
+    inverted: false,
+    scriptText: 'Gentle\nSafe\nComfort',
+    scriptPosition: 'bottom-right'
   }
 ];
 
@@ -92,7 +138,7 @@ const categories = [
 
 export const ServicesGrid = () => {
   const [activeCategory, setActiveCategory] = useState('All Services');
-  const [selectedService, setSelectedService] = useState<any>(null);
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
 
@@ -116,15 +162,15 @@ export const ServicesGrid = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Category Navigation Pills with Sliding Obsidian Indicator */}
-        <div className="flex justify-center mb-14 reveal-up">
-          <div className="bg-[#FCFBF8] rounded-2xl p-2.5 sm:p-3 border border-[#E8E2D5] shadow-sm flex flex-wrap justify-center gap-2">
+        <div className="flex justify-center mb-10 sm:mb-14 reveal-up">
+          <div className="bg-[#FCFBF8] rounded-2xl p-2 sm:p-2.5 border border-[#E8E2D5] shadow-xs flex flex-wrap justify-center gap-1.5 sm:gap-2">
             {categories.map((cat) => {
               const isActive = activeCategory === cat.name;
               return (
                 <button
                   key={cat.name}
                   onClick={() => setActiveCategory(cat.name)}
-                  className={`relative px-5 sm:px-6 py-2.5 rounded-xl font-sans text-xs uppercase font-bold tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer select-none ${
+                  className={`relative px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-sans text-xs uppercase font-bold tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer select-none ${
                     isActive
                       ? 'text-white'
                       : 'bg-[#FAF7F2] text-zinc-600 hover:text-zinc-900'
@@ -151,7 +197,7 @@ export const ServicesGrid = () => {
           </div>
         </div>
 
-        {/* Landscape Services Cards Grid (2-Column Horizontal Cards) */}
+        {/* 2-Column Curved Architectural Bento Cards */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
@@ -159,95 +205,179 @@ export const ServicesGrid = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className={`w-full ${filteredServices.length === 1 ? 'max-w-[720px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8 auto-rows-fr'}`}
+            className={`w-full ${filteredServices.length === 1 ? 'max-w-[700px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 lg:gap-8'}`}
           >
             {filteredServices.map((service) => {
               const Icon = service.icon;
+              const isDark = service.isDark;
+              const isInverted = service.inverted;
+              const cardBg = isDark ? '#141518' : '#FFFFFF';
+
               return (
                 <div
                   key={service.id}
-                  className="luxury-card rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row group cursor-pointer border border-[#E8E2D5]/70 hover:border-[#DCA51B]/40 bg-white hover:-translate-y-1 h-full"
                   onClick={() => setSelectedService(service)}
+                  className={`relative rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border group cursor-pointer flex flex-col ${
+                    isInverted ? 'sm:flex-row-reverse' : 'sm:flex-row'
+                  } ${
+                    isDark 
+                      ? 'bg-[#141518] text-white border-white/10 hover:border-[#DCA51B]/60 hover:shadow-[#DCA51B]/15' 
+                      : 'bg-white text-zinc-900 border-[#E8E2D5] hover:border-[#DCA51B]/70 hover:shadow-xl'
+                  }`}
                 >
                   
-                  {/* Left Column: Landscape Image Container */}
-                  <div className="sm:w-[46%] lg:w-[48%] relative overflow-hidden bg-[#FAF7F2] shrink-0 min-h-[220px] sm:min-h-0 sm:h-full">
-                    <img 
-                      src={service.img} 
-                      alt={service.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-60 pointer-events-none" />
-
-                    {/* Category Tag */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-[#141518]/85 backdrop-blur-md text-[#DCA51B] text-[11px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-sm font-sans">
-                        {service.category}
-                      </span>
-                    </div>
-
-                    {/* Duration Badge */}
-                    <div className="absolute bottom-3.5 left-4">
-                      <span className="px-2.5 py-1 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium rounded-lg flex items-center gap-1.5 shadow-sm font-sans">
-                        <Clock className="w-3 h-3 text-[#DCA51B]" />
-                        <span>{service.duration}</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Service Content & Actions */}
-                  <div className="sm:w-[54%] lg:w-[52%] p-5 sm:p-6 lg:p-7 flex flex-col justify-between h-full flex-grow">
-                    <div className="flex flex-col flex-grow">
-                      {/* Top Meta Row with Icon & Index */}
-                      <div className="flex items-center justify-between mb-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] transition-colors duration-300">
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs font-semibold text-neutral/80 font-sans tracking-wider">
-                          No. 0{service.id}
+                  {/* Content Column */}
+                  <div className={`w-full sm:w-[55%] lg:w-[56%] p-5 sm:p-6 lg:p-7.5 flex flex-col justify-between relative z-10 ${
+                    isInverted ? 'sm:pl-6 lg:pl-8' : 'sm:pr-4 lg:pr-6'
+                  }`}>
+                    <div>
+                      {/* Eyebrow: Icon + Category Badge */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <Icon className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                        <span className={`text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.16em] font-sans ${
+                          isDark ? 'text-[#DCA51B]' : 'text-[#C49216]'
+                        }`}>
+                          {service.categoryLabel}
                         </span>
                       </div>
 
-                      {/* Service Title with Uniform 2-Line Height Alignment */}
-                      <h3 className="font-serif font-bold text-lg sm:text-xl text-tertiary group-hover:text-[#DCA51B] transition-colors leading-snug mb-2 min-h-[3rem] sm:min-h-[3.25rem] flex items-center">
+                      {/* Service Title */}
+                      <h3 className={`font-serif font-bold text-xl sm:text-[22px] lg:text-2xl leading-tight mb-2 transition-colors ${
+                        isDark ? 'text-white group-hover:text-[#FAF7F2]' : 'text-zinc-900 group-hover:text-black'
+                      }`}>
                         {service.title}
                       </h3>
 
-                      {/* Description with Uniform Height */}
-                      <p className="text-neutral text-xs sm:text-[13px] leading-relaxed mb-3.5 font-sans font-light line-clamp-2 min-h-[2.5rem] sm:min-h-[2.6rem]">
+                      {/* Short Description */}
+                      <p className={`text-xs sm:text-[12.5px] leading-relaxed mb-4 font-sans font-light ${
+                        isDark ? 'text-zinc-300' : 'text-zinc-600'
+                      }`}>
                         {service.desc}
                       </p>
 
-                      {/* Key Clinical Advantages with Consistent Bottom Alignment */}
-                      <div className="space-y-1.5 pb-4 border-b border-border/40 mt-auto">
-                        {service.benefits.slice(0, 2).map((benefit, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-xs font-sans text-tertiary">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
-                            <span className="truncate">{benefit}</span>
+                      {/* 3 Checkpoint Benefits */}
+                      <div className="space-y-1.5 sm:space-y-2 mb-5 sm:mb-6">
+                        {service.benefits.map((benefit, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                            <span className={`text-xs sm:text-[12.5px] font-sans font-normal truncate ${
+                              isDark ? 'text-zinc-200' : 'text-zinc-700'
+                            }`}>
+                              {benefit}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Bottom Actions Row */}
-                    <div className="pt-3.5 flex items-center justify-between gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => setSelectedService(service)}
-                        className="text-xs font-bold uppercase tracking-wider text-tertiary hover:text-[#DCA51B] transition-colors inline-flex items-center gap-1 cursor-pointer py-1 group/details"
-                      >
-                        <span>Details</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#DCA51B] group-hover/details:translate-x-0.5 group-hover/details:-translate-y-0.5 transition-transform" />
-                      </button>
-
+                    {/* Bottom Action Buttons: Solid Gold Book Visit + View Details */}
+                    <div 
+                      className="flex items-center gap-3 sm:gap-4 pt-1 shrink-0" 
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <Link
                         to="/book"
-                        className="btn-gold-luxury group/btn px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5"
+                        className="bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 font-sans font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs uppercase tracking-wider inline-flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all active:scale-95"
                       >
-                        <span>Book Visit</span>
-                        <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                        <span>BOOK VISIT</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedService(service)}
+                        className={`text-[11px] sm:text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1 transition-colors cursor-pointer py-1 ${
+                          isDark ? 'text-white/85 hover:text-[#DCA51B]' : 'text-zinc-700 hover:text-[#DCA51B]'
+                        }`}
+                      >
+                        <span>VIEW DETAILS</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#DCA51B]" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Image Column */}
+                  <div className="w-full sm:w-[45%] lg:w-[44%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-[#FAF7F2] shrink-0">
+                    <img 
+                      src={service.img} 
+                      alt={service.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
+                    />
+
+                    {/* Soft gradient overlay for contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none" />
+
+                    {/* Top Floating Duration Badge */}
+                    <div className={`absolute z-10 ${
+                      service.duration === 'Phased Care' || service.duration === '1–2 Visits' 
+                        ? 'bottom-4 left-4' 
+                        : service.duration === '2 Visits' 
+                          ? 'bottom-4 right-4' 
+                          : 'top-4 right-4'
+                    }`}>
+                      <span className="px-3 py-1 bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold rounded-full border border-white/15 flex items-center gap-1.5 shadow-md font-sans">
+                        <Clock className="w-3 h-3 text-[#DCA51B]" />
+                        <span>{service.duration}</span>
+                      </span>
                     </div>
 
+                    {/* Cursive Handwriting Script Text */}
+                    {service.scriptText && (
+                      <div className={`absolute z-10 pointer-events-none font-script text-2xl sm:text-[28px] lg:text-3xl leading-[1.1] font-bold select-none ${
+                        service.scriptPosition === 'top-left'
+                          ? 'top-4 left-4 text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
+                          : service.scriptPosition === 'top-right'
+                            ? 'top-14 right-4 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
+                            : 'bottom-4 right-4 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
+                      }`}>
+                        {service.scriptText.split('\n').map((line, lIdx) => (
+                          <div key={lIdx}>{line}</div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Card 4 Gold Circular Medallion Overlay */}
+                    {service.hasMedallion && (
+                      <div className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-26 h-26 sm:w-28 sm:h-28 rounded-full border border-[#DCA51B]/80 bg-black/45 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2 shadow-xl pointer-events-none z-10">
+                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">NATURAL</span>
+                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-[#DCA51B] font-sans font-bold my-0.5">BEAUTIFUL</span>
+                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">CONFIDENT</span>
+                        <div className="w-5 h-[1.5px] bg-[#DCA51B] mt-1 rounded-full" />
+                      </div>
+                    )}
+
+                    {/* Elegant Curved Gold Divider (Inside Image Container to guarantee zero text obstruction) */}
+                    {!isInverted ? (
+                      <div className="hidden sm:block absolute top-0 bottom-0 left-0 w-[36px] lg:w-[42px] z-10 pointer-events-none h-full">
+                        <svg className="w-full h-full" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
+                          <path 
+                            d="M0,0 L0,320 C24,220 24,100 0,0 Z" 
+                            fill={cardBg} 
+                          />
+                          <path 
+                            d="M0,0 C24,100 24,220 0,320" 
+                            stroke="#DCA51B" 
+                            strokeWidth="2.5" 
+                            fill="none" 
+                          />
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="hidden sm:block absolute top-0 bottom-0 right-0 w-[36px] lg:w-[42px] z-10 pointer-events-none h-full">
+                        <svg className="w-full h-full" viewBox="0 0 36 320" preserveAspectRatio="none" fill="none">
+                          <path 
+                            d="M36,0 L36,320 C12,220 12,100 36,0 Z" 
+                            fill={cardBg} 
+                          />
+                          <path 
+                            d="M36,0 C12,100 12,220 36,320" 
+                            stroke="#DCA51B" 
+                            strokeWidth="2.5" 
+                            fill="none" 
+                          />
+                        </svg>
+                      </div>
+                    )}
                   </div>
 
                 </div>
@@ -258,7 +388,7 @@ export const ServicesGrid = () => {
 
       </div>
 
-      {/* Interactive Service Details Modal */}
+      {/* Interactive Service Details Modal (Portaled) */}
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {selectedService && (
@@ -268,13 +398,13 @@ export const ServicesGrid = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedService(null)}
-                className="fixed inset-0 bg-black/75 z-[100] backdrop-blur-md"
+                className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-md cursor-pointer"
               />
               <motion.div
                 initial={{ top: '100%', left: '50%', x: '-50%', y: 0, opacity: 0 }}
                 animate={{ top: '50%', left: '50%', x: '-50%', y: '-50%', opacity: 1 }}
                 exit={{ top: '100%', left: '50%', x: '-50%', y: 0, opacity: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                transition={{ type: 'spring', damping: 26, stiffness: 220 }}
                 className="fixed w-[92%] max-w-2xl bg-[#FCFBF8] rounded-3xl z-[101] max-h-[90vh] shadow-2xl border border-[#E8E2D5] flex flex-col overflow-hidden"
               >
                 <button 
@@ -288,7 +418,7 @@ export const ServicesGrid = () => {
                 {/* Scrollable Content Container */}
                 <div data-lenis-prevent className="flex-1 overflow-y-auto custom-scrollbar p-6 sm:p-9 overscroll-contain">
                   <span className="text-[#DCA51B] tracking-[0.2em] text-xs uppercase font-bold block mb-2 font-sans">
-                    {selectedService.category} SPECIALTY
+                    {selectedService.categoryLabel}
                   </span>
                   
                   <h2 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-[#141518] pr-10">
@@ -322,7 +452,7 @@ export const ServicesGrid = () => {
                   <Link 
                     to="/book" 
                     onClick={() => setSelectedService(null)}
-                    className="btn-gold-luxury px-7 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans text-sm font-semibold"
+                    className="bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 px-7 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans text-sm font-bold"
                   >
                     <Calendar className="w-4 h-4 text-[#141518]" />
                     <span>BOOK CONSULTATION</span>
