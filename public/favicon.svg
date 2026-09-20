@@ -25,9 +25,6 @@
     </filter>
   </defs>
 
-  <!-- Luxury Obsidian Squircle Container: Ensures 100% Visibility on BOTH Light & Dark Browser Tabs -->
-  <rect x="16" y="16" width="480" height="480" rx="124" fill="url(#badge-bg)" stroke="url(#badge-border)" stroke-width="14" />
-
   <!-- Gold Tooth Emblem Group (Visual Center Adjusted) -->
   <g transform="translate(6, 12)" filter="url(#gold-glow)">
     <!-- 1. Top left crown crest & hair brush strokes -->

@@ -235,19 +235,19 @@ export const AboutStandard: React.FC = () => {
                 aria-hidden="true"
               >
                 <defs>
-                  <linearGradient id="waveLineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient id="waveLineGrad1" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.05" />
                     <stop offset="30%" stopColor="#DCA51B" stopOpacity="0.5" />
                     <stop offset="70%" stopColor="#F5D77F" stopOpacity="0.65" />
                     <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.1" />
                   </linearGradient>
-                  <linearGradient id="waveLineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient id="waveLineGrad2" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stopColor="#FAF7F2" stopOpacity="0.05" />
                     <stop offset="40%" stopColor="#FAF7F2" stopOpacity="0.35" />
                     <stop offset="75%" stopColor="#DCA51B" stopOpacity="0.45" />
                     <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.05" />
                   </linearGradient>
-                  <linearGradient id="waveLineGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient id="waveLineGrad3" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.08" />
                     <stop offset="50%" stopColor="#DCA51B" stopOpacity="0.55" />
                     <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.12" />
@@ -255,25 +255,52 @@ export const AboutStandard: React.FC = () => {
                 </defs>
                 {/* Wave Line 1 */}
                 <path 
-                  d="M -50,150 C 180,50 320,280 540,160 C 700,70 780,230 950,170" 
+                  d="M 0,180 Q 225,80 450,180 T 900,180 T 1350,180 T 1800,180 T 2250,180 T 2700,180" 
                   fill="none" 
                   stroke="url(#waveLineGrad1)" 
                   strokeWidth="1.75" 
-                />
+                >
+                  <animateTransform 
+                    attributeName="transform" 
+                    type="translate" 
+                    from="0 0" 
+                    to="-900 0" 
+                    dur="15s" 
+                    repeatCount="indefinite" 
+                  />
+                </path>
                 {/* Wave Line 2 */}
                 <path 
-                  d="M -50,215 C 190,115 350,345 580,225 C 730,125 800,295 950,235" 
+                  d="M 0,220 Q 175,340 350,220 T 700,220 T 1050,220 T 1400,220 T 1750,220 T 2100,220 T 2450,220 T 2800,220" 
                   fill="none" 
                   stroke="url(#waveLineGrad2)" 
                   strokeWidth="1.5"
-                />
+                >
+                  <animateTransform 
+                    attributeName="transform" 
+                    type="translate" 
+                    from="0 0" 
+                    to="-700 0" 
+                    dur="12s" 
+                    repeatCount="indefinite" 
+                  />
+                </path>
                 {/* Wave Line 3 */}
                 <path 
-                  d="M -50,280 C 210,180 380,410 620,290 C 760,190 820,360 950,300" 
+                  d="M 0,280 Q 250,200 500,280 T 1000,280 T 1500,280 T 2000,280 T 2500,280 T 3000,280" 
                   fill="none" 
                   stroke="url(#waveLineGrad3)" 
                   strokeWidth="2" 
-                />
+                >
+                  <animateTransform 
+                    attributeName="transform" 
+                    type="translate" 
+                    from="0 0" 
+                    to="-1000 0" 
+                    dur="20s" 
+                    repeatCount="indefinite" 
+                  />
+                </path>
               </svg>
 
               <div className="relative z-10">

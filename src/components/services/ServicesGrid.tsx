@@ -160,7 +160,7 @@ export const ServicesGrid = () => {
   );
 
   return (
-    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-18 xl:py-20 bg-[#FAF7F2] relative z-10 overflow-hidden scroll-mt-24 sm:scroll-mt-28">
+    <section id="treatments-grid" ref={sectionRef} className="py-12 sm:py-16 lg:py-18 xl:py-20 bg-[#FAF7F2] relative z-10 overflow-hidden scroll-mt-24 sm:scroll-mt-28">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Category Navigation Pills with Sliding Obsidian Indicator */}

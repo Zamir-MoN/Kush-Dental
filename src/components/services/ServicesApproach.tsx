@@ -1,21 +1,24 @@
 import React, { useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { Link } from 'react-router-dom';
-import { 
-  Calendar, 
-  ArrowDown 
-} from 'lucide-react';
+import { Calendar, ArrowDown } from 'lucide-react';
+import { useLenis } from '../ui/SmoothScroll';
 import { AnimatedWaveContours } from '../common/AnimatedWaveContours';
 
 export const ServicesApproach: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { scrollTo } = useLenis();
   useScrollReveal(sectionRef);
 
   const handleScrollToGrid = (e: React.MouseEvent) => {
     e.preventDefault();
-    const elem = document.querySelector('section.py-16');
+    const elem = document.getElementById('treatments-grid');
     if (elem) {
-      elem.scrollIntoView({ behavior: 'smooth' });
+      if (scrollTo) {
+        scrollTo(elem, { offset: -80 });
+      } else {
+        elem.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -64,13 +67,14 @@ export const ServicesApproach: React.FC = () => {
                 <span>BOOK A CONSULTATION</span>
               </Link>
               
-              <button 
+              <a 
+                href="#treatments-grid"
                 onClick={handleScrollToGrid}
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[#E8E2D5] hover:border-[#DCA51B]/60 bg-white hover:bg-zinc-50 text-zinc-800 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-xs cursor-pointer"
               >
                 <span>EXPLORE TREATMENTS</span>
                 <ArrowDown className="w-3.5 h-3.5 text-[#DCA51B]" />
-              </button>
+              </a>
             </div>
 
           </div>
