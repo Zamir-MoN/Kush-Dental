@@ -45,63 +45,63 @@ export const ServicesGuarantee: React.FC = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-[#121316] text-white border-y border-white/10 relative overflow-hidden"
+      className="py-12 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-12 bg-[#121316] text-white border-y border-white/10 relative overflow-hidden"
     >
       {/* Ambient Gold Core Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-[#DCA51B]/[0.06] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#DCA51B]/[0.05] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto relative z-10">
         
         {/* Section Masthead */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 reveal-up">
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-[46px] xl:text-5xl text-white leading-[1.12] tracking-tight mb-4">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 reveal-up">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white leading-[1.15] tracking-tight mb-2.5">
             Our Clinical Protocols &amp; <br />
             <span className="italic font-normal text-[#DCA51B]">Patient Guarantees</span><span className="text-[#DCA51B]">.</span>
           </h2>
 
-          <p className="text-zinc-400 text-xs sm:text-sm lg:text-base font-sans font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-zinc-400 text-xs sm:text-[13px] font-sans font-light leading-relaxed max-w-xl mx-auto">
             Every procedure at Kush Dental Clinic adheres to strict biomimetic principles, gentle delivery, and documented clinical excellence.
           </p>
         </div>
 
-        {/* 4 Obsidian Protocol Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+        {/* 4 Compact Obsidian Protocol Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4.5">
           {protocols.map((item) => {
             const Icon = item.icon;
             return (
               <div 
                 key={item.num}
-                className="bg-[#1B1C20] rounded-3xl border border-white/10 hover:border-[#DCA51B]/60 p-6 sm:p-7 shadow-2xl hover:shadow-[0_12px_36px_rgba(220,165,27,0.12)] transition-all duration-300 flex flex-col justify-between group cursor-default reveal-up"
+                className="bg-[#1B1C20] rounded-2xl border border-white/10 hover:border-[#DCA51B]/60 p-4 sm:p-5 shadow-xl hover:shadow-[0_8px_28px_rgba(220,165,27,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-default reveal-up"
               >
                 <div>
                   {/* Top Meta */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-serif font-bold text-2xl text-[#DCA51B]">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="font-serif font-bold text-xl sm:text-2xl text-[#DCA51B]">
                       {item.num}
                     </span>
-                    <div className="w-10 h-10 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] group-hover:scale-105 transition-all duration-300 shadow-inner">
-                      <Icon className="w-4 h-4" />
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] group-hover:scale-105 transition-all duration-300 shadow-inner">
+                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </div>
                   </div>
 
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#DCA51B] block font-sans mb-1.5">
+                  <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#DCA51B] block font-sans mb-1">
                     {item.badge}
                   </span>
 
-                  <h3 className="font-serif font-bold text-lg sm:text-xl text-white group-hover:text-[#DCA51B] transition-colors leading-snug mb-2.5">
+                  <h3 className="font-serif font-bold text-base sm:text-[17px] text-white group-hover:text-[#DCA51B] transition-colors leading-snug mb-1.5">
                     {item.title}
                   </h3>
 
-                  <p className="text-zinc-400 text-xs sm:text-[13px] leading-relaxed font-sans font-light mb-5">
+                  <p className="text-zinc-400 text-xs leading-relaxed font-sans font-light mb-3.5">
                     {item.desc}
                   </p>
                 </div>
 
                 {/* Point Checkmarks */}
-                <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+                <div className="pt-3 border-t border-white/10 flex flex-col gap-1.5">
                   {item.points.map((pt, pIdx) => (
-                    <div key={pIdx} className="flex items-center gap-2 text-xs text-zinc-300 font-sans">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B]" />
+                    <div key={pIdx} className="flex items-center gap-1.5 text-[11.5px] sm:text-xs text-zinc-300 font-sans">
+                      <CheckCircle2 className="w-3 h-3 text-[#DCA51B] shrink-0" />
                       <span>{pt}</span>
                     </div>
                   ))}
