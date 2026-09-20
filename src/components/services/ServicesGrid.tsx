@@ -91,7 +91,7 @@ const services: ServiceItem[] = [
     icon: ToothIcon,
     img: '/images/services/restorative care.png',
     isDark: true,
-    inverted: false,
+    inverted: true,
     hasMedallion: true
   },
   {
@@ -309,11 +309,7 @@ export const ServicesGrid = () => {
 
                     {/* Top Floating Duration Badge */}
                     <div className={`absolute z-10 ${
-                      service.duration === 'Phased Care' || service.duration === '1–2 Visits' 
-                        ? 'bottom-4 left-4' 
-                        : service.duration === '2 Visits' 
-                          ? 'bottom-4 right-4' 
-                          : 'top-4 right-4'
+                      isInverted ? 'bottom-4 left-4' : 'top-4 right-4'
                     }`}>
                       <span className="px-3 py-1 bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold rounded-full border border-white/15 flex items-center gap-1.5 shadow-md font-sans">
                         <Clock className="w-3 h-3 text-[#DCA51B]" />
@@ -338,7 +334,7 @@ export const ServicesGrid = () => {
 
                     {/* Card 4 Gold Circular Medallion Overlay */}
                     {service.hasMedallion && (
-                      <div className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-26 h-26 sm:w-28 sm:h-28 rounded-full border border-[#DCA51B]/80 bg-black/45 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2 shadow-xl pointer-events-none z-10">
+                      <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-26 h-26 sm:w-28 sm:h-28 rounded-full border border-[#DCA51B]/80 bg-black/45 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2 shadow-xl pointer-events-none z-10">
                         <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">NATURAL</span>
                         <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-[#DCA51B] font-sans font-bold my-0.5">BEAUTIFUL</span>
                         <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">CONFIDENT</span>
