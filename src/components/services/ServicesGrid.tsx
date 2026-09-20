@@ -28,6 +28,7 @@ interface ServiceItem {
   scriptText?: string;
   scriptPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   hasMedallion?: boolean;
+  imgPosition?: string;
 }
 
 const services: ServiceItem[] = [
@@ -97,22 +98,6 @@ const services: ServiceItem[] = [
   {
     id: 5,
     number: '05',
-    title: 'Gentle Root Canal Therapy',
-    category: 'Restorative',
-    categoryLabel: 'RESTORATIVE',
-    desc: 'Pain-free care to treat tooth infection and save your natural tooth.',
-    benefits: ['Painless local numbing', 'Saves your natural tooth', 'Reinforces tooth structure'],
-    duration: '1–2 Visits',
-    icon: DentalCrownIcon,
-    img: '/images/services/root canal.png',
-    isDark: false,
-    inverted: true,
-    scriptText: 'Painless\nLasting\nRelief',
-    scriptPosition: 'top-left'
-  },
-  {
-    id: 6,
-    number: '06',
     title: 'Wisdom Tooth Removal',
     category: 'Surgical',
     categoryLabel: 'SURGICAL',
@@ -125,6 +110,21 @@ const services: ServiceItem[] = [
     inverted: false,
     scriptText: 'Gentle\nSafe\nComfort',
     scriptPosition: 'bottom-right'
+  },
+  {
+    id: 6,
+    number: '06',
+    title: 'Gentle Root Canal Therapy',
+    category: 'Restorative',
+    categoryLabel: 'RESTORATIVE',
+    desc: 'Pain-free care to treat tooth infection and save your natural tooth.',
+    benefits: ['Painless local numbing', 'Saves your natural tooth', 'Reinforces tooth structure'],
+    duration: '1–2 Visits',
+    icon: DentalCrownIcon,
+    img: '/images/services/root canal.png',
+    isDark: false,
+    inverted: false,
+    imgPosition: '85% center'
   }
 ];
 
@@ -301,6 +301,7 @@ export const ServicesGrid = () => {
                     <img 
                       src={service.img} 
                       alt={service.title} 
+                      style={service.imgPosition ? { objectPosition: service.imgPosition } : undefined}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
                     />
 
