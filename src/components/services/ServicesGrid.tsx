@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowRight, ArrowUpRight, CheckCircle2, X, Calendar, Clock, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CheckCircle2, X, Calendar, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { 
   DentalMirrorIcon, 
@@ -91,7 +91,9 @@ const services: ServiceItem[] = [
     icon: ToothIcon,
     img: '/images/services/restorative care.png',
     isDark: true,
-    inverted: true
+    inverted: true,
+    scriptText: 'Natural\nBeautiful\nSmile',
+    scriptPosition: 'top-left'
   },
   {
     id: 5,
@@ -122,7 +124,9 @@ const services: ServiceItem[] = [
     img: '/images/services/root canal.png',
     isDark: false,
     inverted: false,
-    imgPosition: '85% center'
+    imgPosition: '85% center',
+    scriptText: 'Painless\nLasting\nRelief',
+    scriptPosition: 'bottom-right'
   }
 ];
 
@@ -308,24 +312,14 @@ export const ServicesGrid = () => {
                     {/* Soft gradient overlay for contrast */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none" />
 
-                    {/* Top Floating Duration Badge */}
-                    <div className={`absolute z-10 ${
-                      isInverted ? 'bottom-4 left-4' : 'top-4 right-4'
-                    }`}>
-                      <span className="px-3 py-1 bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold rounded-full border border-white/15 flex items-center gap-1.5 shadow-md font-sans">
-                        <Clock className="w-3 h-3 text-[#DCA51B]" />
-                        <span>{service.duration}</span>
-                      </span>
-                    </div>
-
                     {/* Cursive Handwriting Script Text */}
                     {service.scriptText && (
                       <div className={`absolute z-10 pointer-events-none font-script text-2xl sm:text-[28px] lg:text-3xl leading-[1.1] font-bold select-none ${
                         service.scriptPosition === 'top-left'
-                          ? 'top-4 left-4 text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
+                          ? 'top-4 left-4 sm:left-5 text-left text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
                           : service.scriptPosition === 'top-right'
-                            ? 'top-14 right-4 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
-                            : 'bottom-4 right-4 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
+                            ? 'top-4 right-4 sm:right-5 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
+                            : 'bottom-4 right-4 sm:right-5 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
                       }`}>
                         {service.scriptText.split('\n').map((line, lIdx) => (
                           <div key={lIdx}>{line}</div>
