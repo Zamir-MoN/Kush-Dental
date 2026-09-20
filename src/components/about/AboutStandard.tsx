@@ -228,12 +228,6 @@ export const AboutStandard: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Meta Category & Year */}
-                <div className="flex items-center justify-between text-[11px] text-zinc-500 font-sans mb-1.5">
-                  <span className="font-semibold text-[#8C5D00]">{cert.category}</span>
-                  <span>{cert.year}</span>
-                </div>
-
                 {/* Certificate Title */}
                 <h4 className="font-serif font-bold text-base sm:text-lg text-zinc-900 group-hover:text-[#8C5D00] transition-colors leading-snug mb-1">
                   {cert.title}
@@ -324,15 +318,6 @@ export const AboutStandard: React.FC = () => {
                 {/* Right: Verified Specification Details */}
                 <div data-lenis-prevent className="lg:w-[40%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-white">
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="px-3 py-1 rounded-full bg-[#FAF7F2] border border-[#DCA51B]/40 text-[#8C5D00] text-xs font-bold uppercase tracking-wider font-sans">
-                        {activeCert.category}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-full bg-[#DCA51B]/15 text-[#8C5D00] text-xs font-bold font-sans">
-                        {activeCert.year}
-                      </span>
-                    </div>
-
                     <h3 className="font-serif font-bold text-2xl sm:text-3xl text-zinc-900 mb-2 leading-tight">
                       {activeCert.title}
                     </h3>
