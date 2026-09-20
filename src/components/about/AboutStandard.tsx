@@ -2,12 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { 
-  DentalMirrorIcon, 
-  SmileCurveIcon, 
-  DentalScanIcon,
-  ToothIcon 
-} from '../common/DentalIcons';
+import { ToothIcon } from '../common/DentalIcons';
 import { 
   ShieldCheck, 
   CheckCircle2, 
@@ -150,72 +145,9 @@ export const AboutStandard: React.FC = () => {
   const activeCert = activeCertIndex !== null ? certificates[activeCertIndex] : null;
 
   return (
-    <section id="standard" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 lg:pb-20 scroll-mt-24 sm:scroll-mt-28">
-      {/* Masthead */}
-      <div className="text-center mb-12 sm:mb-14 reveal-up">
-        <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-zinc-900 tracking-tight">
-          The Kush <span className="italic font-normal text-[#DCA51B]">Standard</span>.
-        </h2>
-        <div className="w-12 h-0.5 bg-[#DCA51B] mx-auto mt-4 rounded-full" />
-      </div>
-      
-      {/* 3 Core Pillars */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-16 sm:mb-20 lg:mb-24">
-        {/* Card 1 */}
-        <div className="luxury-card rounded-3xl p-7 sm:p-8 flex flex-col justify-between group cursor-default reveal-up">
-          <div>
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center mb-6 text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:rotate-6 transition-all duration-300 shrink-0">
-              <DentalMirrorIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-            </div>
-            <h3 className="font-serif font-bold text-xl text-zinc-900 mb-2 group-hover:text-[#DCA51B] transition-colors">
-              Expert Dentists
-            </h3>
-            <p className="font-sans text-sm sm:text-base text-zinc-600 leading-relaxed font-light">
-              Specialized doctors delivering gentle, reliable care for your whole family.
-            </p>
-          </div>
-          <div className="w-8 h-0.5 bg-[#E8E2D5] group-hover:bg-[#DCA51B] group-hover:w-full transition-all duration-500 mt-6" />
-        </div>
-        
-        {/* Card 2 - Focal Obsidian Centerpiece */}
-        <div className="bg-[#141518] text-white rounded-3xl border border-[#DCA51B]/50 p-7 sm:p-8 flex flex-col justify-between group cursor-default reveal-up shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#DCA51B]/10 rounded-full blur-2xl pointer-events-none" />
-          <div className="relative z-10">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#1B1C20] border border-[#DCA51B]/50 flex items-center justify-center mb-6 text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:rotate-6 transition-all duration-300 shadow-inner shrink-0">
-              <SmileCurveIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#DCA51B] block font-sans mb-1">
-              PATIENT COMFORT FIRST
-            </span>
-            <h3 className="font-serif font-bold text-xl text-white mb-2 group-hover:text-[#DCA51B] transition-colors">
-              Pain-Free Comfort
-            </h3>
-            <p className="font-sans text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
-              Calm private suites and gentle computerized numbing for anxiety-free, soothing dental visits.
-            </p>
-          </div>
-          <div className="w-8 h-0.5 bg-[#DCA51B]/60 group-hover:bg-[#DCA51B] group-hover:w-full transition-all duration-500 mt-6 relative z-10" />
-        </div>
-        
-        {/* Card 3 */}
-        <div className="luxury-card rounded-3xl p-7 sm:p-8 flex flex-col justify-between group cursor-default reveal-up">
-          <div>
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center mb-6 text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:rotate-6 transition-all duration-300 shrink-0">
-              <DentalScanIcon className="w-6 h-6 sm:w-7 sm:h-7" />
-            </div>
-            <h3 className="font-serif font-bold text-xl text-zinc-900 mb-2 group-hover:text-[#DCA51B] transition-colors">
-              3D Digital Precision
-            </h3>
-            <p className="font-sans text-sm sm:text-base text-zinc-600 leading-relaxed font-light">
-              Optical 3D scans and low-dose imaging without messy dental putty.
-            </p>
-          </div>
-          <div className="w-8 h-0.5 bg-[#E8E2D5] group-hover:bg-[#DCA51B] group-hover:w-full transition-all duration-500 mt-6" />
-        </div>
-      </div>
-
+    <section id="credentials" ref={sectionRef} className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-12 lg:pt-14 pb-12 sm:pb-16 lg:pb-20 scroll-mt-24 sm:scroll-mt-28">
       {/* ----------------- ACHIEVEMENTS & CERTIFICATES GALLERY ----------------- */}
-      <div className="reveal-up border-t border-[#E8E2D5] pt-12 sm:pt-16">
+      <div className="reveal-up">
         
         {/* Top Section: Hero Split (Left Text + Right Featured Showcase) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mb-8 sm:mb-12">
