@@ -27,7 +27,6 @@ interface ServiceItem {
   inverted: boolean;
   scriptText?: string;
   scriptPosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-  hasMedallion?: boolean;
   imgPosition?: string;
 }
 
@@ -92,8 +91,7 @@ const services: ServiceItem[] = [
     icon: ToothIcon,
     img: '/images/services/restorative care.png',
     isDark: true,
-    inverted: true,
-    hasMedallion: true
+    inverted: true
   },
   {
     id: 5,
@@ -332,16 +330,6 @@ export const ServicesGrid = () => {
                         {service.scriptText.split('\n').map((line, lIdx) => (
                           <div key={lIdx}>{line}</div>
                         ))}
-                      </div>
-                    )}
-
-                    {/* Card 4 Gold Circular Medallion Overlay */}
-                    {service.hasMedallion && (
-                      <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-26 h-26 sm:w-28 sm:h-28 rounded-full border border-[#DCA51B]/80 bg-black/45 backdrop-blur-xs flex flex-col items-center justify-center text-center p-2 shadow-xl pointer-events-none z-10">
-                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">NATURAL</span>
-                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-[#DCA51B] font-sans font-bold my-0.5">BEAUTIFUL</span>
-                        <span className="text-[8px] sm:text-[8.5px] uppercase tracking-[0.25em] text-white/95 font-sans font-bold">CONFIDENT</span>
-                        <div className="w-5 h-[1.5px] bg-[#DCA51B] mt-1 rounded-full" />
                       </div>
                     )}
 
