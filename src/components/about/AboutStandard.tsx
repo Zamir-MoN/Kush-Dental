@@ -18,7 +18,9 @@ import {
   GraduationCap,
   Trophy,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  Calendar,
+  Landmark
 } from 'lucide-react';
 
 interface Certificate {
@@ -29,6 +31,8 @@ interface Certificate {
   issuer: string;
   recipient: string;
   year: string;
+  awardedDate: string;
+  credentialType: string;
   badge: string;
   image: string;
   description: string;
@@ -46,9 +50,11 @@ const certificates: Certificate[] = [
     issuer: "American Academy of Oral Implantology",
     recipient: "Dr. Amit Kumar",
     year: "Board Certified Fellow",
+    awardedDate: "October 26, 2024",
+    credentialType: "Verified Credential",
     badge: "Fellowship",
     image: "/images/certificates/cert-1.jpg",
-    description: "Conferred in recognition of advanced clinical mastery, 3D computer-guided implantology, and surgical excellence.",
+    description: "Conferred in recognition of advanced clinical mastery, 3D computer-guided implantology, and surgical excellence in implant dentistry.",
     highlights: ["3D Guided Surgical Protocols", "Advanced Bone & Tissue Regeneration", "International Board Fellow"],
     checkpoints: ["Internationally Recognized", "Advanced Implant Training"],
     icon: ShieldCheck
@@ -61,6 +67,8 @@ const certificates: Certificate[] = [
     issuer: "American Academy of Cosmetic Dentistry",
     recipient: "Dr. Amit Kumar",
     year: "Accredited Diplomate",
+    awardedDate: "January 18, 2024",
+    credentialType: "Verified Credential",
     badge: "Diplomate",
     image: "/images/certificates/cert-2.jpg",
     description: "Highest tier clinical credential for natural smile design, ceramic veneers, and biomimetic aesthetic rehabilitation.",
@@ -76,6 +84,8 @@ const certificates: Certificate[] = [
     issuer: "Faculty of Dental Surgery & Health Sciences",
     recipient: "Dr. Amit Kumar",
     year: "Honors Distinction",
+    awardedDate: "May 15, 2024",
+    credentialType: "Verified Credential",
     badge: "Post-Graduate",
     image: "/images/certificates/cert-3.jpg",
     description: "Conferred with highest honors for academic merit, restorative clinical trials, and surgical distinction.",
@@ -91,6 +101,8 @@ const certificates: Certificate[] = [
     issuer: "National Clinical Care & Dental Standards Board",
     recipient: "Kush Dental Clinic & Dr. Amit Kumar",
     year: "Clinical Mastery Award",
+    awardedDate: "November 10, 2024",
+    credentialType: "Verified Credential",
     badge: "Award Plaque",
     image: "/images/certificates/cert-4.jpg",
     description: "Awarded to Kush Dental Clinic for outstanding patient safety standards, five-star satisfaction, and pain-free clinical care.",
@@ -471,99 +483,130 @@ export const AboutStandard: React.FC = () => {
 
               {/* Modal Container */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                initial={{ opacity: 0, scale: 0.96, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
                 transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-                className="relative z-10 max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-[#E8E2D5] flex flex-col lg:flex-row max-h-[90vh]"
+                className="relative z-10 max-w-5xl w-full bg-white rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 md:p-8 shadow-2xl border border-[#E8E2D5] flex flex-col lg:flex-row gap-6 lg:gap-8 max-h-[92vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
-                <button
-                  onClick={() => setActiveCertIndex(null)}
-                  className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-[#141518] text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20 shadow-md"
-                  aria-label="Close Certificate View"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                {/* Left: High-Res Framed Certificate Image */}
-                <div className="lg:w-[60%] relative bg-[#141518] min-h-[300px] sm:min-h-[420px] lg:min-h-[500px] flex items-center justify-center overflow-hidden group p-4 sm:p-6">
+                {/* Left: Certificate Preview Container */}
+                <div className="w-full lg:w-[53%] aspect-[4/3] sm:aspect-[16/11] lg:aspect-auto lg:min-h-[460px] bg-[#ECE7DF] rounded-[20px] sm:rounded-[24px] border border-[#E0D9CD] relative flex items-center justify-center p-6 sm:p-10 shrink-0 overflow-hidden">
                   <img 
                     src={activeCert.image} 
                     alt={activeCert.title} 
-                    className="w-full h-full object-contain max-h-[70vh] rounded-xl shadow-2xl transition-all duration-300"
+                    className="max-w-full max-h-[380px] object-contain rounded-xl shadow-md border border-[#DCD5C9] transition-all duration-300"
                   />
 
                   {/* Previous / Next Arrow Controls */}
                   <button
                     onClick={() => setActiveCertIndex((activeCertIndex - 1 + certificates.length) % certificates.length)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/55 hover:bg-[#DCA51B] hover:text-[#141518] text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 shadow-md"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white shadow-md border border-[#E0D9CD] text-zinc-700 hover:text-zinc-950 hover:bg-zinc-50 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
                     aria-label="Previous certificate"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
                   </button>
                   <button
                     onClick={() => setActiveCertIndex((activeCertIndex + 1) % certificates.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/55 hover:bg-[#DCA51B] hover:text-[#141518] text-white flex items-center justify-center transition-all cursor-pointer border border-white/20 shadow-md"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white shadow-md border border-[#E0D9CD] text-zinc-700 hover:text-zinc-950 hover:bg-zinc-50 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
                     aria-label="Next certificate"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                   </button>
 
-                  <div className="absolute bottom-4 left-4 text-xs text-white/80 font-sans font-medium px-3 py-1 rounded-full bg-black/50 border border-white/15">
-                    {activeCertIndex + 1} / {certificates.length}
-                  </div>
+                  {/* Index Counter */}
+                  <span className="absolute bottom-4 left-6 text-xs sm:text-[13px] font-mono tracking-widest text-[#8C8476] font-semibold select-none">
+                    {String(activeCertIndex + 1).padStart(2, '0')} / {String(certificates.length).padStart(2, '0')}
+                  </span>
                 </div>
 
-                {/* Right: Verified Specification Details */}
-                <div data-lenis-prevent className="lg:w-[40%] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-white">
+                {/* Right: Specifications & Details */}
+                <div data-lenis-prevent className="w-full lg:w-[47%] flex flex-col justify-between relative pt-1 sm:pt-2">
+                  {/* Close Icon Top Right */}
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C99728] font-sans">
+                      CERTIFICATE
+                    </span>
+                    <button
+                      onClick={() => setActiveCertIndex(null)}
+                      className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-500 hover:text-zinc-900 hover:bg-[#F2ECE1] transition-colors flex items-center justify-center cursor-pointer shadow-xs"
+                      aria-label="Close Certificate View"
+                    >
+                      <X className="w-4 h-4 stroke-[2.5]" />
+                    </button>
+                  </div>
+
                   <div>
-                    <h3 className="font-serif font-bold text-2xl sm:text-3xl text-zinc-900 mb-2 leading-tight">
+                    <h3 className="font-serif font-bold text-2xl sm:text-3xl text-zinc-900 leading-tight mb-2">
                       {activeCert.title}
                     </h3>
 
-                    <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider font-sans mb-4">
-                      Issued to: <span className="text-zinc-900 font-bold">{activeCert.recipient}</span>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 font-sans mb-4">
+                      ISSUED TO: <span className="text-zinc-900 font-bold ml-0.5">{activeCert.recipient}</span>
                     </p>
 
-                    <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] mb-5">
-                      <p className="text-xs font-bold text-[#8C5D00] uppercase tracking-wider font-sans mb-1">
-                        Issuing Authority
-                      </p>
-                      <p className="text-sm font-medium text-zinc-800 font-sans">
-                        {activeCert.issuer}
-                      </p>
+                    <div className="w-full h-[1px] bg-[#EDE7DC] mb-5" />
+
+                    {/* 3 Icon Specs Rows */}
+                    <div className="space-y-3.5 mb-5">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-11 h-11 rounded-xl bg-[#FAF5EB] border border-[#E8E1D2] flex items-center justify-center text-[#C99728] shrink-0">
+                          <Landmark className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 font-sans leading-none mb-1">
+                            ISSUING AUTHORITY
+                          </p>
+                          <p className="text-xs sm:text-[13px] font-semibold text-zinc-900 font-sans">
+                            {activeCert.issuer}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-11 h-11 rounded-xl bg-[#FAF5EB] border border-[#E8E1D2] flex items-center justify-center text-[#C99728] shrink-0">
+                          <Calendar className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 font-sans leading-none mb-1">
+                            AWARDED ON
+                          </p>
+                          <p className="text-xs sm:text-[13px] font-semibold text-zinc-900 font-sans">
+                            {activeCert.awardedDate}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-11 h-11 rounded-xl bg-[#FAF5EB] border border-[#E8E1D2] flex items-center justify-center text-[#C99728] shrink-0">
+                          <ShieldCheck className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 font-sans leading-none mb-1">
+                            CREDENTIAL TYPE
+                          </p>
+                          <p className="text-xs sm:text-[13px] font-semibold text-zinc-900 font-sans">
+                            {activeCert.credentialType}
+                          </p>
+                        </div>
+                      </div>
                     </div>
 
-                    <p className="font-sans text-sm text-zinc-600 leading-relaxed font-light mb-6">
+                    <div className="w-full h-[1px] bg-[#EDE7DC] mb-4" />
+
+                    <p className="font-sans text-xs sm:text-[13px] text-zinc-600 leading-relaxed font-light mb-6">
                       {activeCert.description}
                     </p>
-
-                    <div className="space-y-2.5 pb-6 border-b border-[#E8E2D5]">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 font-sans">
-                        Credential Competencies
-                      </h4>
-                      {activeCert.highlights.map((item, hIdx) => (
-                        <div key={hIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-zinc-800 font-sans">
-                          <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
 
-                  <div className="pt-6 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-xs text-zinc-600 font-sans">
-                      <ShieldCheck className="w-4 h-4 text-[#DCA51B]" />
-                      <span>Verified Dental Board License</span>
-                    </div>
-
+                  {/* Bottom Action: Gold CLOSE -> button */}
+                  <div className="flex justify-end pt-2">
                     <button
                       onClick={() => setActiveCertIndex(null)}
-                      className="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#DCA51B] transition-colors cursor-pointer font-sans"
+                      className="bg-[#D9A028] hover:bg-[#C99120] text-zinc-950 font-sans font-bold px-7 py-2.5 rounded-xl text-xs uppercase tracking-wider inline-flex items-center gap-2 shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
                     >
-                      Close View
+                      <span>CLOSE</span>
+                      <span className="text-sm leading-none">→</span>
                     </button>
                   </div>
                 </div>
