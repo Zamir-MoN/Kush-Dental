@@ -5,7 +5,8 @@ import { useScrollReveal } from '../../hooks/useGsap';
 import { 
   DentalMirrorIcon, 
   SmileCurveIcon, 
-  DentalScanIcon 
+  DentalScanIcon,
+  ToothIcon 
 } from '../common/DentalIcons';
 import { 
   ShieldCheck, 
@@ -13,11 +14,16 @@ import {
   Eye, 
   X, 
   ChevronLeft, 
-  ChevronRight
+  ChevronRight,
+  GraduationCap,
+  Trophy,
+  ArrowLeft,
+  ArrowRight
 } from 'lucide-react';
 
 interface Certificate {
   id: number;
+  number: string;
   title: string;
   category: string;
   issuer: string;
@@ -27,35 +33,44 @@ interface Certificate {
   image: string;
   description: string;
   highlights: string[];
+  checkpoints: [string, string];
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const certificates: Certificate[] = [
   {
     id: 1,
+    number: "01 / 04",
     title: "Fellowship in Oral Implantology",
     category: "Surgical Fellowship",
-    issuer: "American Academy of Oral Implantology (AAOI)",
+    issuer: "American Academy of Oral Implantology",
     recipient: "Dr. Amit Kumar",
     year: "Board Certified Fellow",
     badge: "Fellowship",
     image: "/images/certificates/cert-1.jpg",
     description: "Conferred in recognition of advanced clinical mastery, 3D computer-guided implantology, and surgical excellence.",
-    highlights: ["3D Guided Surgical Protocols", "Advanced Bone & Tissue Regeneration", "International Board Fellow"]
+    highlights: ["3D Guided Surgical Protocols", "Advanced Bone & Tissue Regeneration", "International Board Fellow"],
+    checkpoints: ["Internationally Recognized", "Advanced Implant Training"],
+    icon: ShieldCheck
   },
   {
     id: 2,
+    number: "02 / 04",
     title: "Diplomate in Cosmetic Dentistry",
     category: "Aesthetic Accreditation",
-    issuer: "American Academy of Cosmetic Dentistry (AACD)",
+    issuer: "American Academy of Cosmetic Dentistry",
     recipient: "Dr. Amit Kumar",
     year: "Accredited Diplomate",
     badge: "Diplomate",
     image: "/images/certificates/cert-2.jpg",
     description: "Highest tier clinical credential for natural smile design, ceramic veneers, and biomimetic aesthetic rehabilitation.",
-    highlights: ["Biomimetic Ceramic Veneers", "Digital Smile Architecture", "Microscopic Enamel Preservation"]
+    highlights: ["Biomimetic Ceramic Veneers", "Digital Smile Architecture", "Microscopic Enamel Preservation"],
+    checkpoints: ["Advanced Aesthetic Training", "Globally Recognized"],
+    icon: ToothIcon
   },
   {
     id: 3,
+    number: "03 / 04",
     title: "Master of Dental Surgery (M.D.S.)",
     category: "Academic Distinction",
     issuer: "Faculty of Dental Surgery & Health Sciences",
@@ -64,10 +79,13 @@ const certificates: Certificate[] = [
     badge: "Post-Graduate",
     image: "/images/certificates/cert-3.jpg",
     description: "Conferred with highest honors for academic merit, restorative clinical trials, and surgical distinction.",
-    highlights: ["Advanced Restorative Prosthodontics", "Clinical Honors & Merit", "15+ Years Clinical Research"]
+    highlights: ["Advanced Restorative Prosthodontics", "Clinical Honors & Merit", "15+ Years Clinical Research"],
+    checkpoints: ["Specialized Surgical Training", "Academic Excellence"],
+    icon: GraduationCap
   },
   {
     id: 4,
+    number: "04 / 04",
     title: "National Dental Excellence Award",
     category: "National Recognition",
     issuer: "National Clinical Care & Dental Standards Board",
@@ -76,7 +94,9 @@ const certificates: Certificate[] = [
     badge: "Award Plaque",
     image: "/images/certificates/cert-4.jpg",
     description: "Awarded to Kush Dental Clinic for outstanding patient safety standards, five-star satisfaction, and pain-free clinical care.",
-    highlights: ["Zero-Pain Sedation Protocol", "100% Digital Workflow", "Top Patient Care Rating"]
+    highlights: ["Zero-Pain Sedation Protocol", "100% Digital Workflow", "Top Patient Care Rating"],
+    checkpoints: ["Outstanding Patient Care", "Excellence in Dentistry"],
+    icon: Trophy
   }
 ];
 
@@ -85,6 +105,10 @@ export const AboutStandard: React.FC = () => {
   useScrollReveal(sectionRef);
 
   const [activeCertIndex, setActiveCertIndex] = useState<number | null>(null);
+  const [featuredIndex, setFeaturedIndex] = useState<number>(0);
+
+  const featuredCert = certificates[featuredIndex];
+  const otherCertificates = certificates.filter((_, idx) => idx !== featuredIndex);
 
   // Close modal with ESC key or navigate with arrows
   useEffect(() => {
@@ -181,71 +205,253 @@ export const AboutStandard: React.FC = () => {
       {/* ----------------- ACHIEVEMENTS & CERTIFICATES GALLERY ----------------- */}
       <div className="reveal-up border-t border-[#E8E2D5] pt-12 sm:pt-16">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
-          <div>
-            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-zinc-900 tracking-tight">
-              Clinical Achievements &amp; <span className="italic font-normal text-[#DCA51B]">Certificates</span>.
-            </h3>
-          </div>
+        {/* Top Section: Hero Split (Left Text + Right Featured Showcase) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mb-8 sm:mb-12">
           
-          <p className="text-zinc-600 text-xs sm:text-sm font-sans font-light max-w-md leading-relaxed">
-            Verified fellowships, dental diplomate credentials, and national excellence plaques earned by Dr. Amit Kumar and Kush Dental Clinic.
-          </p>
-        </div>
+          {/* Left Column: Eyebrow, Title, Subtitle, 3 Badges, Explore Button */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="h-[1.5px] w-5 bg-[#DCA51B]" />
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#DCA51B] font-sans">
+                  OUR CREDENTIALS
+                </span>
+                <span className="h-[1.5px] w-8 bg-[#DCA51B]/40" />
+              </div>
 
-        {/* 4-Card Certificate Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {certificates.map((cert, index) => (
-            <div
-              key={cert.id}
-              onClick={() => setActiveCertIndex(index)}
-              className="group luxury-card rounded-3xl overflow-hidden border border-[#E8E2D5] hover:border-[#DCA51B]/70 p-4 sm:p-5 flex flex-col justify-between cursor-pointer transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1.5"
-            >
-              <div>
-                {/* Framed Certificate Photo Preview */}
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#FAF7F2] border border-[#E8E2D5] mb-4 shadow-inner">
-                  <img 
-                    src={cert.image} 
-                    alt={cert.title} 
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
-                    <span className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md text-zinc-900 shadow-lg border border-white/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-                      <Eye className="w-5 h-5 text-[#DCA51B]" />
-                    </span>
+              {/* Title */}
+              <h3 className="font-serif text-3xl sm:text-4xl lg:text-[40px] leading-[1.12] text-zinc-900 tracking-tight mb-4">
+                Clinical Achievements &amp; <br className="hidden sm:inline" />
+                <span className="italic font-normal text-[#DCA51B]">Certificates</span>.
+              </h3>
+
+              {/* Subtitle */}
+              <p className="text-zinc-600 text-xs sm:text-sm font-sans font-light leading-relaxed max-w-md mb-6 sm:mb-8">
+                Verified fellowships, dental diplomate credentials, and national excellence plaques earned by Dr. Amit Kumar and Kush Dental Clinic.
+              </p>
+
+              {/* 3 Badges */}
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-4 mb-7 sm:mb-9 max-w-md">
+                <div className="flex flex-col items-start">
+                  <div className="w-10 h-10 rounded-full bg-[#FAF3E0] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] mb-2.5 shadow-2xs">
+                    <GraduationCap className="w-5 h-5" />
                   </div>
-
-                  {/* Top Floating Badge */}
-                  <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-[#9E6D03] border border-[#DCA51B]/40 text-[9.5px] font-bold uppercase tracking-wider font-sans shadow-xs">
-                    {cert.badge}
+                  <span className="text-xs sm:text-[12.5px] font-semibold text-zinc-800 leading-tight font-sans">
+                    Global<br />Recognitions
                   </span>
                 </div>
 
-                {/* Certificate Title */}
-                <h4 className="font-serif font-bold text-base sm:text-lg text-zinc-900 group-hover:text-[#8C5D00] transition-colors leading-snug mb-1">
-                  {cert.title}
-                </h4>
-
-                {/* Issuer */}
-                <p className="text-xs text-zinc-500 font-sans line-clamp-1">
-                  {cert.issuer}
-                </p>
-              </div>
-
-              {/* Bottom Verification Pill */}
-              <div className="pt-4 border-t border-[#E8E2D5] mt-4 flex items-center justify-between">
-                <div className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold text-zinc-700 font-sans">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B]" />
-                  <span>Verified Credential</span>
+                <div className="flex flex-col items-start">
+                  <div className="w-10 h-10 rounded-full bg-[#FAF3E0] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] mb-2.5 shadow-2xs">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs sm:text-[12.5px] font-semibold text-zinc-800 leading-tight font-sans">
+                    Verified<br />Credentials
+                  </span>
                 </div>
-                <span className="text-xs font-bold text-[#8C5D00] group-hover:translate-x-0.5 transition-transform font-sans">
-                  View →
-                </span>
+
+                <div className="flex flex-col items-start">
+                  <div className="w-10 h-10 rounded-full bg-[#FAF3E0] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] mb-2.5 shadow-2xs">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs sm:text-[12.5px] font-semibold text-zinc-800 leading-tight font-sans">
+                    Commitment<br />to Excellence
+                  </span>
+                </div>
               </div>
             </div>
-          ))}
+
+            {/* Action Button */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setActiveCertIndex(0)}
+                className="bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 font-sans font-bold px-6 py-3 rounded-full text-xs uppercase tracking-wider inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+              >
+                <span>EXPLORE ALL CERTIFICATES</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Featured Showcase Card */}
+          <div className="lg:col-span-7">
+            <div className="relative rounded-[28px] sm:rounded-[32px] bg-[#F8F4EC] border border-[#E8E2D5] p-6 sm:p-7 lg:p-8 shadow-sm hover:shadow-md transition-all duration-300">
+              {/* Eyebrow + Counter */}
+              <div className="flex items-center justify-between mb-4 sm:mb-5">
+                <div className="inline-flex items-center gap-2">
+                  <span className="text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#DCA51B] font-sans">
+                    FEATURED CERTIFICATE
+                  </span>
+                  <span className="h-[1px] w-6 bg-[#DCA51B]/60" />
+                </div>
+                <span className="text-xs font-semibold text-zinc-500 font-mono tracking-wider">
+                  {featuredCert.number}
+                </span>
+              </div>
+
+              {/* 2-Column Inside Featured Card */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+                {/* Left Info */}
+                <div className="md:col-span-6 flex flex-col justify-between">
+                  <div>
+                    <h4 className="font-serif font-bold text-2xl sm:text-[26px] lg:text-3xl text-zinc-900 leading-tight mb-2">
+                      {featuredCert.title}
+                    </h4>
+                    <p className="text-xs sm:text-[13px] text-zinc-600 font-sans mb-5 leading-relaxed">
+                      {featuredCert.issuer}
+                    </p>
+                    
+                    <div className="space-y-2.5 mb-6">
+                      {featuredCert.checkpoints.map((cp, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                          <span className="text-xs sm:text-[13px] font-sans text-zinc-700 font-medium">{cp}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setActiveCertIndex(featuredIndex)}
+                      className="text-xs font-bold text-[#8C5D00] hover:text-[#DCA51B] inline-flex items-center gap-1.5 transition-colors cursor-pointer font-sans group/link"
+                    >
+                      <span>View Certificate</span>
+                      <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Framed Photo */}
+                <div className="md:col-span-6 relative">
+                  <div 
+                    onClick={() => setActiveCertIndex(featuredIndex)}
+                    className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D5] group/img cursor-pointer bg-white"
+                  >
+                    <img 
+                      src={featuredCert.image} 
+                      alt={featuredCert.title}
+                      className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors flex items-center justify-center">
+                      <span className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity shadow">
+                        <Eye className="w-5 h-5 text-[#DCA51B]" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Navigation Arrows */}
+                  <div className="flex items-center gap-2 justify-end mt-4">
+                    <button
+                      type="button"
+                      onClick={() => setFeaturedIndex((prev) => (prev - 1 + certificates.length) % certificates.length)}
+                      aria-label="Previous Certificate"
+                      className="w-9 h-9 rounded-full bg-zinc-900 hover:bg-black text-white flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFeaturedIndex((prev) => (prev + 1) % certificates.length)}
+                      aria-label="Next Certificate"
+                      className="w-9 h-9 rounded-full bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom 3-Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          {otherCertificates.map((cert) => {
+            const Icon = cert.icon;
+            return (
+              <div 
+                key={cert.id}
+                onClick={() => setFeaturedIndex(cert.id - 1)}
+                className="bg-white rounded-[24px] border border-[#E8E2D5] hover:border-[#DCA51B]/70 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row gap-4 group cursor-pointer"
+              >
+                {/* Left: Framed Image */}
+                <div 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveCertIndex(cert.id - 1);
+                  }}
+                  className="w-full sm:w-[42%] aspect-[4/3] sm:aspect-auto rounded-xl overflow-hidden bg-[#FAF7F2] border border-[#E8E2D5] shrink-0 relative"
+                >
+                  <img 
+                    src={cert.image} 
+                    alt={cert.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <span className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow">
+                      <Eye className="w-4 h-4 text-[#DCA51B]" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right: Certificate Info */}
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Header: Icon + Number Counter */}
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#FAF3E0] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B]">
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="text-[11px] font-semibold text-zinc-400 font-mono">
+                        {cert.number}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h5 className="font-serif font-bold text-sm sm:text-[15px] text-zinc-900 group-hover:text-[#8C5D00] transition-colors leading-snug mb-1">
+                      {cert.title}
+                    </h5>
+
+                    {/* Subtitle / Issuer */}
+                    <p className="text-[11px] text-zinc-500 font-sans line-clamp-1 mb-2.5">
+                      {cert.issuer}
+                    </p>
+
+                    {/* 2 Checkpoints */}
+                    <div className="space-y-1 mb-3">
+                      {cert.checkpoints.map((cp, cIdx) => (
+                        <div key={cIdx} className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
+                          <span className="text-[11px] font-sans text-zinc-700 font-normal truncate">
+                            {cp}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* View Link */}
+                  <div className="pt-2 border-t border-[#E8E2D5]/60 flex items-center justify-start">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveCertIndex(cert.id - 1);
+                      }}
+                      className="text-[11px] font-bold text-[#8C5D00] hover:text-[#DCA51B] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-all font-sans cursor-pointer"
+                    >
+                      <span>View Certificate</span>
+                      <span>→</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
