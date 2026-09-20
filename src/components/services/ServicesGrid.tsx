@@ -93,7 +93,7 @@ const services: ServiceItem[] = [
     isDark: true,
     inverted: true,
     scriptText: 'Natural\nBeautiful\nSmile',
-    scriptPosition: 'top-left'
+    scriptPosition: 'bottom-left'
   },
   {
     id: 5,
@@ -319,7 +319,9 @@ export const ServicesGrid = () => {
                           ? 'top-4 left-4 sm:left-5 text-left text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
                           : service.scriptPosition === 'top-right'
                             ? 'top-4 right-4 sm:right-5 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
-                            : 'bottom-4 right-4 sm:right-5 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
+                            : service.scriptPosition === 'bottom-left'
+                              ? 'bottom-4 left-4 sm:left-5 text-left text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
+                              : 'bottom-4 right-4 sm:right-5 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
                       }`}>
                         {service.scriptText.split('\n').map((line, lIdx) => (
                           <div key={lIdx}>{line}</div>
