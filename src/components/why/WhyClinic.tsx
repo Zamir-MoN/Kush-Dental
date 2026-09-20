@@ -46,9 +46,9 @@ export const WhyClinic: React.FC = () => {
         {/* Asymmetrical Luxury Bento Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
           
-          {/* ----------------- PILLAR 01: CLINICAL MASTERY ----------------- */}
+          {/* ----------------- PILLAR 01: CLINICAL MASTERY (LUXURY OBSIDIAN BLACK) ----------------- */}
           <motion.div 
-            className="lg:col-span-7 rounded-3xl bg-gradient-to-br from-white via-[#FCFAF7] to-[#F8F4ED] border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
+            className="lg:col-span-7 rounded-3xl bg-[#141518] border border-[#DCA51B]/35 hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-2xl hover:shadow-[#DCA51B]/20 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
             whileHover={{ y: -6 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
@@ -56,64 +56,64 @@ export const WhyClinic: React.FC = () => {
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#DCA51B] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center pointer-events-none" />
 
             {/* Ambient Background Glow on Hover */}
-            <div className="absolute -right-16 -top-16 w-56 h-56 bg-gradient-to-br from-[#DCA51B]/15 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute -right-16 -top-16 w-64 h-64 bg-radial from-[#DCA51B]/20 to-transparent rounded-full blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            {/* Subtle Contour Lines Watermark on Hover */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-10 transition-opacity duration-500 overflow-hidden">
+            {/* Ambient Topography Lines */}
+            <div className="absolute inset-0 pointer-events-none opacity-20 group-hover:opacity-35 transition-opacity duration-500 overflow-hidden">
               <svg className="w-full h-full object-cover" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M-50 80 C120 40 180 220 360 170 C480 130 540 260 650 220" stroke="#DCA51B" strokeWidth="1.5" />
-                <path d="M-30 140 C140 100 200 280 390 230 C510 190 570 320 680 280" stroke="#DCA51B" strokeWidth="1.5" />
-                <path d="M-10 200 C160 160 220 340 420 290 C540 250 600 380 710 340" stroke="#DCA51B" strokeWidth="1.5" />
+                <path d="M-50 80 C120 40 180 220 360 170 C480 130 540 260 650 220" stroke="#DCA51B" strokeWidth="1" />
+                <path d="M-30 140 C140 100 200 280 390 230 C510 190 570 320 680 280" stroke="#DCA51B" strokeWidth="1" />
+                <path d="M-10 200 C160 160 220 340 420 290 C540 250 600 380 710 340" stroke="#DCA51B" strokeWidth="1" />
               </svg>
             </div>
             
             {/* Top Row */}
             <div className="relative z-10 flex items-start justify-between mb-5 sm:mb-6">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-white group-hover:border-[#DCA51B] group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-[#DCA51B]/25 transition-all duration-400">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 text-[#DCA51B] shadow-inner flex items-center justify-center group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:border-[#DCA51B] group-hover:rotate-6 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#DCA51B]/30 transition-all duration-400">
                   <Award className="w-6 h-6 stroke-[1.75]" />
                 </div>
                 <div>
-                  <span className="text-[10.5px] uppercase tracking-[0.2em] font-sans font-bold text-[#C49216] block">
+                  <span className="text-[10.5px] uppercase tracking-[0.2em] font-sans font-bold text-[#DCA51B] block">
                     PILLAR 01
                   </span>
-                  <span className="text-xs text-zinc-500 font-sans font-medium">
+                  <span className="text-xs text-zinc-400 font-sans font-medium">
                     Experienced Dentists
                   </span>
                 </div>
               </div>
 
-              <span className="font-serif font-bold text-3xl sm:text-4xl text-[#E8E2D5] group-hover:text-[#DCA51B]/40 group-hover:scale-110 transition-all duration-400 select-none">
+              <span className="font-serif font-bold text-3xl sm:text-4xl text-[#DCA51B]/35 group-hover:text-[#DCA51B]/70 group-hover:scale-110 transition-all duration-400 select-none">
                 01
               </span>
             </div>
 
             {/* Middle: Title & Narrative */}
             <div className="relative z-10 mb-5 sm:mb-6">
-              <h3 className="font-serif text-xl sm:text-2xl lg:text-[25px] font-bold text-zinc-900 mb-2.5 leading-snug group-hover:text-[#141518] transition-colors">
+              <h3 className="font-serif text-xl sm:text-2xl lg:text-[25px] font-bold text-white mb-2.5 leading-snug group-hover:text-[#FAF7F2] transition-colors">
                 Expert Dental Surgeons &amp; Specialists
               </h3>
-              <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed font-sans font-normal max-w-xl">
+              <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans font-light max-w-xl">
                 Led by Dr. Amit Kumar, our team delivers personalized, gentle care for every treatment.
               </p>
             </div>
 
             {/* Bottom: Feature Pills */}
-            <div className="relative z-10 pt-4 sm:pt-5 border-t border-[#E8E2D5] flex flex-wrap items-center gap-2 sm:gap-2.5">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-700 text-xs font-sans font-medium group-hover:bg-white group-hover:border-[#DCA51B]/40 group-hover:shadow-xs transition-all duration-300">
+            <div className="relative z-10 pt-4 sm:pt-5 border-t border-white/10 flex flex-wrap items-center gap-2 sm:gap-2.5">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 text-zinc-200 text-xs font-sans group-hover:bg-white/[0.14] group-hover:border-[#DCA51B]/50 transition-all duration-300">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B]" />
                 <span>15+ Years Clinical Experience</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-700 text-xs font-sans font-medium group-hover:bg-white group-hover:border-[#DCA51B]/40 group-hover:shadow-xs transition-all duration-300">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 text-zinc-200 text-xs font-sans group-hover:bg-white/[0.14] group-hover:border-[#DCA51B]/50 transition-all duration-300">
                 <Clock className="w-3.5 h-3.5 text-[#DCA51B]" />
                 <span>Personalized Doctor Care</span>
               </div>
             </div>
           </motion.div>
 
-          {/* ----------------- PILLAR 02: BESPOKE HOSPITALITY ----------------- */}
+          {/* ----------------- PILLAR 02: BESPOKE HOSPITALITY (LUXURY IVORY WHITE) ----------------- */}
           <motion.div 
-            className="lg:col-span-5 rounded-3xl bg-gradient-to-br from-white via-[#FCFAF7] to-[#F8F4ED] border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
+            className="lg:col-span-5 rounded-3xl bg-white border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
             whileHover={{ y: -6 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
@@ -167,9 +167,9 @@ export const WhyClinic: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* ----------------- PILLAR 03: SUB-MICRON TECH ----------------- */}
+          {/* ----------------- PILLAR 03: SUB-MICRON TECH (LUXURY IVORY WHITE) ----------------- */}
           <motion.div 
-            className="lg:col-span-5 rounded-3xl bg-gradient-to-br from-white via-[#FCFAF7] to-[#F8F4ED] border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
+            className="lg:col-span-5 rounded-3xl bg-white border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
             whileHover={{ y: -6 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
@@ -223,56 +223,56 @@ export const WhyClinic: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* ----------------- PILLAR 04: BIOMIMETIC LONGEVITY ----------------- */}
+          {/* ----------------- PILLAR 04: BIOMIMETIC LONGEVITY (LUXURY OBSIDIAN BLACK) ----------------- */}
           <motion.div 
-            className="lg:col-span-7 rounded-3xl bg-gradient-to-br from-white via-[#FCFAF7] to-[#F8F4ED] border border-[#E8E2D5] hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-md hover:shadow-2xl hover:shadow-[#DCA51B]/15 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
+            className="lg:col-span-7 rounded-3xl bg-[#141518] border border-[#DCA51B]/35 hover:border-[#DCA51B] p-6 sm:p-7 lg:p-8 shadow-2xl hover:shadow-[#DCA51B]/20 transition-all duration-500 relative overflow-hidden flex flex-col justify-between group reveal-up cursor-default"
             whileHover={{ y: -6 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* Top Gold Accent Bar */}
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#DCA51B] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center pointer-events-none" />
 
-            {/* Ambient Background Glow on Hover */}
-            <div className="absolute -right-16 -top-16 w-56 h-56 bg-gradient-to-br from-[#DCA51B]/15 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            {/* Ambient Background Radial Glow */}
+            <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-radial from-[#DCA51B]/20 to-transparent rounded-full blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Top Row */}
             <div className="relative z-10 flex items-start justify-between mb-5 sm:mb-6">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-white group-hover:border-[#DCA51B] group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-[#DCA51B]/25 transition-all duration-400">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 text-[#DCA51B] shadow-inner flex items-center justify-center group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:border-[#DCA51B] group-hover:rotate-6 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#DCA51B]/30 transition-all duration-400">
                   <ShieldCheck className="w-6 h-6 stroke-[1.75]" />
                 </div>
                 <div>
-                  <span className="text-[10.5px] uppercase tracking-[0.2em] font-sans font-bold text-[#C49216] block">
+                  <span className="text-[10.5px] uppercase tracking-[0.2em] font-sans font-bold text-[#DCA51B] block">
                     PILLAR 04
                   </span>
-                  <span className="text-xs text-zinc-500 font-sans font-medium">
+                  <span className="text-xs text-zinc-400 font-sans font-medium">
                     Tooth Preservation
                   </span>
                 </div>
               </div>
 
-              <span className="font-serif font-bold text-3xl sm:text-4xl text-[#E8E2D5] group-hover:text-[#DCA51B]/40 group-hover:scale-110 transition-all duration-400 select-none">
+              <span className="font-serif font-bold text-3xl sm:text-4xl text-[#DCA51B]/35 group-hover:text-[#DCA51B]/70 group-hover:scale-110 transition-all duration-400 select-none">
                 04
               </span>
             </div>
 
             {/* Middle: Title & Narrative */}
             <div className="relative z-10 mb-5 sm:mb-6">
-              <h3 className="font-serif text-xl sm:text-2xl lg:text-[25px] font-bold text-zinc-900 mb-2.5 leading-snug group-hover:text-[#141518] transition-colors">
+              <h3 className="font-serif text-xl sm:text-2xl lg:text-[25px] font-bold text-white mb-2.5 leading-snug group-hover:text-[#FAF7F2] transition-colors">
                 Natural Tooth &amp; Enamel Protection
               </h3>
-              <p className="text-zinc-600 text-xs sm:text-sm leading-relaxed font-sans font-normal max-w-xl">
+              <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed font-sans font-light max-w-xl">
                 Biomimetic techniques designed to preserve healthy natural enamel for life.
               </p>
             </div>
 
             {/* Bottom: Feature Pills */}
-            <div className="relative z-10 pt-4 sm:pt-5 border-t border-[#E8E2D5] flex flex-wrap items-center gap-2 sm:gap-2.5">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-700 text-xs font-sans font-medium group-hover:bg-white group-hover:border-[#DCA51B]/40 group-hover:shadow-xs transition-all duration-300">
+            <div className="relative z-10 pt-4 sm:pt-5 border-t border-white/10 flex flex-wrap items-center gap-2 sm:gap-2.5">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 text-zinc-200 text-xs font-sans group-hover:bg-white/[0.14] group-hover:border-[#DCA51B]/50 transition-all duration-300">
                 <Sparkles className="w-3.5 h-3.5 text-[#DCA51B]" />
                 <span>Metal-Free Ceramic</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-700 text-xs font-sans font-medium group-hover:bg-white group-hover:border-[#DCA51B]/40 group-hover:shadow-xs transition-all duration-300">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 text-zinc-200 text-xs font-sans group-hover:bg-white/[0.14] group-hover:border-[#DCA51B]/50 transition-all duration-300">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#DCA51B]" />
                 <span>Maximum Enamel Protection</span>
               </div>
