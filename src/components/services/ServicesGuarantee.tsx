@@ -13,7 +13,7 @@ export const ServicesGuarantee: React.FC = () => {
       icon: ToothSparkleIcon,
       badge: "BIOMIMETIC PRESERVATION",
       title: "Micro-Invasive Philosophy",
-      desc: "We strictly conserve your natural tooth structure, using microscopic magnification to remove only decay while saving healthy enamel.",
+      desc: "Conserves natural tooth structure with microscopic precision.",
       points: ["Maximum Enamel Retention", "Metal-Free Bio-Ceramics", "Natural Tooth Vitality"]
     },
     {
@@ -21,7 +21,7 @@ export const ServicesGuarantee: React.FC = () => {
       icon: SmileCurveIcon,
       badge: "ANXIETY-FREE COMFORT",
       title: "Gentle Anesthesia Protocol",
-      desc: "Computerized anesthetic delivery ensures exact dosing without the sudden pressure sting of traditional dental injections.",
+      desc: "Computerized delivery with zero injection pressure sting.",
       points: ["Zero Needle Sting", "Quiet Private Treatment Suites", "Warm Herbal Refreshments"]
     },
     {
@@ -29,7 +29,7 @@ export const ServicesGuarantee: React.FC = () => {
       icon: DentalShieldIcon,
       badge: "BIOLOGICAL HEALING",
       title: "Autologous PRF Therapy",
-      desc: "Advanced biological platelet-rich fibrin (PRF) extracted naturally to triple recovery speed and prevent post-procedure swelling.",
+      desc: "Natural PRF therapy to accelerate recovery and healing.",
       points: ["100% Natural Growth Factors", "Rapid Tissue Regeneration", "Minimizes Post-Op Discomfort"]
     },
     {
@@ -37,7 +37,7 @@ export const ServicesGuarantee: React.FC = () => {
       icon: DentalCrownIcon,
       badge: "SURGICAL INTEGRITY",
       title: "Lifetime Implant Warranty",
-      desc: "Every implant fixture and handcrafted porcelain restoration includes verified manufacturer certificates and structured warranty.",
+      desc: "Certified implants and restorations with structured warranty.",
       points: ["Certified Titanium & Zirconia", "Complimentary Follow-Up Checkups", "Dedicated 24/7 Clinical Concierge"]
     }
   ];
