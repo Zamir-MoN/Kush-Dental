@@ -138,9 +138,6 @@ export const AboutMilestones = () => {
       <div className="max-w-[1400px] mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20 reveal-up">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#1B1C20] border border-white/10 text-[#DCA51B] text-[11px] font-bold uppercase tracking-[0.2em] font-sans mb-3.5 shadow-sm">
-            Clinical Heritage
-          </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mb-3">
             Experience &amp; <span className="italic font-normal text-[#DCA51B]">Milestones</span><span className="text-[#DCA51B]">.</span>
           </h2>

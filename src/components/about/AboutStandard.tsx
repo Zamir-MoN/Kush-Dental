@@ -8,7 +8,6 @@ import {
   DentalScanIcon 
 } from '../common/DentalIcons';
 import { 
-  Award, 
   ShieldCheck, 
   CheckCircle2, 
   Eye, 
@@ -185,10 +184,6 @@ export const AboutStandard: React.FC = () => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF7F2] border border-[#DCA51B]/40 text-[#9E6D03] text-[10.5px] font-bold uppercase tracking-[0.2em] font-sans mb-2.5 shadow-xs">
-              <Award className="w-3.5 h-3.5 text-[#DCA51B]" />
-              <span>Board Accreditations &amp; Honors</span>
-            </div>
             <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-zinc-900 tracking-tight">
               Clinical Achievements &amp; <span className="italic font-normal text-[#DCA51B]">Certificates</span>.
             </h3>
