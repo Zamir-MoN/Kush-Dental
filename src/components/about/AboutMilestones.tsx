@@ -130,76 +130,87 @@ export const AboutMilestones = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 sm:pt-14 pb-16 sm:pb-24 overflow-hidden"
+      className="w-full bg-[#121316] text-white border-y border-white/10 py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 relative overflow-hidden"
     >
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
-        <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl text-zinc-900 tracking-tight">
-          Experience & Milestones
-        </h2>
-        <div className="w-12 h-0.5 bg-[#DCA51B] mx-auto mt-4 rounded-full" />
-      </div>
+      {/* Ambient Gold Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[650px] bg-[#DCA51B]/[0.05] rounded-full blur-3xl pointer-events-none" />
 
-      {/* Timeline Tree */}
-      <div className="relative max-w-4xl mx-auto">
-        {/* Background Track Line */}
-        <div className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-[#E8E2D5] rounded-full" />
+      <div className="max-w-[1400px] mx-auto relative z-10">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20 reveal-up">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#1B1C20] border border-white/10 text-[#DCA51B] text-[11px] font-bold uppercase tracking-[0.2em] font-sans mb-3.5 shadow-sm">
+            Clinical Heritage
+          </div>
+          <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mb-3">
+            Experience &amp; <span className="italic font-normal text-[#DCA51B]">Milestones</span><span className="text-[#DCA51B]">.</span>
+          </h2>
+          <p className="text-zinc-400 text-xs sm:text-sm lg:text-base font-sans font-light leading-relaxed">
+            Over a decade of surgical distinctions, continuous clinical education, and pioneering digital care.
+          </p>
+          <div className="w-12 h-0.5 bg-[#DCA51B] mx-auto mt-4 rounded-full" />
+        </div>
 
-        {/* Animated Active Progress Line */}
-        <div 
-          ref={lineRef}
-          className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-[#DCA51B] rounded-full shadow-[0_0_8px_rgba(220,165,27,0.5)] origin-top" 
-        />
+        {/* Timeline Tree */}
+        <div className="relative max-w-4xl mx-auto">
+          {/* Background Track Line */}
+          <div className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-white/15 rounded-full" />
 
-        <div className="flex flex-col gap-8 md:gap-14">
-          {milestones.map((item, index) => {
-            const isEven = index % 2 === 0;
-            const Icon = item.icon;
+          {/* Animated Active Progress Line */}
+          <div 
+            ref={lineRef}
+            className="absolute top-0 bottom-0 left-[23px] md:left-1/2 -translate-x-1/2 w-[2px] bg-[#DCA51B] rounded-full shadow-[0_0_12px_rgba(220,165,27,0.7)] origin-top" 
+          />
 
-            return (
-              <div
-                key={item.year}
-                ref={(el) => {
-                  itemsRef.current[index] = el;
-                }}
-                className={`relative flex items-center md:justify-between w-full ${
-                  isEven ? 'md:flex-row-reverse' : 'md:flex-row'
-                }`}
-              >
-                {/* Center / Left Node */}
-                <div className="absolute left-[23px] md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
-                  <div className="milestone-node w-5 h-5 rounded-full bg-[#DCA51B] border-[3px] border-white shadow-[0_0_12px_rgba(220,165,27,0.5)] transition-transform duration-300 hover:scale-125" />
-                </div>
+          <div className="flex flex-col gap-8 md:gap-14">
+            {milestones.map((item, index) => {
+              const isEven = index % 2 === 0;
+              const Icon = item.icon;
 
-                {/* Empty Spacer on Opposite Side (Desktop) */}
-                <div className="hidden md:block w-5/12" />
-
-                {/* Content Block */}
+              return (
                 <div
-                  className={`milestone-content pl-14 md:pl-0 w-full md:w-5/12 ${
-                    isEven ? 'md:text-right' : 'md:text-left'
+                  key={item.year}
+                  ref={(el) => {
+                    itemsRef.current[index] = el;
+                  }}
+                  className={`relative flex items-center md:justify-between w-full ${
+                    isEven ? 'md:flex-row-reverse' : 'md:flex-row'
                   }`}
                 >
-                  <div className="luxury-card p-6 sm:p-7 rounded-3xl group cursor-default">
-                    <div className={`flex items-center gap-2.5 mb-2 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                      <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform">
-                        <Icon className="w-4 h-4" />
+                  {/* Center / Left Node */}
+                  <div className="absolute left-[23px] md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
+                    <div className="milestone-node w-5 h-5 rounded-full bg-[#DCA51B] border-[3px] border-[#121316] ring-2 ring-[#DCA51B]/50 shadow-[0_0_14px_rgba(220,165,27,0.7)] transition-transform duration-300 hover:scale-125" />
+                  </div>
+
+                  {/* Empty Spacer on Opposite Side (Desktop) */}
+                  <div className="hidden md:block w-5/12" />
+
+                  {/* Content Block */}
+                  <div
+                    className={`milestone-content pl-14 md:pl-0 w-full md:w-5/12 ${
+                      isEven ? 'md:text-right' : 'md:text-left'
+                    }`}
+                  >
+                    <div className="bg-[#1B1C20] border border-white/10 hover:border-[#DCA51B]/60 p-6 sm:p-7 rounded-3xl group cursor-default shadow-xl hover:shadow-[0_10px_30px_rgba(220,165,27,0.12)] transition-all duration-300">
+                      <div className={`flex items-center gap-2.5 mb-2 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                        <div className="w-8 h-8 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform shadow-inner">
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <span className="font-serif font-bold text-lg sm:text-xl text-[#DCA51B] tracking-tight">
+                          {item.year}
+                        </span>
                       </div>
-                      <span className="font-serif font-bold text-lg sm:text-xl text-[#DCA51B] tracking-tight">
-                        {item.year}
-                      </span>
+                      <h3 className="font-serif font-bold text-lg sm:text-xl text-white mb-2 group-hover:text-[#DCA51B] transition-colors duration-200">
+                        {item.title}
+                      </h3>
+                      <p className="font-sans text-sm sm:text-base text-zinc-400 leading-relaxed font-light">
+                        {item.description}
+                      </p>
                     </div>
-                    <h3 className="font-serif font-bold text-lg sm:text-xl text-zinc-900 mb-2 group-hover:text-[#DCA51B] transition-colors duration-200">
-                      {item.title}
-                    </h3>
-                    <p className="font-sans text-sm sm:text-base text-zinc-600 leading-relaxed font-light">
-                      {item.description}
-                    </p>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

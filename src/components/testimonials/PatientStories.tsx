@@ -23,7 +23,7 @@ export const PatientStories = () => {
           {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
             <motion.div 
               key={i}
-              className="w-[280px] sm:w-[320px] shrink-0 luxury-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between group cursor-default"
+              className="w-[290px] sm:w-[330px] shrink-0 bg-white text-zinc-800 border border-[#E8E2D5] hover:border-[#DCA51B]/60 p-5 sm:p-6 rounded-3xl flex flex-col justify-between group cursor-default shadow-md hover:shadow-[0_10px_30px_rgba(220,165,27,0.12)] transition-all duration-300"
               whileHover={{ y: -4 }}
             >
               <div>
@@ -33,8 +33,8 @@ export const PatientStories = () => {
                       <Star key={star} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-[#DCA51B] text-[#DCA51B] transition-transform duration-300 group-hover:scale-110" />
                     ))}
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#9E6D03] bg-[#FAF7F2] border border-[#DCA51B]/40 px-2.5 py-1 rounded-full shadow-xs">
+                    <CheckCircle2 className="w-3 h-3 text-[#DCA51B]" />
                     <span>Verified Patient</span>
                   </div>
                 </div>
@@ -44,16 +44,16 @@ export const PatientStories = () => {
                 </p>
               </div>
 
-              <div className="pt-5 border-t border-[#E8E2D5] flex items-center justify-between">
+              <div className="pt-5 border-t border-[#EAE5D9] flex items-center justify-between">
                 <div>
-                  <h4 className="font-serif font-bold text-base text-zinc-900">
+                  <h4 className="font-serif font-bold text-base text-zinc-900 group-hover:text-[#9E6D03] transition-colors">
                     {testimonial.author}
                   </h4>
                   <span className="text-xs text-zinc-500 font-sans">
                     Patient at Kush Dental
                   </span>
                 </div>
-                <div className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#DCA51B]/40 flex items-center justify-center text-[#DCA51B] font-serif font-bold text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#FAF7F2] border border-[#DCA51B]/35 flex items-center justify-center text-[#9E6D03] font-serif font-bold text-sm shadow-xs">
                   {testimonial.author.charAt(0)}
                 </div>
               </div>

@@ -154,40 +154,43 @@ export const AboutHero: React.FC = () => {
 
         </div>
 
-        {/* 4. Unified Luxury Metrics Ribbon */}
-        <div className="bg-white rounded-3xl border border-[#E8E2D5] p-6 sm:p-8 shadow-sm reveal-up">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#E8E2D5] text-center">
+        {/* 4. Unified Luxury Metrics Ribbon (Obsidian Edition) */}
+        <div className="bg-[#141518] text-white rounded-3xl border border-white/10 p-6 sm:p-8 shadow-2xl reveal-up relative overflow-hidden">
+          {/* Subtle Ambient Gold Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-[#DCA51B]/[0.06] rounded-full blur-3xl pointer-events-none" />
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center relative z-10">
             
             <div className="pt-2 md:pt-0">
-              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-[#141518] tracking-tight leading-none mb-2">
-                15<span className="text-[#DCA51B]">+</span> <span className="text-xl sm:text-2xl font-serif italic font-normal text-zinc-500">Years</span>
+              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-none mb-2">
+                15<span className="text-[#DCA51B]">+</span> <span className="text-xl sm:text-2xl font-serif italic font-normal text-zinc-400">Years</span>
               </p>
-              <p className="text-xs sm:text-sm text-[#141518] font-sans font-bold uppercase tracking-[0.14em]">Clinical Mastery</p>
-              <p className="text-[11px] text-zinc-500 font-sans mt-1 font-normal">Pioneering digital dentistry</p>
+              <p className="text-xs sm:text-sm text-white font-sans font-bold uppercase tracking-[0.14em]">Clinical Mastery</p>
+              <p className="text-[11px] text-zinc-400 font-sans mt-1 font-normal">Pioneering digital dentistry</p>
             </div>
 
             <div className="pt-4 md:pt-0 md:pl-4">
-              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-[#141518] tracking-tight leading-none mb-2">
+              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-none mb-2">
                 12,000<span className="text-[#DCA51B]">+</span>
               </p>
-              <p className="text-xs sm:text-sm text-[#141518] font-sans font-bold uppercase tracking-[0.14em]">Smiles Transformed</p>
-              <p className="text-[11px] text-zinc-500 font-sans mt-1 font-normal">Patients across 40+ countries</p>
+              <p className="text-xs sm:text-sm text-white font-sans font-bold uppercase tracking-[0.14em]">Smiles Transformed</p>
+              <p className="text-[11px] text-zinc-400 font-sans mt-1 font-normal">Patients across 40+ countries</p>
             </div>
 
             <div className="pt-4 md:pt-0 md:pl-4">
-              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-[#141518] tracking-tight leading-none mb-2">
+              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-none mb-2">
                 99.4<span className="text-[#DCA51B] font-bold">%</span>
               </p>
-              <p className="text-xs sm:text-sm text-[#141518] font-sans font-bold uppercase tracking-[0.14em]">Satisfaction Rate</p>
-              <p className="text-[11px] text-zinc-500 font-sans mt-1 font-normal">Verified 5-star clinical ratings</p>
+              <p className="text-xs sm:text-sm text-white font-sans font-bold uppercase tracking-[0.14em]">Satisfaction Rate</p>
+              <p className="text-[11px] text-zinc-400 font-sans mt-1 font-normal">Verified 5-star clinical ratings</p>
             </div>
 
             <div className="pt-4 md:pt-0 md:pl-4">
-              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-[#141518] tracking-tight leading-none mb-2">
+              <p className="font-sans text-3xl sm:text-4xl lg:text-[46px] font-extrabold text-white tracking-tight leading-none mb-2">
                 100<span className="text-[#DCA51B] font-bold">%</span>
               </p>
-              <p className="text-xs sm:text-sm text-[#141518] font-sans font-bold uppercase tracking-[0.14em]">Digital 3D Workflow</p>
-              <p className="text-[11px] text-zinc-500 font-sans mt-1 font-normal">Pre-planned computer precision</p>
+              <p className="text-xs sm:text-sm text-white font-sans font-bold uppercase tracking-[0.14em]">Digital 3D Workflow</p>
+              <p className="text-[11px] text-zinc-400 font-sans mt-1 font-normal">Pre-planned computer precision</p>
             </div>
 
           </div>

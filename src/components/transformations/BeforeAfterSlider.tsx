@@ -1,7 +1,32 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowLeftRight, ArrowRight } from 'lucide-react';
+import { ArrowLeftRight, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const suiteImages = [
+  {
+    title: "Reception & Welcome Lounge",
+    image: "/images/gallery/suite-1.jpg"
+  },
+  {
+    title: "3D Digital Treatment Suite",
+    image: "/images/gallery/suite-2.jpg"
+  },
+  {
+    title: "Patient Lounge & Consultation",
+    image: "/images/gallery/suite-3.jpg"
+  },
+  {
+    title: "Precision Diagnostic Instruments",
+    image: "/images/gallery/suite-4.jpg"
+  },
+  {
+    title: "Private Operatory Suites Corridor",
+    image: "/images/gallery/suite-5.jpg"
+  }
+];
+
+const carouselSuites = [...suiteImages, ...suiteImages];
 
 const transformations = [
   {
@@ -148,6 +173,30 @@ const Slider = ({ before, after, title, subtitle }: { before: string, after: str
 export const BeforeAfterSlider = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+  const suitesScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollSuites = (direction: 'left' | 'right') => {
+    const el = suitesScrollRef.current;
+    if (!el) return;
+
+    const firstCard = el.querySelector<HTMLElement>('a');
+    const step = firstCard ? firstCard.getBoundingClientRect().width + 16 : 340;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+
+    if (direction === 'right') {
+      if (el.scrollLeft >= maxScroll - 20) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: step, behavior: 'smooth' });
+      }
+    } else {
+      if (el.scrollLeft <= 20) {
+        el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: -step, behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <section ref={sectionRef} className="py-12 sm:py-16 lg:py-18 xl:py-20 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-t border-[#E8E2D5] overflow-hidden scroll-mt-24 sm:scroll-mt-28">
@@ -173,13 +222,58 @@ export const BeforeAfterSlider = () => {
           ))}
         </div>
 
-        {/* Redirect to Our Modern Suites Gallery */}
-        <div className="text-center mt-8 sm:mt-10 reveal-up">
+        {/* Modern Suites Gallery Carousel */}
+        <div className="relative mt-12 sm:mt-16 reveal-up">
+          {/* Left Navigation Arrow */}
+          <button
+            type="button"
+            onClick={() => scrollSuites('left')}
+            className="absolute left-1 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-zinc-800 hover:text-[#DCA51B] shadow-xl hover:shadow-2xl border border-[#E8E2D5] hover:border-[#DCA51B] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110 active:scale-95"
+            aria-label="Previous suites"
+          >
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+
+          {/* Suites Track */}
+          <div
+            ref={suitesScrollRef}
+            className="flex items-center gap-3.5 sm:gap-4 lg:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1"
+          >
+            {carouselSuites.map((suite, idx) => (
+              <Link
+                key={idx}
+                to="/about#gallery"
+                className="group relative shrink-0 w-[260px] sm:w-[300px] md:w-[330px] lg:w-[360px] aspect-[16/10.5] rounded-2xl overflow-hidden border border-[#E8E2D5] bg-[#FAF7F2] shadow-sm hover:shadow-xl transition-all duration-300 block"
+              >
+                <img
+                  src={suite.image}
+                  alt={suite.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Navigation Arrow */}
+          <button
+            type="button"
+            onClick={() => scrollSuites('right')}
+            className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-zinc-800 hover:text-[#DCA51B] shadow-xl hover:shadow-2xl border border-[#E8E2D5] hover:border-[#DCA51B] flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110 active:scale-95"
+            aria-label="Next suites"
+          >
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+        </div>
+
+        {/* View Full Gallery Link Button */}
+        <div className="text-center mt-7 sm:mt-9 reveal-up">
           <Link
             to="/about#gallery"
-            className="btn-outline-luxury px-7 py-3 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 group transition-all shadow-xs hover:shadow-md"
+            className="btn-outline-luxury px-8 py-3.5 text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2 group transition-all shadow-xs hover:shadow-md"
           >
-            <span>Our Modern Suites</span>
+            <span>VIEW FULL GALLERY</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -36,7 +36,7 @@ export const EditorialStandards = () => {
           const Icon = pillar.icon;
           return (
             <div key={idx} className="flex flex-col items-center text-center p-4 group">
-              <div className="w-13 h-13 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 mb-4 shadow-sm">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#DCA51B]/30 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 mb-4 shadow-sm shrink-0">
                 <Icon className="w-6 h-6" />
               </div>
               <h4 className="font-serif font-bold text-base text-[#141518] mb-2">

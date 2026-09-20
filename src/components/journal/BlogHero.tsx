@@ -142,20 +142,25 @@ export const BlogHero: React.FC<BlogHeroProps> = ({
             ))}
           </div>
 
-          {/* 4. Scholarly Editorial Credentials Banner */}
-          <div className="bg-white rounded-3xl border border-[#E8E2D5] p-6 sm:p-7 shadow-sm max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#E8E2D5] text-center">
+          {/* 4. Scholarly Editorial Credentials Banner (Obsidian Edition) */}
+          <div className="bg-[#141518] text-white rounded-3xl border border-white/10 p-5 sm:p-6 lg:p-7 shadow-2xl max-w-4xl lg:max-w-5xl mx-auto relative overflow-hidden">
+            {/* Ambient Gold Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[180px] bg-[#DCA51B]/[0.05] rounded-full blur-2xl pointer-events-none" />
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-2 lg:gap-4 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center relative z-10">
               {editorialCredentials.map((cred, idx) => {
                 const Icon = cred.icon;
                 return (
-                  <div key={idx} className={`${idx !== 0 ? 'pt-4 md:pt-0 md:pl-4' : 'pt-2 md:pt-0'}`}>
+                  <div key={idx} className={`${idx !== 0 ? 'pt-4 md:pt-0 md:pl-2 lg:pl-4' : 'pt-2 md:pt-0'}`}>
                     <div className="flex items-center justify-center gap-2 mb-1.5">
-                      <Icon className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                      <p className="font-serif text-sm sm:text-base font-bold text-zinc-900">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#1B1C20] border border-white/15 flex items-center justify-center text-[#DCA51B] shadow-inner shrink-0">
+                        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <p className="font-serif text-xs sm:text-sm lg:text-[15px] font-bold text-white whitespace-nowrap">
                         {cred.title}
                       </p>
                     </div>
-                    <p className="text-[11px] text-zinc-500 font-sans">
+                    <p className="text-[11px] text-zinc-400 font-sans whitespace-nowrap">
                       {cred.subtitle}
                     </p>
                   </div>
