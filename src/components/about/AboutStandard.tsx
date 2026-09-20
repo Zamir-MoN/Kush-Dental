@@ -221,90 +221,146 @@ export const AboutStandard: React.FC = () => {
 
           {/* Right Column: Featured Showcase Card */}
           <div className="lg:col-span-7">
-            <div className="relative rounded-[28px] sm:rounded-[32px] bg-[#F8F4EC] border border-[#E8E2D5] p-6 sm:p-7 lg:p-8 shadow-sm hover:shadow-md transition-all duration-300">
-              {/* Eyebrow + Counter */}
-              <div className="flex items-center justify-between mb-4 sm:mb-5">
-                <div className="inline-flex items-center gap-2">
-                  <span className="text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#DCA51B] font-sans">
-                    FEATURED CERTIFICATE
+            <div className="relative rounded-[28px] sm:rounded-[32px] bg-[#121316] text-white border border-[#DCA51B]/35 p-6 sm:p-7 lg:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+              {/* Background Ambient Glow */}
+              <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#DCA51B]/15 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#DCA51B]/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* 3 Background Wave Lines */}
+              <svg 
+                className="absolute inset-0 w-full h-full pointer-events-none opacity-50 transition-opacity duration-500 group-hover:opacity-80"
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 900 450" 
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="waveLineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.05" />
+                    <stop offset="30%" stopColor="#DCA51B" stopOpacity="0.5" />
+                    <stop offset="70%" stopColor="#F5D77F" stopOpacity="0.65" />
+                    <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.1" />
+                  </linearGradient>
+                  <linearGradient id="waveLineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#FAF7F2" stopOpacity="0.05" />
+                    <stop offset="40%" stopColor="#FAF7F2" stopOpacity="0.35" />
+                    <stop offset="75%" stopColor="#DCA51B" stopOpacity="0.45" />
+                    <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.05" />
+                  </linearGradient>
+                  <linearGradient id="waveLineGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.08" />
+                    <stop offset="50%" stopColor="#DCA51B" stopOpacity="0.55" />
+                    <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.12" />
+                  </linearGradient>
+                </defs>
+                {/* Wave Line 1 */}
+                <path 
+                  d="M -50,150 C 180,50 320,280 540,160 C 700,70 780,230 950,170" 
+                  fill="none" 
+                  stroke="url(#waveLineGrad1)" 
+                  strokeWidth="1.75" 
+                />
+                {/* Wave Line 2 */}
+                <path 
+                  d="M -50,215 C 190,115 350,345 580,225 C 730,125 800,295 950,235" 
+                  fill="none" 
+                  stroke="url(#waveLineGrad2)" 
+                  strokeWidth="1.5"
+                />
+                {/* Wave Line 3 */}
+                <path 
+                  d="M -50,280 C 210,180 380,410 620,290 C 760,190 820,360 950,300" 
+                  fill="none" 
+                  stroke="url(#waveLineGrad3)" 
+                  strokeWidth="2" 
+                />
+              </svg>
+
+              <div className="relative z-10">
+                {/* Eyebrow + Counter */}
+                <div className="flex items-center justify-between mb-4 sm:mb-5">
+                  <div className="inline-flex items-center gap-2">
+                    <span className="text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#DCA51B] font-sans">
+                      FEATURED CERTIFICATE
+                    </span>
+                    <span className="h-[1px] w-6 bg-[#DCA51B]/60" />
+                  </div>
+                  <span className="text-xs font-semibold text-zinc-400 font-mono tracking-wider">
+                    {featuredCert.number}
                   </span>
-                  <span className="h-[1px] w-6 bg-[#DCA51B]/60" />
                 </div>
-                <span className="text-xs font-semibold text-zinc-500 font-mono tracking-wider">
-                  {featuredCert.number}
-                </span>
-              </div>
 
-              {/* 2-Column Inside Featured Card */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
-                {/* Left Info */}
-                <div className="md:col-span-6 flex flex-col justify-between">
-                  <div>
-                    <h4 className="font-serif font-bold text-2xl sm:text-[26px] lg:text-3xl text-zinc-900 leading-tight mb-2">
-                      {featuredCert.title}
-                    </h4>
-                    <p className="text-xs sm:text-[13px] text-zinc-600 font-sans mb-5 leading-relaxed">
-                      {featuredCert.issuer}
-                    </p>
-                    
-                    <div className="space-y-2.5 mb-6">
-                      {featuredCert.checkpoints.map((cp, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                          <span className="text-xs sm:text-[13px] font-sans text-zinc-700 font-medium">{cp}</span>
-                        </div>
-                      ))}
+                {/* 2-Column Inside Featured Card */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+                  {/* Left Info */}
+                  <div className="md:col-span-6 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-serif font-bold text-2xl sm:text-[26px] lg:text-3xl text-white leading-tight mb-2">
+                        {featuredCert.title}
+                      </h4>
+                      <p className="text-xs sm:text-[13px] text-zinc-400 font-sans mb-5 leading-relaxed">
+                        {featuredCert.issuer}
+                      </p>
+                      
+                      <div className="space-y-2.5 mb-6">
+                        {featuredCert.checkpoints.map((cp, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
+                            <span className="text-xs sm:text-[13px] font-sans text-zinc-200 font-medium">{cp}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setActiveCertIndex(featuredIndex)}
+                        className="text-xs font-bold text-[#DCA51B] hover:text-[#F3C24B] inline-flex items-center gap-1.5 transition-colors cursor-pointer font-sans group/link"
+                      >
+                        <span>View Certificate</span>
+                        <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
+                      </button>
                     </div>
                   </div>
 
-                  <div>
-                    <button
-                      type="button"
+                  {/* Right Framed Photo */}
+                  <div className="md:col-span-6 relative">
+                    <div 
                       onClick={() => setActiveCertIndex(featuredIndex)}
-                      className="text-xs font-bold text-[#8C5D00] hover:text-[#DCA51B] inline-flex items-center gap-1.5 transition-colors cursor-pointer font-sans group/link"
+                      className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-zinc-700/80 group/img cursor-pointer bg-zinc-900"
                     >
-                      <span>View Certificate</span>
-                      <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right Framed Photo */}
-                <div className="md:col-span-6 relative">
-                  <div 
-                    onClick={() => setActiveCertIndex(featuredIndex)}
-                    className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-[#E8E2D5] group/img cursor-pointer bg-white"
-                  >
-                    <img 
-                      src={featuredCert.image} 
-                      alt={featuredCert.title}
-                      className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors flex items-center justify-center">
-                      <span className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity shadow">
-                        <Eye className="w-5 h-5 text-[#DCA51B]" />
-                      </span>
+                      <img 
+                        src={featuredCert.image} 
+                        alt={featuredCert.title}
+                        className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/30 transition-colors flex items-center justify-center">
+                        <span className="w-10 h-10 rounded-full bg-zinc-900/90 border border-white/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity shadow text-[#DCA51B]">
+                          <Eye className="w-5 h-5 text-[#DCA51B]" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Navigation Arrows */}
-                  <div className="flex items-center gap-2 justify-end mt-4">
-                    <button
-                      type="button"
-                      onClick={() => setFeaturedIndex((prev) => (prev - 1 + certificates.length) % certificates.length)}
-                      aria-label="Previous Certificate"
-                      className="w-9 h-9 rounded-full bg-zinc-900 hover:bg-black text-white flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFeaturedIndex((prev) => (prev + 1) % certificates.length)}
-                      aria-label="Next Certificate"
-                      className="w-9 h-9 rounded-full bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    {/* Navigation Arrows */}
+                    <div className="flex items-center gap-2 justify-end mt-4">
+                      <button
+                        type="button"
+                        onClick={() => setFeaturedIndex((prev) => (prev - 1 + certificates.length) % certificates.length)}
+                        aria-label="Previous Certificate"
+                        className="w-9 h-9 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700/80 flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFeaturedIndex((prev) => (prev + 1) % certificates.length)}
+                        aria-label="Next Certificate"
+                        className="w-9 h-9 rounded-full bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 flex items-center justify-center shadow transition-all active:scale-90 cursor-pointer"
+                      >
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
