@@ -18,21 +18,18 @@ async def _make_request(method: str, endpoint: str, payload: dict = None) -> dic
         "Content-Type": "application/json"
     }
 
-    # Candidate URLs to try in priority order: localhost:3001, localhost:3101, public IP
-    candidate_urls = []
-    if getattr(settings, "DXGEN_BASE_URL", None):
-        candidate_urls.append(settings.DXGEN_BASE_URL.rstrip('/'))
-    for url in [
+    # Candidate URLs to try in priority order: local port 3101 loopback first
+    candidate_urls = [
         "http://127.0.0.1:3101/api/v1",
         "http://localhost:3101/api/v1",
-        "http://51.20.121.253:3101/api/v1",
-        "http://127.0.0.1:3001/api/v1",
-    ]:
-        if url not in candidate_urls:
-            candidate_urls.append(url)
+    ]
+    if getattr(settings, "DXGEN_BASE_URL", None):
+        base = settings.DXGEN_BASE_URL.rstrip('/')
+        if base not in candidate_urls and "51.20.121.253" not in base:
+            candidate_urls.append(base)
 
     last_error = None
-    async with httpx.AsyncClient(timeout=90.0) as client:
+    async with httpx.AsyncClient(timeout=120.0) as client:
         for base_url in candidate_urls:
             target_url = f"{base_url}{endpoint}"
             try:
@@ -69,7 +66,8 @@ async def _make_request(method: str, endpoint: str, payload: dict = None) -> dic
                 continue
             except httpx.TimeoutException as e:
                 logger.error(f"DXGen API timeout from {target_url}: {e}")
-                raise HTTPException(status_code=504, detail="AI Service request timed out. Please try again.")
+                last_error = f"Request timed out from {target_url}"
+                continue
             except HTTPException:
                 raise
             except Exception as e:
@@ -78,7 +76,7 @@ async def _make_request(method: str, endpoint: str, payload: dict = None) -> dic
                 continue
 
     logger.error(f"All DXGen candidate endpoints failed. Last error: {last_error}")
-    raise HTTPException(status_code=502, detail=f"AI Service unavailable. {last_error}")
+    raise HTTPException(status_code=504 if "timed out" in str(last_error).lower() else 502, detail=f"AI Service unavailable. {last_error}")
 
 def _sanitize_response(result: DXGenGenerateResponse) -> DXGenGenerateResponse:
     if result.content:
