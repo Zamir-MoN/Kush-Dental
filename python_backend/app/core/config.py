@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     MAX_REQUEST_BODY_SIZE: int = 1048576 # 1 MB default
     COOKIE_SECURE: bool = True
     DXGEN_API_KEY: Optional[str] = "dxt_live_demo1234567890abcdef"
+    DXGEN_BASE_URL: str = "http://127.0.0.1:3001/api/v1"
     
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env'),
