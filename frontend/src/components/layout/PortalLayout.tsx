@@ -13,6 +13,7 @@ import {
   FileText
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
+import { AnimatedLogo } from '../ui/AnimatedLogo';
 
 export const PortalLayout = () => {
   const { user, logout } = useAuth();
@@ -103,8 +104,8 @@ export const PortalLayout = () => {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden bg-[#FAF7F2]">
         {/* Top Header */}
-        <header className="flex h-16 sm:h-20 items-center justify-between bg-white px-4 sm:px-6 md:px-8 border-b border-[#E8E2D5] shadow-xs z-30">
-          <div className="flex items-center gap-2">
+        <header className="flex h-16 sm:h-20 items-center justify-between bg-white px-3.5 sm:px-6 md:px-8 border-b border-[#E8E2D5] shadow-xs z-30">
+          <div className="flex items-center gap-2 shrink-0">
             <button 
               className="md:hidden text-zinc-700 p-2 -ml-1 rounded-xl hover:bg-[#FAF7F2] active:scale-95 transition-all cursor-pointer"
               onClick={() => setIsMobileMenuOpen(true)}
@@ -112,21 +113,30 @@ export const PortalLayout = () => {
             >
               <Menu size={22} />
             </button>
-            <div className="md:hidden flex items-center">
-              <BrandLogo isDark={false} size="sm" />
+            <div className="md:hidden flex items-center gap-2">
+              <AnimatedLogo size={24} className="w-6 h-6 shrink-0" animate={false} />
+              <span className="font-serif font-bold text-sm text-[#141518] tracking-tight">Kush Dental</span>
             </div>
           </div>
           
-          <div className="ml-auto flex items-center space-x-3 sm:space-x-4 min-w-0">
-            <div className="flex flex-col items-end min-w-0">
-              <span className="text-xs sm:text-sm font-bold text-zinc-900 truncate max-w-[130px] sm:max-w-[200px]" title={user?.email || 'User'}>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Desktop user email + role */}
+            <div className="hidden sm:flex flex-col items-end min-w-0">
+              <span className="text-xs sm:text-sm font-bold text-zinc-900 truncate max-w-[200px]" title={user?.email || 'User'}>
                 {user?.email || 'User'}
               </span>
               <span className="inline-flex items-center rounded-full bg-[#FAF3E0] border border-[#DCA51B]/40 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-[#8C6B14]">
                 {user?.role}
               </span>
             </div>
-            <div className="h-9 w-9 sm:h-10 sm:w-10 flex items-center justify-center rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/50 text-[#8C6B14] font-bold text-sm shadow-xs shrink-0 transition-transform duration-300 hover:scale-105">
+            
+            {/* Mobile role pill only */}
+            <span className="sm:hidden inline-flex items-center rounded-full bg-[#FAF3E0] border border-[#DCA51B]/40 px-2 py-0.5 text-[10px] font-bold text-[#8C6B14]">
+              {user?.role}
+            </span>
+
+            {/* User Avatar Circle */}
+            <div className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/50 text-[#8C6B14] font-bold text-xs sm:text-sm shadow-xs shrink-0 transition-transform duration-300 hover:scale-105">
               {user?.email?.charAt(0).toUpperCase() || 'U'}
             </div>
           </div>
