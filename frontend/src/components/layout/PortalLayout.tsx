@@ -10,8 +10,7 @@ import {
   Menu,
   X,
   Target,
-  FileText,
-  Bot
+  FileText
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
@@ -37,7 +36,6 @@ export const PortalLayout = () => {
     { label: 'Patients', path: '/staff/patients', icon: <Users size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },
     { label: 'Users', path: '/staff/users', icon: <UserCircle size={20} />, allowedRoles: ['DOCTOR'] },
     { label: 'Blog', path: '/staff/blog', icon: <FileText size={20} />, allowedRoles: ['DOCTOR'] },
-    { label: 'AI Content', path: '/staff/dxgen', icon: <Bot size={20} />, allowedRoles: ['DOCTOR'] },
   ];
 
   const visibleNavItems = navItems.filter(item => item.allowedRoles.includes(user?.role || ''));

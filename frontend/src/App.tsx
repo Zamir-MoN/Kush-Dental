@@ -31,7 +31,6 @@ const Patients = lazy(() => import('./pages/staff/Patients').then(m => ({ defaul
 const Users = lazy(() => import('./pages/staff/Users').then(m => ({ default: m.Users })));
 const ContactList = lazy(() => import('./pages/staff/contacts/ContactList').then(m => ({ default: m.ContactList })));
 const ContactDetail = lazy(() => import('./pages/staff/contacts/ContactDetail').then(m => ({ default: m.ContactDetail })));
-const DXGenStudio = lazy(() => import('./pages/staff/DXGenStudio').then(m => ({ default: m.DXGenStudio })));
 
 const pageVariants = {
   initial: {
@@ -109,7 +108,7 @@ const AnimatedRoutes = () => {
               <Route path="blog" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogList /></ProtectedRoute>} />
               <Route path="blog/new" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogCreate /></ProtectedRoute>} />
               <Route path="blog/:id/edit" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogEdit /></ProtectedRoute>} />
-              <Route path="dxgen" element={<ProtectedRoute allowedRoles={['DOCTOR']}><DXGenStudio /></ProtectedRoute>} />
+              <Route path="dxgen" element={<Navigate to="/staff/blog" replace />} />
             </Route>
           </Routes>
         </Suspense>
