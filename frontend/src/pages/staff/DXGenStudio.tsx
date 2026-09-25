@@ -360,36 +360,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             />
           </div>
 
-          {/* Content Type (Select Dropdown) */}
-          <div>
-            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
-              Content Type
-            </label>
-            <div className="relative">
-              <select
-                name="contentType"
-                value={formData.contentType}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
-              >
-                <option value="seo_blog_article">SEO Blog Article</option>
-                <option value="how_to_article">How-To Article / Guide</option>
-                <option value="listicle">Listicle</option>
-                <option value="product_review">Product Review</option>
-                <option value="promotional_content">Promotional Content</option>
-                <option value="sales_copy">Sales Copy</option>
-                <option value="landing_page_copy">Landing Page Copy</option>
-                <option value="instagram_caption">Instagram Caption</option>
-                <option value="linkedin_post">LinkedIn Post</option>
-                <option value="x_twitter_post">X / Twitter Post</option>
-                <option value="google_business_profile_post">Google Business Profile Post</option>
-                <option value="email">Email Newsletter</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
-                <ChevronDown size={16} />
-              </div>
-            </div>
-          </div>
 
           {/* Platform & Language (2-Column Row) */}
           <div className="grid grid-cols-2 gap-4">
@@ -635,20 +605,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             )}
           </div>
 
-          {/* Custom Instructions (Optional) */}
-          <div>
-            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
-              Custom Instructions (Optional)
-            </label>
-            <textarea
-              name="customInstructions"
-              rows={2}
-              value={formData.customInstructions}
-              onChange={handleChange}
-              placeholder="e.g. Highlight painless laser dentistry and state-of-the-art clinic hygiene"
-              className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none resize-none transition-all"
-            />
-          </div>
 
           {/* Real-time Progress Bar (Active when loading) */}
           {loading && (
