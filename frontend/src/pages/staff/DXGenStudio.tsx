@@ -3,8 +3,6 @@ import { apiClient } from '../../lib/apiClient';
 import {
   Bot,
   RefreshCw,
-  Activity,
-  Search,
   Copy,
   CheckCircle2,
   Sparkles,
@@ -17,7 +15,6 @@ import {
   FileText,
   Zap,
   HelpCircle,
-  ExternalLink,
   AlertTriangle
 } from 'lucide-react';
 
@@ -86,11 +83,7 @@ const extractErrorMessage = (err: any, fallback: string = 'Operation failed'): s
   return fallback;
 };
 
-type Tab = 'universal' | 'blog' | 'social' | 'business' | 'lookup' | 'usage' | 'health';
-
 export const DXGenStudio: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<Tab>('universal');
-
   return (
     <StudioErrorBoundary>
       <div className="bg-[#FAF7F2] text-zinc-900 p-4 sm:p-6 lg:p-8 rounded-3xl border border-[#E8E2D5] shadow-lg">
@@ -107,95 +100,18 @@ export const DXGenStudio: React.FC = () => {
                   v1.0 Live
                 </span>
               </div>
-              <p className="text-sm text-zinc-500 mt-0.5">Kush Dental DXGen Integration</p>
+              <p className="text-sm text-zinc-500 mt-0.5">Kush Dental AI Article & Copy Generator</p>
             </div>
           </div>
-
-          {/* Quick Service Link */}
-          <div className="flex items-center space-x-3">
-            <a
-              href="http://51.20.121.253:3101"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-[#F7F2E8] text-zinc-700 hover:text-[#B8860B] text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors shadow-sm"
-            >
-              <span>DXGen Engine</span>
-              <ExternalLink size={13} />
-            </a>
-          </div>
         </div>
 
-        {/* Tabs Bar */}
-        <div className="bg-white rounded-2xl border border-[#E8E2D5] p-1.5 mb-8 overflow-x-auto custom-scrollbar shadow-xs">
-          <nav className="flex space-x-1 min-w-max" aria-label="Tabs">
-            {[
-              { id: 'universal', label: 'Universal' },
-              { id: 'blog', label: 'Blog' },
-              { id: 'social', label: 'Social' },
-              { id: 'business', label: 'Business' },
-              { id: 'lookup', label: 'Content Lookup' },
-              { id: 'usage', label: 'Usage' },
-              { id: 'health', label: 'Health' },
-            ].map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as Tab)}
-                  className={`
-                    flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer
-                    ${
-                      isActive
-                        ? 'bg-[#FAF3E0] text-[#9E7309] border border-[#DCA51B]/40 shadow-xs'
-                        : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#FAF7F2]'
-                    }
-                  `}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Active Tab View */}
-        <div>
-          {activeTab === 'universal' && (
-            <GeneratorForm
-              endpoint="/api/v1/dxgen/generate"
-              defaultContentType="seo_blog_article"
-              defaultPlatform="website"
-              title="Universal Generator"
-            />
-          )}
-          {activeTab === 'blog' && (
-            <GeneratorForm
-              endpoint="/api/v1/blog/generate"
-              defaultContentType="seo_blog_article"
-              defaultPlatform="website"
-              title="Blog Generator"
-            />
-          )}
-          {activeTab === 'social' && (
-            <GeneratorForm
-              endpoint="/api/v1/dxgen/generate/social"
-              defaultContentType="instagram_caption"
-              defaultPlatform="instagram"
-              title="Social Generator"
-            />
-          )}
-          {activeTab === 'business' && (
-            <GeneratorForm
-              endpoint="/api/v1/dxgen/generate/business"
-              defaultContentType="google_business_profile_post"
-              defaultPlatform="google_business"
-              title="Business Generator"
-            />
-          )}
-          {activeTab === 'lookup' && <ContentLookup />}
-          {activeTab === 'usage' && <UsageTab />}
-          {activeTab === 'health' && <HealthTab />}
-        </div>
+        {/* Content Generator */}
+        <GeneratorForm
+          endpoint="/api/v1/blog/generate"
+          defaultContentType="seo_blog_article"
+          defaultPlatform="website"
+          title="Article & Content Generator"
+        />
       </div>
     </StudioErrorBoundary>
   );
@@ -1049,190 +965,3 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   );
 };
 
-/* Content Lookup Component */
-const ContentLookup: React.FC = () => {
-  const [contentId, setContentId] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [response, setResponse] = useState<any>(null);
-
-  const handleLookup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!contentId.trim()) return;
-
-    setLoading(true);
-    setError(null);
-    setResponse(null);
-
-    try {
-      const res = await apiClient(`/api/v1/dxgen/content/${contentId.trim()}`);
-      setResponse(res);
-    } catch (err: any) {
-      setError(extractErrorMessage(err, 'Lookup failed'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Content Lookup</h2>
-        <p className="text-sm text-zinc-500 mt-1">
-          Retrieve previously generated content records and metadata by Content ID.
-        </p>
-      </div>
-
-      <form onSubmit={handleLookup} className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="text"
-          value={contentId}
-          onChange={(e) => setContentId(e.target.value)}
-          placeholder="e.g. cnt_72948201a0bc"
-          required
-          className="flex-1 px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none font-medium"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-[#E5B22D] to-[#DCA51B] hover:brightness-105 text-[#141518] font-bold rounded-2xl shadow-sm disabled:opacity-50 cursor-pointer"
-        >
-          {loading ? (
-            <RefreshCw className="animate-spin mr-2" size={18} />
-          ) : (
-            <Search className="mr-2" size={18} />
-          )}
-          Fetch Record
-        </button>
-      </form>
-
-      {error && (
-        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {String(error)}
-        </div>
-      )}
-
-      {response && (
-        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5]">
-          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        </div>
-      )}
-    </div>
-  );
-};
-
-/* Usage Tab Component */
-const UsageTab: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [response, setResponse] = useState<any>(null);
-
-  const fetchUsage = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await apiClient('/api/v1/dxgen/usage');
-      setResponse(res);
-    } catch (err: any) {
-      setError(extractErrorMessage(err, 'Failed to fetch usage'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">API Usage & Rate Quotas</h2>
-        <p className="text-sm text-zinc-500 mt-1">Check current token usage, limits, and credit allocation.</p>
-      </div>
-
-      <button
-        onClick={fetchUsage}
-        disabled={loading}
-        className="flex items-center px-5 py-2.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 border border-[#E2DACB] rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
-      >
-        <RefreshCw className={`mr-2 ${loading ? 'animate-spin' : ''}`} size={16} />
-        Refresh Usage Stats
-      </button>
-
-      {error && (
-        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {String(error)}
-        </div>
-      )}
-
-      {response && (
-        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5]">
-          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        </div>
-      )}
-    </div>
-  );
-};
-
-/* Health Check Component */
-const HealthTab: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [response, setResponse] = useState<any>(null);
-
-  const checkHealth = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await apiClient('/api/v1/dxgen/health');
-      setResponse(res);
-    } catch (err: any) {
-      setError(extractErrorMessage(err, 'Failed to check health'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Service Health Diagnostics</h2>
-        <p className="text-sm text-zinc-500 mt-1">Verify live connectivity with the DXGen AI service cluster.</p>
-      </div>
-
-      <button
-        onClick={checkHealth}
-        disabled={loading}
-        className="flex items-center px-5 py-2.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 border border-[#E2DACB] rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
-      >
-        <Activity className={`mr-2 ${loading ? 'animate-pulse text-[#DCA51B]' : 'text-zinc-500'}`} size={16} />
-        Check DXGen Health
-      </button>
-
-      {error && (
-        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {String(error)}
-        </div>
-      )}
-
-      {response && (
-        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5] space-y-4">
-          <div className="flex items-center space-x-2.5">
-            <div
-              className={`w-3 h-3 rounded-full ${
-                response.status === 'ok' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-rose-500'
-              }`}
-            />
-            <span className="font-bold text-zinc-900 capitalize text-sm">
-              Status: {response.status || 'Unknown'}
-            </span>
-          </div>
-          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        </div>
-      )}
-    </div>
-  );
-};
