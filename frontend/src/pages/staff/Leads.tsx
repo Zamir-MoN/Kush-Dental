@@ -74,19 +74,19 @@ const LeadList: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Leads</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">Manage incoming patient inquiries</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">Leads</h1>
+          <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">Manage incoming patient inquiries</p>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
           <span className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Filter:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm font-semibold text-zinc-800 px-3 py-2 outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] cursor-pointer"
+            className="bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm font-semibold text-zinc-800 px-3 py-2 outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="NEW">New</option>
@@ -98,60 +98,60 @@ const LeadList: React.FC = () => {
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start border border-red-200 text-xs sm:text-sm">
           <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
           <p>{error}</p>
         </div>
       )}
 
       {leads.length === 0 && !error ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-          <Target size={48} className="mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No leads found</h3>
-          <p className="text-gray-500">New leads from the booking form will appear here.</p>
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-10 sm:p-12 text-center">
+          <Target size={48} className="mx-auto text-zinc-300 mb-4 anim-icon-pulse" />
+          <h3 className="text-base sm:text-lg font-bold text-zinc-900 mb-1">No leads found</h3>
+          <p className="text-xs sm:text-sm text-zinc-500">New leads from the booking form will appear here.</p>
         </div>
       ) : (
         <div className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto custom-scrollbar">
             <table className="min-w-full divide-y divide-[#E8E2D5]">
               <thead className="bg-[#FAF7F2]">
                 <tr>
-                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Contact</th>
-                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Treatment</th>
-                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3.5 text-right text-xs font-bold text-zinc-600 uppercase tracking-wider">Actions</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-left text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Name</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-left text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Contact</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-left text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Treatment</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-left text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-left text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Date</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-right text-[11px] sm:text-xs font-bold text-zinc-600 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-[#E8E2D5]">
                 {filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{lead.name}</div>
+                  <tr key={lead.id} className="hover:bg-[#FAF7F2]/60 transition-colors group">
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm font-semibold text-zinc-900">{lead.name}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{lead.phone}</div>
-                      <div className="text-xs text-gray-500">{lead.email || '-'}</div>
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm text-zinc-800">{lead.phone}</div>
+                      <div className="text-[11px] sm:text-xs text-zinc-500">{lead.email || '-'}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{lead.desiredTreatment || '-'}</div>
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
+                      <div className="text-xs sm:text-sm text-zinc-800">{lead.desiredTreatment || '-'}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[lead.status]}`}>
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold ${statusColors[lead.status]}`}>
                         {lead.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-zinc-500">
                       {new Date(lead.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                      <Link to={`/staff/leads/${lead.id}`} className="text-blue-600 hover:text-blue-900 inline-block" title="View/Edit">
-                        <Eye size={18} />
+                    <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap text-right text-sm font-medium space-x-2 sm:space-x-3">
+                      <Link to={`/staff/leads/${lead.id}`} className="text-[#8C6B14] hover:text-[#B8871B] inline-block transition-transform hover:scale-125" title="View/Edit">
+                        <Eye size={17} />
                       </Link>
                       {isDoctor && (
-                        <button onClick={() => handleDelete(lead.id)} className="text-red-600 hover:text-red-900" title="Delete">
-                          <Trash2 size={18} />
+                        <button onClick={() => handleDelete(lead.id)} className="text-rose-600 hover:text-rose-800 inline-block transition-transform hover:scale-125 hover:rotate-6 cursor-pointer" title="Delete">
+                          <Trash2 size={17} />
                         </button>
                       )}
                     </td>
@@ -321,34 +321,34 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
   if (!lead) return <div className="p-8 text-center text-red-500">{error || 'Lead not found'}</div>;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex items-center space-x-4 mb-6">
-        <Link to="/staff/leads" className="p-2 bg-white rounded-xl border border-[#E8E2D5] shadow-xs hover:bg-[#FAF7F2] transition-colors">
-          <ArrowLeft size={18} className="text-zinc-700" />
+    <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto">
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <Link to="/staff/leads" className="p-2 sm:p-2.5 bg-white rounded-xl border border-[#E8E2D5] shadow-xs hover:bg-[#FAF7F2] transition-all hover:scale-105 active:scale-95 group">
+          <ArrowLeft size={18} className="text-zinc-700 transition-transform group-hover:-translate-x-0.5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Lead Details</h1>
-          <p className="text-sm text-zinc-500">Created: {new Date(lead.createdAt).toLocaleString()}</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Lead Details</h1>
+          <p className="text-xs sm:text-sm text-zinc-500">Created: {new Date(lead.createdAt).toLocaleString()}</p>
         </div>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start border border-red-200">
+        <div className="bg-red-50 text-red-700 p-3.5 sm:p-4 rounded-xl flex items-start border border-red-200 text-xs sm:text-sm">
           <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
           <p>{error}</p>
         </div>
       )}
 
       {successMsg && (
-        <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl flex items-center border border-emerald-200">
-          <CheckCircle className="w-5 h-5 mr-2 text-emerald-600" />
+        <div className="bg-emerald-50 text-emerald-700 p-3.5 sm:p-4 rounded-xl flex items-center border border-emerald-200 text-xs sm:text-sm">
+          <CheckCircle className="w-5 h-5 mr-2 text-emerald-600 animate-bounce" />
           <p>{successMsg}</p>
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] p-6 sm:p-8 space-y-6">
+      <form onSubmit={handleSave} className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] p-4 sm:p-8 space-y-5 sm:space-y-6">
         
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8E2D5]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-[#E8E2D5]">
           <div>
             <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Status</label>
             <select
@@ -356,8 +356,8 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
               value={formData.status}
               onChange={handleChange}
               disabled={lead.status === 'CONVERTED'}
-              className={`rounded-xl border border-[#E2DACB] bg-[#FAF7F2] px-3 py-2 text-sm font-semibold text-zinc-900 focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] ${
-                lead.status === 'CONVERTED' ? 'bg-zinc-100 cursor-not-allowed text-zinc-500' : ''
+              className={`rounded-xl border border-[#E2DACB] bg-[#FAF7F2] px-3 py-2 text-xs sm:text-sm font-semibold text-zinc-900 focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] ${
+                lead.status === 'CONVERTED' ? 'bg-zinc-100 cursor-not-allowed text-zinc-500' : 'cursor-pointer'
               }`}
             >
               <option value="NEW">New</option>
@@ -372,15 +372,15 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
               type="button"
               onClick={handleConvert}
               disabled={converting || saving}
-              className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-xs text-sm font-bold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 cursor-pointer"
+              className="group inline-flex items-center justify-center px-4 py-2 sm:py-2.5 border border-transparent shadow-xs text-xs sm:text-sm font-bold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 transition-all active:scale-95 cursor-pointer"
             >
-              <CheckCircle size={16} className="mr-2" />
+              <CheckCircle size={16} className="mr-2 transition-transform duration-300 group-hover:scale-125" />
               {converting ? 'Converting...' : 'Convert to Patient'}
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-y-4 sm:gap-y-6 gap-x-4 sm:grid-cols-2">
           <div>
             <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Full Name</label>
             <div className="mt-1">
@@ -390,7 +390,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
@@ -404,7 +404,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
@@ -417,7 +417,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
@@ -430,7 +430,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 name="desiredTreatment"
                 value={formData.desiredTreatment}
                 onChange={handleChange}
-                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
@@ -443,7 +443,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 rows={4}
                 value={formData.notes}
                 onChange={handleChange}
-                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
                 placeholder="Add notes about this lead..."
               />
             </div>
@@ -454,9 +454,9 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
           <button
             type="submit"
             disabled={saving || converting}
-            className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-xl shadow-xs focus:outline-none disabled:opacity-50 cursor-pointer"
+            className="group inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-xl shadow-xs focus:outline-none disabled:opacity-50 transition-all active:scale-95 cursor-pointer"
           >
-            <Save size={16} className="mr-2" />
+            <Save size={16} className="mr-2 transition-transform duration-300 group-hover:scale-125" />
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
