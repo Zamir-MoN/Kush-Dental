@@ -32,7 +32,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
   const [formData, setFormData] = useState({
     topic: '',
     tone: '',
-    length: '800',
+    length: '1000',
     keywords: '',
     audience: '',
   });
@@ -256,16 +256,24 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
-                    Length (Words)
+                    Length
                   </label>
-                  <input
-                    type="number"
-                    name="length"
-                    value={formData.length}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all outline-none font-medium placeholder:text-zinc-400"
-                    placeholder="e.g. 800"
-                  />
+                  <div className="relative">
+                    <select
+                      name="length"
+                      value={formData.length}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all cursor-pointer appearance-none pr-10 font-medium outline-none"
+                    >
+                      <option value="1000">Medium (800–1200w)</option>
+                      <option value="500">Short (300–500w)</option>
+                      <option value="1800">Long (1500–2000w)</option>
+                      <option value="2500">Comprehensive (2500w+)</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-[#8C6B14]">
+                      <ChevronDown size={16} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
