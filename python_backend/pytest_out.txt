@@ -1,0 +1,184 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collected 50 items
+
+tests/test_app.py ..                                                     [  4%]
+tests/test_appointment_service.py ........                               [ 20%]
+tests/test_appointments_api.py ....                                      [ 28%]
+tests/test_auth.py ......                                                [ 40%]
+tests/test_blog.py EEE                                                   [ 46%]
+tests/test_config.py .                                                   [ 48%]
+tests/test_database.py ..                                                [ 52%]
+tests/test_lead.py ..                                                    [ 56%]
+tests/test_patients_api.py .F                                            [ 60%]
+tests/test_public_leads.py .....                                         [ 70%]
+tests/test_rbac.py .........                                             [ 88%]
+tests/test_repositories.py .                                             [ 90%]
+tests/test_safety_guard.py .....                                         [100%]
+
+==================================== ERRORS ====================================
+__________________ ERROR at setup of test_blog_crud_workflow ___________________
+file /home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py, line 4
+  @pytest.mark.asyncio
+  async def test_blog_crud_workflow(async_client: AsyncClient, doctor_auth_headers: dict):
+      # 1. Create a draft blog
+      create_data = {
+          "title": "Test Blog Post",
+          "slug": "test-blog-post",
+          "excerpt": "This is a test blog post",
+          "content": "<p>Hello <b>World</b>!</p><script>alert('xss')</script>",
+          "coverImage": "https://example.com/image.jpg"
+      }
+      response = await async_client.post("/api/v1/blog", json=create_data, headers=doctor_auth_headers)
+      assert response.status_code == 201
+      blog = response.json()
+      assert blog["title"] == "Test Blog Post"
+      assert blog["status"] == "DRAFT"
+      # Verify sanitization
+      assert "<script>" not in blog["content"]
+      assert "<b>World</b>" in blog["content"]
+
+      blog_id = blog["id"]
+
+      # 2. Get the blog
+      response = await async_client.get(f"/api/v1/blog/{blog_id}", headers=doctor_auth_headers)
+      assert response.status_code == 200
+
+      # 3. Update the blog
+      update_data = {"title": "Updated Blog Post"}
+      response = await async_client.patch(f"/api/v1/blog/{blog_id}", json=update_data, headers=doctor_auth_headers)
+      assert response.status_code == 200
+      assert response.json()["title"] == "Updated Blog Post"
+
+      # 4. Check public endpoint (should be hidden)
+      response = await async_client.get("/api/v1/public/blog")
+      assert response.status_code == 200
+      assert len([b for b in response.json() if b["id"] == blog_id]) == 0
+
+      # 5. Publish the blog
+      response = await async_client.post(f"/api/v1/blog/{blog_id}/publish", headers=doctor_auth_headers)
+      assert response.status_code == 200
+      assert response.json()["status"] == "PUBLISHED"
+      assert response.json()["publishedAt"] is not None
+
+      # 6. Check public endpoint (should be visible)
+      response = await async_client.get(f"/api/v1/public/blog/test-blog-post")
+      assert response.status_code == 200
+      assert response.json()["id"] == blog_id
+
+      # 7. Unpublish the blog
+      response = await async_client.post(f"/api/v1/blog/{blog_id}/unpublish", headers=doctor_auth_headers)
+      assert response.status_code == 200
+      assert response.json()["status"] == "DRAFT"
+
+      # 8. Check public endpoint (should be hidden again)
+      response = await async_client.get(f"/api/v1/public/blog/test-blog-post")
+      assert response.status_code == 404
+
+      # 9. Delete the blog
+      response = await async_client.delete(f"/api/v1/blog/{blog_id}", headers=doctor_auth_headers)
+      assert response.status_code == 204
+E       fixture 'async_client' not found
+>       available fixtures: _session_event_loop, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, client, csrf_token, db_appointment, db_patient, db_session, doctest_namespace, doctor_auth_headers, doctor_user, event_loop, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, staff_auth_headers, staff_user, tests/test_blog.py::<event_loop>, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py:4
+__________________ ERROR at setup of test_blog_duplicate_slug __________________
+file /home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py, line 64
+  @pytest.mark.asyncio
+  async def test_blog_duplicate_slug(async_client: AsyncClient, doctor_auth_headers: dict):
+      create_data = {
+          "title": "Slug 1",
+          "slug": "duplicate-slug",
+          "content": "<p>Content</p>"
+      }
+      response = await async_client.post("/api/v1/blog", json=create_data, headers=doctor_auth_headers)
+      assert response.status_code == 201
+
+      create_data_2 = {
+          "title": "Slug 2",
+          "slug": "duplicate-slug",
+          "content": "<p>Content</p>"
+      }
+      response = await async_client.post("/api/v1/blog", json=create_data_2, headers=doctor_auth_headers)
+      assert response.status_code == 400
+E       fixture 'async_client' not found
+>       available fixtures: _session_event_loop, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, client, csrf_token, db_appointment, db_patient, db_session, doctest_namespace, doctor_auth_headers, doctor_user, event_loop, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, staff_auth_headers, staff_user, tests/test_blog.py::<event_loop>, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py:64
+_______________ ERROR at setup of test_blog_staff_access_denied ________________
+file /home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py, line 82
+  @pytest.mark.asyncio
+  async def test_blog_staff_access_denied(async_client: AsyncClient, staff_auth_headers: dict):
+      response = await async_client.get("/api/v1/blog", headers=staff_auth_headers)
+      assert response.status_code == 403
+
+      response = await async_client.post("/api/v1/blog", json={"title": "T", "slug": "t", "content": "c"}, headers=staff_auth_headers)
+      assert response.status_code == 403
+E       fixture 'async_client' not found
+>       available fixtures: _session_event_loop, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, client, csrf_token, db_appointment, db_patient, db_session, doctest_namespace, doctor_auth_headers, doctor_user, event_loop, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, staff_auth_headers, staff_user, tests/test_blog.py::<event_loop>, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/ubuntu/Kush-Dental-main/python_backend/tests/test_blog.py:82
+=================================== FAILURES ===================================
+________________________ test_list_patients_authorized _________________________
+
+client = <httpx.AsyncClient object at 0x71495e0bfd30>
+staff_auth_headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzRkNGVkNy01NzJkLTQyMjQtOTRiYy03NmFmMjNkMTJ...E_OTqeEJzNogBqqOAwWD_aRhA9ArpetADa3ppGVbDk', 'Cookie': 'csrf_token=test-csrf-token', 'x-csrf-token': 'test-csrf-token'}
+db_patient = <app.models.Patient object at 0x71495e0dd1e0>
+
+    @pytest.mark.asyncio
+    async def test_list_patients_authorized(client: AsyncClient, staff_auth_headers: dict, db_patient):
+        response = await client.get(
+            "/api/v1/patients",
+            headers=staff_auth_headers
+        )
+>       assert response.status_code == 200
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+tests/test_patients_api.py:15: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: GET /api/v1/patients", "time": "2026-09-21 21:03:03,869", "correlationId": "43612425-e9cc-472b-916c-929a1778ef48"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: GET /api/v1/patients
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+app/schemas/blog.py:24
+  /home/ubuntu/Kush-Dental-main/python_backend/app/schemas/blog.py:24: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class BlogResponse(BlogBase):
+
+tests/test_app.py::test_health_live
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+tests/test_auth.py::test_csrf_protection_missing_header
+tests/test_auth.py::test_refresh_token_rotation
+tests/test_auth.py::test_refresh_token_rotation
+tests/test_auth.py::test_concurrent_refresh
+tests/test_auth.py::test_concurrent_refresh
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/httpx/_client.py:1559: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    warnings.warn(message, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_patients_api.py::test_list_patients_authorized - assert 403...
+ERROR tests/test_blog.py::test_blog_crud_workflow
+ERROR tests/test_blog.py::test_blog_duplicate_slug
+ERROR tests/test_blog.py::test_blog_staff_access_denied
+============== 1 failed, 46 passed, 8 warnings, 3 errors in 6.41s ==============

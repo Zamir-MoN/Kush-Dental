@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  STAFF
+}
+
+enum AppointmentStatus {
+  REQUESTED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum AuditResult {
+  SUCCESS
+  FAILURE
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  passwordHash String
+  role         Role
+  
+  // Relations
+  appointments Appointment[] @relation("DoctorAppointments")
+  refreshTokens RefreshToken[]
+  
+  // Timestamps
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt    DateTime? @db.Timestamptz(3)
+}
+
+model Patient {
+  id        String    @id @default(uuid()) @db.Uuid
+  fullName  String
+  phone     String    @unique
+  email     String?
+  
+  // Relations
+  appointments Appointment[]
+  
+  // Timestamps
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+}
+
+model Appointment {
+  id                 String            @id @default(uuid()) @db.Uuid
+  patientId          String            @db.Uuid
+  doctorId           String?           @db.Uuid
+  treatment          String
+  startsAt           DateTime          @db.Timestamptz(3)
+  endsAt             DateTime          @db.Timestamptz(3)
+  status             AppointmentStatus
+  cancellationReason String?
+  
+  // Relations
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  doctor  User?   @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: Restrict)
+  
+  // Timestamps
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  hashedToken String
+  expiresAt   DateTime @db.Timestamptz(3)
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+}
+
+model AuditLog {
+  id           String      @id @default(uuid()) @db.Uuid
+  actorId      String?     @db.Uuid
+  action       String
+  resourceType String
+  resourceId   String?     @db.Uuid
+  result       AuditResult
+  metadata     Json?       @db.JsonB
+  
+  // Timestamps
+  timestamp    DateTime    @default(now()) @db.Timestamptz(3)
+}

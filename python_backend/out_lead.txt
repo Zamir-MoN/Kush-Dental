@@ -1,0 +1,478 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 2 items
+
+tests/test_lead.py::test_lead_lifecycle_and_conversion FAILED            [ 50%]
+tests/test_lead.py::test_lead_conversion_phone_conflict FAILED           [100%]
+
+=================================== FAILURES ===================================
+______________________ test_lead_lifecycle_and_conversion ______________________
+
+client = <httpx.AsyncClient object at 0x7b3043b8dab0>
+doctor_auth_headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYzI1NmIwMy1hNmY0LTRlNmQtYmNiNi0yM2NhZmFmNDV...ogACnercS_gWUMAhzR4jUZDK8cXT0505Z-7VRgrygc', 'Cookie': 'csrf_token=test-csrf-token', 'x-csrf-token': 'test-csrf-token'}
+
+    async def test_lead_lifecycle_and_conversion(client: AsyncClient, doctor_auth_headers: dict):
+        # Create Lead
+        payload = {
+            "name": "John Doe",
+            "phone": "+1234567890",
+            "email": "john@test.com",
+            "notes": "Interested in implants"
+        }
+        response = await client.post("/api/v1/leads", json=payload, headers=doctor_auth_headers)
+        assert response.status_code == 201
+        lead = response.json()
+        assert lead["status"] == LeadStatus.NEW.value
+        assert lead["name"] == "John Doe"
+    
+        lead_id = lead["id"]
+    
+        # Update Lead
+        update_payload = {"status": LeadStatus.CONTACTED.value}
+        response = await client.patch(f"/api/v1/leads/{lead_id}", json=update_payload, headers=doctor_auth_headers)
+        assert response.status_code == 200
+        assert response.json()["status"] == LeadStatus.CONTACTED.value
+    
+        # Convert Lead
+        response = await client.post(f"/api/v1/leads/{lead_id}/convert", headers=doctor_auth_headers)
+        assert response.status_code == 200
+        assert response.json()["status"] == LeadStatus.CONVERTED.value
+    
+        # Try converting again
+        response = await client.post(f"/api/v1/leads/{lead_id}/convert", headers=doctor_auth_headers)
+        assert response.status_code == 400
+>       assert "already converted" in response.json()["error"]["message"].lower()
+E       KeyError: 'error'
+
+tests/test_lead.py:39: KeyError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/leads", "time": "2026-09-21 11:19:34,060", "correlationId": "c0536b0e-7004-4395-8f50-f2dba54429dc"}
+{"level": "info", "msg": "Incoming Request: PATCH /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3", "time": "2026-09-21 11:19:34,086", "correlationId": "c90c2888-0b40-46d9-b4eb-4e57d1756dfb"}
+{"level": "info", "msg": "Incoming Request: POST /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3/convert", "time": "2026-09-21 11:19:34,103", "correlationId": "64a0f871-5f18-42c8-9656-01b3b68b3a95"}
+{"level": "info", "msg": "Incoming Request: POST /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3/convert", "time": "2026-09-21 11:19:34,121", "correlationId": "30d5fdc7-dc40-446e-b8ef-2fc3d277743f"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/leads
+INFO     app:main.py:28 Incoming Request: PATCH /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3
+INFO     app:main.py:28 Incoming Request: POST /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3/convert
+INFO     app:main.py:28 Incoming Request: POST /api/v1/leads/48614e4e-311e-4791-beb9-0265a9c1bad3/convert
+_____________________ test_lead_conversion_phone_conflict ______________________
+
+self = <sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_cursor object at 0x7b30439ffb20>
+operation = 'INSERT INTO "Patient" (id, "fullName", phone, email, "updatedAt", "deletedAt") VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::TIMESTAMP WITH TIME ZONE, $6::TIMESTAMP WITH TIME ZONE) RETURNING "Patient"."createdAt"'
+parameters = (UUID('85eaa06a-0aff-41ec-89c3-a0484ff0d403'), 'Jane Doe', '+1999999999', None, datetime.datetime(2026, 9, 21, 11, 19, 34, 336744, tzinfo=datetime.timezone.utc), None)
+
+    async def _prepare_and_execute(self, operation, parameters):
+        adapt_connection = self._adapt_connection
+    
+        async with adapt_connection._execute_mutex:
+            if not adapt_connection._started:
+                await adapt_connection._start_transaction()
+    
+            if parameters is None:
+                parameters = ()
+    
+            try:
+                prepared_stmt, attributes = await adapt_connection._prepare(
+                    operation, self._invalidate_schema_cache_asof
+                )
+    
+                if attributes:
+                    self.description = [
+                        (
+                            attr.name,
+                            attr.type.oid,
+                            None,
+                            None,
+                            None,
+                            None,
+                            None,
+                        )
+                        for attr in attributes
+                    ]
+                else:
+                    self.description = None
+    
+                if self.server_side:
+                    self._cursor = await prepared_stmt.cursor(*parameters)
+                    self.rowcount = -1
+                else:
+>                   self._rows = await prepared_stmt.fetch(*parameters)
+
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:538: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py:176: in fetch
+    data = await self.__bind_execute(args, 0, timeout)
+venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py:241: in __bind_execute
+    data, status, _ = await self.__do_execute(
+venv/lib/python3.10/site-packages/asyncpg/prepared_stmt.py:230: in __do_execute
+    return await executor(protocol)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   ???
+E   asyncpg.exceptions.UniqueViolationError: duplicate key value violates unique constraint "Patient_phone_key"
+E   DETAIL:  Key (phone)=(+1999999999) already exists.
+
+asyncpg/protocol/protocol.pyx:207: UniqueViolationError
+
+The above exception was the direct cause of the following exception:
+
+self = <sqlalchemy.engine.base.Connection object at 0x7b304391b9d0>
+dialect = <sqlalchemy.dialects.postgresql.asyncpg.PGDialect_asyncpg object at 0x7b3043b06020>
+context = <sqlalchemy.dialects.postgresql.asyncpg.PGExecutionContext_asyncpg object at 0x7b304391bd90>
+statement = <sqlalchemy.dialects.postgresql.asyncpg.PGCompiler_asyncpg object at 0x7b3043a7e6e0>
+parameters = [(UUID('85eaa06a-0aff-41ec-89c3-a0484ff0d403'), 'Jane Doe', '+1999999999', None, datetime.datetime(2026, 9, 21, 11, 19, 34, 336744, tzinfo=datetime.timezone.utc), None)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1971: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:919: in do_execute
+    cursor.execute(statement, parameters)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:572: in execute
+    self._adapt_connection.await_(
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:550: in _prepare_and_execute
+    self._handle_exception(error)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:501: in _handle_exception
+    self._adapt_connection._handle_exception(error)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <AdaptedConnection <asyncpg.connection.Connection object at 0x7b3043d95300>>
+error = UniqueViolationError('duplicate key value violates unique constraint "Patient_phone_key"')
+
+    def _handle_exception(self, error):
+        if self._connection.is_closed():
+            self._transaction = None
+            self._started = False
+    
+        if not isinstance(error, AsyncAdapt_asyncpg_dbapi.Error):
+            exception_mapping = self.dbapi._asyncpg_error_translate
+    
+            for super_ in type(error).__mro__:
+                if super_ in exception_mapping:
+                    translated_error = exception_mapping[super_](
+                        "%s: %s" % (type(error), error)
+                    )
+                    translated_error.pgcode = translated_error.sqlstate = (
+                        getattr(error, "sqlstate", None)
+                    )
+>                   raise translated_error from error
+E                   sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.IntegrityError: <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "Patient_phone_key"
+E                   DETAIL:  Key (phone)=(+1999999999) already exists.
+
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:789: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+client = <httpx.AsyncClient object at 0x7b3043a9a110>
+doctor_auth_headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3YTUyODYxZS0yMmNmLTQyNzYtYjMxNi05ZDQyZDhjZDM...J9HgKD5j0BnoJMx9vWrZI4w9qLPSqO1Je8wY51rWOw', 'Cookie': 'csrf_token=test-csrf-token', 'x-csrf-token': 'test-csrf-token'}
+
+    async def test_lead_conversion_phone_conflict(client: AsyncClient, doctor_auth_headers: dict):
+        # Create Patient with a phone
+        phone = "+1999999999"
+        patient_payload = {"fullName": "Jane Doe", "phone": phone}
+>       resp = await client.post("/api/v1/patients", json=patient_payload, headers=doctor_auth_headers)
+
+tests/test_lead.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.10/site-packages/httpx/_client.py:1892: in post
+    return await self.request(
+venv/lib/python3.10/site-packages/httpx/_client.py:1574: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+venv/lib/python3.10/site-packages/httpx/_client.py:1661: in send
+    response = await self._send_handling_auth(
+venv/lib/python3.10/site-packages/httpx/_client.py:1689: in _send_handling_auth
+    response = await self._send_handling_redirects(
+venv/lib/python3.10/site-packages/httpx/_client.py:1726: in _send_handling_redirects
+    response = await self._send_single_request(request)
+venv/lib/python3.10/site-packages/httpx/_client.py:1763: in _send_single_request
+    response = await transport.handle_async_request(request)
+venv/lib/python3.10/site-packages/httpx/_transports/asgi.py:164: in handle_async_request
+    await self.app(scope, receive, send)
+venv/lib/python3.10/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+venv/lib/python3.10/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+venv/lib/python3.10/site-packages/starlette/middleware/base.py:189: in __call__
+    with collapse_excgroups():
+/usr/lib/python3.10/contextlib.py:153: in __exit__
+    self.gen.throw(typ, value, traceback)
+venv/lib/python3.10/site-packages/starlette/_utils.py:93: in collapse_excgroups
+    raise exc
+venv/lib/python3.10/site-packages/starlette/middleware/base.py:191: in __call__
+    response = await self.dispatch_func(request, call_next)
+app/main.py:30: in security_headers_and_logging
+    response = await call_next(request)
+venv/lib/python3.10/site-packages/starlette/middleware/base.py:165: in call_next
+    raise app_exc
+venv/lib/python3.10/site-packages/starlette/middleware/base.py:151: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+venv/lib/python3.10/site-packages/starlette/middleware/cors.py:83: in __call__
+    await self.app(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/_exception_handler.py:64: in wrapped_app
+    raise exc
+venv/lib/python3.10/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+venv/lib/python3.10/site-packages/starlette/routing.py:758: in __call__
+    await self.middleware_stack(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/routing.py:778: in app
+    await route.handle(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/routing.py:299: in handle
+    await self.app(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/routing.py:79: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+venv/lib/python3.10/site-packages/starlette/_exception_handler.py:64: in wrapped_app
+    raise exc
+venv/lib/python3.10/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+venv/lib/python3.10/site-packages/starlette/routing.py:74: in app
+    response = await func(request)
+venv/lib/python3.10/site-packages/fastapi/routing.py:278: in app
+    raw_response = await run_endpoint_function(
+venv/lib/python3.10/site-packages/fastapi/routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+app/api/v1/patients.py:27: in create_patient
+    raise e
+app/api/v1/patients.py:22: in create_patient
+    patient = await patient_repo.create(db, patient_in)
+app/repositories/patient_repo.py:21: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:203: in greenlet_spawn
+    result = context.switch(value)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1422: in execute
+    return meth(
+venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:514: in _execute_on_connection
+    return connection._execute_clauseelement(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1644: in _execute_clauseelement
+    ret = self._execute_context(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1850: in _execute_context
+    return self._exec_single_context(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1990: in _exec_single_context
+    self._handle_dbapi_exception(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2357: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1971: in _exec_single_context
+    self.dialect.do_execute(
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:919: in do_execute
+    cursor.execute(statement, parameters)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:572: in execute
+    self._adapt_connection.await_(
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:550: in _prepare_and_execute
+    self._handle_exception(error)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:501: in _handle_exception
+    self._adapt_connection._handle_exception(error)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <AdaptedConnection <asyncpg.connection.Connection object at 0x7b3043d95300>>
+error = UniqueViolationError('duplicate key value violates unique constraint "Patient_phone_key"')
+
+    def _handle_exception(self, error):
+        if self._connection.is_closed():
+            self._transaction = None
+            self._started = False
+    
+        if not isinstance(error, AsyncAdapt_asyncpg_dbapi.Error):
+            exception_mapping = self.dbapi._asyncpg_error_translate
+    
+            for super_ in type(error).__mro__:
+                if super_ in exception_mapping:
+                    translated_error = exception_mapping[super_](
+                        "%s: %s" % (type(error), error)
+                    )
+                    translated_error.pgcode = translated_error.sqlstate = (
+                        getattr(error, "sqlstate", None)
+                    )
+>                   raise translated_error from error
+E                   sqlalchemy.exc.IntegrityError: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "Patient_phone_key"
+E                   DETAIL:  Key (phone)=(+1999999999) already exists.
+E                   [SQL: INSERT INTO "Patient" (id, "fullName", phone, email, "updatedAt", "deletedAt") VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::TIMESTAMP WITH TIME ZONE, $6::TIMESTAMP WITH TIME ZONE) RETURNING "Patient"."createdAt"]
+E                   [parameters: (UUID('85eaa06a-0aff-41ec-89c3-a0484ff0d403'), 'Jane Doe', '+1999999999', None, datetime.datetime(2026, 9, 21, 11, 19, 34, 336744, tzinfo=datetime.timezone.utc), None)]
+E                   (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:789: IntegrityError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/patients", "time": "2026-09-21 11:19:34,331", "correlationId": "6b685d34-ff03-4248-be99-9d8bd61d15ad"}
+{"level": "error", "msg": "Unhandled Error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint \"Patient_phone_key\"\nDETAIL:  Key (phone)=(+1999999999) already exists.\n[SQL: INSERT INTO \"Patient\" (id, \"fullName\", phone, email, \"updatedAt\", \"deletedAt\") VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::TIMESTAMP WITH TIME ZONE, $6::TIMESTAMP WITH TIME ZONE) RETURNING \"Patient\".\"createdAt\"]\n[parameters: (UUID('85eaa06a-0aff-41ec-89c3-a0484ff0d403'), 'Jane Doe', '+1999999999', None, datetime.datetime(2026, 9, 21, 11, 19, 34, 336744, tzinfo=datetime.timezone.utc), None)]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)", "time": "2026-09-21 11:19:34,340", "correlationId": "6b685d34-ff03-4248-be99-9d8bd61d15ad"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/patients
+ERROR    app:main.py:59 Unhandled Error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "Patient_phone_key"
+DETAIL:  Key (phone)=(+1999999999) already exists.
+[SQL: INSERT INTO "Patient" (id, "fullName", phone, email, "updatedAt", "deletedAt") VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::TIMESTAMP WITH TIME ZONE, $6::TIMESTAMP WITH TIME ZONE) RETURNING "Patient"."createdAt"]
+[parameters: (UUID('85eaa06a-0aff-41ec-89c3-a0484ff0d403'), 'Jane Doe', '+1999999999', None, datetime.datetime(2026, 9, 21, 11, 19, 34, 336744, tzinfo=datetime.timezone.utc), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_lead.py::test_lead_lifecycle_and_conversion
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_lead.py::test_lead_lifecycle_and_conversion - KeyError: 'er...
+FAILED tests/test_lead.py::test_lead_conversion_phone_conflict - sqlalchemy.e...
+======================== 2 failed, 2 warnings in 1.60s =========================

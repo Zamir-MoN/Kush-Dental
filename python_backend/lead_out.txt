@@ -1,0 +1,71 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 2 items
+
+tests/test_lead.py::test_lead_lifecycle_and_conversion PASSED            [ 50%]
+tests/test_lead.py::test_lead_conversion_phone_conflict FAILED           [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_lead_conversion_phone_conflict ______________________
+
+client = <httpx.AsyncClient object at 0x7effb13aa440>
+doctor_auth_headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NTZmYmQ5ZC0yOTRmLTQ5NDUtODE2Mi1iYTRmMzYyMGQ...6Xpr6bHPwfaTFzFsZIKLYmo5oPHk4x6yszr17-lECM', 'Cookie': 'csrf_token=test-csrf-token', 'x-csrf-token': 'test-csrf-token'}
+
+    async def test_lead_conversion_phone_conflict(client: AsyncClient, doctor_auth_headers: dict):
+        # Create Patient with a phone
+        unique_id = str(uuid.uuid4())[:8]
+        phone = f"+199{unique_id}"
+        patient_payload = {"fullName": "Jane Doe", "phone": phone}
+        resp = await client.post("/api/v1/patients", json=patient_payload, headers=doctor_auth_headers)
+        assert resp.status_code == 201
+    
+        # Create Lead with SAME phone
+        lead_payload = {
+            "name": "Jane Lead",
+            "phone": phone,
+            "email": "jane@test.com",
+        }
+        resp = await client.post("/api/v1/leads", json=lead_payload, headers=doctor_auth_headers)
+        assert resp.status_code == 201
+        lead_id = resp.json()["id"]
+    
+        # Attempt to convert -> should 409
+        resp = await client.post(f"/api/v1/leads/{lead_id}/convert", headers=doctor_auth_headers)
+        assert resp.status_code == 409
+>       assert "already exists" in resp.json()["error"]["message"].lower()
+E       KeyError: 'error'
+
+tests/test_lead.py:59: KeyError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/patients", "time": "2026-09-21 11:27:13,980", "correlationId": "01a2b176-1cd2-42d5-bdad-09ed494081cc"}
+{"level": "info", "msg": "Incoming Request: POST /api/v1/leads", "time": "2026-09-21 11:27:13,993", "correlationId": "2f9a07c4-872c-4c88-a792-77ccdc96da08"}
+{"level": "info", "msg": "Incoming Request: POST /api/v1/leads/9a39f457-3eaf-4f79-8252-9712e9ab349b/convert", "time": "2026-09-21 11:27:14,015", "correlationId": "37bd3974-59ec-4966-af05-15ee9dc6dd2e"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/patients
+INFO     app:main.py:28 Incoming Request: POST /api/v1/leads
+INFO     app:main.py:28 Incoming Request: POST /api/v1/leads/9a39f457-3eaf-4f79-8252-9712e9ab349b/convert
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_lead.py::test_lead_lifecycle_and_conversion
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_lead.py::test_lead_conversion_phone_conflict - KeyError: 'e...
+=================== 1 failed, 1 passed, 2 warnings in 0.59s ====================

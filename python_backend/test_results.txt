@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collected 123 items
+
+tests/test_app.py ..                                                     [  1%]
+tests/test_appointment_service.py ........                               [  8%]
+tests/test_appointments_api.py ....                                      [ 11%]
+tests/test_appointments_new_api.py ....                                  [ 14%]
+tests/test_auth.py ......                                                [ 19%]
+tests/test_blog.py ...                                                   [ 21%]
+tests/test_config.py .                                                   [ 22%]
+tests/test_contacts_api.py ..................                            [ 37%]
+tests/test_cookie_security.py ..                                         [ 39%]
+tests/test_dashboard_api.py ....                                         [ 42%]
+tests/test_database.py ..                                                [ 43%]
+tests/test_dxgen.py ......                                               [ 48%]
+tests/test_lead.py ..                                                    [ 50%]
+tests/test_patients_api.py ..                                            [ 52%]
+tests/test_patients_new_api.py ....
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/usr/lib/python3.10/selectors.py:469: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)

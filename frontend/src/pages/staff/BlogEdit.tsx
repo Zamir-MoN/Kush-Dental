@@ -1,0 +1,220 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { ArrowLeft, Save, CheckCircle, XCircle } from 'lucide-react';
+import { apiClient } from '../../lib/apiClient';
+import { RichTextEditor } from '../../components/journal/RichTextEditor';
+import { useAuth } from '../../context/AuthContext';
+import { AIGenerationModal } from '../../components/journal/AIGenerationModal';
+import { Sparkles } from 'lucide-react';
+
+export const BlogEdit: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  
+  const [status, setStatus] = useState<'DRAFT' | 'PUBLISHED'>('DRAFT');
+
+  const [formData, setFormData] = useState({
+    title: '',
+    slug: '',
+    excerpt: '',
+    coverImage: '',
+    content: ''
+  });
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const data = await apiClient<any>(`/api/v1/blog/${id}`, { method: 'GET' });
+        setFormData({
+          title: data.title,
+          slug: data.slug,
+          excerpt: data.excerpt || '',
+          coverImage: data.coverImage || '',
+          content: data.content
+        });
+        setStatus(data.status);
+      } catch (err: any) {
+        setError('Failed to load blog post');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlog();
+  }, [id]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      setError(null);
+      await apiClient(`/api/v1/blog/${id}`, { method: 'PATCH', data: formData });
+      navigate('/staff/blog');
+    } catch (err: any) {
+      setError(err.details?.detail || 'Failed to save changes');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePublishToggle = async () => {
+    try {
+      setSaving(true);
+      if (status === 'DRAFT') {
+        await apiClient(`/api/v1/blog/${id}/publish`, { method: 'POST' });
+        setStatus('PUBLISHED');
+      } else {
+        await apiClient(`/api/v1/blog/${id}/unpublish`, { method: 'POST' });
+        setStatus('DRAFT');
+      }
+    } catch (err: any) {
+      setError(err.details?.detail || 'Failed to change publish status');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAIGenerate = (contentData: any) => {
+    if (formData.title || formData.content) {
+      if (!window.confirm('Replace current draft with AI-generated content?')) {
+        return;
+      }
+    }
+    setFormData((prev) => ({
+      ...prev,
+      title: contentData.title || prev.title,
+      slug: contentData.slug || prev.slug,
+      excerpt: contentData.metaDescription || prev.excerpt,
+      content: contentData.body || prev.content
+    }));
+  };
+
+  if (loading) return <div className="p-8 text-center text-gray-500">Loading editor...</div>;
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Link to="/staff/blog" className="text-gray-500 hover:text-gray-900">
+            <ArrowLeft size={24} />
+          </Link>
+          <h1 className="text-2xl font-bold text-[#162723]">Edit Blog Post</h1>
+          <span className={`px-2 py-1 text-xs font-medium rounded-full ${status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+            {status}
+          </span>
+          {user?.role === 'DOCTOR' && (
+            <button
+              onClick={() => setIsAIModalOpen(true)}
+              className="ml-4 flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium"
+            >
+              <Sparkles size={16} className="mr-2" />
+              Generate with AI
+            </button>
+          )}
+        </div>
+        
+        <button
+          onClick={handlePublishToggle}
+          disabled={saving}
+          className={`flex items-center px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
+            status === 'DRAFT' ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-amber-600 text-white hover:bg-amber-700'
+          }`}
+        >
+          {status === 'DRAFT' ? (
+            <><CheckCircle size={18} className="mr-2" /> Publish</>
+          ) : (
+            <><XCircle size={18} className="mr-2" /> Unpublish</>
+          )}
+        </button>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm border border-red-200">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+          <input
+            type="text"
+            name="title"
+            required
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Slug</label>
+          <input
+            type="text"
+            name="slug"
+            required
+            pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            value={formData.slug}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Excerpt</label>
+          <textarea
+            name="excerpt"
+            value={formData.excerpt}
+            onChange={handleChange}
+            rows={3}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image URL</label>
+          <input
+            type="text"
+            name="coverImage"
+            value={formData.coverImage}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+          <RichTextEditor
+            content={formData.content}
+            onChange={(content) => setFormData({ ...formData, content })}
+          />
+        </div>
+
+        <div className="flex justify-end pt-4 border-t border-gray-100">
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex items-center px-6 py-2 bg-[#162723] text-white rounded-lg hover:bg-[#1a302b] transition-colors disabled:opacity-50"
+          >
+            <Save size={20} className="mr-2" />
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
+        </div>
+      </form>
+
+      <AIGenerationModal 
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        onTransfer={handleAIGenerate}
+      />
+    </div>
+  );
+};

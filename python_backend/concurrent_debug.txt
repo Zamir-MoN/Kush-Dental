@@ -1,0 +1,63 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 6 items
+
+tests/test_auth.py::test_login_success PASSED                            [ 16%]
+tests/test_auth.py::test_login_invalid_password PASSED                   [ 33%]
+tests/test_auth.py::test_csrf_protection_missing_header PASSED           [ 50%]
+tests/test_auth.py::test_refresh_token_rotation PASSED                   [ 66%]
+tests/test_auth.py::test_rate_limiting PASSED                            [ 83%]
+tests/test_auth.py::test_concurrent_refresh FAILED                       [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_concurrent_refresh ____________________________
+
+client = <httpx.AsyncClient object at 0x7bd4a81d7940>
+doctor_user = <app.models.User object at 0x7bd4a81d79d0>
+csrf_token = 'test-csrf-token'
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7bd4a81d7d60>
+
+    async def test_concurrent_refresh(client: AsyncClient, doctor_user, csrf_token, db_session):
+        # Login
+        payload = {"email": doctor_user.email, "password": "pass"}
+        resp = await client.post("/api/v1/auth/login", json=payload, headers={"x-csrf-token": csrf_token, "Cookie": f"csrf_token={csrf_token}"})
+>       assert resp.status_code == 200
+E       assert 429 == 200
+E        +  where 429 = <Response [429 Too Many Requests]>.status_code
+
+tests/test_auth.py:70: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/auth/login", "time": "2026-09-21 11:30:25,794", "correlationId": "68981bd4-8ac6-4154-b84f-86829be20fb4"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/auth/login
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_auth.py::test_login_success
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+tests/test_auth.py::test_csrf_protection_missing_header
+tests/test_auth.py::test_refresh_token_rotation
+tests/test_auth.py::test_refresh_token_rotation
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/httpx/_client.py:1559: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    warnings.warn(message, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::test_concurrent_refresh - assert 429 == 200
+=================== 1 failed, 5 passed, 5 warnings in 15.35s ===================

@@ -7,10 +7,42 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies and Builds
 node_modules
 dist
 dist-ssr
 *.local
+.env.local
+.env.*.local
+.env
+backend/.env
+python_backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +54,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary archives and test logs
+*.tar
+*.zip
+git_diff_*.txt
+git_status.txt

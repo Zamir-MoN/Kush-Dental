@@ -1,0 +1,1529 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 19 items
+
+tests/test_app.py::test_health_live PASSED                               [  5%]
+tests/test_app.py::test_health_ready PASSED                              [ 10%]
+tests/test_appointment_service.py::test_appointment_creation ERROR       [ 15%]
+tests/test_appointment_service.py::test_nonexistent_patient_and_doctor ERROR [ 21%]
+tests/test_appointment_service.py::test_overlapping_appointments ERROR   [ 26%]
+tests/test_appointment_service.py::test_adjacent_appointments_allowed ERROR [ 31%]
+tests/test_appointment_service.py::test_cancelled_appointment_not_blocking ERROR [ 36%]
+tests/test_appointment_service.py::test_valid_transitions ERROR          [ 42%]
+tests/test_appointment_service.py::test_invalid_and_terminal_transitions ERROR [ 47%]
+tests/test_appointment_service.py::test_concurrent_appointment_creation ERROR [ 52%]
+tests/test_config.py::test_settings_loaded PASSED                        [ 57%]
+tests/test_database.py::test_database_connection PASSED                  [ 63%]
+tests/test_database.py::test_gist_exclusion_constraint FAILED            [ 68%]
+tests/test_repositories.py::test_patient_soft_delete FAILED              [ 73%]
+tests/test_safety_guard.py::test_safety_guard_success PASSED             [ 78%]
+tests/test_safety_guard.py::test_safety_guard_failures[development-postgresql://user:pass@localhost/kush_dental_test-NODE_ENV must be 'test'] PASSED [ 84%]
+tests/test_safety_guard.py::test_safety_guard_failures[test--TEST_DATABASE_URL is missing] PASSED [ 89%]
+tests/test_safety_guard.py::test_safety_guard_failures[test-postgresql://user:pass@localhost/kush_dental_dev-Safety guard tripped! Target DB is 'kush_dental_dev'] PASSED [ 94%]
+tests/test_safety_guard.py::test_safety_guard_failures[test-postgresql://user:pass@localhost/production_db-Target DB is 'production_db'] PASSED [100%]
+
+==================================== ERRORS ====================================
+_________________ ERROR at setup of test_appointment_creation __________________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a20845e0>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+____________ ERROR at setup of test_nonexistent_patient_and_doctor _____________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a0ae7d60>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+_______________ ERROR at setup of test_overlapping_appointments ________________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a1249120>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+_____________ ERROR at setup of test_adjacent_appointments_allowed _____________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a087a290>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+__________ ERROR at setup of test_cancelled_appointment_not_blocking ___________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a13d2bf0>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+___________________ ERROR at setup of test_valid_transitions ___________________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a139b820>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+___________ ERROR at setup of test_invalid_and_terminal_transitions ____________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a0d5e0b0>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+____________ ERROR at setup of test_concurrent_appointment_creation ____________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a1494520>
+
+    @pytest_asyncio.fixture
+    async def setup_data(db_session: AsyncSession):
+>       doc = await user_repo.create(db_session, UserCreate(email=f"doc_{uuid.uuid4()}@test.com", role=Role.DOCTOR, password="pass"), "hash")
+
+tests/test_appointment_service.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/user_repo.py:25: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+=================================== FAILURES ===================================
+________________________ test_gist_exclusion_constraint ________________________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a1159f00>
+
+    @pytest.mark.asyncio
+    async def test_gist_exclusion_constraint(db_session):
+        # Setup
+        doctor_id = uuid.uuid4()
+        patient_id = uuid.uuid4()
+    
+        now = datetime.now(timezone.utc)
+        doctor = User(id=doctor_id, email=f"doc_{doctor_id}@test.com", passwordHash="hash", role=Role.DOCTOR, updatedAt=now)
+        patient = Patient(id=patient_id, fullName="Test Patient", phone=f"555{str(uuid.uuid4().int)[:7]}", updatedAt=now)
+    
+        db_session.add(doctor)
+        db_session.add(patient)
+>       await db_session.flush()
+
+tests/test_database.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+___________________________ test_patient_soft_delete ___________________________
+
+db_session = <sqlalchemy.ext.asyncio.session.AsyncSession object at 0x7051a1094730>
+
+    @pytest.mark.asyncio
+    async def test_patient_soft_delete(db_session):
+        pat_in = PatientCreate(fullName="Delete Me", phone=f"555{str(uuid.uuid4().int)[:7]}")
+>       pat = await patient_repo.create(db_session, pat_in)
+
+tests/test_repositories.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/repositories/patient_repo.py:21: in create
+    await db.flush()
+venv/lib/python3.10/site-packages/sqlalchemy/ext/asyncio/session.py:800: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4296: in flush
+    self._flush(objects)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4431: in _flush
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4392: in _flush
+    flush_context.execute()
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:60: in save_obj
+    for (
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:223: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1753: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:994: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1130: in _connection_for_bind
+    conn = self._parent._connection_for_bind(
+<string>:2: in _connection_for_bind
+    ???
+venv/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:1144: in _connection_for_bind
+    conn = bind.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3280: in connect
+    return self._connection_cls(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:146: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:3304: in raw_connection
+    return self.pool.connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:449: in connect
+    return _ConnectionFairy._checkout(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:1263: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:712: in checkout
+    rec = pool._do_get()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:179: in _do_get
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/impl.py:177: in _do_get
+    return self._create_connection()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:390: in _create_connection
+    return _ConnectionRecord(self)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:674: in __init__
+    self.__connect()
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:900: in __connect
+    with util.safe_reraise():
+venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv/lib/python3.10/site-packages/sqlalchemy/pool/base.py:896: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/create.py:643: in connect
+    return dialect.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:617: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+venv/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:937: in connect
+    await_only(creator_fn(*arg, **kw)),
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:131: in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+venv/lib/python3.10/site-packages/sqlalchemy/util/_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+venv/lib/python3.10/site-packages/asyncpg/connection.py:2329: in connect
+    return await connect_utils._connect(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:991: in _connect
+    conn = await _connect_addr(
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:833: in _connect_addr
+    return await __connect_addr(params_retry, False, *args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+params = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+retry = False, addr = ('localhost', 5432)
+loop = <_UnixSelectorEventLoop running=False closed=False debug=False>
+config = ConnectionConfiguration(command_timeout=None, statement_cache_size=100, max_cached_statement_lifetime=300, max_cacheable_statement_size=15360)
+connection_class = <class 'asyncpg.connection.Connection'>
+record_class = <class 'asyncpg.Record'>
+params_input = ConnectionParameters(user='kush_dental_test', password='KushDentalTestSecret123\\!', database='kush_dental_test', ssl=...slmode=<SSLMode.prefer: 2>, direct_tls=False, server_settings=None, target_session_attrs=<SessionAttribute.any: 'any'>)
+
+    async def __connect_addr(
+        params,
+        retry,
+        addr,
+        loop,
+        config,
+        connection_class,
+        record_class,
+        params_input,
+    ):
+        connected = _create_future(loop)
+    
+        proto_factory = lambda: protocol.Protocol(
+            addr, connected, params, record_class, loop)
+    
+        if isinstance(addr, str):
+            # UNIX socket
+            connector = loop.create_unix_connection(proto_factory, addr)
+    
+        elif params.ssl and params.direct_tls:
+            # if ssl and direct_tls are given, skip STARTTLS and perform direct
+            # SSL connection
+            connector = loop.create_connection(
+                proto_factory, *addr, ssl=params.ssl
+            )
+    
+        elif params.ssl:
+            connector = _create_ssl_connection(
+                proto_factory, *addr, loop=loop, ssl_context=params.ssl,
+                ssl_is_advisory=params.sslmode == SSLMode.prefer)
+        else:
+            connector = loop.create_connection(proto_factory, *addr)
+    
+        tr, pr = await connector
+    
+        try:
+>           await connected
+E           asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "kush_dental_test"
+
+venv/lib/python3.10/site-packages/asyncpg/connect_utils.py:876: InvalidPasswordError
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_app.py::test_health_live
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_database.py::test_gist_exclusion_constraint - asyncpg.excep...
+FAILED tests/test_repositories.py::test_patient_soft_delete - asyncpg.excepti...
+ERROR tests/test_appointment_service.py::test_appointment_creation - asyncpg....
+ERROR tests/test_appointment_service.py::test_nonexistent_patient_and_doctor
+ERROR tests/test_appointment_service.py::test_overlapping_appointments - asyn...
+ERROR tests/test_appointment_service.py::test_adjacent_appointments_allowed
+ERROR tests/test_appointment_service.py::test_cancelled_appointment_not_blocking
+ERROR tests/test_appointment_service.py::test_valid_transitions - asyncpg.exc...
+ERROR tests/test_appointment_service.py::test_invalid_and_terminal_transitions
+ERROR tests/test_appointment_service.py::test_concurrent_appointment_creation
+============== 2 failed, 9 passed, 2 warnings, 8 errors in 6.76s ===============

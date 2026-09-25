@@ -1,0 +1,47 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 19 items
+
+tests/test_app.py::test_health_live PASSED                               [  5%]
+tests/test_app.py::test_health_ready PASSED                              [ 10%]
+tests/test_appointment_service.py::test_appointment_creation PASSED      [ 15%]
+tests/test_appointment_service.py::test_nonexistent_patient_and_doctor PASSED [ 21%]
+tests/test_appointment_service.py::test_overlapping_appointments PASSED  [ 26%]
+tests/test_appointment_service.py::test_adjacent_appointments_allowed PASSED [ 31%]
+tests/test_appointment_service.py::test_cancelled_appointment_not_blocking PASSED [ 36%]
+tests/test_appointment_service.py::test_valid_transitions PASSED         [ 42%]
+tests/test_appointment_service.py::test_invalid_and_terminal_transitions PASSED [ 47%]
+tests/test_appointment_service.py::test_concurrent_appointment_creation PASSED [ 52%]
+tests/test_config.py::test_settings_loaded PASSED                        [ 57%]
+tests/test_database.py::test_database_connection PASSED                  [ 63%]
+tests/test_database.py::test_gist_exclusion_constraint PASSED            [ 68%]
+tests/test_repositories.py::test_patient_soft_delete PASSED              [ 73%]
+tests/test_safety_guard.py::test_safety_guard_success PASSED             [ 78%]
+tests/test_safety_guard.py::test_safety_guard_failures[development-postgresql://user:pass@localhost/kush_dental_test-NODE_ENV must be 'test'] PASSED [ 84%]
+tests/test_safety_guard.py::test_safety_guard_failures[test--TEST_DATABASE_URL is missing] PASSED [ 89%]
+tests/test_safety_guard.py::test_safety_guard_failures[test-postgresql://user:pass@localhost/kush_dental_dev-Safety guard tripped! Target DB is 'kush_dental_dev'] PASSED [ 94%]
+tests/test_safety_guard.py::test_safety_guard_failures[test-postgresql://user:pass@localhost/production_db-Target DB is 'production_db'] PASSED [100%]
+
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_app.py::test_health_live
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 19 passed, 2 warnings in 0.42s ========================

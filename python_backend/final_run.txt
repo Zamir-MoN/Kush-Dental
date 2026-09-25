@@ -1,0 +1,52 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 29 items
+
+tests/test_app.py::test_health_live PASSED                               [  3%]
+tests/test_app.py::test_health_ready PASSED                              [  6%]
+tests/test_appointment_service.py::test_appointment_creation PASSED      [ 10%]
+tests/test_appointment_service.py::test_nonexistent_patient_and_doctor PASSED [ 13%]
+tests/test_appointment_service.py::test_overlapping_appointments PASSED  [ 17%]
+tests/test_appointment_service.py::test_adjacent_appointments_allowed PASSED [ 20%]
+tests/test_appointment_service.py::test_cancelled_appointment_not_blocking PASSED [ 24%]
+tests/test_appointment_service.py::test_valid_transitions PASSED         [ 27%]
+tests/test_appointment_service.py::test_invalid_and_terminal_transitions PASSED [ 31%]
+tests/test_appointment_service.py::test_concurrent_appointment_creation PASSED [ 34%]
+tests/test_auth.py::test_login_success PASSED                            [ 37%]
+tests/test_auth.py::test_login_invalid_password PASSED                   [ 41%]
+tests/test_auth.py::test_csrf_protection_missing_header PASSED           [ 44%]
+tests/test_auth.py::test_refresh_token_rotation PASSED                   [ 48%]
+tests/test_auth.py::test_rate_limiting 
+
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_app.py::test_health_live
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+tests/test_auth.py::test_csrf_protection_missing_header
+tests/test_auth.py::test_refresh_token_rotation
+tests/test_auth.py::test_refresh_token_rotation
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/httpx/_client.py:1559: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    warnings.warn(message, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/usr/lib/python3.10/selectors.py:469: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+======================= 14 passed, 5 warnings in 31.05s ========================

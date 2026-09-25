@@ -1,0 +1,111 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.1.1, pluggy-1.6.0 -- /home/ubuntu/Kush-Dental-main/python_backend/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/Kush-Dental-main/python_backend
+plugins: asyncio-0.23.6, anyio-4.15.1
+asyncio: mode=strict
+collecting ... collected 29 items
+
+tests/test_app.py::test_health_live PASSED                               [  3%]
+tests/test_app.py::test_health_ready PASSED                              [  6%]
+tests/test_appointment_service.py::test_appointment_creation PASSED      [ 10%]
+tests/test_appointment_service.py::test_nonexistent_patient_and_doctor PASSED [ 13%]
+tests/test_appointment_service.py::test_overlapping_appointments PASSED  [ 17%]
+tests/test_appointment_service.py::test_adjacent_appointments_allowed PASSED [ 20%]
+tests/test_appointment_service.py::test_cancelled_appointment_not_blocking PASSED [ 24%]
+tests/test_appointment_service.py::test_valid_transitions PASSED         [ 27%]
+tests/test_appointment_service.py::test_invalid_and_terminal_transitions PASSED [ 31%]
+tests/test_appointment_service.py::test_concurrent_appointment_creation PASSED [ 34%]
+tests/test_auth.py::test_login_success FAILED                            [ 37%]
+tests/test_auth.py::test_login_invalid_password PASSED                   [ 41%]
+tests/test_auth.py::test_csrf_protection_missing_header FAILED           [ 44%]
+tests/test_auth.py::test_refresh_token_rotation FAILED                   [ 48%]
+tests/test_auth.py::test_rate_limiting 
+
+=================================== FAILURES ===================================
+______________________________ test_login_success ______________________________
+
+client = <httpx.AsyncClient object at 0x7e708274b790>
+doctor_user = <app.models.User object at 0x7e708274a890>
+csrf_token = 'test-csrf-token'
+
+    async def test_login_success(client: AsyncClient, doctor_user, csrf_token):
+        payload = {"email": doctor_user.email, "password": "pass"}
+        resp = await client.post("/api/v1/auth/login", json=payload, headers={"x-csrf-token": csrf_token, "Cookie": f"csrf_token={csrf_token}"})
+        assert resp.status_code == 200
+        data = resp.json()
+>       assert "accessToken" in data
+E       AssertionError: assert 'accessToken' in {'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZjgzMzBhNS03MmUzLTRiODItODRmOC04YmRlOGFhODg2MGYiLCJyb2xlIjoiRE9DVE9SIiwiZXhwIjoxNzg5OTkwMzk0fQ.Nqpp_Zb7pUn923Ard3Y5qyBalYIzrjuT8849JuVtjMY', 'token_type': 'bearer', 'user': {'createdAt': '2026-09-21T11:18:14.340000Z', 'email': 'doc_23a8d2e6-3d73-4674-960a-ae3771bddfd1@test.com', 'id': '2f8330a5-72e3-4b82-84f8-8bde8aa8860f', 'role': 'DOCTOR', ...}}
+
+tests/test_auth.py:13: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/auth/login", "time": "2026-09-21 11:18:14,345", "correlationId": "12b30914-a51a-4913-bf32-113530992d12"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/auth/login
+_____________________ test_csrf_protection_missing_header ______________________
+
+client = <httpx.AsyncClient object at 0x7e70805bfaf0>
+doctor_user = <app.models.User object at 0x7e70805bd090>
+
+    async def test_csrf_protection_missing_header(client: AsyncClient, doctor_user):
+        payload = {"email": doctor_user.email, "password": "pass"}
+        # Missing x-csrf-token header
+        resp = await client.post("/api/v1/auth/login", json=payload, cookies={"csrf_token": "test-token"})
+>       assert resp.status_code == 403
+E       assert 200 == 403
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_auth.py:26: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/auth/login", "time": "2026-09-21 11:18:15,104", "correlationId": "77e56e4a-ad34-4dd6-a7f8-1484aea41eff"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/auth/login
+_________________________ test_refresh_token_rotation __________________________
+
+client = <httpx.AsyncClient object at 0x7e70805e37c0>
+doctor_user = <app.models.User object at 0x7e70805e32b0>
+csrf_token = 'test-csrf-token'
+
+    async def test_refresh_token_rotation(client: AsyncClient, doctor_user, csrf_token):
+        # Login
+        payload = {"email": doctor_user.email, "password": "pass"}
+        resp = await client.post("/api/v1/auth/login", json=payload, headers={"x-csrf-token": csrf_token, "Cookie": f"csrf_token={csrf_token}"})
+        assert resp.status_code == 200
+>       refresh_token = resp.json()["refreshToken"]
+E       KeyError: 'refreshToken'
+
+tests/test_auth.py:33: KeyError
+----------------------------- Captured stdout call -----------------------------
+{"level": "info", "msg": "Incoming Request: POST /api/v1/auth/login", "time": "2026-09-21 11:18:17,426", "correlationId": "c2180728-1666-4221-a904-a2253bd89e61"}
+------------------------------ Captured log call -------------------------------
+INFO     app:main.py:28 Incoming Request: POST /api/v1/auth/login
+=============================== warnings summary ===============================
+venv/lib/python3.10/site-packages/starlette/testclient.py:41
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/starlette/testclient.py:41: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    [], typing.ContextManager[anyio.abc.BlockingPortal]
+
+tests/test_app.py::test_health_live
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/pytest_asyncio/plugin.py:759: DeprecationWarning: The event_loop fixture provided by pytest-asyncio has been redefined in
+  /home/ubuntu/Kush-Dental-main/python_backend/tests/conftest.py:43
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+    warnings.warn(
+
+tests/test_auth.py::test_csrf_protection_missing_header
+  /home/ubuntu/Kush-Dental-main/python_backend/venv/lib/python3.10/site-packages/httpx/_client.py:1559: DeprecationWarning: Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.
+    warnings.warn(message, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::test_login_success - AssertionError: assert 'acces...
+FAILED tests/test_auth.py::test_csrf_protection_missing_header - assert 200 =...
+FAILED tests/test_auth.py::test_refresh_token_rotation - KeyError: 'refreshTo...
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/usr/lib/python3.10/selectors.py:469: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+================== 3 failed, 11 passed, 3 warnings in 15.19s ===================

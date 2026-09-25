@@ -1,0 +1,1022 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/home/ubuntu/Kush-Dental-main/frontend[39m
+
+ [31m×[39m src/pages/staff/patients/PatientDetail.test.tsx[2m > [22mPatientDetail[2m > [22mloads patient details and appointment history[33m 1043[2mms[22m[39m
+[31m   → Invalid Chai property: toBeInTheDocument
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"space-y-6 max-w-4xl mx-auto pb-12"[31m
+      [36m>[31m
+        [36m<div>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-4 transition-colors"[31m
+          [36m>[31m
+            [36m<svg[31m
+              [33maria-hidden[31m=[32m"true"[31m
+              [33mclass[31m=[32m"lucide lucide-arrow-left w-4 h-4 mr-1"[31m
+              [33mfill[31m=[32m"none"[31m
+              [33mheight[31m=[32m"24"[31m
+              [33mstroke[31m=[32m"currentColor"[31m
+              [33mstroke-linecap[31m=[32m"round"[31m
+              [33mstroke-linejoin[31m=[32m"round"[31m
+              [33mstroke-width[31m=[32m"2"[31m
+              [33mviewBox[31m=[32m"0 0 24 24"[31m
+              [33mwidth[31m=[32m"24"[31m
+              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+            [36m>[31m
+              [36m<path[31m
+                [33md[31m=[32m"m12 19-7-7 7-7"[31m
+              [36m/>[31m
+              [36m<path[31m
+                [33md[31m=[32m"M19 12H5"[31m
+              [36m/>[31m
+            [36m</svg>[31m
+            [0mBack to Directory[0m
+          [36m</button>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white shadow rounded-xl overflow-hidden border border-gray-100"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"p-6 sm:p-8 bg-gradient-to-r from-[#162723]/5 to-transparent"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"flex items-center space-x-5"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"h-16 w-16 bg-[#162723] rounded-full flex items-center justify-center flex-shrink-0 text-white text-2xl font-semibold shadow-sm"[31m
+              [36m>[31m
+                [0mJ[0m
+              [36m</div>[31m
+              [36m<div>[31m
+                [36m<h1[31m
+                  [33mclass[31m=[32m"text-2xl font-bold text-[#162723]"[31m
+                [36m>[31m
+                  [0mJohn Doe[0m
+                [36m</h1>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"mt-2 flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 text-sm text-gray-600"[31m
+                [36m>[31m
+                  [36m<a[31m
+                    [33mclass[31m=[32m"flex items-center hover:text-[#162723] transition-colors"[31m
+                    [33mhref[31m=[32m"tel:+1234567890"[31m
+                  [36m>[31m
+                    [36m<svg[31m
+                      [33maria-hidden[31m=[32m"true"[31m
+                      [33mclass[31m=[32m"lucide lucide-phone w-4 h-4 mr-2 opacity-70"[31m
+                      [33mfill[31m=[32m"none"[31m
+                      [33mheight[31m=[32m"24"[31m
+                      [33mstroke[31m=[32m"currentColor"[31m
+                      [33mstroke-linecap[31m=[32m"round"[31m
+                      [33mstroke-linejoin[31m=[32m"round"[31m
+                      [33mstroke-width[31m=[32m"2"[31m
+                      [33mviewBox[31m=[32m"0 0 24 24"[31m
+                      [33mwidth[31m=[32m"24"[31m
+                      [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                    [36m>[31m
+                      [36m<path[31m
+                        [33md[31m=[32m"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"[31m
+                      [36m/>[31m
+                    [36m</svg>[31m
+                    [0m+1234567890[0m
+                  [36m</a>[31m
+                  [36m<a[31m
+                    [33mclass[31m=[32m"flex items-center hover:text-[#162723] transition-colors"[31m
+                    [33mhref[31m=[32m"mailto:john@example.com"[31m
+                  [36m>[31m
+                    [36m<svg[31m
+                      [33maria-hidden[31m=[32m"true"[31m
+                      [33mclass[31m=[32m"lucide lucide-mail w-4 h-4 mr-2 opacity-70"[31m
+                      [33mfill[31m=[32m"none"[31m
+                      [33mheight[31m=[32m"24"[31m
+                      [33mstroke[31m=[32m"currentColor"[31m
+                      [33mstroke-linecap[31m=[32m"round"[31m
+                      [33mstroke-linejoin[31m=[32m"round"[31m
+                      [33mstroke-width[31m=[32m"2"[31m
+                      [33mviewBox[31m=[32m"0 0 24 24"[31m
+                      [33mwidth[31m=[32m"24"[31m
+                      [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                    [36m>[31m
+                      [36m<path[31m
+                        [33md[31m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[31m
+                      [36m/>[31m
+                      [36m<rect[31m
+                        [33mheight[31m=[32m"16"[31m
+                        [33mrx[31m=[32m"2"[31m
+                        [33mwidth[31m=[32m"20"[31m
+                        [33mx[31m=[32m"2"[31m
+                        [33my[31m=[32m"4"[31m
+                      [36m/>[31m
+                    [36m</svg>[31m
+                    [0mjohn@example.com[0m
+                  [36m</a>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"border-t border-gray-200"[31m
+          [36m>[31m
+            [36m<dl[31m
+              [33mclass[31m=[32m"grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-200"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"px-6 py-5"[31m
+              [36m>[31m
+                [36m<dt[31m
+                  [33mclass[31m=[32m"text-sm font-medium text-gray-500"[31m
+                [36m>[31m
+                  [0mPatient ID[0m
+                [36m</dt>[31m
+                [36m<dd[31m
+                  [33mclass[31m=[32m"mt-1 text-sm text-gray-900 break-all"[31m
+                [36m>[31m
+                  [0m123[0m
+                [36m</dd>[31m
+              [36m</div>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"px-6 py-5"[31m
+              [36m>[31m
+                [36m<dt[31m
+                  [33mclass[31m=[32m"text-sm font-medium text-gray-500"[31m
+                [36m>[31m
+                  [0mTotal Appointments[0m
+                [36m</dt>[31m
+                [36m<dd[31m
+                  [33mclass[31m=[32m"mt-1 text-2xl font-semibold text-[#162723]"[31m
+                [36m>[31m
+                  [0m2[0m
+                [36m</dd>[31m
+              [36m</div>[31m
+            [36m</dl>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-xl font-bold text-[#162723] mb-4"[31m
+          [36m>[31m
+            [0mAppointment History[0m
+          [36m</h2>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"bg-white shadow overflow-hidden sm:rounded-xl border border-gray-100"[31m
+          [36m>[31m
+            [36m<ul[31m
+              [33mclass[31m=[32m"divide-y divide-gray-200"[31m
+              [33mrole[31m=[32m"list"[31m
+            [36m>[31m
+              [36m<li>[31m
+                [36m<button[31m
+                  [33mclass[31m=[32m"block hover:bg-gray-50 w-full text-left transition-colors"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"px-4 py-4 sm:px-6 flex items-center justify-between"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center w-full min-w-0 pr-4"[31m
+                    [36m>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"flex items-center w-48 flex-shrink-0"[31m
+                      [36m>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"flex-shrink-0 bg-blue-50 p-2 rounded-lg mr-4"[31m
+                        [36m>[31m
+                          [36m<svg[31m
+                            [33maria-hidden[31m=[32m"true"[31m
+                            [33mclass[31m=[32m"lucide lucide-calendar h-5 w-5 text-blue-600"[31m
+                            [33mfill[31m=[32m"none"[31m
+                            [33mheight[31m=[32m"24"[31m
+                            [33mstroke[31m=[32m"currentColor"[31m
+                            [33mstroke-linecap[31m=[32m"round"[31m
+                            [33mstroke-linejoin[31m=[32m"round"[31m
+                            [33mstroke-width[31m=[32m"2"[31m
+                            [33mviewBox[31m=[32m"0 0 24 24"[31m
+                            [33mwidth[31m=[32m"24"[31m
+                            [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                          [36m>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M8 2v3"[31m
+                            [36m/>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M16 2v3"[31m
+                            [36m/>[31m
+                            [36m<rect[31m
+                              [33mheight[31m=[32m"18"[31m
+                              [33mrx[31m=[32m"2"[31m
+                              [33mwidth[31m=[32m"18"[31m
+                              [33mx[31m=[32m"3"[31m
+                              [33my[31m=[32m"3"[31m
+                            [36m/>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M3 9h18"[31m
+                            [36m/>[31m
+                          [36m</svg>[31m
+                        [36m</div>[31m
+                        [36m<div>[31m
+                          [36m<p[31m
+                            [33mclass[31m=[32m"text-sm font-medium text-gray-900"[31m
+                          [36m>[31m
+                            [0mOct 10, 2023[0m
+                          [36m</p>[31m
+                          [36m<p[31m
+                            [33mclass[31m=[32m"text-xs text-gray-500 flex items-center mt-1"[31m
+                          [36m>[31m
+                            [36m<svg[31m
+                              [33maria-hidden[31m=[32m"true"[31m
+                              [33mclass[31m=[32m"lucide lucide-clock w-3 h-3 mr-1"[31m
+                              [33mfill[31m=[32m"none"[31m
+                              [33mheight[31m=[32m"24"[31m
+                              [33mstroke[31m=[32m"currentColor"[31m
+                              [33mstroke-linecap[31m=[32m"round"[31m
+                              [33mstroke-linejoin[31m=[32m"round"[31m
+                              [33mstroke-width[31m=[32m"2"[31m
+                              [33mviewBox[31m=[32m"0 0 24 24"[31m
+                              [33mwidth[31m=[32m"24"[31m
+                              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                            [36m>[31m
+                              [36m<circle[31m
+                                [33mcx[31m=[32m"12"[31m
+                                [33mcy[31m=[32m"12"[31m
+                                [33mr[31m=[32m"10"[31m
+                              [36m/>[31m
+                              [36m<path[31m
+                                [33md[31m=[32m"M12 6v6l4 2"[31m
+                              [36m/>[31m
+                            [36m</svg>[31m
+                            [0m10:00 AM[0m
+                          [36m</p>[31m
+                        [36m</div>[31m
+                      [36m</div>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"mt-2 sm:mt-0 sm:ml-4 flex-1 min-w-0"[31m
+                      [36m>[31m
+                        [36m<p[31m
+                          [33mclass[31m=[32m"text-sm font-semibold text-[#162723] truncate"[31m
+                        [36m>[31m
+                          [0mCheckup[0m
+                        [36m</p>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"mt-1 flex items-center"[31m
+                        [36m>[31m
+                          [36m<span[31m
+                            [33mclass[31m=[32m"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                                bg-gray-100 text-gray-800"[31m
+                          [36m>[31m
+                            [0mcompleted[0m
+                          [36m</span>[31m
+                        [36m</div>[31m
+                      [36m</div>[31m
+                    [36m</div>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"flex-shrink-0"[31m
+                    [36m>[31m
+                      [36m<svg[31m
+                        [33maria-hidden[31m=[32m"true"[31m
+                        [33mclass[31m=[32m"lucide lucide-chevron-right h-5 w-5 text-gray-400"[31m
+                        [33mfill[31m=[32m"none"[31m
+                        [33mheight[31m=[32m"24"[31m
+                        [33mstroke[31m=[32m"currentColor"[31m
+                        [33mstroke-linecap[31m=[32m"round"[31m
+                        [33mstroke-linejoin[31m=[32m"round"[31m
+                        [33mstroke-width[31m=[32m"2"[31m
+                        [33mviewBox[31m=[32m"0 0 24 24"[31m
+                        [33mwidth[31m=[32m"24"[31m
+                        [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                      [36m>[31m
+                        [36m<path[31m
+                          [33md[31m=[32m"m9 18 6-6-6-6"[31m
+                        [36m/>[31m
+                      [36m</svg>[31m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                [36m</button>[31m
+              [36m</li>[31m
+              [36m<li>[31m
+                [36m<button[31m
+                  [33mclass[31m=[32m"block hover:bg-gray-50 w-full text-left transition-colors"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"px-4 py-4 sm:px-6 flex items-center justify-between"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"flex flex-col sm:flex-row sm:items-center w-full min-w-0 pr-4"[31m
+                    [36m>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"flex items-center w-48 flex-shrink-0"[31m
+                      [36m>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"flex-shrink-0 bg-blue-50 p-2 rounded-lg mr-4"[31m
+                        [36m>[31m
+                          [36m<svg[31m
+                            [33maria-hidden[31m=[32m"true"[31m
+                            [33mclass[31m=[32m"lucide lucide-calendar h-5 w-5 text-blue-600"[31m
+                            [33mfill[31m=[32m"none"[31m
+                            [33mheight[31m=[32m"24"[31m
+                            [33mstroke[31m=[32m"currentColor"[31m
+                            [33mstroke-linecap[31m=[32m"round"[31m
+                            [33mstroke-linejoin[31m=[32m"round"[31m
+                            [33mstroke-width[31m=[32m"2"[31m
+                            [33mviewBox[31m=[32m"0 0 24 24"[31m
+                            [33mwidth[31m=[32m"24"[31m
+                            [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                          [36m>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M8 2v3"[31m
+                            [36m/>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M16 2v3"[31m
+                            [36m/>[31m
+                            [36m<rect[31m
+                              [33mheight[31m=[32m"18"[31m
+                              [33mrx[31m=[32m"2"[31m
+                              [33mwidth[31m=[32m"18"[31m
+                              [33mx[31m=[32m"3"[31m
+                              [33my[31m=[32m"3"[31m
+                            [36m/>[31m
+                            [36m<path[31m
+                              [33md[31m=[32m"M3 9h18"[31m
+                            [36m/>[31m
+                          [36m</svg>[31m
+                        [36m</div>[31m
+                        [36m<div>[31m
+                          [36m<p[31m
+                            [33mclass[31m=[32m"text-sm font-medium text-gray-900"[31m
+                          [36m>[31m
+                            [0mSep 10, 2023[0m
+                          [36m</p>[31m
+                          [36m<p[31m
+                            [33mclass[31m=[32m"text-xs text-gray-500 flex items-center mt-1"[31m
+                          [36m>[31m
+                            [36m<svg[31m
+                              [33maria-hidden[31m=[32m"true"[31m
+                              [33mclass[31m=[32m"lucide lucide-clock w-3 h-3 mr-1"[31m
+                              [33mfill[31m=[32m"none"[31m
+                              [33mheight[31m=[32m"24"[31m
+                              [33mstroke[31m=[32m"currentColor"[31m
+                              [33mstroke-linecap[31m=[32m"round"[31m
+                              [33mstroke-linejoin[31m=[32m"round"[31m
+                              [33mstroke-width[31m=[32m"2"[31m
+                              [33mviewBox[31m=[32m"0 0 24 24"[31m
+                              [33mwidth[31m=[32m"24"[31m
+                              [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                            [36m>[31m
+                              [36m<circle[31m
+                                [33mcx[31m=[32m"12"[31m
+                                [33mcy[31m=[32m"12"[31m
+                                [33mr[31m=[32m"10"[31m
+                              [36m/>[31m
+                              [36m<path[31m
+                                [33md[31m=[32m"M12 6v6l4 2"[31m
+                              [36m/>[31m
+                            [36m</svg>[31m
+                            [0m10:00 AM[0m
+                          [36m</p>[31m
+                        [36m</div>[31m
+                      [36m</div>[31m
+                      [36m<div[31m
+                        [33mclass[31m=[32m"mt-2 sm:mt-0 sm:ml-4 flex-1 min-w-0"[31m
+                      [36m>[31m
+                        [36m<p[31m
+                          [33mclass[31m=[32m"text-sm font-semibold text-[#162723] truncate"[31m
+                        [36m>[31m
+                          [0mCleaning[0m
+                        [36m</p>[31m
+                        [36m<div[31m
+                          [33mclass[31m=[32m"mt-1 flex items-center"[31m
+                        [36m>[31m
+                          [36m<span[31m
+                            [33mclass[31m=[32m"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                                bg-gray-100 text-gray-800"[31m
+                          [36m>[31m
+                            [0mcompleted[0m
+                          [36m</span>[31m
+                        [36m</div>[31m
+                      [36m</div>[31m
+                    [36m</div>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"flex-shrink-0"[31m
+                    [36m>[31m
+                      [36m<svg[31m
+                        [33maria-hidden[31m=[32m"true"[31m
+                        [33mclass[31m=[32m"lucide lucide-chevron-right h-5 w-5 text-gray-400"[31m
+                        [33mfill[31m=[32m"none"[31m
+                        [33mheight[31m=[32m"24"[31m
+                        [33mstroke[31m=[32m"currentColor"[31m
+                        [33mstroke-linecap[31m=[32m"round"[31m
+                        [33mstroke-linejoin[31m=[32m"round"[31m
+                        [33mstroke-width[31m=[32m"2"[31m
+                        [33mviewBox[31m=[32m"0 0 24 24"[31m
+                        [33mwidth[31m=[32m"24"[31m
+                        [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+                      [36m>[31m
+                        [36m<path[31m
+                          [33md[31m=[32m"m9 18 6-6-6-6"[31m
+                        [36m/>[31m
+                      [36m</svg>[31m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                [36m</button>[31m
+              [36m</li>[31m
+            [36m</ul>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+ [31m×[39m src/pages/staff/patients/PatientDetail.test.tsx[2m > [22mPatientDetail[2m > [22mhandles error state if patient not found[33m 1012[2mms[22m[39m
+[31m   → Invalid Chai property: toBeInTheDocument
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"bg-red-50 text-red-600 p-6 rounded-xl flex items-start space-x-3"[31m
+      [36m>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-circle-alert w-5 h-5 flex-shrink-0 mt-0.5"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<circle[31m
+            [33mcx[31m=[32m"12"[31m
+            [33mcy[31m=[32m"12"[31m
+            [33mr[31m=[32m"10"[31m
+          [36m/>[31m
+          [36m<line[31m
+            [33mx1[31m=[32m"12"[31m
+            [33mx2[31m=[32m"12"[31m
+            [33my1[31m=[32m"8"[31m
+            [33my2[31m=[32m"12"[31m
+          [36m/>[31m
+          [36m<line[31m
+            [33mx1[31m=[32m"12"[31m
+            [33mx2[31m=[32m"12.01"[31m
+            [33my1[31m=[32m"16"[31m
+            [33my2[31m=[32m"16"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+        [36m<div>[31m
+          [36m<h3[31m
+            [33mclass[31m=[32m"text-sm font-medium"[31m
+          [36m>[31m
+            [0mError Loading Patient[0m
+          [36m</h3>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"mt-1 text-sm"[31m
+          [36m>[31m
+            [0mPatient not found[0m
+          [36m</p>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"mt-4 text-sm font-medium text-red-700 hover:text-red-800"[31m
+          [36m>[31m
+            [0m← Back to Patients[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/pages/staff/patients/PatientDetail.test.tsx[2m > [22mPatientDetail[2m > [22mloads patient details and appointment history
+[31m[1mError[22m[39m: Invalid Chai property: toBeInTheDocument
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"space-y-6 max-w-4xl mx-auto pb-12"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-4 transition-colors"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-arrow-left w-4 h-4 mr-1"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m12 19-7-7 7-7"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M19 12H5"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0mBack to Directory[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"bg-white shadow rounded-xl overflow-hidden border border-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"p-6 sm:p-8 bg-gradient-to-r from-[#162723]/5 to-transparent"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center space-x-5"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"h-16 w-16 bg-[#162723] rounded-full flex items-center justify-center flex-shrink-0 text-white text-2xl font-semibold shadow-sm"[39m
+              [36m>[39m
+                [0mJ[0m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-2xl font-bold text-[#162723]"[39m
+                [36m>[39m
+                  [0mJohn Doe[0m
+                [36m</h1>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"mt-2 flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 text-sm text-gray-600"[39m
+                [36m>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"flex items-center hover:text-[#162723] transition-colors"[39m
+                    [33mhref[39m=[32m"tel:+1234567890"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-phone w-4 h-4 mr-2 opacity-70"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"24"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"24"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0m+1234567890[0m
+                  [36m</a>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"flex items-center hover:text-[#162723] transition-colors"[39m
+                    [33mhref[39m=[32m"mailto:john@example.com"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"lucide lucide-mail w-4 h-4 mr-2 opacity-70"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"24"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"24"[39m
+                      [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"[39m
+                      [36m/>[39m
+                      [36m<rect[39m
+                        [33mheight[39m=[32m"16"[39m
+                        [33mrx[39m=[32m"2"[39m
+                        [33mwidth[39m=[32m"20"[39m
+                        [33mx[39m=[32m"2"[39m
+                        [33my[39m=[32m"4"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                    [0mjohn@example.com[0m
+                  [36m</a>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-t border-gray-200"[39m
+          [36m>[39m
+            [36m<dl[39m
+              [33mclass[39m=[32m"grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"px-6 py-5"[39m
+              [36m>[39m
+                [36m<dt[39m
+                  [33mclass[39m=[32m"text-sm font-medium text-gray-500"[39m
+                [36m>[39m
+                  [0mPatient ID[0m
+                [36m</dt>[39m
+                [36m<dd[39m
+                  [33mclass[39m=[32m"mt-1 text-sm text-gray-900 break-all"[39m
+                [36m>[39m
+                  [0m123[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"px-6 py-5"[39m
+              [36m>[39m
+                [36m<dt[39m
+                  [33mclass[39m=[32m"text-sm font-medium text-gray-500"[39m
+                [36m>[39m
+                  [0mTotal Appointments[0m
+                [36m</dt>[39m
+                [36m<dd[39m
+                  [33mclass[39m=[32m"mt-1 text-2xl font-semibold text-[#162723]"[39m
+                [36m>[39m
+                  [0m2[0m
+                [36m</dd>[39m
+              [36m</div>[39m
+            [36m</dl>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-8"[39m
+        [36m>[39m
+          [36m<h2[39m
+            [33mclass[39m=[32m"text-xl font-bold text-[#162723] mb-4"[39m
+          [36m>[39m
+            [0mAppointment History[0m
+          [36m</h2>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white shadow overflow-hidden sm:rounded-xl border border-gray-100"[39m
+          [36m>[39m
+            [36m<ul[39m
+              [33mclass[39m=[32m"divide-y divide-gray-200"[39m
+              [33mrole[39m=[32m"list"[39m
+            [36m>[39m
+              [36m<li>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"block hover:bg-gray-50 w-full text-left transition-colors"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"px-4 py-4 sm:px-6 flex items-center justify-between"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center w-full min-w-0 pr-4"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"flex items-center w-48 flex-shrink-0"[39m
+                      [36m>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"flex-shrink-0 bg-blue-50 p-2 rounded-lg mr-4"[39m
+                        [36m>[39m
+                          [36m<svg[39m
+                            [33maria-hidden[39m=[32m"true"[39m
+                            [33mclass[39m=[32m"lucide lucide-calendar h-5 w-5 text-blue-600"[39m
+                            [33mfill[39m=[32m"none"[39m
+                            [33mheight[39m=[32m"24"[39m
+                            [33mstroke[39m=[32m"currentColor"[39m
+                            [33mstroke-linecap[39m=[32m"round"[39m
+                            [33mstroke-linejoin[39m=[32m"round"[39m
+                            [33mstroke-width[39m=[32m"2"[39m
+                            [33mviewBox[39m=[32m"0 0 24 24"[39m
+                            [33mwidth[39m=[32m"24"[39m
+                            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                          [36m>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M8 2v3"[39m
+                            [36m/>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M16 2v3"[39m
+                            [36m/>[39m
+                            [36m<rect[39m
+                              [33mheight[39m=[32m"18"[39m
+                              [33mrx[39m=[32m"2"[39m
+                              [33mwidth[39m=[32m"18"[39m
+                              [33mx[39m=[32m"3"[39m
+                              [33my[39m=[32m"3"[39m
+                            [36m/>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M3 9h18"[39m
+                            [36m/>[39m
+                          [36m</svg>[39m
+                        [36m</div>[39m
+                        [36m<div>[39m
+                          [36m<p[39m
+                            [33mclass[39m=[32m"text-sm font-medium text-gray-900"[39m
+                          [36m>[39m
+                            [0mOct 10, 2023[0m
+                          [36m</p>[39m
+                          [36m<p[39m
+                            [33mclass[39m=[32m"text-xs text-gray-500 flex items-center mt-1"[39m
+                          [36m>[39m
+                            [36m<svg[39m
+                              [33maria-hidden[39m=[32m"true"[39m
+                              [33mclass[39m=[32m"lucide lucide-clock w-3 h-3 mr-1"[39m
+                              [33mfill[39m=[32m"none"[39m
+                              [33mheight[39m=[32m"24"[39m
+                              [33mstroke[39m=[32m"currentColor"[39m
+                              [33mstroke-linecap[39m=[32m"round"[39m
+                              [33mstroke-linejoin[39m=[32m"round"[39m
+                              [33mstroke-width[39m=[32m"2"[39m
+                              [33mviewBox[39m=[32m"0 0 24 24"[39m
+                              [33mwidth[39m=[32m"24"[39m
+                              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                            [36m>[39m
+                              [36m<circle[39m
+                                [33mcx[39m=[32m"12"[39m
+                                [33mcy[39m=[32m"12"[39m
+                                [33mr[39m=[32m"10"[39m
+                              [36m/>[39m
+                              [36m<path[39m
+                                [33md[39m=[32m"M12 6v6l4 2"[39m
+                              [36m/>[39m
+                            [36m</svg>[39m
+                            [0m10:00 AM[0m
+                          [36m</p>[39m
+                        [36m</div>[39m
+                      [36m</div>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"mt-2 sm:mt-0 sm:ml-4 flex-1 min-w-0"[39m
+                      [36m>[39m
+                        [36m<p[39m
+                          [33mclass[39m=[32m"text-sm font-semibold text-[#162723] truncate"[39m
+                        [36m>[39m
+                          [0mCheckup[0m
+                        [36m</p>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"mt-1 flex items-center"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33mclass[39m=[32m"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                                bg-gray-100 text-gray-800"[39m
+                          [36m>[39m
+                            [0mcompleted[0m
+                          [36m</span>[39m
+                        [36m</div>[39m
+                      [36m</div>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex-shrink-0"[39m
+                    [36m>[39m
+                      [36m<svg[39m
+                        [33maria-hidden[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"lucide lucide-chevron-right h-5 w-5 text-gray-400"[39m
+                        [33mfill[39m=[32m"none"[39m
+                        [33mheight[39m=[32m"24"[39m
+                        [33mstroke[39m=[32m"currentColor"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                        [33mviewBox[39m=[32m"0 0 24 24"[39m
+                        [33mwidth[39m=[32m"24"[39m
+                        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                      [36m>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m9 18 6-6-6-6"[39m
+                        [36m/>[39m
+                      [36m</svg>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</button>[39m
+              [36m</li>[39m
+              [36m<li>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"block hover:bg-gray-50 w-full text-left transition-colors"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"px-4 py-4 sm:px-6 flex items-center justify-between"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex flex-col sm:flex-row sm:items-center w-full min-w-0 pr-4"[39m
+                    [36m>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"flex items-center w-48 flex-shrink-0"[39m
+                      [36m>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"flex-shrink-0 bg-blue-50 p-2 rounded-lg mr-4"[39m
+                        [36m>[39m
+                          [36m<svg[39m
+                            [33maria-hidden[39m=[32m"true"[39m
+                            [33mclass[39m=[32m"lucide lucide-calendar h-5 w-5 text-blue-600"[39m
+                            [33mfill[39m=[32m"none"[39m
+                            [33mheight[39m=[32m"24"[39m
+                            [33mstroke[39m=[32m"currentColor"[39m
+                            [33mstroke-linecap[39m=[32m"round"[39m
+                            [33mstroke-linejoin[39m=[32m"round"[39m
+                            [33mstroke-width[39m=[32m"2"[39m
+                            [33mviewBox[39m=[32m"0 0 24 24"[39m
+                            [33mwidth[39m=[32m"24"[39m
+                            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                          [36m>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M8 2v3"[39m
+                            [36m/>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M16 2v3"[39m
+                            [36m/>[39m
+                            [36m<rect[39m
+                              [33mheight[39m=[32m"18"[39m
+                              [33mrx[39m=[32m"2"[39m
+                              [33mwidth[39m=[32m"18"[39m
+                              [33mx[39m=[32m"3"[39m
+                              [33my[39m=[32m"3"[39m
+                            [36m/>[39m
+                            [36m<path[39m
+                              [33md[39m=[32m"M3 9h18"[39m
+                            [36m/>[39m
+                          [36m</svg>[39m
+                        [36m</div>[39m
+                        [36m<div>[39m
+                          [36m<p[39m
+                            [33mclass[39m=[32m"text-sm font-medium text-gray-900"[39m
+                          [36m>[39m
+                            [0mSep 10, 2023[0m
+                          [36m</p>[39m
+                          [36m<p[39m
+                            [33mclass[39m=[32m"text-xs text-gray-500 flex items-center mt-1"[39m
+                          [36m>[39m
+                            [36m<svg[39m
+                              [33maria-hidden[39m=[32m"true"[39m
+                              [33mclass[39m=[32m"lucide lucide-clock w-3 h-3 mr-1"[39m
+                              [33mfill[39m=[32m"none"[39m
+                              [33mheight[39m=[32m"24"[39m
+                              [33mstroke[39m=[32m"currentColor"[39m
+                              [33mstroke-linecap[39m=[32m"round"[39m
+                              [33mstroke-linejoin[39m=[32m"round"[39m
+                              [33mstroke-width[39m=[32m"2"[39m
+                              [33mviewBox[39m=[32m"0 0 24 24"[39m
+                              [33mwidth[39m=[32m"24"[39m
+                              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                            [36m>[39m
+                              [36m<circle[39m
+                                [33mcx[39m=[32m"12"[39m
+                                [33mcy[39m=[32m"12"[39m
+                                [33mr[39m=[32m"10"[39m
+                              [36m/>[39m
+                              [36m<path[39m
+                                [33md[39m=[32m"M12 6v6l4 2"[39m
+                              [36m/>[39m
+                            [36m</svg>[39m
+                            [0m10:00 AM[0m
+                          [36m</p>[39m
+                        [36m</div>[39m
+                      [36m</div>[39m
+                      [36m<div[39m
+                        [33mclass[39m=[32m"mt-2 sm:mt-0 sm:ml-4 flex-1 min-w-0"[39m
+                      [36m>[39m
+                        [36m<p[39m
+                          [33mclass[39m=[32m"text-sm font-semibold text-[#162723] truncate"[39m
+                        [36m>[39m
+                          [0mCleaning[0m
+                        [36m</p>[39m
+                        [36m<div[39m
+                          [33mclass[39m=[32m"mt-1 flex items-center"[39m
+                        [36m>[39m
+                          [36m<span[39m
+                            [33mclass[39m=[32m"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                                bg-gray-100 text-gray-800"[39m
+                          [36m>[39m
+                            [0mcompleted[0m
+                          [36m</span>[39m
+                        [36m</div>[39m
+                      [36m</div>[39m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"flex-shrink-0"[39m
+                    [36m>[39m
+                      [36m<svg[39m
+                        [33maria-hidden[39m=[32m"true"[39m
+                        [33mclass[39m=[32m"lucide lucide-chevron-right h-5 w-5 text-gray-400"[39m
+                        [33mfill[39m=[32m"none"[39m
+                        [33mheight[39m=[32m"24"[39m
+                        [33mstroke[39m=[32m"currentColor"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                        [33mviewBox[39m=[32m"0 0 24 24"[39m
+                        [33mwidth[39m=[32m"24"[39m
+                        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                      [36m>[39m
+                        [36m<path[39m
+                          [33md[39m=[32m"m9 18 6-6-6-6"[39m
+                        [36m/>[39m
+                      [36m</svg>[39m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</button>[39m
+              [36m</li>[39m
+            [36m</ul>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+[36m [2m❯[22m src/pages/staff/patients/PatientDetail.test.tsx:[2m43:43[22m[39m
+    [90m 41|[39m     [90m// Wait for the name to appear[39m
+    [90m 42|[39m     [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m 43|[39m       [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'John Doe'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   |[39m                                           [31m^[39m
+    [90m 44|[39m     })[33m;[39m
+    [90m 45|[39m
+[90m [2m❯[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:[2m47:12[22m[39m
+[90m [2m❯[22m checkCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77[22m[39m
+[90m [2m❯[22m Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/pages/staff/patients/PatientDetail.test.tsx[2m > [22mPatientDetail[2m > [22mhandles error state if patient not found
+[31m[1mError[22m: Invalid Chai property: toBeInTheDocument
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"bg-red-50 text-red-600 p-6 rounded-xl flex items-start space-x-3"[31m
+      [36m>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-circle-alert w-5 h-5 flex-shrink-0 mt-0.5"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<circle[31m
+            [33mcx[31m=[32m"12"[31m
+            [33mcy[31m=[32m"12"[31m
+            [33mr[31m=[32m"10"[31m
+          [36m/>[31m
+          [36m<line[31m
+            [33mx1[31m=[32m"12"[31m
+            [33mx2[31m=[32m"12"[31m
+            [33my1[31m=[32m"8"[31m
+            [33my2[31m=[32m"12"[31m
+          [36m/>[31m
+          [36m<line[31m
+            [33mx1[31m=[32m"12"[31m
+            [33mx2[31m=[32m"12.01"[31m
+            [33my1[31m=[32m"16"[31m
+            [33my2[31m=[32m"16"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+        [36m<div>[31m
+          [36m<h3[31m
+            [33mclass[31m=[32m"text-sm font-medium"[31m
+          [36m>[31m
+            [0mError Loading Patient[0m
+          [36m</h3>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"mt-1 text-sm"[31m
+          [36m>[31m
+            [0mPatient not found[0m
+          [36m</p>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"mt-4 text-sm font-medium text-red-700 hover:text-red-800"[31m
+          [36m>[31m
+            [0m← Back to Patients[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+[36m [2m❯[22m src/pages/staff/patients/PatientDetail.test.tsx:[2m60:56[22m[39m
+    [90m 58|[39m
+    [90m 59|[39m     [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m 60|[39m       expect(screen.getByText('Error Loading Patient')).toBeInTheDocum…
+    [90m   |[39m                                                        [31m^[39m
+    [90m 61|[39m     })[33m;[39m
+    [90m 62|[39m
+[90m [2m❯[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:[2m47:12[22m[39m
+[90m [2m❯[22m checkCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77[22m[39m
+[90m [2m❯[22m Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 19:02:31
+[2m   Duration [22m 3.69s[2m (transform 133ms, setup 0ms, import 464ms, tests 2.06s, environment 956ms)[22m
+
