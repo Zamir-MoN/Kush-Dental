@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Bot, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Bot, RefreshCw, Sparkles, Clock, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { formatMarkdownToHtml } from '../../lib/markdown';
 
@@ -9,18 +9,72 @@ interface AIGenerationModalProps {
   onTransfer: (data: any) => void;
 }
 
+const GENERATION_PHASES = [
+  { label: 'Initializing prompt & clinic brand voice...', minPct: 8 },
+  { label: 'Connecting to Google Gemini AI engine...', minPct: 24 },
+  { label: 'Structuring clinical outline & headings...', minPct: 48 },
+  { label: 'Drafting high-authority dental care copy...', minPct: 68 },
+  { label: 'Formatting headings, bold terms & bullet points...', minPct: 85 },
+  { label: 'Finalizing response & verifying layout...', minPct: 96 },
+  { label: 'Article drafted successfully!', minPct: 100 },
+];
+
 export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, onClose, onTransfer }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generatedContent, setGeneratedContent] = useState<any>(null);
 
+  // Real-time progress bar state
+  const [progress, setProgress] = useState(0);
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
   const [formData, setFormData] = useState({
     topic: '',
     tone: '',
-    length: '',
+    length: '800',
     keywords: '',
     audience: '',
   });
+
+  // Simulated smooth generation progress with realistic phases and timer
+  useEffect(() => {
+    let timer: any;
+    let secondsTimer: any;
+
+    if (loading) {
+      setProgress(8);
+      setPhaseIndex(0);
+      setElapsedSeconds(0);
+
+      secondsTimer = setInterval(() => {
+        setElapsedSeconds((s) => s + 1);
+      }, 1000);
+
+      timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 94) return 94;
+          const next = prev + Math.floor(Math.random() * 4) + 1;
+          const matchedPhase = GENERATION_PHASES.reduce((acc, p, idx) => {
+            if (next >= p.minPct) return idx;
+            return acc;
+          }, 0);
+          setPhaseIndex(matchedPhase);
+          return next;
+        });
+      }, 350);
+    } else {
+      if (progress > 0) {
+        setProgress(100);
+        setPhaseIndex(GENERATION_PHASES.length - 1);
+      }
+    }
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(secondsTimer);
+    };
+  }, [loading]);
 
   if (!isOpen) return null;
 
@@ -53,6 +107,8 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
       });
 
       if (res.content) {
+        setProgress(100);
+        setPhaseIndex(GENERATION_PHASES.length - 1);
         setGeneratedContent(res.content);
       } else {
         throw new Error('Unexpected response format');
@@ -76,24 +132,82 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col border border-[#E8E2D5]">
-        <div className="flex items-center justify-between p-6 border-b border-[#E8E2D5]">
-          <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-[#FAF3E0] border border-[#DCA51B]/30 text-[#8C6B14] rounded-xl">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[92vh] flex flex-col border border-[#E8E2D5]">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between p-6 border-b border-[#E8E2D5] bg-[#FAF7F2]/60">
+          <div className="flex items-center space-x-3.5">
+            <div className="p-2.5 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#8C6B14] rounded-2xl shadow-sm">
               <Bot size={22} className="text-[#DCA51B]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-zinc-900">AI Article Generator</h2>
+              <h2 className="text-xl font-bold text-zinc-900 tracking-tight">AI Article Generator</h2>
               <p className="text-xs text-zinc-500">Draft rich dental clinic content with Google Gemini</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-[#FAF7F2] transition-colors">
+          <button 
+            onClick={onClose} 
+            disabled={loading}
+            className="p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-[#FAF7F2] transition-colors disabled:opacity-50 cursor-pointer"
+          >
             <X size={20} />
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto flex-1">
-          {!generatedContent ? (
+        {/* Modal Body */}
+        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+          {loading ? (
+            /* Real-Time Generation Progress Bar View */
+            <div className="py-10 px-4 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/50 flex items-center justify-center text-[#8C6B14] shadow-[0_8px_24px_rgba(220,165,27,0.22)]">
+                  <Sparkles size={30} className="animate-pulse text-[#DCA51B]" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-[#DCA51B] flex items-center justify-center text-[#8C6B14] shadow-xs">
+                  <RefreshCw size={12} className="animate-spin text-[#DCA51B]" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/40">
+                  AI Generation In Progress
+                </span>
+                <h3 className="text-xl font-bold text-zinc-900 tracking-tight">
+                  Drafting Article for &ldquo;{formData.topic}&rdquo;
+                </h3>
+                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                  Powered by Google Gemini. Formatting semantic headings, bold key terms, and bullet lists.
+                </p>
+              </div>
+
+              {/* Progress Bar Card */}
+              <div className="w-full max-w-md bg-[#FAF7F2] p-5 rounded-2xl border border-[#E8E2D5] space-y-3.5 text-left shadow-sm">
+                <div className="flex items-center justify-between text-xs font-bold">
+                  <span className="text-zinc-800 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#DCA51B] animate-ping" />
+                    {GENERATION_PHASES[phaseIndex]?.label || 'Generating article...'}
+                  </span>
+                  <span className="text-[#8C6B14] font-mono text-sm">{progress}%</span>
+                </div>
+
+                {/* The Progress Track */}
+                <div className="w-full h-3 bg-zinc-200/80 rounded-full overflow-hidden p-0.5 border border-zinc-200">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] rounded-full transition-all duration-300 ease-out shadow-sm"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-zinc-500 font-medium pt-1 border-t border-[#E8E2D5]/70">
+                  <span className="flex items-center gap-1">
+                    <Clock size={12} className="text-[#DCA51B]" />
+                    Elapsed: <span className="font-mono text-zinc-700 font-bold">{elapsedSeconds}s</span>
+                  </span>
+                  <span>Phase {phaseIndex + 1} of {GENERATION_PHASES.length}</span>
+                </div>
+              </div>
+            </div>
+          ) : !generatedContent ? (
+            /* Input Form */
             <form id="ai-generate-form" onSubmit={handleGenerate} className="space-y-4">
               {error && (
                 <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm border border-red-200">
@@ -102,74 +216,93 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               )}
               
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Topic *</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                  Topic or Headline <span className="text-rose-500">*</span>
+                </label>
                 <input
                   type="text"
                   name="topic"
                   required
                   value={formData.topic}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
-                  placeholder="E.g. The importance of flossing"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all outline-none font-medium placeholder:text-zinc-400"
+                  placeholder="E.g. Daily Habits for a Radiant Smile"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Proper Tone Dropdown Menu */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Tone</label>
-                  <select
-                    name="tone"
-                    value={formData.tone}
-                    onChange={handleChange}
-                    className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all cursor-pointer"
-                  >
-                    <option value="">Default</option>
-                    <option value="professional">Professional</option>
-                    <option value="educational">Educational</option>
-                    <option value="friendly">Friendly</option>
-                  </select>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                    Tone & Voice
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="tone"
+                      value={formData.tone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all cursor-pointer appearance-none pr-10 font-medium outline-none"
+                    >
+                      <option value="">Default (Balanced)</option>
+                      <option value="professional">Professional (Clinical & Authoritative)</option>
+                      <option value="educational">Educational (Patient-Friendly Guide)</option>
+                      <option value="friendly">Warm & Empathetic (Reassuring)</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-[#8C6B14]">
+                      <ChevronDown size={16} />
+                    </div>
+                  </div>
                 </div>
+
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Length (words)</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                    Length (Words)
+                  </label>
                   <input
                     type="number"
                     name="length"
                     value={formData.length}
                     onChange={handleChange}
-                    className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
-                    placeholder="e.g. 500"
+                    className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all outline-none font-medium placeholder:text-zinc-400"
+                    placeholder="e.g. 800"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Keywords</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                  Target Keywords (Optional)
+                </label>
                 <input
                   type="text"
                   name="keywords"
                   value={formData.keywords}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
-                  placeholder="dental care, flossing, hygiene (comma separated)"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all outline-none font-medium placeholder:text-zinc-400"
+                  placeholder="dental hygiene, flossing, enamel (comma separated)"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Audience</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                  Target Audience (Optional)
+                </label>
                 <input
                   type="text"
                   name="audience"
                   value={formData.audience}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
-                  placeholder="E.g. Parents"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all outline-none font-medium placeholder:text-zinc-400"
+                  placeholder="E.g. Patients seeking preventive care, parents, teenagers"
                 />
               </div>
             </form>
           ) : (
+            /* Result Preview */
             <div className="space-y-4">
-              <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl text-sm border border-emerald-200 mb-4">
-                Content generated successfully! Review the output below.
+              <div className="bg-emerald-50 text-emerald-800 p-4 rounded-2xl text-sm border border-emerald-200 mb-4 flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                <span>Content generated successfully! Review the output below.</span>
               </div>
               
               <div>
@@ -179,12 +312,12 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Body Preview</span>
-                <div className="mt-1 bg-[#FAF7F2] p-4 rounded-xl border border-[#E2DACB] text-zinc-800 text-sm h-36 overflow-hidden relative">
+                <div className="mt-1 bg-[#FAF7F2] p-4 rounded-xl border border-[#E2DACB] text-zinc-800 text-sm h-40 overflow-hidden relative">
                   <div 
-                    className="prose prose-sm max-w-none text-xs leading-relaxed"
+                    className="article-content text-xs leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: formatMarkdownToHtml(generatedContent.body || '') }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#FAF7F2] to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-[#FAF7F2] to-transparent pointer-events-none" />
                 </div>
               </div>
 
@@ -196,10 +329,12 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
           )}
         </div>
 
+        {/* Modal Footer */}
         <div className="p-6 border-t border-[#E8E2D5] flex justify-end space-x-3 bg-[#FAF7F2]/50">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-[#E2DACB] rounded-xl text-xs font-bold uppercase tracking-wider text-zinc-700 bg-white hover:bg-[#FAF7F2] transition-colors"
+            disabled={loading}
+            className="px-4 py-2.5 border border-[#E2DACB] rounded-xl text-xs font-bold uppercase tracking-wider text-zinc-700 bg-white hover:bg-[#FAF7F2] transition-colors disabled:opacity-50 cursor-pointer"
           >
             Cancel
           </button>
@@ -209,18 +344,24 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               type="submit"
               form="ai-generate-form"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
-                <><RefreshCw className="animate-spin text-[#141518]" size={16} /> Generating...</>
+                <>
+                  <RefreshCw className="animate-spin text-[#141518]" size={15} />
+                  <span>Generating ({progress}%)...</span>
+                </>
               ) : (
-                'Generate'
+                <>
+                  <Sparkles size={15} className="text-[#141518]" />
+                  <span>Generate Article</span>
+                </>
               )}
             </button>
           ) : (
             <button
               onClick={handleTransfer}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all cursor-pointer"
             >
               Transfer to Editor
             </button>

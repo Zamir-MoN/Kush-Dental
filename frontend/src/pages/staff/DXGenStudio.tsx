@@ -169,16 +169,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
     customInstructions: '',
   });
 
-  const promptSuggestions = [
-    'Benefits of Invisible Aligners',
-    'Emergency Dental Care Tips',
-    'Root Canal Myth vs Reality',
-  ];
-
-  const handleSuggestionClick = (suggestion: string) => {
-    setFormData((prev) => ({ ...prev, topic: suggestion }));
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -365,24 +355,9 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
               rows={2}
               value={formData.topic}
               onChange={handleChange}
-              placeholder="e.g. Best web development services for small businesses in 2026"
+              placeholder="e.g. The Ultimate Guide to Tooth Health: Daily Habits for a Radiant Smile"
               className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none resize-none transition-all"
             />
-
-            {/* Try Suggestions */}
-            <div className="flex flex-wrap items-center gap-2 mt-2">
-              <span className="text-xs text-zinc-500 font-medium">Try:</span>
-              {promptSuggestions.map((suggestion) => (
-                <button
-                  type="button"
-                  key={suggestion}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="px-2.5 py-1 bg-[#F5EFE4] hover:bg-[#EFE8D9] text-zinc-700 hover:text-zinc-900 text-xs font-medium rounded-lg border border-[#E2DACB] transition-colors cursor-pointer"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Content Type (Select Dropdown) */}
@@ -569,8 +544,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
               >
                 <option value="Kush Dental Clinic">Kush Dental Clinic</option>
-                <option value="Fasun">Fasun</option>
-                <option value="None">None (Generic)</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                 <ChevronDown size={16} />
