@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { UIEvent } from 'react';
-import { Loader2, Users as UsersIcon, Shield, Mail, Calendar, AlertCircle } from 'lucide-react';
+import { Loader2, Users as UsersIcon, Shield, Calendar, AlertCircle } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { useAuth } from '../../context/AuthContext';
 
@@ -157,91 +157,91 @@ export const Users = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto h-full flex flex-col">
+    <div className="space-y-6 max-w-6xl mx-auto h-full flex flex-col">
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Users Directory</h1>
         <p className="text-sm text-zinc-500 mt-0.5">Manage internal clinic staff and doctor accounts.</p>
       </div>
       
-      <div className="bg-white p-6 rounded-2xl shadow-xs border border-[#E8E2D5] flex-1 flex flex-col min-h-0 relative">
+      <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] flex-1 flex flex-col min-h-0 overflow-hidden">
         {isLoading && page === 0 ? (
-          <div className="flex justify-center items-center py-12 flex-1">
+          <div className="flex justify-center items-center py-16 flex-1">
             <Loader2 className="w-8 h-8 animate-spin text-[#DCA51B]" />
           </div>
         ) : error ? (
-          <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm flex-shrink-0 border border-red-200">
+          <div className="m-6 bg-red-50 text-red-600 p-4 rounded-xl text-sm border border-red-200">
             {error}
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-12 flex-1">
+          <div className="text-center py-16 flex-1">
             <UsersIcon className="mx-auto h-12 w-12 text-zinc-300 mb-4" />
             <h3 className="text-sm font-semibold text-zinc-900">No users found</h3>
           </div>
         ) : (
           <div 
-            className="overflow-y-auto overflow-x-hidden bg-white rounded-2xl border border-[#E8E2D5] max-h-[70vh]"
+            className="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar"
             onScroll={handleScroll}
             data-lenis-prevent
           >
-            <table className="min-w-full divide-y divide-[#E8E2D5]">
-              <thead className="bg-[#FAF7F2] sticky top-0 z-10">
+            <table className="w-full text-left border-collapse min-w-[700px]">
+              <thead className="bg-[#FAF7F2] sticky top-0 z-10 border-b border-[#E8E2D5]">
                 <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider sm:pl-6">User</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Role</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Created Date</th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span className="sr-only">Actions</span>
-                  </th>
+                  <th scope="col" className="py-3.5 px-6 text-xs font-bold text-zinc-700 uppercase tracking-wider">User</th>
+                  <th scope="col" className="py-3.5 px-6 text-xs font-bold text-zinc-700 uppercase tracking-wider">Role</th>
+                  <th scope="col" className="py-3.5 px-6 text-xs font-bold text-zinc-700 uppercase tracking-wider">Status</th>
+                  <th scope="col" className="py-3.5 px-6 text-xs font-bold text-zinc-700 uppercase tracking-wider">Created Date</th>
+                  <th scope="col" className="py-3.5 px-6 text-right text-xs font-bold text-zinc-700 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E8E2D5] bg-white">
                 {users.map((user) => (
                   <tr key={user.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/40 flex items-center justify-center">
-                          <span className="text-[#8C6B14] font-bold uppercase">{user.email.charAt(0)}</span>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 shrink-0 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/40 flex items-center justify-center shadow-2xs">
+                          <span className="text-[#8C6B14] font-bold text-sm uppercase">{user.email.charAt(0)}</span>
                         </div>
-                        <div className="ml-4">
-                          <div className="font-medium text-gray-900">{user.email}</div>
-                          <div className="text-gray-500 flex items-center gap-1 mt-0.5">
-                            <Mail className="w-3 h-3" />
+                        <div className="min-w-0 max-w-[220px] sm:max-w-xs md:max-w-sm">
+                          <div className="font-semibold text-zinc-900 truncate text-sm" title={user.email}>
                             {user.email}
+                          </div>
+                          <div className="text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5 truncate">
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#DCA51B]/70 shrink-0" />
+                            <span>Internal Account</span>
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm">
+                    <td className="py-4 px-6 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <Shield className="w-4 h-4 text-gray-400" />
+                        <Shield className="w-3.5 h-3.5 text-zinc-400" />
                         {getRoleBadge(user.role)}
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <td className="py-4 px-6 whitespace-nowrap text-sm">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                        Active
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span className="font-medium text-xs text-zinc-700">Active</span>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-4 h-4 text-gray-400" />
+                    <td className="py-4 px-6 whitespace-nowrap text-sm">
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
+                        <Calendar className="w-3.5 h-3.5 text-zinc-400" />
                         {new Date(user.createdAt).toLocaleDateString()}
                       </div>
                     </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <div className="flex justify-end gap-3">
+                    <td className="py-4 px-6 whitespace-nowrap text-right text-sm">
+                      <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEditModal(user)}
-                          className="text-[#8C6B14] hover:text-[#B8871B] font-medium transition-colors"
+                          className="px-3 py-1.5 text-xs font-semibold text-[#8C6B14] bg-[#FAF3E0] hover:bg-[#F5E8C7] border border-[#DCA51B]/40 rounded-xl transition-all cursor-pointer shadow-2xs"
                         >
                           Edit
                         </button>
                         {user.id !== authUser?.id && (
                           <button
                             onClick={() => setDeactivatingUser(user)}
-                            className="text-red-600 hover:text-red-800 transition-colors"
+                            className="px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-all cursor-pointer shadow-2xs"
                           >
                             Deactivate
                           </button>
@@ -260,7 +260,7 @@ export const Users = () => {
             )}
             
             {!hasMore && users.length > 0 && (
-              <div className="py-4 text-center text-sm text-gray-500 border-t border-gray-100 bg-gray-50">
+              <div className="py-4 text-center text-xs font-medium text-zinc-400 border-t border-[#E8E2D5] bg-[#FAF7F2]/40">
                 End of directory
               </div>
             )}
