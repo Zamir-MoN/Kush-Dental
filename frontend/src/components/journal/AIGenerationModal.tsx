@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Bot, RefreshCw, Sparkles, Clock, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { formatMarkdownToHtml } from '../../lib/markdown';
@@ -130,17 +131,17 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[92vh] flex flex-col border border-[#E8E2D5]">
+  const modalElement = (
+    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-black/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[88vh] my-auto border border-[#E8E2D5] overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[#E8E2D5] bg-[#FAF7F2]/60">
+        <div className="shrink-0 flex items-center justify-between p-5 sm:p-6 border-b border-[#E8E2D5] bg-[#FAF7F2]/70">
           <div className="flex items-center space-x-3.5">
             <div className="p-2.5 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#8C6B14] rounded-2xl shadow-sm">
               <Bot size={22} className="text-[#DCA51B]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-zinc-900 tracking-tight">AI Article Generator</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-zinc-900 tracking-tight">AI Article Generator</h2>
               <p className="text-xs text-zinc-500">Draft rich dental clinic content with Google Gemini</p>
             </div>
           </div>
@@ -154,10 +155,10 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1 min-h-0 custom-scrollbar space-y-4">
           {loading ? (
             /* Real-Time Generation Progress Bar View */
-            <div className="py-10 px-4 flex flex-col items-center justify-center text-center space-y-6">
+            <div className="py-8 px-4 flex flex-col items-center justify-center text-center space-y-6">
               <div className="relative">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/50 flex items-center justify-center text-[#8C6B14] shadow-[0_8px_24px_rgba(220,165,27,0.22)]">
                   <Sparkles size={30} className="animate-pulse text-[#DCA51B]" />
@@ -254,6 +255,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                   </div>
                 </div>
 
+                {/* Proper Length Dropdown Menu */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
                     Length
@@ -314,23 +316,30 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               </div>
               
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Title</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Title</span>
                 <p className="text-zinc-900 font-bold mt-1 text-base">{generatedContent.title}</p>
               </div>
               
+              {/* Fully Scrollable Body Preview */}
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Body Preview</span>
-                <div className="mt-1 bg-[#FAF7F2] p-4 rounded-xl border border-[#E2DACB] text-zinc-800 text-sm h-40 overflow-hidden relative">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    Article Body Preview
+                  </span>
+                  <span className="text-[11px] text-[#8C6B14] font-medium bg-[#FAF3E0] px-2.5 py-0.5 rounded-full border border-[#DCA51B]/30">
+                    Scrollable Preview
+                  </span>
+                </div>
+                <div className="bg-[#FAF7F2] p-4 sm:p-5 rounded-2xl border border-[#E2DACB] max-h-72 min-h-[160px] overflow-y-auto custom-scrollbar shadow-inner">
                   <div 
-                    className="article-content text-xs leading-relaxed"
+                    className="article-content text-sm leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: formatMarkdownToHtml(generatedContent.body || '') }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-[#FAF7F2] to-transparent pointer-events-none" />
                 </div>
               </div>
 
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Meta Description</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Meta Description</span>
                 <p className="text-zinc-600 text-sm mt-1">{generatedContent.metaDescription}</p>
               </div>
             </div>
@@ -338,7 +347,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
         </div>
 
         {/* Modal Footer */}
-        <div className="p-6 border-t border-[#E8E2D5] flex justify-end space-x-3 bg-[#FAF7F2]/50">
+        <div className="shrink-0 p-5 sm:p-6 border-t border-[#E8E2D5] flex justify-end space-x-3 bg-[#FAF7F2]/50">
           <button
             onClick={onClose}
             disabled={loading}
@@ -378,4 +387,6 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalElement, document.body) : modalElement;
 };
