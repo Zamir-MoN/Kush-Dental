@@ -192,7 +192,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onChang
       attributes: {
         class: 'prose prose-sm sm:prose-base focus:outline-none max-w-none min-h-[400px] px-6 py-5',
       },
-      handlePaste: (view, event) => {
+      handlePaste: (_view, event) => {
         const text = event.clipboardData?.getData('text/plain');
         if (text && isMarkdown(text)) {
           event.preventDefault();
