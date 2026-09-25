@@ -23,12 +23,10 @@ async def _make_request(method: str, endpoint: str, payload: dict = None) -> dic
     if getattr(settings, "DXGEN_BASE_URL", None):
         candidate_urls.append(settings.DXGEN_BASE_URL.rstrip('/'))
     for url in [
-        "http://127.0.0.1:3001/api/v1",
         "http://127.0.0.1:3101/api/v1",
-        "http://localhost:3001/api/v1",
         "http://localhost:3101/api/v1",
-        "http://51.20.121.253:3001/api/v1",
         "http://51.20.121.253:3101/api/v1",
+        "http://127.0.0.1:3001/api/v1",
     ]:
         if url not in candidate_urls:
             candidate_urls.append(url)
