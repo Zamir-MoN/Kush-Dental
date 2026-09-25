@@ -16,7 +16,7 @@ class DXGenGenerateRequest(BaseModel):
     seo: Optional[Any] = None
 
     class Config:
-        extra = "forbid"
+        extra = "ignore"
 
 class DXGenHealthResponse(BaseModel):
     status: Optional[str] = None

@@ -17,8 +17,74 @@ import {
   FileText,
   Zap,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  AlertTriangle
 } from 'lucide-react';
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  errorMessage: string;
+}
+
+class StudioErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, errorMessage: '' };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, errorMessage: error?.message || 'An unexpected error occurred.' };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('AI Content Studio Crash Captured:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="bg-[#FAF7F2] p-8 rounded-3xl border border-rose-300 text-center max-w-xl mx-auto my-12 shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 font-bold shadow-xs">
+            <AlertTriangle size={28} />
+          </div>
+          <h2 className="text-xl font-bold text-zinc-900 mb-2">Display Recovery</h2>
+          <p className="text-sm text-zinc-600 mb-6 leading-relaxed">
+            The studio encountered a temporary formatting issue: <br />
+            <span className="font-mono text-xs text-rose-700 font-semibold">{this.state.errorMessage}</span>
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, errorMessage: '' })}
+            className="px-6 py-2.5 bg-gradient-to-r from-[#E5B22D] to-[#DCA51B] hover:brightness-105 text-[#141518] font-bold rounded-xl text-sm shadow-md shadow-[#DCA51B]/20 cursor-pointer transition-all"
+          >
+            Reload AI Studio
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const extractErrorMessage = (err: any, fallback: string = 'Operation failed'): string => {
+  if (!err) return fallback;
+  if (typeof err === 'string') return err;
+  const detail = err.details?.detail ?? err.detail;
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) {
+    return detail
+      .map((d: any) => (typeof d === 'string' ? d : d.msg || d.message || JSON.stringify(d)))
+      .join(', ');
+  }
+  if (typeof detail === 'object' && detail !== null) {
+    return detail.message || JSON.stringify(detail);
+  }
+  if (typeof err.message === 'string') return err.message;
+  return fallback;
+};
 
 type Tab = 'universal' | 'blog' | 'social' | 'business' | 'lookup' | 'usage' | 'health';
 
@@ -26,110 +92,112 @@ export const DXGenStudio: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('universal');
 
   return (
-    <div className="bg-[#FAF7F2] text-zinc-900 p-4 sm:p-6 lg:p-8 rounded-3xl border border-[#E8E2D5] shadow-lg">
-      {/* Studio Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E8E2D5]">
-        <div className="flex items-center space-x-3.5">
-          <div className="p-3 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#B8860B] rounded-2xl shadow-[0_4px_16px_rgba(220,165,27,0.15)]">
-            <Bot size={28} />
-          </div>
-          <div>
-            <div className="flex items-center space-x-2.5">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">AI Content Studio</h1>
-              <span className="px-2.5 py-0.5 text-xs font-semibold bg-[#FAF3E0] text-[#B8860B] border border-[#DCA51B]/40 rounded-full">
-                v1.0 Live
-              </span>
+    <StudioErrorBoundary>
+      <div className="bg-[#FAF7F2] text-zinc-900 p-4 sm:p-6 lg:p-8 rounded-3xl border border-[#E8E2D5] shadow-lg">
+        {/* Studio Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E8E2D5]">
+          <div className="flex items-center space-x-3.5">
+            <div className="p-3 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#B8860B] rounded-2xl shadow-[0_4px_16px_rgba(220,165,27,0.15)]">
+              <Bot size={28} />
             </div>
-            <p className="text-sm text-zinc-500 mt-0.5">Kush Dental DXGen Integration</p>
+            <div>
+              <div className="flex items-center space-x-2.5">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">AI Content Studio</h1>
+                <span className="px-2.5 py-0.5 text-xs font-semibold bg-[#FAF3E0] text-[#B8860B] border border-[#DCA51B]/40 rounded-full">
+                  v1.0 Live
+                </span>
+              </div>
+              <p className="text-sm text-zinc-500 mt-0.5">Kush Dental DXGen Integration</p>
+            </div>
+          </div>
+
+          {/* Quick Service Link */}
+          <div className="flex items-center space-x-3">
+            <a
+              href="http://51.20.121.253:3101"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-[#F7F2E8] text-zinc-700 hover:text-[#B8860B] text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors shadow-sm"
+            >
+              <span>DXGen Engine</span>
+              <ExternalLink size={13} />
+            </a>
           </div>
         </div>
 
-        {/* Quick Service Link */}
-        <div className="flex items-center space-x-3">
-          <a
-            href="http://51.20.121.253:3101"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-[#F7F2E8] text-zinc-700 hover:text-[#B8860B] text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors shadow-sm"
-          >
-            <span>DXGen Engine</span>
-            <ExternalLink size={13} />
-          </a>
+        {/* Tabs Bar */}
+        <div className="bg-white rounded-2xl border border-[#E8E2D5] p-1.5 mb-8 overflow-x-auto custom-scrollbar shadow-xs">
+          <nav className="flex space-x-1 min-w-max" aria-label="Tabs">
+            {[
+              { id: 'universal', label: 'Universal' },
+              { id: 'blog', label: 'Blog' },
+              { id: 'social', label: 'Social' },
+              { id: 'business', label: 'Business' },
+              { id: 'lookup', label: 'Content Lookup' },
+              { id: 'usage', label: 'Usage' },
+              { id: 'health', label: 'Health' },
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as Tab)}
+                  className={`
+                    flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer
+                    ${
+                      isActive
+                        ? 'bg-[#FAF3E0] text-[#9E7309] border border-[#DCA51B]/40 shadow-xs'
+                        : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#FAF7F2]'
+                    }
+                  `}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Active Tab View */}
+        <div>
+          {activeTab === 'universal' && (
+            <GeneratorForm
+              endpoint="/api/v1/dxgen/generate"
+              defaultContentType="seo_blog_article"
+              defaultPlatform="website"
+              title="Universal Generator"
+            />
+          )}
+          {activeTab === 'blog' && (
+            <GeneratorForm
+              endpoint="/api/v1/blog/generate"
+              defaultContentType="seo_blog_article"
+              defaultPlatform="website"
+              title="Blog Generator"
+            />
+          )}
+          {activeTab === 'social' && (
+            <GeneratorForm
+              endpoint="/api/v1/dxgen/generate/social"
+              defaultContentType="instagram_caption"
+              defaultPlatform="instagram"
+              title="Social Generator"
+            />
+          )}
+          {activeTab === 'business' && (
+            <GeneratorForm
+              endpoint="/api/v1/dxgen/generate/business"
+              defaultContentType="google_business_profile_post"
+              defaultPlatform="google_business"
+              title="Business Generator"
+            />
+          )}
+          {activeTab === 'lookup' && <ContentLookup />}
+          {activeTab === 'usage' && <UsageTab />}
+          {activeTab === 'health' && <HealthTab />}
         </div>
       </div>
-
-      {/* Tabs Bar */}
-      <div className="bg-white rounded-2xl border border-[#E8E2D5] p-1.5 mb-8 overflow-x-auto custom-scrollbar shadow-xs">
-        <nav className="flex space-x-1 min-w-max" aria-label="Tabs">
-          {[
-            { id: 'universal', label: 'Universal' },
-            { id: 'blog', label: 'Blog' },
-            { id: 'social', label: 'Social' },
-            { id: 'business', label: 'Business' },
-            { id: 'lookup', label: 'Content Lookup' },
-            { id: 'usage', label: 'Usage' },
-            { id: 'health', label: 'Health' },
-          ].map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as Tab)}
-                className={`
-                  flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all
-                  ${
-                    isActive
-                      ? 'bg-[#FAF3E0] text-[#9E7309] border border-[#DCA51B]/40 shadow-xs'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#FAF7F2]'
-                  }
-                `}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {/* Active Tab View */}
-      <div>
-        {activeTab === 'universal' && (
-          <GeneratorForm
-            endpoint="/api/v1/dxgen/generate"
-            defaultContentType="seo_blog_article"
-            defaultPlatform="website"
-            title="Universal Generator"
-          />
-        )}
-        {activeTab === 'blog' && (
-          <GeneratorForm
-            endpoint="/api/v1/blog/generate"
-            defaultContentType="seo_blog_article"
-            defaultPlatform="website"
-            title="Blog Generator"
-          />
-        )}
-        {activeTab === 'social' && (
-          <GeneratorForm
-            endpoint="/api/v1/dxgen/generate/social"
-            defaultContentType="instagram_caption"
-            defaultPlatform="instagram"
-            title="Social Generator"
-          />
-        )}
-        {activeTab === 'business' && (
-          <GeneratorForm
-            endpoint="/api/v1/dxgen/generate/business"
-            defaultContentType="google_business_profile_post"
-            defaultPlatform="google_business"
-            title="Business Generator"
-          />
-        )}
-        {activeTab === 'lookup' && <ContentLookup />}
-        {activeTab === 'usage' && <UsageTab />}
-        {activeTab === 'health' && <HealthTab />}
-      </div>
-    </div>
+    </StudioErrorBoundary>
   );
 };
 
@@ -238,26 +306,35 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
         payload.keywords = finalKeywords;
       }
 
-      // Business Profile Injection
-      if (formData.businessProfile === 'Kush Dental Clinic') {
-        payload.brandName = 'Kush Dental Clinic';
-      } else if (formData.businessProfile === 'Fasun') {
-        payload.brandName = 'Fasun';
+      // Safe instructions with brand context injected cleanly
+      let instructions = (formData.customInstructions || '').trim();
+      if (formData.businessProfile && formData.businessProfile !== 'None') {
+        instructions = `Brand: ${formData.businessProfile}. ${instructions}`.trim();
+      }
+      if (instructions) {
+        payload.customInstructions = instructions;
       }
 
-      // Advanced SEO Parameters
+      // Advanced SEO Parameters matching backend schema
       const seoObj: any = {};
-      if (formData.primaryKeyword) seoObj.primaryKeyword = formData.primaryKeyword;
+      if (formData.primaryKeyword) seoObj.primaryKeyword = formData.primaryKeyword.trim();
       if (formData.searchIntent) seoObj.searchIntent = formData.searchIntent;
-      if (formData.businessProfile) seoObj.brandName = formData.businessProfile;
+      if (formData.businessProfile && formData.businessProfile !== 'None') {
+        seoObj.brandName = formData.businessProfile;
+      }
       if (Object.keys(seoObj).length > 0) {
         payload.seo = seoObj;
       }
 
-      if (formData.audience) payload.audience = formData.audience;
-      if (formData.location) payload.location = formData.location;
-      if (formData.customTone) payload.customTone = formData.customTone;
-      if (formData.customInstructions) payload.customInstructions = formData.customInstructions;
+      if (formData.audience && formData.audience.trim()) {
+        payload.audience = formData.audience.trim();
+      }
+      if (formData.location && formData.location.trim()) {
+        payload.location = formData.location.trim();
+      }
+      if (formData.customTone && formData.customTone.trim()) {
+        payload.customTone = formData.customTone.trim();
+      }
 
       const res = await apiClient(endpoint, {
         method: 'POST',
@@ -266,7 +343,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
       setResponse(res);
     } catch (err: any) {
-      setError(err.details?.detail || err.message || 'Generation failed');
+      setError(extractErrorMessage(err, 'Content generation failed. Please verify AI service configuration.'));
     } finally {
       setLoading(false);
     }
@@ -287,7 +364,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${itemTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`);
+    link.setAttribute('download', `${String(itemTitle).toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -304,8 +381,8 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
         {error && (
           <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200 flex items-start space-x-2">
-            <span className="text-rose-600 font-bold">Error:</span>
-            <span>{error}</span>
+            <span className="text-rose-600 font-bold shrink-0">Error:</span>
+            <span className="break-words leading-relaxed">{String(error)}</span>
           </div>
         )}
 
@@ -715,7 +792,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   Article Title
                 </span>
                 <h3 className="text-lg sm:text-xl font-bold text-zinc-900 mt-1 leading-snug">
-                  {response.content.title}
+                  {String(response.content.title)}
                 </h3>
               </div>
             )}
@@ -729,19 +806,19 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 </span>
                 {response.content?.slug && (
                   <p className="text-xs text-zinc-500 font-mono">
-                    <span className="text-zinc-400 font-sans">slug:</span> /{response.content.slug}
+                    <span className="text-zinc-400 font-sans">slug:</span> /{String(response.content.slug)}
                   </p>
                 )}
                 {response.content?.metaTitle && (
                   <p className="text-xs font-semibold text-zinc-800">
                     <span className="text-zinc-500 font-normal">Meta Title: </span>
-                    {response.content.metaTitle}
+                    {String(response.content.metaTitle)}
                   </p>
                 )}
                 {response.content?.metaDescription && (
                   <p className="text-xs text-zinc-700 leading-relaxed">
                     <span className="text-zinc-500 font-normal">Meta Description: </span>
-                    {response.content.metaDescription}
+                    {String(response.content.metaDescription)}
                   </p>
                 )}
               </div>
@@ -754,53 +831,55 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   Content Body
                 </span>
                 <div className="mt-2 p-5 bg-[#FAF7F2] rounded-2xl border border-[#E8E2D5] text-zinc-800 text-sm leading-relaxed whitespace-pre-wrap max-h-[460px] overflow-y-auto custom-scrollbar font-normal">
-                  {response.content.body}
+                  {String(response.content.body)}
                 </div>
               </div>
             )}
 
             {/* FAQs Section */}
-            {response.content?.faq && Array.isArray(response.content.faq) && response.content.faq.length > 0 && (
+            {Array.isArray(response.content?.faq) && response.content.faq.length > 0 && (
               <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#E8E2D5] space-y-3">
                 <span className="text-[11px] font-bold tracking-wider text-[#9E7309] uppercase flex items-center space-x-1">
                   <HelpCircle size={13} />
                   <span>Frequently Asked Questions</span>
                 </span>
                 <div className="space-y-2">
-                  {response.content.faq.map((item: any, idx: number) => (
-                    <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#E8E2D5]">
-                      <p className="text-xs font-bold text-zinc-800">
-                        Q: {typeof item === 'string' ? item : item.question}
-                      </p>
-                      {item.answer && (
-                        <p className="text-xs text-zinc-600 mt-1 leading-relaxed">A: {item.answer}</p>
-                      )}
-                    </div>
-                  ))}
+                  {response.content.faq.map((item: any, idx: number) => {
+                    const q = typeof item === 'string' ? item : item?.question || `Question ${idx + 1}`;
+                    const a = typeof item === 'object' && item?.answer ? item.answer : null;
+                    return (
+                      <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#E8E2D5]">
+                        <p className="text-xs font-bold text-zinc-800">Q: {String(q)}</p>
+                        {a && <p className="text-xs text-zinc-600 mt-1 leading-relaxed">A: {String(a)}</p>}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             {/* Keywords / Hashtags */}
-            {((response.content?.keywords && response.content.keywords.length > 0) ||
-              (response.content?.hashtags && response.content.hashtags.length > 0)) && (
+            {((Array.isArray(response.content?.keywords) && response.content.keywords.length > 0) ||
+              (Array.isArray(response.content?.hashtags) && response.content.hashtags.length > 0)) && (
               <div className="flex flex-wrap gap-1.5 pt-2">
-                {response.content?.keywords?.map((kw: string, i: number) => (
-                  <span
-                    key={i}
-                    className="px-2.5 py-1 bg-[#FAF3E0] text-[#8C6B14] font-medium text-xs rounded-lg border border-[#DCA51B]/30"
-                  >
-                    #{kw}
-                  </span>
-                ))}
-                {response.content?.hashtags?.map((tag: string, i: number) => (
-                  <span
-                    key={i}
-                    className="px-2.5 py-1 bg-[#F5EFE4] text-zinc-700 font-medium text-xs rounded-lg border border-[#E2DACB]"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                {Array.isArray(response.content?.keywords) &&
+                  response.content.keywords.map((kw: any, i: number) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 bg-[#FAF3E0] text-[#8C6B14] font-medium text-xs rounded-lg border border-[#DCA51B]/30"
+                    >
+                      #{String(kw)}
+                    </span>
+                  ))}
+                {Array.isArray(response.content?.hashtags) &&
+                  response.content.hashtags.map((tag: any, i: number) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 bg-[#F5EFE4] text-zinc-700 font-medium text-xs rounded-lg border border-[#E2DACB]"
+                    >
+                      {String(tag)}
+                    </span>
+                  ))}
               </div>
             )}
 
@@ -851,7 +930,7 @@ const ContentLookup: React.FC = () => {
       const res = await apiClient(`/api/v1/dxgen/content/${contentId.trim()}`);
       setResponse(res);
     } catch (err: any) {
-      setError(err.details?.detail || err.message || 'Lookup failed');
+      setError(extractErrorMessage(err, 'Lookup failed'));
     } finally {
       setLoading(false);
     }
@@ -891,7 +970,7 @@ const ContentLookup: React.FC = () => {
 
       {error && (
         <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {error}
+          {String(error)}
         </div>
       )}
 
@@ -919,7 +998,7 @@ const UsageTab: React.FC = () => {
       const res = await apiClient('/api/v1/dxgen/usage');
       setResponse(res);
     } catch (err: any) {
-      setError(err.details?.detail || err.message || 'Failed to fetch usage');
+      setError(extractErrorMessage(err, 'Failed to fetch usage'));
     } finally {
       setLoading(false);
     }
@@ -943,7 +1022,7 @@ const UsageTab: React.FC = () => {
 
       {error && (
         <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {error}
+          {String(error)}
         </div>
       )}
 
@@ -971,7 +1050,7 @@ const HealthTab: React.FC = () => {
       const res = await apiClient('/api/v1/dxgen/health');
       setResponse(res);
     } catch (err: any) {
-      setError(err.details?.detail || err.message || 'Failed to check health');
+      setError(extractErrorMessage(err, 'Failed to check health'));
     } finally {
       setLoading(false);
     }
@@ -995,7 +1074,7 @@ const HealthTab: React.FC = () => {
 
       {error && (
         <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
-          {error}
+          {String(error)}
         </div>
       )}
 
