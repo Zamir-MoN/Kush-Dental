@@ -144,7 +144,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<any>(null);
   const [copied, setCopied] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [keywordInput, setKeywordInput] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
 
@@ -521,89 +520,6 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             </div>
           </div>
 
-          {/* Advanced SEO & Strategy Parameters (Collapsible Accordion) */}
-          <div className="border border-[#E2DACB] rounded-2xl bg-[#FAF7F2] overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-full px-4 py-3 flex items-center justify-between text-left text-xs font-bold text-zinc-700 tracking-wide hover:bg-[#F2ECE1] transition-colors cursor-pointer"
-            >
-              <div className="flex items-center space-x-2">
-                <SlidersHorizontal size={14} className="text-[#B8860B]" />
-                <span>Advanced SEO & Strategy Parameters</span>
-              </div>
-              {showAdvanced ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
-
-            {showAdvanced && (
-              <div className="p-4 border-t border-[#E2DACB] space-y-4 bg-white">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Primary Keyword</label>
-                    <input
-                      type="text"
-                      name="primaryKeyword"
-                      value={formData.primaryKeyword}
-                      onChange={handleChange}
-                      placeholder="e.g. cosmetic dentistry"
-                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Search Intent</label>
-                    <select
-                      name="searchIntent"
-                      value={formData.searchIntent}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 outline-none focus:border-[#DCA51B] cursor-pointer"
-                    >
-                      <option value="Informational">Informational</option>
-                      <option value="Commercial">Commercial</option>
-                      <option value="Transactional">Transactional</option>
-                      <option value="Navigational">Navigational</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Target Audience</label>
-                    <input
-                      type="text"
-                      name="audience"
-                      value={formData.audience}
-                      onChange={handleChange}
-                      placeholder="e.g. Local Dental Patients"
-                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-600 mb-1">Location</label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleChange}
-                      placeholder="e.g. Kolkata, India"
-                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-zinc-600 mb-1">Custom Tone Description</label>
-                  <input
-                    type="text"
-                    name="customTone"
-                    value={formData.customTone}
-                    onChange={handleChange}
-                    placeholder="e.g. Compassionate, clinically expert, reassuring"
-                    className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
 
 
           {/* Real-time Progress Bar (Active when loading) */}
