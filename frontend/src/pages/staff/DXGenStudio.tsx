@@ -17,7 +17,6 @@ import {
   FileText,
   Zap,
   HelpCircle,
-  Hash,
   ExternalLink
 } from 'lucide-react';
 
@@ -298,6 +297,11 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Left Form Column */}
       <div className="lg:col-span-6 space-y-6 bg-[#0a1122] p-6 rounded-2xl border border-[#172542] shadow-xl">
+        <div>
+          <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
+          <p className="text-xs text-slate-400 mt-0.5">Fill out the parameters to generate AI content.</p>
+        </div>
+
         {error && (
           <div className="bg-red-950/40 text-red-300 p-4 rounded-xl text-sm border border-red-800/60 flex items-start space-x-2">
             <span className="text-red-400 font-bold">Error:</span>
