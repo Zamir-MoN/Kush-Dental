@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Bot, RefreshCw } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
+import { formatMarkdownToHtml } from '../../lib/markdown';
 
 interface AIGenerationModalProps {
   isOpen: boolean;
@@ -65,7 +66,10 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
 
   const handleTransfer = () => {
     if (generatedContent) {
-      onTransfer(generatedContent);
+      onTransfer({
+        ...generatedContent,
+        body: formatMarkdownToHtml(generatedContent.body || '')
+      });
       onClose();
     }
   };
@@ -175,8 +179,11 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Body Preview</span>
-                <div className="mt-1 bg-[#FAF7F2] p-4 rounded-xl border border-[#E2DACB] text-zinc-800 text-sm h-32 overflow-hidden relative">
-                  {generatedContent.body}
+                <div className="mt-1 bg-[#FAF7F2] p-4 rounded-xl border border-[#E2DACB] text-zinc-800 text-sm h-36 overflow-hidden relative">
+                  <div 
+                    className="prose prose-sm max-w-none text-xs leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: formatMarkdownToHtml(generatedContent.body || '') }}
+                  />
                   <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#FAF7F2] to-transparent pointer-events-none" />
                 </div>
               </div>

@@ -578,3 +578,131 @@
   animation: newsletterGlowPulse 6s ease-in-out infinite;
   will-change: opacity, transform;
 }
+
+/* Tiptap / ProseMirror Content Editor Typography */
+.ProseMirror {
+  outline: none;
+  min-height: 380px;
+  font-family: inherit;
+  color: #27272A;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.ProseMirror > * + * {
+  margin-top: 1em;
+}
+
+.ProseMirror h1 {
+  font-size: 1.875rem !important; /* 30px */
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  color: #141518 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.75rem !important;
+  letter-spacing: -0.025em !important;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5rem !important; /* 24px */
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  color: #141518 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.ProseMirror h3 {
+  font-size: 1.25rem !important; /* 20px */
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  color: #27272A !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.ProseMirror h4 {
+  font-size: 1.125rem !important; /* 18px */
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #27272A !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.ProseMirror p {
+  margin-bottom: 1rem !important;
+  line-height: 1.75 !important;
+  color: #3F3F46 !important;
+}
+
+.ProseMirror strong, .ProseMirror b {
+  font-weight: 700 !important;
+  color: #141518 !important;
+}
+
+.ProseMirror em, .ProseMirror i {
+  font-style: italic !important;
+}
+
+.ProseMirror ul {
+  list-style-type: disc !important;
+  padding-left: 1.75rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal !important;
+  padding-left: 1.75rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.ProseMirror li {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.65 !important;
+  color: #3F3F46 !important;
+  display: list-item !important;
+}
+
+.ProseMirror li p {
+  margin-bottom: 0 !important;
+  display: inline !important;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #DCA51B !important;
+  background-color: #FAF7F2 !important;
+  padding: 0.875rem 1.25rem !important;
+  border-radius: 0 0.75rem 0.75rem 0 !important;
+  margin: 1.25rem 0 !important;
+  font-style: italic !important;
+  color: #52525B !important;
+}
+
+.ProseMirror blockquote p {
+  margin-bottom: 0 !important;
+}
+
+.ProseMirror code {
+  background-color: #FAF3E0 !important;
+  color: #8C6B14 !important;
+  border: 1px solid rgba(220, 165, 27, 0.3) !important;
+  padding: 0.15rem 0.4rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875em !important;
+  font-family: monospace !important;
+}
+
+.ProseMirror a {
+  color: #C49216 !important;
+  text-decoration: underline !important;
+  font-weight: 500 !important;
+}
+
+.ProseMirror a:hover {
+  color: #8C6B14 !important;
+}
+

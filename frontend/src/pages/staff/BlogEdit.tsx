@@ -6,6 +6,7 @@ import { RichTextEditor } from '../../components/journal/RichTextEditor';
 import { useAuth } from '../../context/AuthContext';
 import { AIGenerationModal } from '../../components/journal/AIGenerationModal';
 import { Sparkles } from 'lucide-react';
+import { formatMarkdownToHtml } from '../../lib/markdown';
 
 export const BlogEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,7 +36,7 @@ export const BlogEdit: React.FC = () => {
           slug: data.slug,
           excerpt: data.excerpt || '',
           coverImage: data.coverImage || '',
-          content: data.content
+          content: formatMarkdownToHtml(data.content || '')
         });
         setStatus(data.status);
       } catch (err: any) {
@@ -88,12 +89,13 @@ export const BlogEdit: React.FC = () => {
         return;
       }
     }
+    const formattedHtml = formatMarkdownToHtml(contentData.body || '');
     setFormData((prev) => ({
       ...prev,
       title: contentData.title || prev.title,
       slug: contentData.slug || prev.slug,
       excerpt: contentData.metaDescription || prev.excerpt,
-      content: contentData.body || prev.content
+      content: formattedHtml || prev.content
     }));
   };
 

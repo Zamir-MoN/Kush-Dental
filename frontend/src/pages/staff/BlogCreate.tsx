@@ -7,6 +7,8 @@ import { useAuth } from '../../context/AuthContext';
 import { AIGenerationModal } from '../../components/journal/AIGenerationModal';
 import { Sparkles } from 'lucide-react';
 
+import { formatMarkdownToHtml } from '../../lib/markdown';
+
 export const BlogCreate: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -46,12 +48,13 @@ export const BlogCreate: React.FC = () => {
         return;
       }
     }
+    const formattedHtml = formatMarkdownToHtml(contentData.body || '');
     setFormData((prev) => ({
       ...prev,
       title: contentData.title || prev.title,
       slug: contentData.slug || prev.slug,
       excerpt: contentData.metaDescription || prev.excerpt,
-      content: contentData.body || prev.content
+      content: formattedHtml || prev.content
     }));
   };
 
