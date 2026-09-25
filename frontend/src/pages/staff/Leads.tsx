@@ -77,16 +77,16 @@ const LeadList: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#162723]">Leads</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage incoming patient inquiries</p>
+          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Leads</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">Manage incoming patient inquiries</p>
         </div>
         
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500">Current-Page Filter:</span>
+          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Filter:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="border-gray-300 rounded-lg text-sm focus:ring-[#162723] focus:border-[#162723]"
+            className="bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-sm font-semibold text-zinc-800 px-3 py-2 outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="NEW">New</option>
@@ -111,22 +111,22 @@ const LeadList: React.FC = () => {
           <p className="text-gray-500">New leads from the booking form will appear here.</p>
         </div>
       ) : (
-        <div className="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-[#E8E2D5]">
+              <thead className="bg-[#FAF7F2]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Treatment</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Name</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Contact</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Treatment</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3.5 text-right text-xs font-bold text-zinc-600 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-[#E8E2D5]">
                 {filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-gray-50">
+                  <tr key={lead.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{lead.name}</div>
                     </td>
@@ -323,41 +323,41 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center space-x-4 mb-6">
-        <Link to="/staff/leads" className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors">
-          <ArrowLeft size={20} className="text-gray-600" />
+        <Link to="/staff/leads" className="p-2 bg-white rounded-xl border border-[#E8E2D5] shadow-xs hover:bg-[#FAF7F2] transition-colors">
+          <ArrowLeft size={18} className="text-zinc-700" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-[#162723]">Lead Details</h1>
-          <p className="text-sm text-gray-500">Created: {new Date(lead.createdAt).toLocaleString()}</p>
+          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Lead Details</h1>
+          <p className="text-sm text-zinc-500">Created: {new Date(lead.createdAt).toLocaleString()}</p>
         </div>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start border border-red-200">
           <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
           <p>{error}</p>
         </div>
       )}
 
       {successMsg && (
-        <div className="bg-green-50 text-green-700 p-4 rounded-lg flex items-center">
-          <CheckCircle className="w-5 h-5 mr-2" />
+        <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl flex items-center border border-emerald-200">
+          <CheckCircle className="w-5 h-5 mr-2 text-emerald-600" />
           <p>{successMsg}</p>
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white shadow-sm rounded-xl border border-gray-100 p-6 sm:p-8 space-y-6">
+      <form onSubmit={handleSave} className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] p-6 sm:p-8 space-y-6">
         
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8E2D5]">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Status</label>
             <select
               name="status"
               value={formData.status}
               onChange={handleChange}
               disabled={lead.status === 'CONVERTED'}
-              className={`rounded-lg border-gray-300 text-sm font-medium focus:ring-[#162723] focus:border-[#162723] ${
-                lead.status === 'CONVERTED' ? 'bg-gray-100 cursor-not-allowed' : ''
+              className={`rounded-xl border border-[#E2DACB] bg-[#FAF7F2] px-3 py-2 text-sm font-semibold text-zinc-900 focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B] ${
+                lead.status === 'CONVERTED' ? 'bg-zinc-100 cursor-not-allowed text-zinc-500' : ''
               }`}
             >
               <option value="NEW">New</option>
@@ -372,9 +372,9 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
               type="button"
               onClick={handleConvert}
               disabled={converting || saving}
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+              className="inline-flex items-center px-4 py-2.5 border border-transparent shadow-xs text-sm font-bold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 cursor-pointer"
             >
-              <CheckCircle size={18} className="mr-2" />
+              <CheckCircle size={16} className="mr-2" />
               {converting ? 'Converting...' : 'Convert to Patient'}
             </button>
           )}
@@ -382,7 +382,7 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
 
         <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Full Name</label>
             <div className="mt-1">
               <input
                 type="text"
@@ -390,13 +390,13 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#162723] focus:border-[#162723] sm:text-sm"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Phone</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Phone</label>
             <div className="mt-1">
               <input
                 type="tel"
@@ -404,59 +404,59 @@ const LeadDetail: React.FC<{ id: string }> = ({ id }) => {
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#162723] focus:border-[#162723] sm:text-sm"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">Email Address</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Email Address</label>
             <div className="mt-1">
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#162723] focus:border-[#162723] sm:text-sm"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">Desired Treatment</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Desired Treatment</label>
             <div className="mt-1">
               <input
                 type="text"
                 name="desiredTreatment"
                 value={formData.desiredTreatment}
                 onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#162723] focus:border-[#162723] sm:text-sm"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
               />
             </div>
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">Internal Notes</label>
+            <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Internal Notes</label>
             <div className="mt-1">
               <textarea
                 name="notes"
                 rows={4}
                 value={formData.notes}
                 onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#162723] focus:border-[#162723] sm:text-sm"
+                className="block w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 text-sm focus:outline-none focus:ring-1 focus:ring-[#DCA51B] focus:border-[#DCA51B]"
                 placeholder="Add notes about this lead..."
               />
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end pt-4 border-t border-gray-100">
+        <div className="flex justify-end pt-4 border-t border-[#E8E2D5]">
           <button
             type="submit"
             disabled={saving || converting}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#162723] hover:bg-[#1a302b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#162723] disabled:opacity-50"
+            className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-xl shadow-xs focus:outline-none disabled:opacity-50 cursor-pointer"
           >
-            <Save size={18} className="mr-2" />
+            <Save size={16} className="mr-2" />
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>

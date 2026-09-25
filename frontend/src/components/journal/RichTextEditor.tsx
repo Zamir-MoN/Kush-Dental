@@ -53,7 +53,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`p-2 rounded hover:bg-gray-100 transition-colors ${isActive ? 'bg-gray-200 text-[#162723]' : 'text-gray-600'} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`p-2 rounded-lg hover:bg-[#FAF7F2] transition-colors ${isActive ? 'bg-[#FAF3E0] text-[#8C6B14] font-bold' : 'text-zinc-600'} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
       {children}
     </button>
@@ -83,7 +83,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             if (level === 0) editor.chain().focus().setParagraph().run();
             else editor.chain().focus().toggleHeading({ level: level as any }).run();
           }}
-          className="p-1 rounded border border-gray-300 text-sm focus:ring-[#162723] focus:border-transparent outline-none bg-white h-8"
+          className="p-1 rounded-lg border border-[#E2DACB] text-xs focus:ring-[#DCA51B] focus:border-[#DCA51B] outline-none bg-white h-8 text-zinc-800"
           value={editor.isActive('heading') ? editor.getAttributes('heading').level : 0}
         >
           <option value={0}>Paragraph</option>
@@ -188,7 +188,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onChang
   }, [content, editor]);
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden bg-white focus-within:ring-2 focus-within:ring-[#162723] focus-within:border-transparent transition-all">
+    <div className="border border-[#E2DACB] rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-[#DCA51B]/30 focus-within:border-[#DCA51B] transition-all">
       <MenuBar editor={editor} />
       <div className="bg-white">
         <EditorContent editor={editor} />

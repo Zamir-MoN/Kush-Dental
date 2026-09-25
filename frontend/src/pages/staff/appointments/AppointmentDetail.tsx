@@ -73,15 +73,15 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">
-          <Link to="/staff/appointments" className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors">
-            <ArrowLeft size={20} className="text-gray-600" />
+          <Link to="/staff/appointments" className="p-2.5 bg-white rounded-xl shadow-sm border border-[#E8E2D5] hover:bg-[#FAF7F2] transition-colors">
+            <ArrowLeft size={18} className="text-zinc-600" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-[#162723]">
+            <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">
               {isNew ? 'New Appointment' : 'Appointment Details'}
             </h1>
             {!isNew && (
-              <p className="text-sm text-gray-500">
+              <p className="text-xs font-mono text-zinc-400 mt-0.5">
                 ID: {appointment.id}
               </p>
             )}
@@ -91,16 +91,16 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
         {!isNew && !isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="inline-flex items-center px-4 py-2 border border-[#E2DACB] rounded-xl shadow-sm text-xs font-bold uppercase tracking-wider text-zinc-700 bg-white hover:bg-[#FAF7F2] transition-colors"
           >
-            <Edit2 size={16} className="mr-2" />
+            <Edit2 size={14} className="mr-2 text-[#8C6B14]" />
             Edit / Reschedule
           </button>
         )}
       </div>
 
       {error && !isEditing && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg flex items-start">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start border border-red-200 text-sm">
           <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
           <p>{error}</p>
         </div>
@@ -118,11 +118,11 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
           onCancel={!isNew ? () => setIsEditing(false) : undefined}
         />
       ) : (
-        <div className="bg-white shadow-sm rounded-xl border border-gray-100 p-6 sm:p-8 space-y-8">
-          <div className="flex flex-col sm:flex-row justify-between gap-6 pb-6 border-b border-gray-100">
+        <div className="bg-white shadow-sm rounded-2xl border border-[#E8E2D5] p-6 sm:p-8 space-y-8">
+          <div className="flex flex-col sm:flex-row justify-between gap-6 pb-6 border-b border-[#E8E2D5]">
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-2">Status</h2>
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(appointment.status)}`}>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Status</h2>
+              <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border ${getStatusColor(appointment.status)}`}>
                 {appointment.status}
               </span>
             </div>

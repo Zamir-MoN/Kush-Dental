@@ -146,62 +146,62 @@ export const Users = () => {
   const getRoleBadge = (role: string) => {
     switch (role) {
       case 'DOCTOR':
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Doctor</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/40">Doctor</span>;
       case 'STAFF':
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Staff</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">Staff</span>;
       case 'ADMIN':
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Admin</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">Admin</span>;
       default:
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{role}</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF7F2] text-zinc-700 border border-[#E8E2D5]">{role}</span>;
     }
   };
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto h-full flex flex-col">
       <div>
-        <h1 className="text-2xl font-bold text-[#162723]">Users Directory</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage internal clinic staff and doctor accounts.</p>
+        <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Users Directory</h1>
+        <p className="text-sm text-zinc-500 mt-0.5">Manage internal clinic staff and doctor accounts.</p>
       </div>
       
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex-1 flex flex-col min-h-0 relative">
+      <div className="bg-white p-6 rounded-2xl shadow-xs border border-[#E8E2D5] flex-1 flex flex-col min-h-0 relative">
         {isLoading && page === 0 ? (
           <div className="flex justify-center items-center py-12 flex-1">
-            <Loader2 className="w-8 h-8 animate-spin text-[#162723]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#DCA51B]" />
           </div>
         ) : error ? (
-          <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm flex-shrink-0">
+          <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm flex-shrink-0 border border-red-200">
             {error}
           </div>
         ) : users.length === 0 ? (
           <div className="text-center py-12 flex-1">
-            <UsersIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-sm font-medium text-gray-900">No users found</h3>
+            <UsersIcon className="mx-auto h-12 w-12 text-zinc-300 mb-4" />
+            <h3 className="text-sm font-semibold text-zinc-900">No users found</h3>
           </div>
         ) : (
           <div 
-            className="overflow-y-auto overflow-x-hidden bg-white shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg max-h-[70vh]"
+            className="overflow-y-auto overflow-x-hidden bg-white rounded-2xl border border-[#E8E2D5] max-h-[70vh]"
             onScroll={handleScroll}
             data-lenis-prevent
           >
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-50 sticky top-0 z-10">
+            <table className="min-w-full divide-y divide-[#E8E2D5]">
+              <thead className="bg-[#FAF7F2] sticky top-0 z-10">
                 <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">User</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created Date</th>
+                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider sm:pl-6">User</th>
+                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Role</th>
+                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
+                  <th scope="col" className="px-3 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Created Date</th>
                   <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
+              <tbody className="divide-y divide-[#E8E2D5] bg-white">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={user.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                       <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0 rounded-full bg-[#162723]/10 flex items-center justify-center">
-                          <span className="text-[#162723] font-medium uppercase">{user.email.charAt(0)}</span>
+                        <div className="h-10 w-10 flex-shrink-0 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/40 flex items-center justify-center">
+                          <span className="text-[#8C6B14] font-bold uppercase">{user.email.charAt(0)}</span>
                         </div>
                         <div className="ml-4">
                           <div className="font-medium text-gray-900">{user.email}</div>
@@ -234,7 +234,7 @@ export const Users = () => {
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => openEditModal(user)}
-                          className="text-[#162723] hover:text-[#162723]/80 transition-colors"
+                          className="text-[#8C6B14] hover:text-[#B8871B] font-medium transition-colors"
                         >
                           Edit
                         </button>
@@ -255,7 +255,7 @@ export const Users = () => {
             
             {isFetchingNextPage && (
               <div className="py-4 flex justify-center">
-                <Loader2 className="w-6 h-6 animate-spin text-[#162723]" />
+                <Loader2 className="w-6 h-6 animate-spin text-[#DCA51B]" />
               </div>
             )}
             
@@ -300,12 +300,12 @@ export const Users = () => {
 
               <form onSubmit={handleSaveEdit} className="mt-5 sm:mt-6 space-y-4 text-left">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+                  <label htmlFor="email" className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Email Address</label>
                   <input
                     type="email"
                     id="email"
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#162723] focus:ring-[#162723] sm:text-sm p-2 border"
+                    className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] p-2.5 text-zinc-900 text-sm focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] outline-none"
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
                     disabled={isSaving}
@@ -313,10 +313,10 @@ export const Users = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+                  <label htmlFor="role" className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1">Role</label>
                   <select
                     id="role"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#162723] focus:ring-[#162723] sm:text-sm p-2 border"
+                    className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] p-2.5 text-zinc-900 text-sm focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] outline-none cursor-pointer font-semibold"
                     value={editRole}
                     onChange={(e) => setEditRole(e.target.value as 'DOCTOR' | 'STAFF')}
                     disabled={isSaving}
@@ -333,14 +333,14 @@ export const Users = () => {
                   <button
                     type="submit"
                     disabled={isSaving}
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-[#162723] px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-[#162723]/90 focus:outline-none focus:ring-2 focus:ring-[#162723] focus:ring-offset-2 sm:col-start-2 sm:text-sm disabled:opacity-50"
+                    className="inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] px-4 py-2.5 text-sm font-bold text-[#141518] shadow-xs hover:brightness-105 focus:outline-none sm:col-start-2 disabled:opacity-50 cursor-pointer"
                   >
                     {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save Changes'}
                   </button>
                   <button
                     type="button"
                     disabled={isSaving}
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#162723] focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-xl border border-[#E2DACB] bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 shadow-xs hover:bg-[#FAF7F2] sm:col-start-1 sm:mt-0 cursor-pointer"
                     onClick={() => setEditingUser(null)}
                   >
                     Cancel
@@ -395,7 +395,7 @@ export const Users = () => {
                 <button
                   type="button"
                   disabled={isSaving}
-                  className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#162723] focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                  className="mt-3 inline-flex w-full justify-center rounded-xl border border-zinc-200 bg-white px-4 py-2 text-base font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-[#DCA51B] focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
                   onClick={() => setDeactivatingUser(null)}
                 >
                   Cancel

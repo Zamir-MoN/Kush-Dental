@@ -40,14 +40,17 @@ export const Login: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md space-y-8 rounded-2xl bg-white p-8 shadow-xl border border-[#162723]/10"
+        className="w-full max-w-md space-y-8 rounded-3xl bg-white p-8 sm:p-10 shadow-xl border border-[#E8E2D5]"
       >
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-[#162723]">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E5B22D] to-[#B8871B] shadow-md mb-4 text-[#141518] font-bold text-2xl">
+            K
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">
             Kush Dental Portal
           </h2>
-          <p className="mt-2 text-center text-sm text-[#162723]/70">
-            Sign in to access the staff dashboard
+          <p className="mt-2 text-sm text-zinc-500">
+            Sign in to access clinical and administrative tools
           </p>
         </div>
 
@@ -56,19 +59,19 @@ export const Login: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="rounded-md bg-red-50 p-4 border border-red-200"
+              className="rounded-xl bg-rose-50 p-4 border border-rose-200"
             >
               <div className="flex">
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">{error}</h3>
+                <div className="ml-1">
+                  <h3 className="text-sm font-semibold text-rose-700">{error}</h3>
                 </div>
               </div>
             </motion.div>
           )}
 
-          <div className="space-y-4 rounded-md shadow-sm">
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="sr-only">
+              <label htmlFor="email-address" className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">
                 Email address
               </label>
               <input
@@ -77,14 +80,14 @@ export const Login: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="relative block w-full rounded-md border-0 py-3 text-[#162723] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-[#DCA51B] sm:text-sm sm:leading-6 px-4"
-                placeholder="Email address"
+                className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] py-3 px-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
+                placeholder="name@kushdental.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">
                 Password
               </label>
               <input
@@ -93,8 +96,8 @@ export const Login: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="relative block w-full rounded-md border-0 py-3 text-[#162723] ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-[#DCA51B] sm:text-sm sm:leading-6 px-4"
-                placeholder="Password"
+                className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] py-3 px-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -104,11 +107,11 @@ export const Login: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-[#162723] px-3 py-3 text-sm font-semibold text-white hover:bg-[#1e3630] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DCA51B] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] px-4 py-3 text-sm font-bold text-[#141518] shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#DCA51B] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white"></div>
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#141518]/20 border-t-[#141518]"></div>
               ) : (
                 'Sign in'
               )}

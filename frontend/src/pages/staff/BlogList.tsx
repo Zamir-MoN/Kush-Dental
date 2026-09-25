@@ -67,51 +67,54 @@ export const BlogList: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-[#162723]">Blog Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Blog Management</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">Publish articles and manage SEO blog content.</p>
+        </div>
         <Link
           to="/staff/blog/new"
-          className="bg-[#162723] text-white px-4 py-2 rounded-lg font-medium flex items-center hover:bg-[#1a302b] transition-colors"
+          className="bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] px-4 py-2.5 rounded-xl font-bold flex items-center shadow-xs transition-all"
         >
-          <Plus size={20} className="mr-2" />
+          <Plus size={18} className="mr-2" />
           Create Post
         </Link>
       </div>
 
       {blogs.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-          <FileText size={48} className="mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No blog posts yet</h3>
-          <p className="text-gray-500">Create your first blog post to get started.</p>
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-12 text-center">
+          <FileText size={48} className="mx-auto text-zinc-300 mb-4" />
+          <h3 className="text-lg font-bold text-zinc-900 mb-1">No blog posts yet</h3>
+          <p className="text-zinc-500 text-sm">Create your first blog post to get started.</p>
         </div>
       ) : (
-        <div className="bg-white shadow-sm rounded-xl border border-gray-100 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] overflow-hidden">
+          <table className="min-w-full divide-y divide-[#E8E2D5]">
+            <thead className="bg-[#FAF7F2]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Title</th>
+                <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Created</th>
+                <th className="px-6 py-3.5 text-left text-xs font-bold text-zinc-600 uppercase tracking-wider">Published</th>
+                <th className="px-6 py-3.5 text-right text-xs font-bold text-zinc-600 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-[#E8E2D5]">
               {blogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-gray-50">
+                <tr key={blog.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{blog.title}</div>
+                    <div className="text-sm font-semibold text-zinc-900">{blog.title}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      blog.status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                      blog.status === 'PUBLISHED' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/30'
                     }`}>
                       {blog.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">
                     {new Date(blog.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500">
                     {blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">

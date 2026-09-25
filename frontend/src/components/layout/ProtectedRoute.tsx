@@ -15,7 +15,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#FAF7F2]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#162723]/20 border-t-[#DCA51B]"></div>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#DCA51B]/20 border-t-[#DCA51B]"></div>
       </div>
     );
   }
@@ -29,8 +29,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
     // Role not allowed, show unauthorized state instead of redirecting
     return (
       <div className="flex h-[50vh] flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-2xl font-bold text-[#162723]">Unauthorized Access</h2>
-        <p className="mt-2 text-[#162723]/70">You do not have permission to view this page.</p>
+        <h2 className="text-2xl font-bold text-zinc-900 tracking-tight">Unauthorized Access</h2>
+        <p className="mt-2 text-zinc-500">You do not have permission to view this page.</p>
       </div>
     );
   }

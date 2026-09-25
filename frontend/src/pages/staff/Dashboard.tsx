@@ -128,53 +128,53 @@ export const Dashboard = () => {
   if (!data) return null;
 
   const AppointmentList = ({ appointments, title, emptyMsg }: { appointments: DashboardAppointment[], title: string, emptyMsg: string }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
-      <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50">
-        <h2 className="text-lg font-semibold text-[#162723]">{title}</h2>
+    <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] overflow-hidden flex flex-col h-full">
+      <div className="px-5 py-4 border-b border-[#E8E2D5] bg-[#FAF7F2]/50">
+        <h2 className="text-base font-bold text-zinc-900">{title}</h2>
       </div>
       <div className="flex-1 overflow-auto">
         {appointments.length === 0 ? (
           <div className="px-5 py-8 text-center">
-            <p className="text-sm text-gray-500">{emptyMsg}</p>
+            <p className="text-sm text-zinc-500">{emptyMsg}</p>
           </div>
         ) : (
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-[#E8E2D5]">
             {appointments.map(apt => (
               <li key={apt.id}>
                 <button
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-5 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between group"
+                  className="w-full text-left px-5 py-4 hover:bg-[#FAF7F2]/60 transition-colors flex items-center justify-between group cursor-pointer"
                 >
                   <div className="min-w-0 pr-4">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-semibold text-zinc-900 truncate">
                         {apt.patient.fullName}
                       </p>
                       {getStatusBadge(apt.status)}
                     </div>
-                    <div className="flex items-center text-xs text-gray-500 gap-3">
+                    <div className="flex items-center text-xs text-zinc-500 gap-3">
                       <span className="flex items-center">
-                        <Calendar className="w-3.5 h-3.5 mr-1" />
+                        <Calendar className="w-3.5 h-3.5 mr-1 text-[#8C6B14]" />
                         {formatDate(apt.startsAt)}
                       </span>
                       <span className="flex items-center">
-                        <Clock className="w-3.5 h-3.5 mr-1" />
+                        <Clock className="w-3.5 h-3.5 mr-1 text-[#8C6B14]" />
                         {formatTime(apt.startsAt)}
                       </span>
                     </div>
-                    <div className="mt-1.5 flex items-center text-xs text-gray-600">
-                      <span className="font-medium bg-gray-100 px-2 py-0.5 rounded text-gray-600 truncate max-w-[150px] sm:max-w-[200px]">
+                    <div className="mt-1.5 flex items-center text-xs text-zinc-600">
+                      <span className="font-semibold bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/30 px-2 py-0.5 rounded-lg truncate max-w-[150px] sm:max-w-[200px]">
                         {apt.treatment}
                       </span>
                       {apt.doctor && (
-                        <span className="ml-2 flex items-center text-gray-500 truncate">
-                          <User className="w-3 h-3 mr-1" />
+                        <span className="ml-2 flex items-center text-zinc-500 truncate">
+                          <User className="w-3 h-3 mr-1 text-zinc-400" />
                           Dr. {apt.doctor.name}
                         </span>
                       )}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#DCA51B] flex-shrink-0 transition-colors" />
+                  <ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-[#DCA51B] flex-shrink-0 transition-colors" />
                 </button>
               </li>
             ))}
@@ -188,8 +188,8 @@ export const Dashboard = () => {
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#162723]">Operational Dashboard</h1>
-          <p className="text-sm text-[#162723]/70 mt-1">
+          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Operational Dashboard</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">
             Welcome back. Here is your overview for today.
           </p>
         </div>
@@ -197,71 +197,71 @@ export const Dashboard = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">Today's Appointments</h3>
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <Calendar className="w-5 h-5 text-blue-600" />
+            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Today's Appointments</h3>
+            <div className="p-2 bg-[#FAF3E0] rounded-xl border border-[#DCA51B]/30">
+              <Calendar className="w-4 h-4 text-[#8C6B14]" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-[#162723] mt-2">{data.summary.todayAppointments}</p>
+          <p className="text-3xl font-extrabold text-zinc-900 mt-2">{data.summary.todayAppointments}</p>
         </div>
         
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">Confirmed Today</h3>
-            <div className="p-2 bg-green-50 rounded-lg">
-              <CheckCircle2 className="w-5 h-5 text-green-600" />
+            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Confirmed Today</h3>
+            <div className="p-2 bg-emerald-50 rounded-xl border border-emerald-200">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-[#162723] mt-2">{data.summary.confirmedToday}</p>
+          <p className="text-3xl font-extrabold text-zinc-900 mt-2">{data.summary.confirmedToday}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">Pending Requests</h3>
-            <div className="p-2 bg-yellow-50 rounded-lg">
-              <HelpCircle className="w-5 h-5 text-yellow-600" />
+            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Pending Requests</h3>
+            <div className="p-2 bg-amber-50 rounded-xl border border-amber-200">
+              <HelpCircle className="w-4 h-4 text-amber-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-[#162723] mt-2">{data.summary.requestedAppointments}</p>
+          <p className="text-3xl font-extrabold text-zinc-900 mt-2">{data.summary.requestedAppointments}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">New Leads</h3>
-            <div className="p-2 bg-purple-50 rounded-lg">
-              <User className="w-5 h-5 text-purple-600" />
+            <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wide">New Leads</h3>
+            <div className="p-2 bg-[#FAF3E0] rounded-xl border border-[#DCA51B]/30">
+              <User className="w-4 h-4 text-[#8C6B14]" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-[#162723] mt-2">{data.summary.newLeads}</p>
+          <p className="text-3xl font-extrabold text-zinc-900 mt-2">{data.summary.newLeads}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white rounded-2xl shadow-xs p-5 border border-[#E8E2D5] flex items-center justify-between hover:border-[#DCA51B]/50 transition-colors">
           <div>
-            <p className="text-sm font-medium text-gray-500 mb-1">Open Follow-ups</p>
-            <h3 className="text-2xl font-bold text-[#162723]">{data.summary.openFollowUps}</h3>
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wide mb-1">Open Follow-ups</p>
+            <h3 className="text-2xl font-bold text-zinc-900">{data.summary.openFollowUps}</h3>
           </div>
-          <div className="h-12 w-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-600">
-            <AlertCircle className="w-6 h-6" />
+          <div className="h-10 w-10 bg-amber-50 rounded-xl border border-amber-200 flex items-center justify-center text-amber-600">
+            <AlertCircle className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl shadow-xs p-5 border border-[#E8E2D5] flex items-center justify-between hover:border-[#DCA51B]/50 transition-colors">
           <div>
-            <p className="text-sm font-medium text-gray-500 mb-1">In-Progress Follow-ups</p>
-            <h3 className="text-2xl font-bold text-[#162723]">{data.summary.inProgressFollowUps}</h3>
+            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wide mb-1">In-Progress Follow-ups</p>
+            <h3 className="text-2xl font-bold text-zinc-900">{data.summary.inProgressFollowUps}</h3>
           </div>
-          <div className="h-12 w-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
-            <Loader2 className="w-6 h-6" />
+          <div className="h-10 w-10 bg-[#FAF3E0] rounded-xl border border-[#DCA51B]/30 flex items-center justify-center text-[#8C6B14]">
+            <Loader2 className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         
         {/* Today's Appointments */}
         <div className="lg:col-span-1 h-[400px]">
@@ -292,50 +292,50 @@ export const Dashboard = () => {
 
         {/* Recent Leads */}
         <div className="lg:col-span-1 h-[400px]">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
-            <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50">
-              <h2 className="text-lg font-semibold text-[#162723]">Recent Leads</h2>
+          <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] overflow-hidden flex flex-col h-full">
+            <div className="px-5 py-4 border-b border-[#E8E2D5] bg-[#FAF7F2]/50">
+              <h2 className="text-base font-bold text-zinc-900">Recent Leads</h2>
             </div>
             <div className="flex-1 overflow-auto">
               {data.recentLeads.length === 0 ? (
                 <div className="px-5 py-8 text-center">
-                  <p className="text-sm text-gray-500">No recent leads found.</p>
+                  <p className="text-sm text-zinc-500">No recent leads found.</p>
                 </div>
               ) : (
-                <ul className="divide-y divide-gray-100">
+                <ul className="divide-y divide-[#E8E2D5]">
                   {data.recentLeads.map(lead => (
                     <li key={lead.id}>
                       <button
                         onClick={() => navigate(`/staff/leads/${lead.id}`)}
-                        className="w-full text-left px-5 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between group"
+                        className="w-full text-left px-5 py-4 hover:bg-[#FAF7F2]/60 transition-colors flex items-center justify-between group cursor-pointer"
                       >
                         <div className="min-w-0 pr-4">
                           <div className="flex flex-wrap items-center gap-2 mb-1">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-semibold text-zinc-900 truncate">
                               {lead.name}
                             </p>
                             {getStatusBadge(lead.status)}
                           </div>
-                          <div className="flex items-center text-xs text-gray-500 gap-3">
+                          <div className="flex items-center text-xs text-zinc-500 gap-3">
                             <span className="flex items-center">
-                              <Calendar className="w-3.5 h-3.5 mr-1" />
+                              <Calendar className="w-3.5 h-3.5 mr-1 text-[#8C6B14]" />
                               {formatDate(lead.createdAt)}
                             </span>
                             <span className="flex items-center">
-                              <Phone className="w-3.5 h-3.5 mr-1" />
+                              <Phone className="w-3.5 h-3.5 mr-1 text-[#8C6B14]" />
                               {lead.phone}
                             </span>
                           </div>
                           {lead.desiredTreatment && (
-                            <div className="mt-1.5 flex items-center text-xs text-gray-600">
-                              <FileText className="w-3.5 h-3.5 mr-1" />
-                              <span className="truncate max-w-[200px]">
+                            <div className="mt-1.5 flex items-center text-xs text-zinc-600">
+                              <FileText className="w-3.5 h-3.5 mr-1 text-zinc-400" />
+                              <span className="truncate max-w-[200px] font-medium">
                                 {lead.desiredTreatment}
                               </span>
                             </div>
                           )}
                         </div>
-                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#DCA51B] flex-shrink-0 transition-colors" />
+                        <ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-[#DCA51B] flex-shrink-0 transition-colors" />
                       </button>
                     </li>
                   ))}

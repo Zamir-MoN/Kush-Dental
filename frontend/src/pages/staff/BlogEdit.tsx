@@ -101,22 +101,29 @@ export const BlogEdit: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
-          <Link to="/staff/blog" className="text-gray-500 hover:text-gray-900">
-            <ArrowLeft size={24} />
+          <Link to="/staff/blog" className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-[#FAF7F2] transition-colors">
+            <ArrowLeft size={20} />
           </Link>
-          <h1 className="text-2xl font-bold text-[#162723]">Edit Blog Post</h1>
-          <span className={`px-2 py-1 text-xs font-medium rounded-full ${status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+          <div>
+            <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">Edit Blog Post</h1>
+            <p className="text-sm text-zinc-500">Update content and publication status</p>
+          </div>
+          <span className={`px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-lg border ${
+            status === 'PUBLISHED' 
+              ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+              : 'bg-[#FAF3E0] text-[#8C6B14] border-[#DCA51B]/40'
+          }`}>
             {status}
           </span>
           {user?.role === 'DOCTOR' && (
             <button
               onClick={() => setIsAIModalOpen(true)}
-              className="ml-4 flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium"
+              className="ml-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/40 hover:bg-[#F5EACB] transition-all shadow-sm"
             >
-              <Sparkles size={16} className="mr-2" />
-              Generate with AI
+              <Sparkles size={14} className="text-[#DCA51B]" />
+              AI Draft
             </button>
           )}
         </div>
@@ -124,39 +131,41 @@ export const BlogEdit: React.FC = () => {
         <button
           onClick={handlePublishToggle}
           disabled={saving}
-          className={`flex items-center px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
-            status === 'DRAFT' ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-amber-600 text-white hover:bg-amber-700'
+          className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm disabled:opacity-50 ${
+            status === 'DRAFT' 
+              ? 'bg-emerald-600 text-white hover:bg-emerald-700' 
+              : 'bg-zinc-100 text-zinc-700 border border-zinc-200 hover:bg-zinc-200'
           }`}
         >
           {status === 'DRAFT' ? (
-            <><CheckCircle size={18} className="mr-2" /> Publish</>
+            <><CheckCircle size={16} className="mr-2" /> Publish Now</>
           ) : (
-            <><XCircle size={18} className="mr-2" /> Unpublish</>
+            <><XCircle size={16} className="mr-2" /> Revert to Draft</>
           )}
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm border border-red-200">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm border border-red-200">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-6">
+      <form onSubmit={handleSave} className="bg-white rounded-2xl shadow-sm border border-[#E8E2D5] p-6 sm:p-8 space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Title</label>
           <input
             type="text"
             name="title"
             required
             value={formData.title}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+            className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Slug</label>
+          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Slug</label>
           <input
             type="text"
             name="slug"
@@ -164,47 +173,47 @@ export const BlogEdit: React.FC = () => {
             pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
             value={formData.slug}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+            className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Excerpt</label>
+          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Excerpt</label>
           <textarea
             name="excerpt"
             value={formData.excerpt}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+            className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image URL</label>
+          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Cover Image URL</label>
           <input
             type="text"
             name="coverImage"
             value={formData.coverImage}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#162723] focus:border-transparent"
+            className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Content</label>
           <RichTextEditor
             content={formData.content}
             onChange={(content) => setFormData({ ...formData, content })}
           />
         </div>
 
-        <div className="flex justify-end pt-4 border-t border-gray-100">
+        <div className="flex justify-end pt-4 border-t border-[#E8E2D5]">
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center px-6 py-2 bg-[#162723] text-white rounded-lg hover:bg-[#1a302b] transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] font-bold rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50"
           >
-            <Save size={20} className="mr-2" />
+            <Save size={18} />
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
