@@ -13,6 +13,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { ToothSparkleIcon } from '../components/common/DentalIcons';
+import { formatMarkdownToHtml } from '../lib/markdown';
 
 export const BlogPostDetail = () => {
   const { id } = useParams<{ id: string }>(); // ID is actually slug
@@ -197,8 +198,8 @@ export const BlogPostDetail = () => {
 
         {/* Dynamic Article Sections rendered via HTML */}
         <div 
-          className="prose prose-lg prose-zinc max-w-none prose-headings:font-serif prose-headings:text-[#141518] prose-p:font-sans prose-p:font-light prose-p:text-zinc-600 prose-a:text-[#DCA51B] mb-12"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          className="article-content max-w-none mb-12"
+          dangerouslySetInnerHTML={{ __html: formatMarkdownToHtml(post.content || '', { stripDuplicateTitle: post.title }) }}
         />
 
         {/* Author Bio Box */}

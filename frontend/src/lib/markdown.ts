@@ -15,7 +15,11 @@ export function isMarkdown(text: string): boolean {
   return hasMarkdownMarkers || !hasHtml;
 }
 
-export function formatMarkdownToHtml(raw: string): string {
+export interface MarkdownOptions {
+  stripDuplicateTitle?: string;
+}
+
+export function formatMarkdownToHtml(raw: string, options?: MarkdownOptions): string {
   if (!raw) return '';
 
   let text = String(raw).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
@@ -127,20 +131,36 @@ export function formatMarkdownToHtml(raw: string): string {
     // Heading 1: # Title
     const h1Match = trimmed.match(/^#\s+(.+)$/);
     if (h1Match) {
+      const h1Text = h1Match[1].trim();
+      if (options?.stripDuplicateTitle) {
+        const normH1 = h1Text.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normTitle = options.stripDuplicateTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (normH1 === normTitle || (normTitle.length > 10 && (normH1.includes(normTitle) || normTitle.includes(normH1)))) {
+          continue;
+        }
+      }
       flushParagraph();
       closeLists();
       closeBlockquote();
-      htmlParts.push(`<h1>${formatInline(h1Match[1].trim())}</h1>`);
+      htmlParts.push(`<h1>${formatInline(h1Text)}</h1>`);
       continue;
     }
 
     // Heading 2: ## Title
     const h2Match = trimmed.match(/^##\s+(.+)$/);
     if (h2Match) {
+      const h2Text = h2Match[1].trim();
+      if (options?.stripDuplicateTitle) {
+        const normH2 = h2Text.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normTitle = options.stripDuplicateTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (normH2 === normTitle || (normTitle.length > 10 && (normH2.includes(normTitle) || normTitle.includes(normH2)))) {
+          continue;
+        }
+      }
       flushParagraph();
       closeLists();
       closeBlockquote();
-      htmlParts.push(`<h2>${formatInline(h2Match[1].trim())}</h2>`);
+      htmlParts.push(`<h2>${formatInline(h2Text)}</h2>`);
       continue;
     }
 
