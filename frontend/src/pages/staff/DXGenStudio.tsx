@@ -26,31 +26,31 @@ export const DXGenStudio: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('universal');
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 p-4 sm:p-6 lg:p-8 rounded-2xl border border-[#162138] shadow-2xl">
+    <div className="bg-[#FAF7F2] text-zinc-900 p-4 sm:p-6 lg:p-8 rounded-3xl border border-[#E8E2D5] shadow-lg">
       {/* Studio Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#17233d]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#E8E2D5]">
         <div className="flex items-center space-x-3.5">
-          <div className="p-3 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-cyan-400 rounded-2xl shadow-[0_0_20px_rgba(6,182,212,0.18)]">
+          <div className="p-3 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#B8860B] rounded-2xl shadow-[0_4px_16px_rgba(220,165,27,0.15)]">
             <Bot size={28} />
           </div>
           <div>
             <div className="flex items-center space-x-2.5">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">AI Content Studio</h1>
-              <span className="px-2.5 py-0.5 text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-full">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">AI Content Studio</h1>
+              <span className="px-2.5 py-0.5 text-xs font-semibold bg-[#FAF3E0] text-[#B8860B] border border-[#DCA51B]/40 rounded-full">
                 v1.0 Live
               </span>
             </div>
-            <p className="text-sm text-slate-400 mt-0.5">Kush Dental DXGen Integration</p>
+            <p className="text-sm text-zinc-500 mt-0.5">Kush Dental DXGen Integration</p>
           </div>
         </div>
 
-        {/* Quick Service Link / Status */}
+        {/* Quick Service Link */}
         <div className="flex items-center space-x-3">
           <a
             href="http://51.20.121.253:3101"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#0f172a] hover:bg-[#16223b] text-slate-300 hover:text-cyan-300 text-xs font-medium rounded-lg border border-[#1e2d4d] transition-colors"
+            className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-[#F7F2E8] text-zinc-700 hover:text-[#B8860B] text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors shadow-sm"
           >
             <span>DXGen Engine</span>
             <ExternalLink size={13} />
@@ -59,7 +59,7 @@ export const DXGenStudio: React.FC = () => {
       </div>
 
       {/* Tabs Bar */}
-      <div className="bg-[#0b1325] rounded-xl border border-[#182746] p-1.5 mb-8 overflow-x-auto custom-scrollbar">
+      <div className="bg-white rounded-2xl border border-[#E8E2D5] p-1.5 mb-8 overflow-x-auto custom-scrollbar shadow-xs">
         <nav className="flex space-x-1 min-w-max" aria-label="Tabs">
           {[
             { id: 'universal', label: 'Universal' },
@@ -76,11 +76,11 @@ export const DXGenStudio: React.FC = () => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
                 className={`
-                  flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all
+                  flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all
                   ${
                     isActive
-                      ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.12)]'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-[#121f3a]'
+                      ? 'bg-[#FAF3E0] text-[#9E7309] border border-[#DCA51B]/40 shadow-xs'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#FAF7F2]'
                   }
                 `}
               >
@@ -161,7 +161,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
     language: 'English',
     tone: 'professional',
     length: '1000',
-    businessProfile: 'Fasun',
+    businessProfile: 'Kush Dental Clinic',
     customTone: '',
     audience: '',
     location: '',
@@ -171,9 +171,9 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   });
 
   const promptSuggestions = [
-    'AI Marketing Strategies',
-    'Best CRM for B2B Startups',
-    'Instagram Launch Hook',
+    'Benefits of Invisible Aligners',
+    'Emergency Dental Care Tips',
+    'Root Canal Myth vs Reality',
   ];
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -239,10 +239,10 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
       }
 
       // Business Profile Injection
-      if (formData.businessProfile === 'Fasun') {
-        payload.brandName = 'Fasun';
-      } else if (formData.businessProfile === 'Kush Dental Clinic') {
+      if (formData.businessProfile === 'Kush Dental Clinic') {
         payload.brandName = 'Kush Dental Clinic';
+      } else if (formData.businessProfile === 'Fasun') {
+        payload.brandName = 'Fasun';
       }
 
       // Advanced SEO Parameters
@@ -281,13 +281,13 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
   const downloadMarkdown = () => {
     if (!response?.content?.body) return;
-    const title = response.content?.title || 'generated-content';
-    const content = `# ${title}\n\n${response.content?.metaDescription ? `> **Meta Description:** ${response.content.metaDescription}\n\n` : ''}${response.content.body}`;
+    const itemTitle = response.content?.title || 'generated-content';
+    const content = `# ${itemTitle}\n\n${response.content?.metaDescription ? `> **Meta Description:** ${response.content.metaDescription}\n\n` : ''}${response.content.body}`;
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`);
+    link.setAttribute('download', `${itemTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -296,15 +296,15 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Left Form Column */}
-      <div className="lg:col-span-6 space-y-6 bg-[#0a1122] p-6 rounded-2xl border border-[#172542] shadow-xl">
+      <div className="lg:col-span-6 space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
         <div>
-          <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
-          <p className="text-xs text-slate-400 mt-0.5">Fill out the parameters to generate AI content.</p>
+          <h2 className="text-xl font-bold text-zinc-900 tracking-tight">{title}</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">Fill out the parameters to generate AI content.</p>
         </div>
 
         {error && (
-          <div className="bg-red-950/40 text-red-300 p-4 rounded-xl text-sm border border-red-800/60 flex items-start space-x-2">
-            <span className="text-red-400 font-bold">Error:</span>
+          <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200 flex items-start space-x-2">
+            <span className="text-rose-600 font-bold">Error:</span>
             <span>{error}</span>
           </div>
         )}
@@ -312,8 +312,8 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Topic or Headline */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
-              Topic or Headline <span className="text-rose-400">*</span>
+            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+              Topic or Headline <span className="text-rose-500">*</span>
             </label>
             <textarea
               name="topic"
@@ -322,18 +322,18 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
               value={formData.topic}
               onChange={handleChange}
               placeholder="e.g. Best web development services for small businesses in 2026"
-              className="w-full px-4 py-3 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 placeholder-slate-500 text-sm outline-none resize-none transition-all"
+              className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none resize-none transition-all"
             />
 
             {/* Try Suggestions */}
             <div className="flex flex-wrap items-center gap-2 mt-2">
-              <span className="text-xs text-slate-400 font-medium">Try:</span>
+              <span className="text-xs text-zinc-500 font-medium">Try:</span>
               {promptSuggestions.map((suggestion) => (
                 <button
                   type="button"
                   key={suggestion}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="px-2.5 py-1 bg-[#121e36] hover:bg-[#1a2c4e] text-slate-300 hover:text-cyan-300 text-xs rounded-lg border border-[#1e3052] transition-colors"
+                  className="px-2.5 py-1 bg-[#F5EFE4] hover:bg-[#EFE8D9] text-zinc-700 hover:text-zinc-900 text-xs font-medium rounded-lg border border-[#E2DACB] transition-colors cursor-pointer"
                 >
                   {suggestion}
                 </button>
@@ -343,7 +343,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
           {/* Content Type (Select Dropdown) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
               Content Type
             </label>
             <div className="relative">
@@ -351,7 +351,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 name="contentType"
                 value={formData.contentType}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
               >
                 <option value="seo_blog_article">SEO Blog Article</option>
                 <option value="how_to_article">How-To Article / Guide</option>
@@ -366,7 +366,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 <option value="google_business_profile_post">Google Business Profile Post</option>
                 <option value="email">Email Newsletter</option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                 <ChevronDown size={16} />
               </div>
             </div>
@@ -375,7 +375,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
           {/* Platform & Language (2-Column Row) */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+              <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
                 Platform
               </label>
               <div className="relative">
@@ -383,7 +383,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   name="platform"
                   value={formData.platform}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                 >
                   <option value="website">Website / Blog</option>
                   <option value="instagram">Instagram</option>
@@ -393,14 +393,14 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   <option value="google_business">Google Business</option>
                   <option value="email">Email</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                   <ChevronDown size={16} />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+              <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
                 Language
               </label>
               <div className="relative">
@@ -408,7 +408,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   name="language"
                   value={formData.language}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                 >
                   <option value="English">English</option>
                   <option value="Hindi">Hindi</option>
@@ -417,7 +417,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   <option value="German">German</option>
                   <option value="Bengali">Bengali</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                   <ChevronDown size={16} />
                 </div>
               </div>
@@ -427,7 +427,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
           {/* Tone & Length (2-Column Row) */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+              <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
                 Tone
               </label>
               <div className="relative">
@@ -435,7 +435,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   name="tone"
                   value={formData.tone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                 >
                   <option value="professional">Professional</option>
                   <option value="casual">Casual</option>
@@ -448,14 +448,14 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   <option value="technical">Technical</option>
                   <option value="empathetic">Empathetic</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                   <ChevronDown size={16} />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+              <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
                 Length
               </label>
               <div className="relative">
@@ -463,14 +463,14 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                   name="length"
                   value={formData.length}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                 >
                   <option value="1000">Medium (800–1200w)</option>
                   <option value="500">Short (300–500w)</option>
                   <option value="1800">Long (1500–2000w)</option>
                   <option value="2500">Comprehensive (2500w+)</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                   <ChevronDown size={16} />
                 </div>
               </div>
@@ -479,20 +479,20 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
           {/* Keywords (Type and press Enter) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
               Keywords (Type and press Enter)
             </label>
-            <div className="min-h-[44px] p-2 bg-[#0d1629] border border-[#1c2a47] focus-within:border-cyan-500 focus-within:ring-1 focus-within:ring-cyan-500 rounded-xl flex flex-wrap items-center gap-1.5 transition-all">
+            <div className="min-h-[44px] p-2 bg-[#FAF7F2] border border-[#E2DACB] focus-within:border-[#DCA51B] focus-within:ring-1 focus-within:ring-[#DCA51B] rounded-2xl flex flex-wrap items-center gap-1.5 transition-all">
               {keywordsList.map((kw) => (
                 <span
                   key={kw}
-                  className="inline-flex items-center px-2 py-0.5 bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs rounded-md"
+                  className="inline-flex items-center px-2.5 py-0.5 bg-[#FAF3E0] border border-[#DCA51B]/40 text-[#8C6B14] text-xs font-semibold rounded-lg"
                 >
                   {kw}
                   <button
                     type="button"
                     onClick={() => removeKeyword(kw)}
-                    className="ml-1 text-cyan-400 hover:text-cyan-200"
+                    className="ml-1 text-[#8C6B14] hover:text-zinc-900 cursor-pointer"
                   >
                     <X size={12} />
                   </button>
@@ -504,7 +504,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 onChange={(e) => setKeywordInput(e.target.value)}
                 onKeyDown={handleKeywordKeyDown}
                 placeholder={keywordsList.length === 0 ? 'Add keywords...' : ''}
-                className="flex-1 min-w-[120px] bg-transparent text-slate-100 text-sm outline-none placeholder-slate-500 px-1"
+                className="flex-1 min-w-[120px] bg-transparent text-zinc-900 text-sm outline-none placeholder-zinc-400 px-1 font-medium"
               />
             </div>
           </div>
@@ -512,63 +512,63 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
           {/* Attached Business Profile */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-slate-300 tracking-wide uppercase">
+              <label className="text-xs font-bold text-zinc-700 tracking-wide uppercase">
                 Attached Business Profile
               </label>
-              <span className="text-xs text-slate-400 font-normal">Auto-injects brand voice & USPs</span>
+              <span className="text-xs text-zinc-500 font-normal">Auto-injects brand voice & USPs</span>
             </div>
             <div className="relative">
               <select
                 name="businessProfile"
                 value={formData.businessProfile}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all"
+                className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
               >
-                <option value="Fasun">Fasun</option>
                 <option value="Kush Dental Clinic">Kush Dental Clinic</option>
+                <option value="Fasun">Fasun</option>
                 <option value="None">None (Generic)</option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
                 <ChevronDown size={16} />
               </div>
             </div>
           </div>
 
           {/* Advanced SEO & Strategy Parameters (Collapsible Accordion) */}
-          <div className="border border-[#1a2948] rounded-xl bg-[#0c1426] overflow-hidden">
+          <div className="border border-[#E2DACB] rounded-2xl bg-[#FAF7F2] overflow-hidden">
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-full px-4 py-3 flex items-center justify-between text-left text-xs font-semibold text-slate-300 tracking-wide hover:bg-[#111c33] transition-colors"
+              className="w-full px-4 py-3 flex items-center justify-between text-left text-xs font-bold text-zinc-700 tracking-wide hover:bg-[#F2ECE1] transition-colors cursor-pointer"
             >
               <div className="flex items-center space-x-2">
-                <SlidersHorizontal size={14} className="text-cyan-400" />
+                <SlidersHorizontal size={14} className="text-[#B8860B]" />
                 <span>Advanced SEO & Strategy Parameters</span>
               </div>
               {showAdvanced ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </button>
 
             {showAdvanced && (
-              <div className="p-4 border-t border-[#1a2948] space-y-4 bg-[#0a1020]">
+              <div className="p-4 border-t border-[#E2DACB] space-y-4 bg-white">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">Primary Keyword</label>
+                    <label className="block text-xs font-medium text-zinc-600 mb-1">Primary Keyword</label>
                     <input
                       type="text"
                       name="primaryKeyword"
                       value={formData.primaryKeyword}
                       onChange={handleChange}
-                      placeholder="e.g. web design tips"
-                      className="w-full px-3 py-2 bg-[#0d1629] border border-[#1c2a47] rounded-lg text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
+                      placeholder="e.g. cosmetic dentistry"
+                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">Search Intent</label>
+                    <label className="block text-xs font-medium text-zinc-600 mb-1">Search Intent</label>
                     <select
                       name="searchIntent"
                       value={formData.searchIntent}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-[#0d1629] border border-[#1c2a47] rounded-lg text-xs text-slate-100 outline-none focus:border-cyan-500"
+                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 outline-none focus:border-[#DCA51B] cursor-pointer"
                     >
                       <option value="Informational">Informational</option>
                       <option value="Commercial">Commercial</option>
@@ -580,38 +580,38 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">Target Audience</label>
+                    <label className="block text-xs font-medium text-zinc-600 mb-1">Target Audience</label>
                     <input
                       type="text"
                       name="audience"
                       value={formData.audience}
                       onChange={handleChange}
-                      placeholder="e.g. B2B Founders"
-                      className="w-full px-3 py-2 bg-[#0d1629] border border-[#1c2a47] rounded-lg text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
+                      placeholder="e.g. Local Dental Patients"
+                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-400 mb-1">Location</label>
+                    <label className="block text-xs font-medium text-zinc-600 mb-1">Location</label>
                     <input
                       type="text"
                       name="location"
                       value={formData.location}
                       onChange={handleChange}
-                      placeholder="e.g. Global, New York"
-                      className="w-full px-3 py-2 bg-[#0d1629] border border-[#1c2a47] rounded-lg text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
+                      placeholder="e.g. Kolkata, India"
+                      className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Custom Tone Description</label>
+                  <label className="block text-xs font-medium text-zinc-600 mb-1">Custom Tone Description</label>
                   <input
                     type="text"
                     name="customTone"
                     value={formData.customTone}
                     onChange={handleChange}
-                    placeholder="e.g. Authoritative yet approachable industry expert"
-                    className="w-full px-3 py-2 bg-[#0d1629] border border-[#1c2a47] rounded-lg text-xs text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500"
+                    placeholder="e.g. Compassionate, clinically expert, reassuring"
+                    className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#DCA51B]"
                   />
                 </div>
               </div>
@@ -620,7 +620,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
           {/* Custom Instructions (Optional) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 tracking-wide mb-1.5 uppercase">
+            <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
               Custom Instructions (Optional)
             </label>
             <textarea
@@ -628,8 +628,8 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
               rows={2}
               value={formData.customInstructions}
               onChange={handleChange}
-              placeholder="e.g. Include a comparison table and emphasize our 14-day free trial"
-              className="w-full px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 placeholder-slate-500 text-sm outline-none resize-none transition-all"
+              placeholder="e.g. Highlight painless laser dentistry and state-of-the-art clinic hygiene"
+              className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none resize-none transition-all"
             />
           </div>
 
@@ -637,7 +637,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 px-4 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-2xl shadow-md shadow-[#DCA51B]/30 flex items-center justify-center space-x-2 transition-all disabled:opacity-50 cursor-pointer"
           >
             {loading ? (
               <>
@@ -655,24 +655,24 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
       </div>
 
       {/* Right Content / Preview Column */}
-      <div className="lg:col-span-6 bg-[#0a1122] rounded-2xl border border-[#172542] p-6 min-h-[580px] flex flex-col shadow-xl">
+      <div className="lg:col-span-6 bg-white rounded-3xl border border-[#E8E2D5] p-6 sm:p-7 min-h-[580px] flex flex-col shadow-sm">
         {response ? (
           <div className="space-y-6 flex-1">
             {/* Top Bar with Badges and Copy/Download actions */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#172542]">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E8E2D5]">
               <div className="flex items-center space-x-2">
-                <span className="px-2.5 py-1 bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-semibold rounded-lg flex items-center space-x-1">
-                  <Sparkles size={12} />
+                <span className="px-3 py-1 bg-[#FAF3E0] border border-[#DCA51B]/40 text-[#9E7309] text-xs font-bold rounded-xl flex items-center space-x-1.5">
+                  <Sparkles size={13} />
                   <span>Generated Copy</span>
                 </span>
                 {response.content?.wordCount && (
-                  <span className="px-2.5 py-1 bg-[#121f3a] text-slate-300 text-xs rounded-lg flex items-center space-x-1">
+                  <span className="px-2.5 py-1 bg-[#FAF7F2] text-zinc-700 text-xs font-medium rounded-lg border border-[#E8E2D5] flex items-center space-x-1">
                     <FileText size={12} />
                     <span>{response.content.wordCount} words</span>
                   </span>
                 )}
                 {response.content?.readingTimeMinutes && (
-                  <span className="px-2.5 py-1 bg-[#121f3a] text-slate-300 text-xs rounded-lg flex items-center space-x-1">
+                  <span className="px-2.5 py-1 bg-[#FAF7F2] text-zinc-700 text-xs font-medium rounded-lg border border-[#E8E2D5] flex items-center space-x-1">
                     <Clock size={12} />
                     <span>{response.content.readingTimeMinutes} min read</span>
                   </span>
@@ -683,12 +683,12 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 <button
                   type="button"
                   onClick={() => copyToClipboard(response.content?.body || '')}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#121e38] hover:bg-[#1a2c52] text-slate-200 text-xs font-medium rounded-lg border border-[#1f3257] transition-colors"
+                  className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors cursor-pointer"
                 >
                   {copied ? (
                     <>
-                      <CheckCircle2 size={14} className="text-emerald-400" />
-                      <span className="text-emerald-400">Copied!</span>
+                      <CheckCircle2 size={14} className="text-emerald-600" />
+                      <span className="text-emerald-700">Copied!</span>
                     </>
                   ) : (
                     <>
@@ -700,7 +700,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 <button
                   type="button"
                   onClick={downloadMarkdown}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#121e38] hover:bg-[#1a2c52] text-slate-200 text-xs font-medium rounded-lg border border-[#1f3257] transition-colors"
+                  className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 text-xs font-semibold rounded-xl border border-[#E2DACB] transition-colors cursor-pointer"
                 >
                   <Download size={14} />
                   <span>Download .md</span>
@@ -711,10 +711,10 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             {/* Generated Title */}
             {response.content?.title && (
               <div>
-                <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
+                <span className="text-[11px] font-bold tracking-wider text-[#9E7309] uppercase">
                   Article Title
                 </span>
-                <h3 className="text-lg sm:text-xl font-bold text-white mt-1 leading-snug">
+                <h3 className="text-lg sm:text-xl font-bold text-zinc-900 mt-1 leading-snug">
                   {response.content.title}
                 </h3>
               </div>
@@ -722,25 +722,25 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
             {/* SEO Meta Box */}
             {(response.content?.metaTitle || response.content?.metaDescription || response.content?.slug) && (
-              <div className="bg-[#0e182e] p-4 rounded-xl border border-[#1c2c4d] space-y-2">
-                <span className="text-[11px] font-semibold tracking-wider text-cyan-400 uppercase flex items-center space-x-1">
+              <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#E8E2D5] space-y-2">
+                <span className="text-[11px] font-bold tracking-wider text-[#9E7309] uppercase flex items-center space-x-1">
                   <Zap size={13} />
                   <span>SEO Snippet</span>
                 </span>
                 {response.content?.slug && (
-                  <p className="text-xs text-slate-400 font-mono">
-                    <span className="text-slate-500">slug:</span> /{response.content.slug}
+                  <p className="text-xs text-zinc-500 font-mono">
+                    <span className="text-zinc-400 font-sans">slug:</span> /{response.content.slug}
                   </p>
                 )}
                 {response.content?.metaTitle && (
-                  <p className="text-xs font-semibold text-slate-200">
-                    <span className="text-slate-400 font-normal">Meta Title: </span>
+                  <p className="text-xs font-semibold text-zinc-800">
+                    <span className="text-zinc-500 font-normal">Meta Title: </span>
                     {response.content.metaTitle}
                   </p>
                 )}
                 {response.content?.metaDescription && (
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    <span className="text-slate-400 font-normal">Meta Description: </span>
+                  <p className="text-xs text-zinc-700 leading-relaxed">
+                    <span className="text-zinc-500 font-normal">Meta Description: </span>
                     {response.content.metaDescription}
                   </p>
                 )}
@@ -750,10 +750,10 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             {/* Formatted Body */}
             {response.content?.body && (
               <div>
-                <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
+                <span className="text-[11px] font-bold tracking-wider text-[#9E7309] uppercase">
                   Content Body
                 </span>
-                <div className="mt-2 p-5 bg-[#0b1426] rounded-xl border border-[#1b2b4b] text-slate-200 text-sm leading-relaxed whitespace-pre-wrap max-h-[460px] overflow-y-auto custom-scrollbar font-normal">
+                <div className="mt-2 p-5 bg-[#FAF7F2] rounded-2xl border border-[#E8E2D5] text-zinc-800 text-sm leading-relaxed whitespace-pre-wrap max-h-[460px] overflow-y-auto custom-scrollbar font-normal">
                   {response.content.body}
                 </div>
               </div>
@@ -761,19 +761,19 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
 
             {/* FAQs Section */}
             {response.content?.faq && Array.isArray(response.content.faq) && response.content.faq.length > 0 && (
-              <div className="bg-[#0e182e] p-4 rounded-xl border border-[#1c2c4d] space-y-3">
-                <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase flex items-center space-x-1">
-                  <HelpCircle size={13} className="text-cyan-400" />
+              <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#E8E2D5] space-y-3">
+                <span className="text-[11px] font-bold tracking-wider text-[#9E7309] uppercase flex items-center space-x-1">
+                  <HelpCircle size={13} />
                   <span>Frequently Asked Questions</span>
                 </span>
                 <div className="space-y-2">
                   {response.content.faq.map((item: any, idx: number) => (
-                    <div key={idx} className="bg-[#091120] p-3 rounded-lg border border-[#182643]">
-                      <p className="text-xs font-semibold text-slate-200">
+                    <div key={idx} className="bg-white p-3.5 rounded-xl border border-[#E8E2D5]">
+                      <p className="text-xs font-bold text-zinc-800">
                         Q: {typeof item === 'string' ? item : item.question}
                       </p>
                       {item.answer && (
-                        <p className="text-xs text-slate-400 mt-1">A: {item.answer}</p>
+                        <p className="text-xs text-zinc-600 mt-1 leading-relaxed">A: {item.answer}</p>
                       )}
                     </div>
                   ))}
@@ -788,7 +788,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 {response.content?.keywords?.map((kw: string, i: number) => (
                   <span
                     key={i}
-                    className="px-2 py-0.5 bg-[#121f3a] text-slate-300 text-xs rounded-md border border-[#1a2c4e]"
+                    className="px-2.5 py-1 bg-[#FAF3E0] text-[#8C6B14] font-medium text-xs rounded-lg border border-[#DCA51B]/30"
                   >
                     #{kw}
                   </span>
@@ -796,7 +796,7 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 {response.content?.hashtags?.map((tag: string, i: number) => (
                   <span
                     key={i}
-                    className="px-2 py-0.5 bg-cyan-950/40 text-cyan-300 text-xs rounded-md border border-cyan-800/40"
+                    className="px-2.5 py-1 bg-[#F5EFE4] text-zinc-700 font-medium text-xs rounded-lg border border-[#E2DACB]"
                   >
                     {tag}
                   </span>
@@ -805,23 +805,23 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             )}
 
             {/* Raw JSON Debug */}
-            <details className="mt-4 pt-4 border-t border-[#172542]">
-              <summary className="text-xs font-medium text-cyan-400 hover:text-cyan-300 cursor-pointer">
+            <details className="mt-4 pt-4 border-t border-[#E8E2D5]">
+              <summary className="text-xs font-semibold text-[#9E7309] hover:text-[#B8860B] cursor-pointer">
                 View Raw JSON Metadata
               </summary>
-              <pre className="mt-2 text-[11px] bg-[#070d1a] text-slate-300 p-4 rounded-xl border border-[#16233d] overflow-x-auto max-h-60 custom-scrollbar">
+              <pre className="mt-2 text-[11px] bg-[#FAF7F2] text-zinc-800 p-4 rounded-2xl border border-[#E8E2D5] overflow-x-auto max-h-60 custom-scrollbar font-mono">
                 {JSON.stringify(response, null, 2)}
               </pre>
             </details>
           </div>
         ) : (
-          /* Empty / Initial State matching Image 2 */
+          /* Empty / Initial State matching Kush Dental Theme */
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-            <div className="w-16 h-16 rounded-2xl bg-[#0f223d] border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-5 shadow-[0_0_25px_rgba(6,182,212,0.18)]">
+            <div className="w-16 h-16 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/40 flex items-center justify-center text-[#B8860B] mb-5 shadow-[0_4px_16px_rgba(220,165,27,0.18)]">
               <Sparkles size={30} />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Ready for your prompt</h3>
-            <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
+            <h3 className="text-lg font-bold text-zinc-900 mb-2">Ready for your prompt</h3>
+            <p className="text-sm text-zinc-500 max-w-sm leading-relaxed">
               Configure your parameters on the left and click Generate Content. The system will build an
               optimized prompt internally and return formatted SEO-ready copy.
             </p>
@@ -858,10 +858,10 @@ const ContentLookup: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl space-y-6 bg-[#0a1122] p-6 rounded-2xl border border-[#172542] shadow-xl">
+    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
       <div>
-        <h2 className="text-xl font-bold text-white">Content Lookup</h2>
-        <p className="text-sm text-slate-400 mt-1">
+        <h2 className="text-xl font-bold text-zinc-900">Content Lookup</h2>
+        <p className="text-sm text-zinc-500 mt-1">
           Retrieve previously generated content records and metadata by Content ID.
         </p>
       </div>
@@ -873,12 +873,12 @@ const ContentLookup: React.FC = () => {
           onChange={(e) => setContentId(e.target.value)}
           placeholder="e.g. cnt_72948201a0bc"
           required
-          className="flex-1 px-4 py-2.5 bg-[#0d1629] border border-[#1c2a47] focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl text-slate-100 placeholder-slate-500 text-sm outline-none"
+          className="flex-1 px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none font-medium"
         />
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-semibold rounded-xl shadow-md shadow-cyan-500/20 disabled:opacity-50 cursor-pointer"
+          className="flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-[#E5B22D] to-[#DCA51B] hover:brightness-105 text-[#141518] font-bold rounded-2xl shadow-sm disabled:opacity-50 cursor-pointer"
         >
           {loading ? (
             <RefreshCw className="animate-spin mr-2" size={18} />
@@ -890,14 +890,14 @@ const ContentLookup: React.FC = () => {
       </form>
 
       {error && (
-        <div className="bg-red-950/40 text-red-300 p-4 rounded-xl text-sm border border-red-800/60">
+        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
           {error}
         </div>
       )}
 
       {response && (
-        <div className="bg-[#0b1426] p-6 rounded-xl border border-[#1b2b4b]">
-          <pre className="text-xs text-slate-300 whitespace-pre-wrap overflow-x-auto custom-scrollbar">
+        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5]">
+          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
             {JSON.stringify(response, null, 2)}
           </pre>
         </div>
@@ -926,30 +926,30 @@ const UsageTab: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl space-y-6 bg-[#0a1122] p-6 rounded-2xl border border-[#172542] shadow-xl">
+    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
       <div>
-        <h2 className="text-xl font-bold text-white">API Usage & Rate Quotas</h2>
-        <p className="text-sm text-slate-400 mt-1">Check current token usage, limits, and credit allocation.</p>
+        <h2 className="text-xl font-bold text-zinc-900">API Usage & Rate Quotas</h2>
+        <p className="text-sm text-zinc-500 mt-1">Check current token usage, limits, and credit allocation.</p>
       </div>
 
       <button
         onClick={fetchUsage}
         disabled={loading}
-        className="flex items-center px-4 py-2.5 bg-[#0f1a30] hover:bg-[#162544] text-slate-200 border border-[#1d2f53] rounded-xl text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
+        className="flex items-center px-5 py-2.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 border border-[#E2DACB] rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
       >
         <RefreshCw className={`mr-2 ${loading ? 'animate-spin' : ''}`} size={16} />
         Refresh Usage Stats
       </button>
 
       {error && (
-        <div className="bg-red-950/40 text-red-300 p-4 rounded-xl text-sm border border-red-800/60">
+        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
           {error}
         </div>
       )}
 
       {response && (
-        <div className="bg-[#0b1426] p-6 rounded-xl border border-[#1b2b4b]">
-          <pre className="text-xs text-slate-300 whitespace-pre-wrap overflow-x-auto custom-scrollbar">
+        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5]">
+          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
             {JSON.stringify(response, null, 2)}
           </pre>
         </div>
@@ -978,40 +978,40 @@ const HealthTab: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl space-y-6 bg-[#0a1122] p-6 rounded-2xl border border-[#172542] shadow-xl">
+    <div className="max-w-3xl space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-[#E8E2D5] shadow-sm">
       <div>
-        <h2 className="text-xl font-bold text-white">Service Health Diagnostics</h2>
-        <p className="text-sm text-slate-400 mt-1">Verify live connectivity with the DXGen AI service cluster.</p>
+        <h2 className="text-xl font-bold text-zinc-900">Service Health Diagnostics</h2>
+        <p className="text-sm text-zinc-500 mt-1">Verify live connectivity with the DXGen AI service cluster.</p>
       </div>
 
       <button
         onClick={checkHealth}
         disabled={loading}
-        className="flex items-center px-4 py-2.5 bg-[#0f1a30] hover:bg-[#162544] text-slate-200 border border-[#1d2f53] rounded-xl text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
+        className="flex items-center px-5 py-2.5 bg-[#FAF7F2] hover:bg-[#F2ECE1] text-zinc-800 border border-[#E2DACB] rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
       >
-        <Activity className={`mr-2 ${loading ? 'animate-pulse text-cyan-400' : 'text-slate-400'}`} size={16} />
+        <Activity className={`mr-2 ${loading ? 'animate-pulse text-[#DCA51B]' : 'text-zinc-500'}`} size={16} />
         Check DXGen Health
       </button>
 
       {error && (
-        <div className="bg-red-950/40 text-red-300 p-4 rounded-xl text-sm border border-red-800/60">
+        <div className="bg-rose-50 text-rose-800 p-4 rounded-2xl text-sm border border-rose-200">
           {error}
         </div>
       )}
 
       {response && (
-        <div className="bg-[#0b1426] p-6 rounded-xl border border-[#1b2b4b] space-y-4">
+        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-[#E8E2D5] space-y-4">
           <div className="flex items-center space-x-2.5">
             <div
               className={`w-3 h-3 rounded-full ${
                 response.status === 'ok' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-rose-500'
               }`}
             />
-            <span className="font-semibold text-white capitalize text-sm">
+            <span className="font-bold text-zinc-900 capitalize text-sm">
               Status: {response.status || 'Unknown'}
             </span>
           </div>
-          <pre className="text-xs text-slate-300 whitespace-pre-wrap overflow-x-auto custom-scrollbar">
+          <pre className="text-xs text-zinc-800 whitespace-pre-wrap overflow-x-auto custom-scrollbar font-mono">
             {JSON.stringify(response, null, 2)}
           </pre>
         </div>
