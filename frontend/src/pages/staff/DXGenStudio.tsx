@@ -208,6 +208,16 @@ interface GeneratorFormProps {
   defaultPlatform?: string;
 }
 
+const GENERATION_PHASES = [
+  { label: 'Initializing prompt & brand voice guardrails...', minPct: 5 },
+  { label: 'Connecting to Google Gemini AI engine...', minPct: 25 },
+  { label: 'Structuring clinical outline & headings...', minPct: 50 },
+  { label: 'Drafting high-authority dental copy...', minPct: 70 },
+  { label: 'Formulating SEO meta tags, FAQs & keywords...', minPct: 88 },
+  { label: 'Finalizing response & verifying markdown...', minPct: 96 },
+  { label: 'Content generated successfully!', minPct: 100 },
+];
+
 const GeneratorForm: React.FC<GeneratorFormProps> = ({
   endpoint,
   title,
@@ -221,6 +231,11 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [keywordInput, setKeywordInput] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
+
+  // Real-time progress bar state
+  const [progress, setProgress] = useState(0);
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   const [formData, setFormData] = useState({
     topic: '',
@@ -280,6 +295,37 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
     setError(null);
     setResponse(null);
     setCopied(false);
+    setProgress(8);
+    setPhaseIndex(0);
+    setElapsedSeconds(0);
+
+    const startTime = Date.now();
+    const timerInterval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      setElapsedSeconds(Math.round(elapsed * 10) / 10);
+
+      setProgress((prev) => {
+        if (prev >= 94) {
+          return Math.min(97, +(prev + 0.1).toFixed(1));
+        }
+        if (elapsed < 2.5) {
+          setPhaseIndex(0);
+          return Math.min(22, Math.round(8 + elapsed * 6));
+        } else if (elapsed < 5.5) {
+          setPhaseIndex(1);
+          return Math.min(48, Math.round(22 + (elapsed - 2.5) * 8.5));
+        } else if (elapsed < 9.0) {
+          setPhaseIndex(2);
+          return Math.min(72, Math.round(48 + (elapsed - 5.5) * 6.8));
+        } else if (elapsed < 12.5) {
+          setPhaseIndex(3);
+          return Math.min(88, Math.round(72 + (elapsed - 9.0) * 4.5));
+        } else {
+          setPhaseIndex(4);
+          return Math.min(94, Math.round(88 + (elapsed - 12.5) * 1.5));
+        }
+      });
+    }, 150);
 
     try {
       const payload: any = {
@@ -341,9 +387,14 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
         data: payload,
       });
 
+      clearInterval(timerInterval);
+      setProgress(100);
+      setPhaseIndex(6);
+      await new Promise((r) => setTimeout(r, 450));
       setResponse(res);
     } catch (err: any) {
       setError(extractErrorMessage(err, 'Content generation failed. Please verify AI service configuration.'));
+      setProgress(0);
     } finally {
       setLoading(false);
     }
@@ -710,17 +761,45 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
             />
           </div>
 
+          {/* Real-time Progress Bar (Active when loading) */}
+          {loading && (
+            <div className="bg-[#FAF7F2] border border-[#E2DACB] p-4 rounded-2xl space-y-2.5 transition-all">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center space-x-2 font-semibold text-zinc-800">
+                  <RefreshCw size={13} className="animate-spin text-[#DCA51B] shrink-0" />
+                  <span className="truncate max-w-[270px]">
+                    {GENERATION_PHASES[phaseIndex]?.label || 'Generating AI content...'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 shrink-0">
+                  <span className="font-mono text-zinc-500 text-[11px]">{elapsedSeconds.toFixed(1)}s</span>
+                  <span className="font-bold text-[#8C6B14] font-mono text-xs">{Math.round(progress)}%</span>
+                </div>
+              </div>
+
+              {/* Luxury Gold Progress Bar Track */}
+              <div className="relative w-full h-2.5 bg-[#E8E2D5] rounded-full overflow-hidden shadow-inner">
+                <div
+                  className="h-full bg-gradient-to-r from-[#DCA51B] via-[#F3C969] to-[#C49216] rounded-full transition-all duration-300 ease-out relative"
+                  style={{ width: `${Math.min(100, Math.max(6, progress))}%` }}
+                >
+                  <div className="absolute inset-0 bg-white/30 animate-pulse" />
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-2xl shadow-md shadow-[#DCA51B]/30 flex items-center justify-center space-x-2 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 px-4 bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] hover:brightness-105 text-[#141518] font-bold rounded-2xl shadow-md shadow-[#DCA51B]/30 flex items-center justify-center space-x-2 transition-all disabled:opacity-60 cursor-pointer overflow-hidden relative"
           >
             {loading ? (
-              <>
+              <div className="flex items-center space-x-2">
                 <RefreshCw className="animate-spin" size={18} />
-                <span>Generating Content...</span>
-              </>
+                <span>Generating Content... ({Math.round(progress)}%)</span>
+              </div>
             ) : (
               <>
                 <Sparkles size={18} />
@@ -892,6 +971,65 @@ const GeneratorForm: React.FC<GeneratorFormProps> = ({
                 {JSON.stringify(response, null, 2)}
               </pre>
             </details>
+          </div>
+        ) : loading ? (
+          /* Live AI Generation In-Progress State */
+          <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-6">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/50 flex items-center justify-center text-[#B8860B] shadow-[0_8px_24px_rgba(220,165,27,0.22)]">
+                <Sparkles size={30} className="animate-pulse" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-[#DCA51B] flex items-center justify-center text-[#B8860B] shadow-xs">
+                <RefreshCw size={12} className="animate-spin" />
+              </div>
+            </div>
+
+            <div>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FAF3E0] text-[#9E7309] border border-[#DCA51B]/40 mb-2">
+                AI Generation In Progress
+              </span>
+              <h3 className="text-xl font-bold text-zinc-900 tracking-tight">
+                Crafting Content for &ldquo;{formData.topic}&rdquo;
+              </h3>
+              <p className="text-xs text-zinc-500 mt-1 max-w-md mx-auto">
+                Powered by Google Gemini. Structuring clinical accuracy, SEO headings, and dental brand voice.
+              </p>
+            </div>
+
+            {/* Detailed Progress Card */}
+            <div className="w-full max-w-md bg-[#FAF7F2] p-5 rounded-2xl border border-[#E8E2D5] space-y-3.5 text-left">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold text-zinc-800 truncate max-w-[280px]">
+                  {GENERATION_PHASES[phaseIndex]?.label || 'Generating AI content...'}
+                </span>
+                <span className="font-bold text-[#8C6B14] font-mono text-sm">
+                  {Math.round(progress)}%
+                </span>
+              </div>
+
+              {/* Progress Bar Track */}
+              <div className="relative w-full h-3 bg-[#E8E2D5] rounded-full overflow-hidden shadow-inner">
+                <div
+                  className="h-full bg-gradient-to-r from-[#DCA51B] via-[#F3C969] to-[#C49216] rounded-full transition-all duration-300 ease-out relative"
+                  style={{ width: `${Math.min(100, Math.max(6, progress))}%` }}
+                >
+                  <div className="absolute inset-0 bg-white/25 animate-pulse" />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-0.5">
+                <span>Elapsed: <strong className="text-zinc-800 font-mono">{elapsedSeconds.toFixed(1)}s</strong></span>
+                <span>Expected: <strong className="text-zinc-800 font-mono">~12–15s</strong></span>
+              </div>
+            </div>
+
+            {/* Shimmer Skeleton Placeholder */}
+            <div className="w-full max-w-md space-y-2.5 opacity-50 pt-2">
+              <div className="h-4 bg-[#E8E2D5] rounded-md animate-pulse w-3/4 mx-auto" />
+              <div className="h-3 bg-[#EFE8D9] rounded-md animate-pulse w-full" />
+              <div className="h-3 bg-[#EFE8D9] rounded-md animate-pulse w-5/6 mx-auto" />
+              <div className="h-3 bg-[#EFE8D9] rounded-md animate-pulse w-2/3 mx-auto" />
+            </div>
           </div>
         ) : (
           /* Empty / Initial State matching Kush Dental Theme */
