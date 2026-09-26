@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Save, CheckCircle, XCircle, Sparkles, X, Loader2 } from 'lucide-react';
+import { ArrowLeft, Save, CheckCircle, XCircle, Sparkles, X } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { RichTextEditor } from '../../components/journal/RichTextEditor';
 import { useAuth } from '../../context/AuthContext';
@@ -84,33 +84,7 @@ export const BlogEdit: React.FC = () => {
     }
   };
 
-  const [generatingImage, setGeneratingImage] = useState(false);
-  const [imageError, setImageError] = useState<string | null>(null);
 
-  const handleGenerateCoverImage = async () => {
-    const promptText = formData.title.trim() || formData.excerpt.trim() || 'Modern aesthetic clinical dentistry and dental hygiene';
-    try {
-      setGeneratingImage(true);
-      setImageError(null);
-      const res: any = await apiClient('/api/v1/dxgen/images/generate', {
-        method: 'POST',
-        data: {
-          prompt: `Clinical dentistry: ${promptText}`,
-          style: 'Commercial Photography',
-          aspectRatio: '16:9'
-        }
-      });
-      if (res?.image?.url) {
-        setFormData(prev => ({ ...prev, coverImage: res.image.url }));
-      } else {
-        throw new Error('No image URL returned by AI service');
-      }
-    } catch (err: any) {
-      setImageError(err.details?.detail || err.message || 'Failed to generate image');
-    } finally {
-      setGeneratingImage(false);
-    }
-  };
 
   const handleAIGenerate = (contentData: any) => {
     if (formData.title || formData.content) {
@@ -242,9 +216,6 @@ export const BlogEdit: React.FC = () => {
             className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
             placeholder="https://example.com/image.jpg"
           />
-          {imageError && (
-            <p className="mt-1.5 text-xs text-red-600">{imageError}</p>
-          )}
           {formData.coverImage && (
             <div className="mt-3 relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-[#E2DACB] bg-zinc-900 group shadow-sm">
               <img
