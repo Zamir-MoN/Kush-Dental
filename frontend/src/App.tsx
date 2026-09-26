@@ -15,22 +15,24 @@ import { BlogEdit } from './pages/staff/BlogEdit';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { Login } from './pages/Login';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
-// Route-level code splitting for secondary pages (reduces initial JS payload by >55%)
+// Direct imports for staff portal to prevent dynamic chunk failures and white screen flashes on navigation
+import { PortalLayout } from './components/layout/PortalLayout';
+import { Dashboard } from './pages/staff/Dashboard';
+import { Leads } from './pages/staff/Leads';
+import { Appointments } from './pages/staff/Appointments';
+import { Patients } from './pages/staff/Patients';
+import { Users } from './pages/staff/Users';
+import { ContactList } from './pages/staff/contacts/ContactList';
+import { ContactDetail } from './pages/staff/contacts/ContactDetail';
+
+// Route-level code splitting for secondary public marketing pages
 const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
 const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.Services })));
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail').then(m => ({ default: m.BlogPostDetail })));
 const Booking = lazy(() => import('./pages/Booking').then(m => ({ default: m.Booking })));
-
-const PortalLayout = lazy(() => import('./components/layout/PortalLayout').then(m => ({ default: m.PortalLayout })));
-const Dashboard = lazy(() => import('./pages/staff/Dashboard').then(m => ({ default: m.Dashboard })));
-const Leads = lazy(() => import('./pages/staff/Leads').then(m => ({ default: m.Leads })));
-const Appointments = lazy(() => import('./pages/staff/Appointments').then(m => ({ default: m.Appointments })));
-const Patients = lazy(() => import('./pages/staff/Patients').then(m => ({ default: m.Patients })));
-const Users = lazy(() => import('./pages/staff/Users').then(m => ({ default: m.Users })));
-const ContactList = lazy(() => import('./pages/staff/contacts/ContactList').then(m => ({ default: m.ContactList })));
-const ContactDetail = lazy(() => import('./pages/staff/contacts/ContactDetail').then(m => ({ default: m.ContactDetail })));
 
 const pageVariants = {
   initial: {
@@ -43,16 +45,16 @@ const pageVariants = {
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.48,
+      duration: 0.35,
       ease: [0.22, 1, 0.36, 1] as const,
     },
   },
   exit: {
     opacity: 0,
-    y: -12,
-    filter: 'blur(3px)',
+    y: -8,
+    filter: 'blur(2px)',
     transition: {
-      duration: 0.26,
+      duration: 0.2,
       ease: [0.22, 1, 0.36, 1] as const,
     },
   },
@@ -60,31 +62,23 @@ const pageVariants = {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const isStaffRoute = location.pathname.startsWith('/staff');
 
-  return (
-    <AnimatePresence 
-      mode="wait" 
-      initial={false}
-      onExitComplete={() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-      }}
-    >
-      <motion.div
-        key={location.pathname}
-        variants={pageVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="w-full flex-grow flex flex-col"
-      >
-        <Suspense fallback={<div className="min-h-screen bg-[#FAF7F2]" />}>
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogPostDetail />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/book" element={<Booking />} />
+  // Staff Portal Routes: Render directly without AnimatePresence mode="wait"
+  // This guarantees PortalLayout stays permanently mounted, redirects (e.g. /staff -> dashboard)
+  // fire instantly without getting trapped in exit animations, and no white screens occur.
+  if (isStaffRoute) {
+    return (
+      <ErrorBoundary>
+        <Suspense fallback={
+          <div className="min-h-screen bg-[#0D0E12] flex items-center justify-center text-zinc-100">
+            <div className="flex flex-col items-center gap-3">
+              <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#DCA51B]/20 border-t-[#DCA51B]"></div>
+              <span className="text-xs uppercase tracking-wider text-zinc-500 font-semibold">Loading Portal...</span>
+            </div>
+          </div>
+        }>
+          <Routes>
             <Route path="/staff/login" element={<Login />} />
             <Route 
               path="/staff" 
@@ -94,7 +88,7 @@ const AnimatedRoutes = () => {
                 </ProtectedRoute>
               } 
             >
-              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route index element={<Navigate to="/staff/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="leads" element={<Leads />} />
               <Route path="leads/:id" element={<Leads />} />
@@ -102,18 +96,57 @@ const AnimatedRoutes = () => {
               <Route path="appointments/:id" element={<Appointments />} />
               <Route path="contacts" element={<ContactList />} />
               <Route path="contacts/:id" element={<ContactDetail />} />
-              <Route path="patients" element={<ProtectedRoute allowedRoles={['DOCTOR', 'STAFF']}><Patients /></ProtectedRoute>} />
-              <Route path="patients/:id" element={<ProtectedRoute allowedRoles={['DOCTOR']}><Patients /></ProtectedRoute>} />
+              <Route path="patients" element={<Patients />} />
+              <Route path="patients/:id" element={<Patients />} />
               <Route path="users" element={<ProtectedRoute allowedRoles={['DOCTOR']}><Users /></ProtectedRoute>} />
               <Route path="blog" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogList /></ProtectedRoute>} />
               <Route path="blog/new" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogCreate /></ProtectedRoute>} />
               <Route path="blog/:id/edit" element={<ProtectedRoute allowedRoles={['DOCTOR']}><BlogEdit /></ProtectedRoute>} />
               <Route path="dxgen" element={<Navigate to="/staff/blog" replace />} />
             </Route>
+            <Route path="*" element={<Navigate to="/staff/dashboard" replace />} />
           </Routes>
         </Suspense>
-      </motion.div>
-    </AnimatePresence>
+      </ErrorBoundary>
+    );
+  }
+
+  // Public Marketing Site Routes (Home, About, Services, Blog, Book)
+  return (
+    <ErrorBoundary>
+      <AnimatePresence 
+        mode="wait" 
+        initial={false}
+        onExitComplete={() => {
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+        }}
+      >
+        <motion.div
+          key={location.pathname}
+          variants={pageVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="w-full flex-grow flex flex-col"
+        >
+          <Suspense fallback={
+            <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
+              <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#DCA51B]/20 border-t-[#DCA51B]"></div>
+            </div>
+          }>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPostDetail />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/book" element={<Booking />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </motion.div>
+      </AnimatePresence>
+    </ErrorBoundary>
   );
 };
 

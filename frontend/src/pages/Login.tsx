@@ -13,7 +13,7 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/staff';
+  const from = location.state?.from?.pathname || '/staff/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,21 +35,19 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#FAF7F2] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="portal-dark flex min-h-screen items-center justify-center bg-[#0D0E12] px-4 py-12 sm:px-6 lg:px-8 text-zinc-100">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md space-y-8 rounded-3xl bg-white p-8 sm:p-10 shadow-xl border border-[#E8E2D5]"
+        initial={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md space-y-8 rounded-3xl bg-[#13151A] p-8 sm:p-10 shadow-2xl border border-[#22252E]"
       >
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E5B22D] to-[#B8871B] shadow-md mb-4 text-[#141518] font-bold text-2xl">
             K
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             Kush Dental Portal
           </h2>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-zinc-400">
             Sign in to access clinical and administrative tools
           </p>
         </div>
@@ -59,11 +57,11 @@ export const Login: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="rounded-xl bg-rose-50 p-4 border border-rose-200"
+              className="rounded-xl bg-rose-500/15 p-4 border border-rose-500/30 text-rose-300"
             >
               <div className="flex">
                 <div className="ml-1">
-                  <h3 className="text-sm font-semibold text-rose-700">{error}</h3>
+                  <h3 className="text-sm font-semibold">{error}</h3>
                 </div>
               </div>
             </motion.div>
@@ -71,7 +69,7 @@ export const Login: React.FC = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">
+              <label htmlFor="email-address" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">
                 Email address
               </label>
               <input
@@ -80,14 +78,14 @@ export const Login: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] py-3 px-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
+                className="block w-full rounded-xl bg-[#181A22] border border-[#2A2E3B] py-3 px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
                 placeholder="name@kushdental.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">
                 Password
               </label>
               <input
@@ -96,7 +94,7 @@ export const Login: React.FC = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="block w-full rounded-xl bg-[#FAF7F2] border border-[#E2DACB] py-3 px-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
+                className="block w-full rounded-xl bg-[#181A22] border border-[#2A2E3B] py-3 px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -107,7 +105,7 @@ export const Login: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] px-4 py-3 text-sm font-bold text-[#141518] shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#DCA51B] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] px-4 py-3 text-sm font-bold text-[#141518] shadow-md hover:brightness-105 transition-all focus:outline-none focus:ring-2 focus:ring-[#DCA51B] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
