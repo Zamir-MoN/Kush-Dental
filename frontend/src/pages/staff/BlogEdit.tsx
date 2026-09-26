@@ -5,6 +5,7 @@ import { apiClient } from '../../lib/apiClient';
 import { RichTextEditor } from '../../components/journal/RichTextEditor';
 import { useAuth } from '../../context/AuthContext';
 import { AIGenerationModal } from '../../components/journal/AIGenerationModal';
+import { AIImageModal } from '../../components/journal/AIImageModal';
 import { formatMarkdownToHtml } from '../../lib/markdown';
 
 export const BlogEdit: React.FC = () => {
@@ -15,6 +16,7 @@ export const BlogEdit: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   
   const [status, setStatus] = useState<'DRAFT' | 'PUBLISHED'>('DRAFT');
 
@@ -224,16 +226,11 @@ export const BlogEdit: React.FC = () => {
             {user?.role === 'DOCTOR' && (
               <button
                 type="button"
-                onClick={handleGenerateCoverImage}
-                disabled={generatingImage}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#8C6B14] bg-[#FAF3E0] hover:bg-[#F5EACB] border border-[#DCA51B]/40 rounded-xl transition-all shadow-sm disabled:opacity-50"
+                onClick={() => setIsImageModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#8C6B14] bg-[#FAF3E0] hover:bg-[#F5EACB] border border-[#DCA51B]/40 rounded-xl transition-all shadow-sm cursor-pointer"
               >
-                {generatingImage ? (
-                  <Loader2 size={13} className="animate-spin text-[#DCA51B]" />
-                ) : (
-                  <Sparkles size={13} className="text-[#DCA51B]" />
-                )}
-                {generatingImage ? 'Generating Image (FLUX)...' : 'Generate with AI'}
+                <Sparkles size={13} className="text-[#DCA51B]" />
+                Generate with AI
               </button>
             )}
           </div>
@@ -298,6 +295,13 @@ export const BlogEdit: React.FC = () => {
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}
         onTransfer={handleAIGenerate}
+      />
+
+      <AIImageModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+        initialPrompt={formData.title.trim() || formData.excerpt.trim() || 'Aesthetic clinical dentistry and radiant smile'}
+        onSelectImage={(url) => setFormData((prev) => ({ ...prev, coverImage: url }))}
       />
     </div>
   );
