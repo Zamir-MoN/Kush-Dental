@@ -228,7 +228,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
   const modalElement = (
     <div 
       data-lenis-prevent
-      className="fixed inset-0 z-[9999] overflow-hidden bg-black/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center overscroll-contain"
+      className="portal-dark fixed inset-0 z-[9999] overflow-hidden bg-black/80 backdrop-blur-md p-4 sm:p-6 flex items-center justify-center overscroll-contain"
       onClick={(e) => {
         if (e.target === e.currentTarget && !loading) {
           onClose();
@@ -237,23 +237,23 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
     >
       <div 
         data-lenis-prevent
-        className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] my-auto border border-[#E8E2D5] overflow-hidden overscroll-contain"
+        className="relative w-full max-w-2xl bg-[#13151A] rounded-3xl shadow-2xl flex flex-col max-h-[90vh] my-auto border border-[#22252E] text-zinc-100 overflow-hidden overscroll-contain"
       >
         {/* Modal Header */}
-        <div className="shrink-0 flex items-center justify-between p-5 sm:p-6 border-b border-[#E8E2D5] bg-[#FAF7F2]/70">
+        <div className="shrink-0 flex items-center justify-between p-5 sm:p-6 border-b border-[#22252E] bg-[#16181E]">
           <div className="flex items-center space-x-3.5">
-            <div className="p-2.5 bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/40 text-[#8C6B14] rounded-2xl shadow-sm">
+            <div className="p-2.5 bg-[#DCA51B]/15 border border-[#DCA51B]/40 text-[#F5C242] rounded-2xl shadow-sm">
               <Bot size={22} className="text-[#DCA51B]" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-zinc-900 tracking-tight">Article &amp; Content Generator</h2>
-              <p className="text-xs text-zinc-500">Fill out the parameters to generate AI content.</p>
+              <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">Article &amp; Content Generator</h2>
+              <p className="text-xs text-zinc-400">Fill out the parameters to generate AI content.</p>
             </div>
           </div>
           <button 
             onClick={onClose} 
             disabled={loading}
-            className="p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-[#FAF7F2] transition-colors disabled:opacity-50 cursor-pointer"
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-50 cursor-pointer"
           >
             <X size={20} />
           </button>
@@ -268,48 +268,48 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
             /* Real-Time Generation Progress Bar View */
             <div className="py-8 px-4 flex flex-col items-center justify-center text-center space-y-6">
               <div className="relative">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FAF3E0] to-[#F5E8C7] border border-[#DCA51B]/50 flex items-center justify-center text-[#8C6B14] shadow-[0_8px_24px_rgba(220,165,27,0.22)]">
+                <div className="w-16 h-16 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/50 flex items-center justify-center text-[#F5C242] shadow-[0_8px_24px_rgba(220,165,27,0.22)]">
                   <Sparkles size={30} className="animate-pulse text-[#DCA51B]" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-full border border-[#DCA51B] flex items-center justify-center text-[#8C6B14] shadow-xs">
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-[#181A22] rounded-full border border-[#DCA51B] flex items-center justify-center text-[#F5C242] shadow-xs">
                   <RefreshCw size={12} className="animate-spin text-[#DCA51B]" />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/40">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#DCA51B]/20 text-[#F5C242] border border-[#DCA51B]/40">
                   AI Generation In Progress
                 </span>
-                <h3 className="text-xl font-bold text-zinc-900 tracking-tight">
+                <h3 className="text-xl font-bold text-white tracking-tight">
                   Drafting Article for &ldquo;{formData.topic}&rdquo;
                 </h3>
-                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                <p className="text-xs text-zinc-400 max-w-sm mx-auto">
                   Powered by Google Gemini. Formatting semantic headings, bold key terms, and bullet lists.
                 </p>
               </div>
 
               {/* Progress Bar Card */}
-              <div className="w-full max-w-md bg-[#FAF7F2] p-5 rounded-2xl border border-[#E8E2D5] space-y-3.5 text-left shadow-sm">
+              <div className="w-full max-w-md bg-[#16181E] p-5 rounded-2xl border border-[#22252E] space-y-3.5 text-left shadow-sm">
                 <div className="flex items-center justify-between text-xs font-bold">
-                  <span className="text-zinc-800 flex items-center gap-1.5">
+                  <span className="text-zinc-200 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-[#DCA51B] animate-ping" />
                     {GENERATION_PHASES[phaseIndex]?.label || 'Generating article...'}
                   </span>
-                  <span className="text-[#8C6B14] font-mono text-sm">{progress}%</span>
+                  <span className="text-[#F5C242] font-mono text-sm">{progress}%</span>
                 </div>
 
                 {/* The Progress Track */}
-                <div className="w-full h-3 bg-zinc-200/80 rounded-full overflow-hidden p-0.5 border border-zinc-200">
+                <div className="w-full h-3 bg-[#181A22] rounded-full overflow-hidden p-0.5 border border-[#2A2E3B]">
                   <div
                     className="h-full bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] rounded-full transition-all duration-300 ease-out shadow-sm"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-zinc-500 font-medium pt-1 border-t border-[#E8E2D5]/70">
+                <div className="flex items-center justify-between text-[11px] text-zinc-400 font-medium pt-1 border-t border-[#22252E]">
                   <span className="flex items-center gap-1">
                     <Clock size={12} className="text-[#DCA51B]" />
-                    Elapsed: <span className="font-mono text-zinc-700 font-bold">{elapsedSeconds}s</span>
+                    Elapsed: <span className="font-mono text-zinc-200 font-bold">{elapsedSeconds}s</span>
                   </span>
                   <span>Phase {phaseIndex + 1} of {GENERATION_PHASES.length}</span>
                 </div>
@@ -319,15 +319,15 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
             /* Input Form Matching Image 2 */
             <form id="ai-generate-form" onSubmit={handleGenerate} className="space-y-4">
               {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm border border-red-200">
+                <div className="bg-rose-950/40 text-rose-300 p-4 rounded-xl text-sm border border-rose-500/30">
                   {error}
                 </div>
               )}
               
               {/* TOPIC OR HEADLINE */}
               <div>
-                <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
-                  Topic or Headline <span className="text-rose-500">*</span>
+                <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
+                  Topic or Headline <span className="text-rose-400">*</span>
                 </label>
                 <textarea
                   name="topic"
@@ -336,14 +336,14 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                   value={formData.topic}
                   onChange={handleChange}
                   placeholder="e.g. The Ultimate Guide to Tooth Health: Daily Habits for a Radiant Smile"
-                  className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 placeholder-zinc-400 text-sm outline-none resize-none transition-all font-medium"
+                  className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 placeholder-zinc-500 text-sm outline-none resize-none transition-all font-medium"
                 />
               </div>
 
               {/* PLATFORM & LANGUAGE (2-Column Row) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+                  <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
                     Platform
                   </label>
                   <div className="relative">
@@ -351,7 +351,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       name="platform"
                       value={formData.platform}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
+                      className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                     >
                       <option value="website">Website / Blog</option>
                       <option value="instagram">Instagram</option>
@@ -361,14 +361,14 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       <option value="google_business">Google Business</option>
                       <option value="email">Email</option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-400">
                       <ChevronDown size={16} />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+                  <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
                     Language
                   </label>
                   <div className="relative">
@@ -376,7 +376,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       name="language"
                       value={formData.language}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
+                      className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                     >
                       <option value="English">English</option>
                       <option value="Hindi">Hindi</option>
@@ -385,7 +385,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       <option value="German">German</option>
                       <option value="Bengali">Bengali</option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-400">
                       <ChevronDown size={16} />
                     </div>
                   </div>
@@ -395,7 +395,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               {/* TONE & LENGTH (2-Column Row) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+                  <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
                     Tone
                   </label>
                   <div className="relative">
@@ -403,7 +403,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       name="tone"
                       value={formData.tone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
+                      className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                     >
                       <option value="professional">Professional</option>
                       <option value="casual">Casual</option>
@@ -416,14 +416,14 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       <option value="technical">Technical</option>
                       <option value="empathetic">Empathetic</option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-400">
                       <ChevronDown size={16} />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+                  <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
                     Length
                   </label>
                   <div className="relative">
@@ -431,14 +431,14 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       name="length"
                       value={formData.length}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
+                      className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                     >
                       <option value="1000">Medium (800–1200w)</option>
                       <option value="500">Short (300–500w)</option>
                       <option value="1800">Long (1500–2000w)</option>
                       <option value="2500">Comprehensive (2500w+)</option>
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-400">
                       <ChevronDown size={16} />
                     </div>
                   </div>
@@ -447,20 +447,20 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
 
               {/* KEYWORDS (TYPE AND PRESS ENTER) */}
               <div>
-                <label className="block text-xs font-bold text-zinc-700 tracking-wide mb-1.5 uppercase">
+                <label className="block text-xs font-bold text-zinc-300 tracking-wide mb-1.5 uppercase">
                   Keywords (Type and press Enter)
                 </label>
-                <div className="min-h-[44px] p-2 bg-[#FAF7F2] border border-[#E2DACB] focus-within:border-[#DCA51B] focus-within:ring-1 focus-within:ring-[#DCA51B] rounded-2xl flex flex-wrap items-center gap-1.5 transition-all">
+                <div className="min-h-[44px] p-2 bg-[#181A22] border border-[#2A2E3B] focus-within:border-[#DCA51B] focus-within:ring-2 focus-within:ring-[#DCA51B]/25 rounded-2xl flex flex-wrap items-center gap-1.5 transition-all">
                   {keywordsList.map((kw) => (
                     <span
                       key={kw}
-                      className="inline-flex items-center px-2.5 py-0.5 bg-[#FAF3E0] border border-[#DCA51B]/40 text-[#8C6B14] text-xs font-semibold rounded-lg"
+                      className="inline-flex items-center px-2.5 py-0.5 bg-[#DCA51B]/20 border border-[#DCA51B]/40 text-[#F5C242] text-xs font-semibold rounded-lg"
                     >
                       {kw}
                       <button
                         type="button"
                         onClick={() => removeKeyword(kw)}
-                        className="ml-1 text-[#8C6B14] hover:text-zinc-900 cursor-pointer"
+                        className="ml-1 text-[#F5C242] hover:text-white cursor-pointer"
                       >
                         <X size={12} />
                       </button>
@@ -472,7 +472,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                     onChange={(e) => setKeywordInput(e.target.value)}
                     onKeyDown={handleKeywordKeyDown}
                     placeholder={keywordsList.length === 0 ? 'Add keywords...' : ''}
-                    className="flex-1 min-w-[120px] bg-transparent text-zinc-900 text-sm outline-none placeholder-zinc-400 px-1 font-medium"
+                    className="flex-1 min-w-[120px] bg-transparent text-zinc-100 text-sm outline-none placeholder-zinc-500 px-1 font-medium"
                   />
                 </div>
               </div>
@@ -480,32 +480,32 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               {/* ATTACHED BUSINESS PROFILE */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-zinc-700 tracking-wide uppercase">
+                  <label className="text-xs font-bold text-zinc-300 tracking-wide uppercase">
                     Attached Business Profile
                   </label>
-                  <span className="text-xs text-zinc-500 font-normal">Auto-injects brand voice &amp; USPs</span>
+                  <span className="text-xs text-zinc-400 font-normal">Auto-injects brand voice &amp; USPs</span>
                 </div>
                 <div className="relative">
                   <select
                     name="businessProfile"
                     value={formData.businessProfile}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-2xl text-zinc-900 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
+                    className="w-full px-4 py-2.5 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/25 rounded-2xl text-zinc-100 text-sm outline-none appearance-none cursor-pointer pr-10 transition-all font-medium"
                   >
                     <option value="Kush Dental Clinic">Kush Dental Clinic</option>
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-500">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-zinc-400">
                     <ChevronDown size={16} />
                   </div>
                 </div>
               </div>
 
               {/* AI COVER IMAGE OPTION */}
-              <div className="p-4 bg-[#FAF7F2] border border-[#E2DACB] rounded-2xl space-y-3">
+              <div className="p-4 bg-[#16181E] border border-[#22252E] rounded-2xl space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles size={16} className="text-[#DCA51B]" />
-                    <span className="text-xs font-bold text-zinc-800 tracking-wide uppercase">
+                    <span className="text-xs font-bold text-zinc-200 tracking-wide uppercase">
                       Generate AI Cover Image (FLUX)
                     </span>
                   </div>
@@ -516,49 +516,49 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                       onChange={(e) => setIncludeImage(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-9 h-5 bg-zinc-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#DCA51B]"></div>
+                    <div className="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-700 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#DCA51B]"></div>
                   </label>
                 </div>
 
                 {includeImage && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-[#E8E2D5]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-[#22252E]">
                     <div>
-                      <label className="block text-[11px] font-bold text-zinc-600 tracking-wide mb-1 uppercase">
+                      <label className="block text-[11px] font-bold text-zinc-300 tracking-wide mb-1 uppercase">
                         Image Style
                       </label>
                       <div className="relative">
                         <select
                           value={imageStyle}
                           onChange={(e) => setImageStyle(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-900 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
+                          className="w-full px-3 py-2 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-100 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
                         >
                           <option value="Commercial Photography">Commercial Photography</option>
                           <option value="Realistic">Realistic Dental Care</option>
                           <option value="Minimal">Minimalist Luxury</option>
                           <option value="Studio Lighting">Studio Lighting</option>
                         </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-400">
                           <ChevronDown size={14} />
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-zinc-600 tracking-wide mb-1 uppercase">
+                      <label className="block text-[11px] font-bold text-zinc-300 tracking-wide mb-1 uppercase">
                         Aspect Ratio
                       </label>
                       <div className="relative">
                         <select
                           value={imageAspectRatio}
                           onChange={(e) => setImageAspectRatio(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-900 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
+                          className="w-full px-3 py-2 bg-[#181A22] border border-[#2A2E3B] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-100 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
                         >
                           <option value="16:9">Landscape (16:9)</option>
                           <option value="1:1">Square (1:1)</option>
                           <option value="4:5">Portrait (4:5)</option>
                           <option value="9:16">Story / Reel (9:16)</option>
                         </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-400">
                           <ChevronDown size={14} />
                         </div>
                       </div>
@@ -570,35 +570,35 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
           ) : (
             /* Result Preview */
             <div className="space-y-4">
-              <div className="bg-emerald-50 text-emerald-800 p-4 rounded-2xl text-sm border border-emerald-200 mb-4 flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+              <div className="bg-emerald-950/40 text-emerald-300 p-4 rounded-2xl text-sm border border-emerald-500/30 mb-4 flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
                 <span>Content generated successfully! Review the output below.</span>
               </div>
               
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Title</span>
-                <p className="text-zinc-900 font-bold mt-1 text-base">{generatedContent.title}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Title</span>
+                <p className="text-white font-bold mt-1 text-base">{generatedContent.title}</p>
               </div>
 
               {/* Generated Cover Image Preview */}
               {generatedImage?.url && (
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                       Generated AI Cover Image
                     </span>
-                    <span className="text-[11px] font-bold text-[#8C6B14] bg-[#FAF3E0] px-2 py-0.5 rounded-full border border-[#DCA51B]/30 flex items-center gap-1">
+                    <span className="text-[11px] font-bold text-[#F5C242] bg-[#DCA51B]/20 px-2 py-0.5 rounded-full border border-[#DCA51B]/40 flex items-center gap-1">
                       <Sparkles size={11} className="text-[#DCA51B]" />
                       Auto-transfers to Cover Image URL
                     </span>
                   </div>
-                  <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden border border-[#E2DACB] bg-zinc-950 shadow-sm group">
+                  <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden border border-[#2A2E3B] bg-zinc-950 shadow-sm group">
                     <img
                       src={generatedImage.url}
                       alt="AI Generated Cover"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-medium text-white flex items-center gap-1.5">
+                    <div className="absolute bottom-2 left-2 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-medium text-white flex items-center gap-1.5 border border-white/10">
                       <Sparkles size={12} className="text-[#DCA51B]" />
                       <span>FLUX Schnell &bull; {generatedImage.style || 'Commercial Photography'}</span>
                     </div>
@@ -609,10 +609,10 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               {/* Fully Scrollable Body Preview */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                     Article Body Preview
                   </span>
-                  <span className="text-[11px] text-[#8C6B14] font-medium bg-[#FAF3E0] px-2.5 py-0.5 rounded-full border border-[#DCA51B]/30">
+                  <span className="text-[11px] text-[#F5C242] font-medium bg-[#DCA51B]/20 px-2.5 py-0.5 rounded-full border border-[#DCA51B]/40">
                     Scrollable Preview
                   </span>
                 </div>
@@ -621,7 +621,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                   onWheel={(e) => {
                     e.stopPropagation();
                   }}
-                  className="bg-[#FAF7F2] p-4 sm:p-5 rounded-2xl border border-[#E2DACB] max-h-72 sm:max-h-80 min-h-[160px] overflow-y-auto custom-scrollbar overscroll-contain shadow-inner select-text"
+                  className="bg-[#181A22] p-4 sm:p-5 rounded-2xl border border-[#2A2E3B] text-zinc-200 max-h-72 sm:max-h-80 min-h-[160px] overflow-y-auto custom-scrollbar overscroll-contain shadow-inner select-text"
                 >
                   <div 
                     className="article-content text-sm leading-relaxed"
@@ -631,19 +631,19 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               </div>
 
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Meta Description</span>
-                <p className="text-zinc-600 text-sm mt-1">{generatedContent.metaDescription}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">Meta Description</span>
+                <p className="text-zinc-300 text-sm mt-1">{generatedContent.metaDescription}</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="shrink-0 p-5 sm:p-6 border-t border-[#E8E2D5] flex justify-end space-x-3 bg-[#FAF7F2]/50">
+        <div className="shrink-0 p-5 sm:p-6 border-t border-[#22252E] flex justify-end space-x-3 bg-[#16181E]">
           <button
             onClick={onClose}
             disabled={loading}
-            className="px-4 py-2.5 border border-[#E2DACB] rounded-xl text-xs font-bold uppercase tracking-wider text-zinc-700 bg-white hover:bg-[#FAF7F2] transition-colors disabled:opacity-50 cursor-pointer"
+            className="px-4 py-2.5 border border-[#2A2E3B] rounded-xl text-xs font-bold uppercase tracking-wider text-zinc-300 bg-[#181A22] hover:bg-[#20232E] hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             Cancel
           </button>
@@ -653,16 +653,16 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
               type="submit"
               form="ai-generate-form"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#DCA51B] to-[#C89211] text-[#0D0E12] shadow-md hover:brightness-110 transition-all disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <RefreshCw className="animate-spin text-[#141518]" size={15} />
+                  <RefreshCw className="animate-spin text-[#0D0E12]" size={15} />
                   <span>Generating ({progress}%)...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles size={15} className="text-[#141518]" />
+                  <Sparkles size={15} className="text-[#0D0E12]" />
                   <span>Generate Content</span>
                 </>
               )}
@@ -670,7 +670,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
           ) : (
             <button
               onClick={handleTransfer}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] shadow-md hover:shadow-lg transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#DCA51B] to-[#C89211] text-[#0D0E12] shadow-md hover:brightness-110 transition-all cursor-pointer"
             >
               Transfer to Editor
             </button>
