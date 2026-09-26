@@ -910,20 +910,99 @@
 /* Typography Overrides */
 .portal-dark .text-zinc-900,
 .portal-dark .text-zinc-800,
+.portal-dark .text-gray-900,
+.portal-dark .text-gray-800,
 .portal-dark h1,
 .portal-dark h2,
-.portal-dark h3 {
-  color: #F3F4F6 !important;
+.portal-dark h3,
+.portal-dark h4 {
+  color: #F4F4F5 !important;
 }
 
 .portal-dark .text-zinc-700,
-.portal-dark .text-zinc-600 {
-  color: #A1A1AA !important;
+.portal-dark .text-zinc-600,
+.portal-dark .text-gray-700,
+.portal-dark .text-gray-600 {
+  color: #D4D4D8 !important;
 }
 
 .portal-dark .text-zinc-500,
-.portal-dark .text-zinc-400 {
-  color: #71717A !important;
+.portal-dark .text-zinc-400,
+.portal-dark .text-gray-500,
+.portal-dark .text-gray-400 {
+  color: #9CA3AF !important;
+}
+
+.portal-dark dt {
+  color: #9CA3AF !important;
+}
+
+.portal-dark dd {
+  color: #F4F4F5 !important;
+}
+
+/* Hover States Overrides - prevent light/white flash in dark mode */
+.portal-dark .hover\:bg-\[\#FAF7F2\]\/60:hover,
+.portal-dark .hover\:bg-\[\#FAF7F2\]:hover,
+.portal-dark .hover\:bg-\[\#FAF7F2\]\/50:hover,
+.portal-dark .hover\:bg-\[\#FAF7F2\]\/40:hover,
+.portal-dark .hover\:bg-\[\#FCF9F7\]:hover,
+.portal-dark .hover\:bg-gray-50:hover,
+.portal-dark .hover\:bg-gray-100:hover,
+.portal-dark .hover\:bg-zinc-50:hover,
+.portal-dark .hover\:bg-zinc-100:hover {
+  background-color: #1A1D25 !important;
+}
+
+.portal-dark .hover\:bg-\[\#F5EACB\]:hover {
+  background-color: rgba(220, 165, 27, 0.25) !important;
+}
+
+/* Tiptap / ProseMirror Content Editor in Dark Mode */
+.portal-dark .ProseMirror {
+  color: #E4E4E7 !important;
+}
+
+.portal-dark .ProseMirror h1,
+.portal-dark .ProseMirror h2,
+.portal-dark .ProseMirror h3,
+.portal-dark .ProseMirror h4 {
+  color: #FFFFFF !important;
+}
+
+.portal-dark .ProseMirror p,
+.portal-dark .ProseMirror li {
+  color: #D4D4D8 !important;
+}
+
+.portal-dark .ProseMirror strong,
+.portal-dark .ProseMirror b {
+  color: #FFFFFF !important;
+}
+
+.portal-dark .ProseMirror em,
+.portal-dark .ProseMirror i {
+  color: #E4E4E7 !important;
+}
+
+.portal-dark .ProseMirror blockquote {
+  background-color: #1A1D25 !important;
+  color: #E4E4E7 !important;
+  border-left-color: #DCA51B !important;
+}
+
+.portal-dark .ProseMirror code {
+  background-color: #1A1D25 !important;
+  color: #F5C242 !important;
+  border: 1px solid #2A2E3B !important;
+}
+
+.portal-dark .ProseMirror hr {
+  border-color: #22252E !important;
+}
+
+.portal-dark .ProseMirror a {
+  color: #F5C242 !important;
 }
 
 /* Interactive Elements & Form Controls */

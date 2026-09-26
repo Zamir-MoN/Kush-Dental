@@ -54,15 +54,19 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`p-2 rounded-lg hover:bg-[#FAF7F2] transition-colors ${isActive ? 'bg-[#FAF3E0] text-[#8C6B14] font-bold' : 'text-zinc-600'} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`p-2 rounded-lg transition-colors cursor-pointer ${
+        isActive 
+          ? 'bg-[#DCA51B]/20 text-[#F5C242] font-bold border border-[#DCA51B]/40' 
+          : 'text-zinc-400 hover:text-white hover:bg-white/10'
+      } ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
     >
       {children}
     </button>
   );
 
   return (
-    <div className="flex flex-wrap gap-1 p-2 border-b border-[#E2DACB] bg-[#FAF7F2]/50 rounded-t-xl items-center">
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1">
+    <div className="flex flex-wrap gap-1 p-2 border-b border-[#22252E] bg-[#16181E] rounded-t-xl items-center">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1">
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')}>
           <Bold size={16} />
         </ToolbarButton>
@@ -77,14 +81,14 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
         </ToolbarButton>
       </div>
 
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1 items-center">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1 items-center">
         <select 
           onChange={(e) => {
             const level = parseInt(e.target.value);
             if (level === 0) editor.chain().focus().setParagraph().run();
             else editor.chain().focus().toggleHeading({ level: level as any }).run();
           }}
-          className="p-1 rounded-lg border border-[#E2DACB] text-xs focus:ring-[#DCA51B] focus:border-[#DCA51B] outline-none bg-white h-8 text-zinc-800"
+          className="p-1 rounded-lg border border-[#2A2E3B] text-xs focus:ring-[#DCA51B] focus:border-[#DCA51B] outline-none bg-[#181A22] h-8 text-zinc-100 font-medium cursor-pointer"
           value={editor.isActive('heading') ? editor.getAttributes('heading').level : 0}
         >
           <option value={0}>Paragraph</option>
@@ -95,17 +99,17 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
         </select>
       </div>
 
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1 items-center">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1 items-center">
         <input
           type="color"
           onInput={event => editor.chain().focus().setColor((event.target as HTMLInputElement).value).run()}
-          value={editor.getAttributes('textStyle').color || '#000000'}
-          className="w-8 h-8 rounded cursor-pointer border-0 p-0 bg-transparent"
+          value={editor.getAttributes('textStyle').color || '#E4E4E7'}
+          className="w-8 h-8 rounded cursor-pointer border border-[#2A2E3B] p-0.5 bg-[#181A22]"
           title="Text Color"
         />
       </div>
 
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1">
         <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('left').run()} isActive={editor.isActive({ textAlign: 'left' })}>
           <AlignLeft size={16} />
         </ToolbarButton>
@@ -120,7 +124,7 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
         </ToolbarButton>
       </div>
 
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1">
         <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')}>
           <List size={16} />
         </ToolbarButton>
@@ -132,7 +136,7 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
         </ToolbarButton>
       </div>
 
-      <div className="flex gap-1 border-r border-[#E2DACB] pr-2 mr-1">
+      <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1">
         <ToolbarButton onClick={setLink} isActive={editor.isActive('link')}>
           <LinkIcon size={16} />
         </ToolbarButton>
@@ -155,7 +159,7 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
           type="button"
           onClick={onAutoFormat}
           title="Auto format markdown: headings, bold text, bullet points & paragraphs"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#FAF3E0] text-[#8C6B14] border border-[#DCA51B]/40 hover:bg-[#F5EACB] transition-all shadow-sm"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#DCA51B]/15 text-[#F5C242] border border-[#DCA51B]/40 hover:bg-[#DCA51B]/25 transition-all shadow-sm cursor-pointer"
         >
           <Sparkles size={13} className="text-[#DCA51B]" />
           Format Text

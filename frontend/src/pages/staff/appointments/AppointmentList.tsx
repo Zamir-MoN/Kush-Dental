@@ -193,7 +193,7 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
                   const start = new Date(apt.startsAt);
                   const end = new Date(apt.endsAt);
                   return (
-                    <tr key={apt.id} className="hover:bg-[#FAF7F2]/60 transition-colors group">
+                    <tr key={apt.id} className="hover:bg-[#1A1D25] transition-colors group">
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                         <div className="text-sm font-semibold text-zinc-900">
                           {start.toLocaleDateString()}

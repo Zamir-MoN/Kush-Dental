@@ -180,7 +180,7 @@ export const PatientDetail = () => {
                   <li key={apt.id}>
                     <button
                       onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                      className="block hover:bg-[#FAF7F2]/60 w-full text-left transition-colors"
+                      className="block w-full text-left transition-all duration-150 hover:bg-[#1A1D25] border-l-2 border-l-transparent hover:border-l-[#DCA51B] group cursor-pointer"
                     >
                       <div className="px-5 py-4 sm:px-6 flex items-center justify-between">
                         <div className="flex flex-col sm:flex-row sm:items-center w-full min-w-0 pr-4">

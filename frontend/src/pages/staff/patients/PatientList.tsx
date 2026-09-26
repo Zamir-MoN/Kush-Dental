@@ -149,7 +149,7 @@ export const PatientList = () => {
                 <li key={patient.id}>
                   <button
                     onClick={() => navigate(`/staff/patients/${patient.id}`)}
-                    className="block hover:bg-[#FAF7F2]/60 w-full text-left transition-colors group cursor-pointer"
+                    className="block w-full text-left transition-all duration-150 hover:bg-[#1A1D25] border-l-2 border-l-transparent hover:border-l-[#DCA51B] group cursor-pointer"
                   >
                     <div className="flex items-center px-3.5 py-3.5 sm:px-6">
                       <div className="min-w-0 flex-1 flex items-center">
@@ -160,8 +160,8 @@ export const PatientList = () => {
                         </div>
                         <div className="min-w-0 flex-1 px-3 sm:px-4 md:grid md:grid-cols-2 md:gap-4">
                           <div>
-                            <p className="text-xs sm:text-sm font-semibold text-zinc-900 group-hover:text-[#8C6B14] transition-colors truncate">{patient.fullName}</p>
-                            <p className="mt-1 flex items-center text-[11px] sm:text-xs text-zinc-500">
+                            <p className="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-[#F5C242] transition-colors truncate">{patient.fullName}</p>
+                            <p className="mt-1 flex items-center text-[11px] sm:text-xs text-zinc-400">
                               <Phone className="flex-shrink-0 mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
                               <span className="truncate">{patient.phone}</span>
                             </p>
@@ -171,7 +171,7 @@ export const PatientList = () => {
                               <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                                 Patient ID
                               </p>
-                              <p className="mt-0.5 flex items-center text-xs font-mono text-zinc-600 truncate">
+                              <p className="mt-0.5 flex items-center text-xs font-mono text-zinc-400 truncate">
                                 {patient.id.substring(0, 8)}...
                               </p>
                             </div>
