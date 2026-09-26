@@ -131,7 +131,7 @@ export const BlogList = ({ searchQuery, setSearchQuery, blogPosts }: BlogListPro
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="mb-14 lg:mb-18"
+            className="mb-6 lg:mb-8"
           >
             <FeaturedPostSpotlight post={featuredPost} />
           </motion.div>
