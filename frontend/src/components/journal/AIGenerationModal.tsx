@@ -4,6 +4,8 @@ import { X, Bot, RefreshCw, Sparkles, Clock, ChevronDown, CheckCircle2 } from 'l
 import { apiClient } from '../../lib/apiClient';
 import { formatMarkdownToHtml } from '../../lib/markdown';
 
+import { useLenis } from '../ui/SmoothScroll';
+
 interface AIGenerationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +23,7 @@ const GENERATION_PHASES = [
 ];
 
 export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, onClose, onTransfer }) => {
+  const { lenis } = useLenis();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generatedContent, setGeneratedContent] = useState<any>(null);
@@ -41,6 +44,46 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
     length: '1000',
     businessProfile: 'Kush Dental Clinic',
   });
+
+  // Stop background scroll and pause Lenis smooth scroll while modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Prevent background scrolling via native overflow lock
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const originalPaddingRight = document.body.style.paddingRight;
+
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    // Stop Lenis smooth scroll engine from capturing mouse wheel and scrolling background
+    if (lenis) {
+      lenis.stop();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !loading) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      window.removeEventListener('keydown', handleKeyDown);
+      if (lenis) {
+        lenis.start();
+      }
+    };
+  }, [isOpen, lenis, loading, onClose]);
 
   // Simulated smooth generation progress with realistic phases and timer
   useEffect(() => {
@@ -168,8 +211,19 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
   };
 
   const modalElement = (
-    <div className="fixed inset-0 z-[9999] overflow-y-auto bg-black/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center">
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] my-auto border border-[#E8E2D5] overflow-hidden">
+    <div 
+      data-lenis-prevent
+      className="fixed inset-0 z-[9999] overflow-hidden bg-black/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center overscroll-contain"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !loading) {
+          onClose();
+        }
+      }}
+    >
+      <div 
+        data-lenis-prevent
+        className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] my-auto border border-[#E8E2D5] overflow-hidden overscroll-contain"
+      >
         {/* Modal Header */}
         <div className="shrink-0 flex items-center justify-between p-5 sm:p-6 border-b border-[#E8E2D5] bg-[#FAF7F2]/70">
           <div className="flex items-center space-x-3.5">
@@ -191,7 +245,10 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto flex-1 min-h-0 custom-scrollbar space-y-4">
+        <div 
+          data-lenis-prevent
+          className="p-5 sm:p-6 overflow-y-auto flex-1 min-h-0 custom-scrollbar overscroll-contain space-y-4"
+        >
           {loading ? (
             /* Real-Time Generation Progress Bar View */
             <div className="py-8 px-4 flex flex-col items-center justify-center text-center space-y-6">
@@ -451,7 +508,13 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                     Scrollable Preview
                   </span>
                 </div>
-                <div className="bg-[#FAF7F2] p-4 sm:p-5 rounded-2xl border border-[#E2DACB] max-h-72 min-h-[160px] overflow-y-auto custom-scrollbar shadow-inner">
+                <div 
+                  data-lenis-prevent
+                  onWheel={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className="bg-[#FAF7F2] p-4 sm:p-5 rounded-2xl border border-[#E2DACB] max-h-72 sm:max-h-80 min-h-[160px] overflow-y-auto custom-scrollbar overscroll-contain shadow-inner select-text"
+                >
                   <div 
                     className="article-content text-sm leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: formatMarkdownToHtml(generatedContent.body || '') }}
