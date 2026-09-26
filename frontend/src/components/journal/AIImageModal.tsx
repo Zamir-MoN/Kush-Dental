@@ -55,12 +55,34 @@ export const AIImageModal: React.FC<AIImageModalProps> = ({
   // Sync initialPrompt when modal opens
   useEffect(() => {
     if (isOpen) {
-      if (initialPrompt && !prompt) {
+      if (initialPrompt) {
         setPrompt(initialPrompt);
       }
       setError(null);
+      setGeneratedImage(null);
     }
   }, [isOpen, initialPrompt]);
+
+  const handleAutoCraftPrompt = () => {
+    const raw = prompt.trim() || initialPrompt.trim() || 'Aesthetic clinical dentistry and radiant smile';
+    const cleaned = raw
+      .replace(/^Professional clinical dental photography of /i, '')
+      .replace(/^High-detail clinical photography of /i, '')
+      .replace(/, modern luxury dental clinic.*$/i, '')
+      .replace(/, modern dental surgery.*$/i, '')
+      .replace(/[:;]/g, ' - ')
+      .trim();
+    const crafted = `Professional clinical dental photography of ${cleaned}, modern luxury dental clinic operatory, sterile precision equipment, warm ambient lighting, 8k resolution, photorealistic`;
+    setPrompt(crafted);
+  };
+
+  const dynamicSuggestions = React.useMemo(() => {
+    const list = [...PROMPT_SUGGESTIONS];
+    if (initialPrompt && !list.includes(initialPrompt)) {
+      list.unshift(initialPrompt);
+    }
+    return list;
+  }, [initialPrompt]);
 
   // Lock body scroll and stop Lenis smooth scroll
   useEffect(() => {
@@ -287,9 +309,20 @@ export const AIImageModal: React.FC<AIImageModalProps> = ({
                 <label className="text-xs font-bold text-zinc-300 tracking-wide uppercase">
                   Image Prompt / Description <span className="text-rose-400">*</span>
                 </label>
-                <span className="text-[11px] text-zinc-500 font-mono">
-                  {prompt.length}/1000
-                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleAutoCraftPrompt}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-[#DCA51B]/15 hover:bg-[#DCA51B]/25 text-[#F5C242] border border-[#DCA51B]/30 hover:border-[#DCA51B] text-[11px] font-semibold transition-all cursor-pointer shadow-xs active:scale-95"
+                    title="Generate a photorealistic clinical photography prompt based on this article"
+                  >
+                    <Sparkles size={11} className="text-[#DCA51B]" />
+                    Auto-Craft Dental Prompt
+                  </button>
+                  <span className="text-[11px] text-zinc-500 font-mono">
+                    {prompt.length}/1000
+                  </span>
+                </div>
               </div>
               <textarea
                 value={prompt}
@@ -306,7 +339,7 @@ export const AIImageModal: React.FC<AIImageModalProps> = ({
                 <span className="text-[11px] font-semibold text-zinc-400 flex items-center gap-1 self-center mr-1">
                   <Wand2 size={12} className="text-[#DCA51B]" /> Presets:
                 </span>
-                {PROMPT_SUGGESTIONS.map((preset, idx) => (
+                {dynamicSuggestions.map((preset, idx) => (
                   <button
                     key={idx}
                     type="button"

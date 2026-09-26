@@ -271,7 +271,13 @@ export const BlogEdit: React.FC = () => {
       <AIImageModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
-        initialPrompt={formData.title.trim() || formData.excerpt.trim() || 'Aesthetic clinical dentistry and radiant smile'}
+        initialPrompt={
+          formData.title.trim()
+            ? `Professional clinical dental photography of ${formData.title.replace(/[:;]/g, ' - ').trim()}, modern luxury dental clinic operatory, sterile precision equipment, warm ambient lighting, 8k resolution, photorealistic`
+            : formData.excerpt.trim()
+            ? `Professional clinical dental photography of ${formData.excerpt.replace(/[:;]/g, ' - ').trim()}, modern luxury dental clinic operatory, sterile precision equipment, 8k resolution`
+            : 'Aesthetic clinical dentistry and radiant smile'
+        }
         onSelectImage={(url) => setFormData((prev) => ({ ...prev, coverImage: url }))}
       />
     </div>

@@ -123,6 +123,39 @@ async def generate_blog(request_data: DXGenGenerateRequest) -> DXGenGenerateResp
             raise HTTPException(status_code=400, detail="Invalid generation parameters")
         raise
     result = DXGenGenerateResponse.model_validate(data)
+
+    # Auto-generate accompanying cover image if requested and not returned by /generate/blog
+    if request_data.includeImage and not result.image:
+        try:
+            # 1. Try from-content if contentId exists
+            if result.contentId:
+                try:
+                    img_resp = await generate_image_from_content(
+                        result.contentId,
+                        style=request_data.imageStyle or "Commercial Photography"
+                    )
+                    if img_resp and img_resp.image and img_resp.image.url:
+                        result.image = img_resp.image
+                except Exception as cf_err:
+                    logger.warning(f"generate_image_from_content failed: {cf_err}")
+
+            # 2. Direct generation from title/topic prompt
+            if not result.image:
+                topic_title = (result.content.title if result.content and result.content.title else request_data.topic)
+                clean_title = topic_title.replace(":", " - ").strip()
+                prompt = f"Professional clinical dental photography of {clean_title}, modern luxury dental clinic operatory, sterile precision equipment, warm ambient lighting, 8k resolution"
+                img_req = DXGenImageGenerateRequest(
+                    prompt=prompt[:990],
+                    style=request_data.imageStyle or "Commercial Photography",
+                    aspectRatio=request_data.imageAspectRatio or "16:9",
+                    model=request_data.imageModel or "flux-schnell"
+                )
+                img_resp = await generate_image(img_req)
+                if img_resp and img_resp.image and img_resp.image.url:
+                    result.image = img_resp.image
+        except Exception as img_err:
+            logger.error(f"Auto image generation failed during generate_blog: {img_err}")
+
     return _sanitize_response(result)
 
 async def generate_social(request_data: DXGenGenerateRequest) -> DXGenGenerateResponse:

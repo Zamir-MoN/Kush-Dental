@@ -195,14 +195,34 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
       });
 
       if (res.content) {
+        setGeneratedContent(res.content);
+        let finalImage = res.image || null;
+
+        // If user asked to generate an image and none was returned, generate it using the article title
+        if (includeImage && (!finalImage || !finalImage.url)) {
+          try {
+            const articleTitle = (res.content.title || formData.topic).replace(/[:;]/g, ' - ').trim();
+            const prompt = `Professional clinical dental photography of ${articleTitle}, modern luxury dental clinic operatory, sterile precision equipment, warm ambient lighting, 8k resolution`;
+            const imgRes: any = await apiClient('/api/v1/dxgen/images/generate', {
+              method: 'POST',
+              data: {
+                prompt,
+                style: imageStyle,
+                aspectRatio: imageAspectRatio,
+                model: 'flux-schnell',
+              },
+            });
+            if (imgRes?.image?.url) {
+              finalImage = imgRes.image;
+            }
+          } catch (imgErr) {
+            console.warn('Accompanying image generation fallback failed:', imgErr);
+          }
+        }
+
+        setGeneratedImage(finalImage);
         setProgress(100);
         setPhaseIndex(GENERATION_PHASES.length - 1);
-        setGeneratedContent(res.content);
-        if (res.image) {
-          setGeneratedImage(res.image);
-        } else {
-          setGeneratedImage(null);
-        }
       } else {
         throw new Error('Unexpected response format');
       }

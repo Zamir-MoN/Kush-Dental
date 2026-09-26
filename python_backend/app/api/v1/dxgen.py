@@ -75,17 +75,17 @@ async def get_health(
 @router.post("/images/generate", response_model=DXGenImageResponse, status_code=status.HTTP_200_OK)
 async def generate_image(
     request: DXGenImageGenerateRequest,
-    user: User = Depends(require_roles([Role.DOCTOR]))
+    user: User = Depends(require_roles([Role.DOCTOR, Role.ADMIN]))
 ):
-    """Generate an AI image using Pixazo / FLUX. DOCTOR only."""
+    """Generate an AI image using Pixazo / FLUX. DOCTOR or ADMIN only."""
     return await dxgen_service.generate_image(request)
 
 @router.post("/images/from-content/{content_id}", response_model=DXGenImageResponse, status_code=status.HTTP_200_OK)
 async def generate_image_from_content(
     content_id: str,
     style: str = "Commercial Photography",
-    user: User = Depends(require_roles([Role.DOCTOR]))
+    user: User = Depends(require_roles([Role.DOCTOR, Role.ADMIN]))
 ):
-    """Generate an AI image from existing content. DOCTOR only."""
+    """Generate an AI image from existing content. DOCTOR or ADMIN only."""
     return await dxgen_service.generate_image_from_content(content_id, style=style)
 

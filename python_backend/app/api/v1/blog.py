@@ -23,9 +23,9 @@ router = APIRouter()
 @router.post("/generate", response_model=DXGenGenerateResponse, status_code=status.HTTP_200_OK)
 async def generate_blog_draft(
     request: DXGenGenerateRequest,
-    user: User = Depends(require_roles([Role.DOCTOR]))
+    user: User = Depends(require_roles([Role.DOCTOR, Role.ADMIN]))
 ):
-    """Generate a blog post draft using AI. DOCTOR only."""
+    """Generate a blog post draft using AI. DOCTOR or ADMIN only."""
     return await dxgen_generate_blog(request)
 
 @router.get("", response_model=List[BlogResponse])
