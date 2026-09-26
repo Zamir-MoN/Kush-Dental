@@ -4,7 +4,14 @@ import logging
 
 from app.models import Role, User
 from app.api.dependencies import require_roles
-from app.schemas.dxgen import DXGenGenerateRequest, DXGenGenerateResponse, DXGenHealthResponse, DXGenUsage
+from app.schemas.dxgen import (
+    DXGenGenerateRequest,
+    DXGenGenerateResponse,
+    DXGenHealthResponse,
+    DXGenUsage,
+    DXGenImageGenerateRequest,
+    DXGenImageResponse,
+)
 from app.services import dxgen_service
 
 logger = logging.getLogger(__name__)
@@ -64,3 +71,21 @@ async def get_health(
 ):
     """Check DXGen API health. DOCTOR only."""
     return await dxgen_service.get_health()
+
+@router.post("/images/generate", response_model=DXGenImageResponse, status_code=status.HTTP_200_OK)
+async def generate_image(
+    request: DXGenImageGenerateRequest,
+    user: User = Depends(require_roles([Role.DOCTOR]))
+):
+    """Generate an AI image using Pixazo / FLUX. DOCTOR only."""
+    return await dxgen_service.generate_image(request)
+
+@router.post("/images/from-content/{content_id}", response_model=DXGenImageResponse, status_code=status.HTTP_200_OK)
+async def generate_image_from_content(
+    content_id: str,
+    style: str = "Commercial Photography",
+    user: User = Depends(require_roles([Role.DOCTOR]))
+):
+    """Generate an AI image from existing content. DOCTOR only."""
+    return await dxgen_service.generate_image_from_content(content_id, style=style)
+

@@ -3,7 +3,15 @@ import logging
 import json
 from fastapi import HTTPException
 from app.core.config import settings
-from app.schemas.dxgen import DXGenGenerateRequest, DXGenGenerateResponse, DXGenHealthResponse, DXGenUsage
+from app.schemas.dxgen import (
+    DXGenGenerateRequest,
+    DXGenGenerateResponse,
+    DXGenHealthResponse,
+    DXGenUsage,
+    DXGenImageGenerateRequest,
+    DXGenImageResponse,
+    DXGenImage,
+)
 from app.utils.sanitization import sanitize_html
 
 logger = logging.getLogger(__name__)
@@ -141,3 +149,14 @@ async def get_usage() -> dict:
 async def get_health() -> DXGenHealthResponse:
     data = await _make_request("GET", "/health")
     return DXGenHealthResponse.model_validate(data)
+
+async def generate_image(request_data: DXGenImageGenerateRequest) -> DXGenImageResponse:
+    payload = request_data.model_dump(exclude_unset=True, exclude_none=True)
+    data = await _make_request("POST", "/images/generate", payload)
+    return DXGenImageResponse.model_validate(data)
+
+async def generate_image_from_content(content_id: str, style: str = "Commercial Photography") -> DXGenImageResponse:
+    payload = {"contentId": content_id, "style": style}
+    data = await _make_request("POST", "/images/from-content", payload)
+    return DXGenImageResponse.model_validate(data)
+

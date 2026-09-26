@@ -116,3 +116,91 @@ async def test_get_health_upstream_failure(client: AsyncClient, doctor_auth_head
 
     resp = await client.get("/api/v1/dxgen/health", headers=doctor_auth_headers)
     assert resp.status_code == 502
+
+@pytest.mark.asyncio
+async def test_generate_image_success(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
+    async def mock_post(url, headers, json):
+        assert url == "http://51.20.121.253:3101/api/v1/images/generate"
+        assert json["prompt"] == "A modern dental clinic"
+        return MockResponse(200, {
+            "success": True,
+            "image": {
+                "id": "img_123",
+                "url": "https://storage.dxgen.ai/images/img_123.webp",
+                "model": "flux-schnell",
+                "style": "Commercial Photography"
+            }
+        })
+    mock_httpx.post_mock = mock_post
+
+    resp = await client.post(
+        "/api/v1/dxgen/images/generate",
+        json={"prompt": "A modern dental clinic", "style": "Commercial Photography"},
+        headers=doctor_auth_headers
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["success"] is True
+    assert data["image"]["url"] == "https://storage.dxgen.ai/images/img_123.webp"
+    assert data["image"]["id"] == "img_123"
+
+@pytest.mark.asyncio
+async def test_generate_image_from_content_success(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
+    async def mock_post(url, headers, json):
+        assert url == "http://51.20.121.253:3101/api/v1/images/from-content"
+        assert json["contentId"] == "cnt_999"
+        return MockResponse(200, {
+            "success": True,
+            "image": {
+                "id": "img_456",
+                "url": "https://storage.dxgen.ai/images/img_456.webp"
+            }
+        })
+    mock_httpx.post_mock = mock_post
+
+    resp = await client.post(
+        "/api/v1/dxgen/images/from-content/cnt_999",
+        headers=doctor_auth_headers
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["success"] is True
+    assert data["image"]["url"] == "https://storage.dxgen.ai/images/img_456.webp"
+
+@pytest.mark.asyncio
+async def test_generate_blog_with_image(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
+    async def mock_post(url, headers, json):
+        assert url == "http://51.20.121.253:3101/api/v1/generate/blog"
+        assert json["includeImage"] is True
+        return MockResponse(200, {
+            "success": True,
+            "requestId": "req_img_blog",
+            "content": {"title": "Veneers Guide", "body": "Veneers improve smiles."},
+            "image": {
+                "id": "img_789",
+                "url": "https://storage.dxgen.ai/images/img_789.webp"
+            }
+        })
+    mock_httpx.post_mock = mock_post
+
+    resp = await client.post(
+        "/api/v1/dxgen/generate/blog",
+        json={"topic": "Veneers Guide", "includeImage": True, "imageStyle": "Commercial Photography"},
+        headers=doctor_auth_headers
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["success"] is True
+    assert data["image"] is not None
+    assert data["image"]["url"] == "https://storage.dxgen.ai/images/img_789.webp"
+
+@pytest.mark.asyncio
+async def test_generate_image_rbac(client: AsyncClient, staff_auth_headers: dict):
+    # Unauthenticated
+    resp = await client.post("/api/v1/dxgen/images/generate", json={"prompt": "Test"})
+    assert resp.status_code == 401
+
+    # Staff forbidden
+    resp = await client.post("/api/v1/dxgen/images/generate", json={"prompt": "Test"}, headers=staff_auth_headers)
+    assert resp.status_code == 403
+
