@@ -867,4 +867,181 @@
   transform: scale(1.18);
 }
 
+/* ============================================================
+   ADMIN & STAFF PORTAL DARK LUXURY THEME SYSTEM
+   ============================================================ */
+.portal-dark {
+  background-color: #0D0E12 !important;
+  color: #F3F4F6 !important;
+  color-scheme: dark;
+}
+
+/* Base Surfaces & Cards */
+.portal-dark .bg-white {
+  background-color: #13151A !important;
+}
+
+.portal-dark .bg-\[\#FAF7F2\],
+.portal-dark .bg-\[\#FAF7F2\]\/40,
+.portal-dark .bg-\[\#FAF7F2\]\/50,
+.portal-dark .bg-\[\#FAF7F2\]\/60 {
+  background-color: #16181E !important;
+}
+
+.portal-dark .bg-\[\#FCF9F7\],
+.portal-dark .bg-zinc-50 {
+  background-color: #181A22 !important;
+}
+
+/* Borders */
+.portal-dark .border-\[\#E8E2D5\],
+.portal-dark .border-\[\#E2DACB\],
+.portal-dark .border-zinc-200,
+.portal-dark .border-zinc-100 {
+  border-color: #22252E !important;
+}
+
+.portal-dark .divide-\[\#E8E2D5\] > :not([hidden]) ~ :not([hidden]),
+.portal-dark .divide-\[\#E8E2D5\]\/70 > :not([hidden]) ~ :not([hidden]),
+.portal-dark .divide-zinc-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #22252E !important;
+}
+
+/* Typography Overrides */
+.portal-dark .text-zinc-900,
+.portal-dark .text-zinc-800,
+.portal-dark h1,
+.portal-dark h2,
+.portal-dark h3 {
+  color: #F3F4F6 !important;
+}
+
+.portal-dark .text-zinc-700,
+.portal-dark .text-zinc-600 {
+  color: #A1A1AA !important;
+}
+
+.portal-dark .text-zinc-500,
+.portal-dark .text-zinc-400 {
+  color: #71717A !important;
+}
+
+/* Interactive Elements & Form Controls */
+.portal-dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.portal-dark select,
+.portal-dark textarea {
+  background-color: #181A22 !important;
+  color: #F3F4F6 !important;
+  border-color: #2A2E3B !important;
+}
+
+.portal-dark input::placeholder,
+.portal-dark textarea::placeholder {
+  color: #52525B !important;
+}
+
+.portal-dark input:focus,
+.portal-dark select:focus,
+.portal-dark textarea:focus {
+  border-color: #DCA51B !important;
+  box-shadow: 0 0 0 2px rgba(220, 165, 27, 0.25) !important;
+  outline: none !important;
+}
+
+/* Option dropdown elements */
+.portal-dark option {
+  background-color: #13151A !important;
+  color: #F3F4F6 !important;
+}
+
+/* Tables */
+.portal-dark table thead,
+.portal-dark table thead tr,
+.portal-dark table thead th {
+  background-color: #16181E !important;
+  color: #A1A1AA !important;
+  border-color: #22252E !important;
+}
+
+.portal-dark table tbody tr {
+  border-color: #22252E !important;
+}
+
+.portal-dark table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Status Badges & Pills */
+.portal-dark .bg-\[\#FAF3E0\],
+.portal-dark .bg-amber-50,
+.portal-dark .bg-yellow-50,
+.portal-dark .bg-yellow-100 {
+  background-color: rgba(220, 165, 27, 0.14) !important;
+  color: #F5C242 !important;
+  border-color: rgba(220, 165, 27, 0.3) !important;
+}
+
+.portal-dark .text-\[\#8C6B14\] {
+  color: #F5C242 !important;
+}
+
+.portal-dark .bg-blue-50,
+.portal-dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.14) !important;
+  color: #60A5FA !important;
+  border-color: rgba(59, 130, 246, 0.28) !important;
+}
+
+.portal-dark .bg-emerald-50,
+.portal-dark .bg-emerald-100,
+.portal-dark .bg-green-50,
+.portal-dark .bg-green-100 {
+  background-color: rgba(16, 185, 129, 0.14) !important;
+  color: #34D399 !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+.portal-dark .bg-rose-50,
+.portal-dark .bg-rose-100,
+.portal-dark .bg-red-50,
+.portal-dark .bg-red-100 {
+  background-color: rgba(244, 63, 94, 0.14) !important;
+  color: #FB7185 !important;
+  border-color: rgba(244, 63, 94, 0.28) !important;
+}
+
+.portal-dark .bg-purple-50,
+.portal-dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.14) !important;
+  color: #C084FC !important;
+  border-color: rgba(168, 85, 247, 0.28) !important;
+}
+
+.portal-dark .bg-orange-50,
+.portal-dark .bg-orange-100 {
+  background-color: rgba(249, 115, 22, 0.14) !important;
+  color: #FB923C !important;
+  border-color: rgba(249, 115, 22, 0.28) !important;
+}
+
+/* Modals & Dialogs within Portal */
+.portal-dark [role="dialog"] {
+  background-color: #13151A !important;
+  border-color: #22252E !important;
+  color: #F3F4F6 !important;
+}
+
+/* Scrollbars within portal */
+.portal-dark ::-webkit-scrollbar-track {
+  background: #121418 !important;
+}
+.portal-dark ::-webkit-scrollbar-thumb {
+  background: #252834 !important;
+  border: 2px solid #121418 !important;
+}
+.portal-dark ::-webkit-scrollbar-thumb:hover {
+  background: #DCA51B !important;
+}
+
+
 
