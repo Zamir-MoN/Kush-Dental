@@ -223,7 +223,7 @@ export const Dashboard = () => {
             <p className="text-xs font-medium text-zinc-400 mt-0.5">Today&apos;s Appointments</p>
           </div>
           <WaveDecoration color="#F59E0B" id="amber" />
-          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs z-10">
+          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#F5C242] group-hover:bg-[#DCA51B]/20 group-hover:border-[#DCA51B]/50 transition-all duration-300 shadow-xs z-10">
             <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -246,7 +246,7 @@ export const Dashboard = () => {
             <p className="text-xs font-medium text-zinc-400 mt-0.5">Confirmed Today</p>
           </div>
           <WaveDecoration color="#10B981" id="emerald" />
-          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs z-10">
+          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-emerald-400 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 transition-all duration-300 shadow-xs z-10">
             <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -269,7 +269,7 @@ export const Dashboard = () => {
             <p className="text-xs font-medium text-zinc-400 mt-0.5">Pending Requests</p>
           </div>
           <WaveDecoration color="#F97316" id="orange" />
-          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs z-10">
+          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-amber-400 group-hover:bg-amber-500/20 group-hover:border-amber-500/50 transition-all duration-300 shadow-xs z-10">
             <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -292,7 +292,7 @@ export const Dashboard = () => {
             <p className="text-xs font-medium text-zinc-400 mt-0.5">New Leads</p>
           </div>
           <WaveDecoration color="#8B5CF6" id="purple" />
-          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs z-10">
+          <button className="absolute bottom-4 right-4 w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-purple-400 group-hover:bg-purple-500/20 group-hover:border-purple-500/50 transition-all duration-300 shadow-xs z-10">
             <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -321,7 +321,7 @@ export const Dashboard = () => {
           </div>
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             <SparklineBars color="rose" />
-            <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs">
+            <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-rose-400 group-hover:bg-rose-500/20 group-hover:border-rose-500/50 transition-all duration-300 shadow-xs">
               <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -348,7 +348,7 @@ export const Dashboard = () => {
           </div>
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             <SparklineBars color="blue" />
-            <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-[#0D0E12] group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] transition-all duration-300 shadow-xs">
+            <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-sky-400 group-hover:bg-sky-500/20 group-hover:border-sky-500/50 transition-all duration-300 shadow-xs">
               <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -375,7 +375,7 @@ export const Dashboard = () => {
               </span>
               <button 
                 onClick={() => navigate('/staff/appointments')}
-                className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-all shadow-xs cursor-pointer group"
+                className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-[#F5C242] hover:bg-[#DCA51B]/15 hover:border-[#DCA51B]/40 transition-all shadow-xs cursor-pointer group"
                 title="View Appointments"
               >
                 <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
@@ -452,7 +452,7 @@ export const Dashboard = () => {
               </span>
               <button 
                 onClick={() => navigate('/staff/appointments')}
-                className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-500 transition-all shadow-xs cursor-pointer group"
+                className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-amber-400 hover:bg-amber-500/15 hover:border-amber-500/40 transition-all shadow-xs cursor-pointer group"
                 title="View Pending"
               >
                 <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
