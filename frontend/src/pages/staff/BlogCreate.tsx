@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Sparkles, X, Loader2 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { RichTextEditor } from '../../components/journal/RichTextEditor';
 import { useAuth } from '../../context/AuthContext';
 import { AIGenerationModal } from '../../components/journal/AIGenerationModal';
-import { Sparkles } from 'lucide-react';
 
 import { formatMarkdownToHtml } from '../../lib/markdown';
 
@@ -42,6 +41,34 @@ export const BlogCreate: React.FC = () => {
     }
   };
 
+  const [generatingImage, setGeneratingImage] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  const handleGenerateCoverImage = async () => {
+    const promptText = formData.title.trim() || formData.excerpt.trim() || 'Modern aesthetic clinical dentistry and dental hygiene';
+    try {
+      setGeneratingImage(true);
+      setImageError(null);
+      const res: any = await apiClient('/api/v1/dxgen/images/generate', {
+        method: 'POST',
+        data: {
+          prompt: `Clinical dentistry: ${promptText}`,
+          style: 'Commercial Photography',
+          aspectRatio: '16:9'
+        }
+      });
+      if (res?.image?.url) {
+        setFormData(prev => ({ ...prev, coverImage: res.image.url }));
+      } else {
+        throw new Error('No image URL returned by AI service');
+      }
+    } catch (err: any) {
+      setImageError(err.details?.detail || err.message || 'Failed to generate image');
+    } finally {
+      setGeneratingImage(false);
+    }
+  };
+
   const handleAIGenerate = (contentData: any) => {
     if (formData.title || formData.content) {
       if (!window.confirm('Replace current draft with AI-generated content?')) {
@@ -54,7 +81,8 @@ export const BlogCreate: React.FC = () => {
       title: contentData.title || prev.title,
       slug: contentData.slug || prev.slug,
       excerpt: contentData.metaDescription || prev.excerpt,
-      content: formattedHtml || prev.content
+      content: formattedHtml || prev.content,
+      coverImage: contentData.imageUrl || contentData.image?.url || prev.coverImage,
     }));
   };
 
@@ -128,7 +156,24 @@ export const BlogCreate: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">Cover Image URL</label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wider">Cover Image URL</label>
+            {user?.role === 'DOCTOR' && (
+              <button
+                type="button"
+                onClick={handleGenerateCoverImage}
+                disabled={generatingImage}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#8C6B14] bg-[#FAF3E0] hover:bg-[#F5EACB] border border-[#DCA51B]/40 rounded-xl transition-all shadow-sm disabled:opacity-50"
+              >
+                {generatingImage ? (
+                  <Loader2 size={13} className="animate-spin text-[#DCA51B]" />
+                ) : (
+                  <Sparkles size={13} className="text-[#DCA51B]" />
+                )}
+                {generatingImage ? 'Generating Image (FLUX)...' : 'Generate with AI'}
+              </button>
+            )}
+          </div>
           <input
             type="text"
             name="coverImage"
@@ -137,6 +182,33 @@ export const BlogCreate: React.FC = () => {
             className="w-full px-4 py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
             placeholder="https://example.com/image.jpg"
           />
+          {imageError && (
+            <p className="mt-1.5 text-xs text-red-600">{imageError}</p>
+          )}
+          {formData.coverImage && (
+            <div className="mt-3 relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-[#E2DACB] bg-zinc-900 group shadow-sm">
+              <img
+                src={formData.coverImage}
+                alt="Cover Preview"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, coverImage: '' }))}
+                className="absolute top-2.5 right-2.5 p-1.5 bg-black/70 hover:bg-black text-white rounded-lg transition-colors shadow-md"
+                title="Remove image"
+              >
+                <X size={14} />
+              </button>
+              <div className="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-medium text-white flex items-center gap-1.5">
+                <Sparkles size={11} className="text-[#DCA51B]" />
+                <span>Cover Image</span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>

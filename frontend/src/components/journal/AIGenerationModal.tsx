@@ -15,11 +15,11 @@ interface AIGenerationModalProps {
 const GENERATION_PHASES = [
   { label: 'Initializing prompt & clinic brand voice...', minPct: 8 },
   { label: 'Connecting to Google Gemini AI engine...', minPct: 24 },
-  { label: 'Structuring clinical outline & headings...', minPct: 48 },
-  { label: 'Drafting high-authority dental care copy...', minPct: 68 },
-  { label: 'Formatting headings, bold terms & bullet points...', minPct: 85 },
-  { label: 'Finalizing response & verifying layout...', minPct: 96 },
-  { label: 'Article drafted successfully!', minPct: 100 },
+  { label: 'Structuring clinical outline & headings...', minPct: 45 },
+  { label: 'Drafting high-authority dental care copy...', minPct: 65 },
+  { label: 'Generating cinematic dental photography...', minPct: 82 },
+  { label: 'Formatting headings, bold terms & layout...', minPct: 94 },
+  { label: 'Article & image ready!', minPct: 100 },
 ];
 
 export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, onClose, onTransfer }) => {
@@ -35,6 +35,11 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
 
   const [keywordInput, setKeywordInput] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
+
+  const [includeImage, setIncludeImage] = useState(true);
+  const [imageStyle, setImageStyle] = useState('Commercial Photography');
+  const [imageAspectRatio, setImageAspectRatio] = useState('16:9');
+  const [generatedImage, setGeneratedImage] = useState<any>(null);
 
   const [formData, setFormData] = useState({
     topic: '',
@@ -171,6 +176,9 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
         language: formData.language || 'English',
         tone: formData.tone || 'professional',
         length: Number(formData.length) || 1000,
+        includeImage: includeImage,
+        imageStyle: imageStyle,
+        imageAspectRatio: imageAspectRatio,
       };
 
       if (finalKeywords.length > 0) {
@@ -190,6 +198,11 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
         setProgress(100);
         setPhaseIndex(GENERATION_PHASES.length - 1);
         setGeneratedContent(res.content);
+        if (res.image) {
+          setGeneratedImage(res.image);
+        } else {
+          setGeneratedImage(null);
+        }
       } else {
         throw new Error('Unexpected response format');
       }
@@ -204,7 +217,9 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
     if (generatedContent) {
       onTransfer({
         ...generatedContent,
-        body: formatMarkdownToHtml(generatedContent.body || '')
+        body: formatMarkdownToHtml(generatedContent.body || ''),
+        image: generatedImage,
+        imageUrl: generatedImage?.url,
       });
       onClose();
     }
@@ -484,6 +499,73 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                   </div>
                 </div>
               </div>
+
+              {/* AI COVER IMAGE OPTION */}
+              <div className="p-4 bg-[#FAF7F2] border border-[#E2DACB] rounded-2xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={16} className="text-[#DCA51B]" />
+                    <span className="text-xs font-bold text-zinc-800 tracking-wide uppercase">
+                      Generate AI Cover Image (FLUX)
+                    </span>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={includeImage}
+                      onChange={(e) => setIncludeImage(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-zinc-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#DCA51B]"></div>
+                  </label>
+                </div>
+
+                {includeImage && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-[#E8E2D5]">
+                    <div>
+                      <label className="block text-[11px] font-bold text-zinc-600 tracking-wide mb-1 uppercase">
+                        Image Style
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={imageStyle}
+                          onChange={(e) => setImageStyle(e.target.value)}
+                          className="w-full px-3 py-2 bg-white border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-900 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
+                        >
+                          <option value="Commercial Photography">Commercial Photography</option>
+                          <option value="Realistic">Realistic Dental Care</option>
+                          <option value="Minimal">Minimalist Luxury</option>
+                          <option value="Studio Lighting">Studio Lighting</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                          <ChevronDown size={14} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-zinc-600 tracking-wide mb-1 uppercase">
+                        Aspect Ratio
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={imageAspectRatio}
+                          onChange={(e) => setImageAspectRatio(e.target.value)}
+                          className="w-full px-3 py-2 bg-white border border-[#E2DACB] focus:border-[#DCA51B] focus:ring-1 focus:ring-[#DCA51B] rounded-xl text-zinc-900 text-xs outline-none appearance-none cursor-pointer pr-8 font-medium"
+                        >
+                          <option value="16:9">Landscape (16:9)</option>
+                          <option value="1:1">Square (1:1)</option>
+                          <option value="4:5">Portrait (4:5)</option>
+                          <option value="9:16">Story / Reel (9:16)</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-zinc-500">
+                          <ChevronDown size={14} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </form>
           ) : (
             /* Result Preview */
@@ -497,6 +579,32 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Title</span>
                 <p className="text-zinc-900 font-bold mt-1 text-base">{generatedContent.title}</p>
               </div>
+
+              {/* Generated Cover Image Preview */}
+              {generatedImage?.url && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+                      Generated AI Cover Image
+                    </span>
+                    <span className="text-[11px] font-bold text-[#8C6B14] bg-[#FAF3E0] px-2 py-0.5 rounded-full border border-[#DCA51B]/30 flex items-center gap-1">
+                      <Sparkles size={11} className="text-[#DCA51B]" />
+                      Auto-transfers to Cover Image URL
+                    </span>
+                  </div>
+                  <div className="relative w-full h-48 sm:h-56 rounded-2xl overflow-hidden border border-[#E2DACB] bg-zinc-950 shadow-sm group">
+                    <img
+                      src={generatedImage.url}
+                      alt="AI Generated Cover"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-medium text-white flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-[#DCA51B]" />
+                      <span>FLUX Schnell &bull; {generatedImage.style || 'Commercial Photography'}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               {/* Fully Scrollable Body Preview */}
               <div>
