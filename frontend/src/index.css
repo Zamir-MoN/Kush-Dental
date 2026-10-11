@@ -1377,6 +1377,13 @@
   background: #DC95FF !important;
 }
 
+/* Chart Tooltip High Contrast */
+.portal-chart-tooltip,
+.portal-chart-tooltip span,
+.portal-chart-tooltip p {
+  color: #FFFFFF !important;
+}
+
 /* Fallback for legacy portal-dark class */
 .portal-dark {
   background-color: #0D0E12 !important;

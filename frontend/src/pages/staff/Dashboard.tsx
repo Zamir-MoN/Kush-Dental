@@ -870,10 +870,10 @@ export const Dashboard = () => {
           </div>
 
           {/* Bar Chart Area with Visible Overflow & Generous Padding for Floating Tooltips */}
-          <div className="pt-4 overflow-visible">
+          <div className="pt-6 overflow-visible">
             <div className="flex gap-3 overflow-visible">
               {/* Y-axis grid values */}
-              <div className="flex flex-col justify-between text-xs font-black text-slate-400 pb-8 h-48 text-right pr-2 shrink-0">
+              <div className="flex flex-col justify-between text-xs font-black text-slate-400 pb-8 h-56 text-right pr-2 shrink-0">
                 <span>{weeklyData.maxCount}</span>
                 <span>{Math.round(weeklyData.maxCount * 0.75)}</span>
                 <span>{Math.round(weeklyData.maxCount * 0.5)}</span>
@@ -882,7 +882,7 @@ export const Dashboard = () => {
               </div>
 
               {/* Chart Grid & Columns */}
-              <div className="flex-1 relative pb-8 h-48 overflow-visible">
+              <div className="flex-1 relative pb-8 h-56 overflow-visible">
                 {/* Horizontal Dashed Gridlines */}
                 <div className="absolute inset-x-0 top-0 border-b border-dashed border-slate-200" />
                 <div className="absolute inset-x-0 top-1/4 border-b border-dashed border-slate-200" />
@@ -891,21 +891,30 @@ export const Dashboard = () => {
                 <div className="absolute inset-x-0 bottom-8 border-b border-slate-300" />
 
                 {/* 7 Days Bar Pillars with Animated Tooltips & Lift */}
-                <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-12">
+                <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-16">
                   {weeklyData.days.map((item, idx) => (
                     <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end relative overflow-visible">
-                      {/* Floating Tooltip with Larger Readable Text & Animated Indicator */}
-                      <div className="opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0 absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-black shadow-[0_8px_20px_rgba(0,0,0,0.3)] border border-slate-700/60 whitespace-nowrap z-30 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#DC95FF] animate-pulse shrink-0" />
-                        <span className="tracking-wide">
+                      {/* Floating Tooltip with Crisp High-Contrast Pure White Text */}
+                      <div 
+                        className="portal-chart-tooltip opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 absolute -top-14 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-black shadow-[0_10px_25px_rgba(0,0,0,0.4)] border border-slate-700/80 whitespace-nowrap z-40 flex items-center gap-2"
+                        style={{ backgroundColor: '#0F172A', color: '#FFFFFF' }}
+                      >
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#DC95FF] shadow-[0_0_8px_#DC95FF] animate-pulse shrink-0" />
+                        <span 
+                          className="tracking-wide text-white !text-white font-black text-xs sm:text-sm"
+                          style={{ color: '#FFFFFF' }}
+                        >
                           {item.count} {item.count === 1 ? 'Appt' : 'Appts'}
                         </span>
                         {/* Downward triangle indicator arrow */}
-                        <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
+                        <span 
+                          className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"
+                          style={{ borderTopColor: '#0F172A' }}
+                        />
                       </div>
 
                       {/* Bar Pillar with tactile hover lift */}
-                      <div className="w-7 sm:w-10 h-36 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
+                      <div className="w-7 sm:w-10 h-40 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
                         {/* Animated Gradient Bar */}
                         <div 
                           className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:shadow-[0_4px_14px_rgba(220,149,255,0.7)] group-hover:brightness-110 transition-all duration-500"
