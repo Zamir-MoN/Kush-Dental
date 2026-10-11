@@ -5,7 +5,8 @@ import { formatDate, formatTime } from '../../lib/formatters';
 import { 
   Calendar, Clock, User, CheckCircle2, 
   ChevronRight, Loader2, AlertCircle, 
-  Users, ArrowRight, TrendingUp, Sun, FileText, RefreshCw, AlertTriangle
+  Users, ArrowRight, TrendingUp, Sun, FileText, RefreshCw, AlertTriangle,
+  BarChart3, ChevronDown, MoreHorizontal
 } from 'lucide-react';
 
 interface DashboardSummary {
@@ -86,27 +87,6 @@ const WaveDecoration = ({ color, id }: { color: string; id: string }) => (
     </defs>
   </svg>
 );
-
-const SparklineBars = ({ color }: { color: 'rose' | 'blue' | 'amber' }) => {
-  const heights = [30, 50, 65, 45, 80, 60, 95, 75, 40, 25];
-  const bgClass = color === 'rose' 
-    ? 'bg-rose-500' 
-    : color === 'amber' 
-    ? 'bg-amber-500' 
-    : 'bg-sky-500';
-
-  return (
-    <div className="flex items-end gap-1.5 h-8 shrink-0 p-1.5 rounded-xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF]">
-      {heights.map((h, i) => (
-        <span
-          key={i}
-          className={`w-1 rounded-full ${bgClass} opacity-80 transition-all duration-300 group-hover:opacity-100`}
-          style={{ height: `${h}%` }}
-        />
-      ))}
-    </div>
-  );
-};
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -241,228 +221,560 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* Row 1: 4 Tactile Neumorphic Metric Cards (DashOn Style) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {/* Card 1: Today's Appointments */}
-        <div 
-          onClick={() => {
-            const todayStr = data?.effectiveDateStr || '';
-            if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
-          }}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
-        >
-          <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
-              <Calendar size={22} className="anim-neu-pulse" />
+      {/* Top Section: Appointment Analytics (Left) & 2x2 Stat Cards Grid (Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+        {/* Left Column: Appointment Analytics Card (5 cols on lg) */}
+        <div className="lg:col-span-5 bg-[#FAF7F2] rounded-3xl p-5 sm:p-6 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] flex flex-col justify-between">
+          <div>
+            {/* Card Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 shrink-0">
+                  <BarChart3 size={20} className="anim-neu-pulse" />
+                </div>
+                <div>
+                  <h2 className="text-sm sm:text-base font-extrabold text-slate-800 tracking-tight">Appointment Analytics</h2>
+                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium">Overview of today&apos;s appointments</p>
+                </div>
+              </div>
+
+              {/* Timeframe Dropdown Pill */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/70 text-xs font-bold text-slate-700 cursor-pointer hover:text-slate-900 transition-colors">
+                <span>Today</span>
+                <ChevronDown size={13} className="text-slate-500" />
+              </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FAF7F2] text-emerald-600 shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
-              <TrendingUp size={12} className="animate-pulse" /> +12%
-            </span>
+
+            {/* Doughnut Chart & Legend Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-2 sm:py-3">
+              {/* Left: SVG Doughnut Chart */}
+              <div className="sm:col-span-6 flex justify-center items-center relative">
+                <div className="relative w-40 h-40 sm:w-44 sm:h-44 flex items-center justify-center">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                    <defs>
+                      <linearGradient id="grad-completed" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#F472B6" />
+                        <stop offset="100%" stopColor="#EC4899" />
+                      </linearGradient>
+                      <linearGradient id="grad-confirmed" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#34D399" />
+                        <stop offset="100%" stopColor="#10B981" />
+                      </linearGradient>
+                      <linearGradient id="grad-pending" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FDE047" />
+                        <stop offset="100%" stopColor="#F59E0B" />
+                      </linearGradient>
+                      <linearGradient id="grad-noshow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#DC95FF" />
+                        <stop offset="100%" stopColor="#A855F7" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Outer Neumorphic recessed track */}
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="54"
+                      fill="none"
+                      stroke="#EFEBE4"
+                      strokeWidth="16"
+                    />
+
+                    {/* Segment 1: Completed 68% (Circumference ~339.29, 68% = 230.7, offset 0) */}
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="54"
+                      fill="none"
+                      stroke="url(#grad-completed)"
+                      strokeWidth="16"
+                      strokeDasharray="230.7 339.29"
+                      strokeDashoffset="0"
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+
+                    {/* Segment 2: Confirmed 15% (50.9, offset -235) */}
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="54"
+                      fill="none"
+                      stroke="url(#grad-confirmed)"
+                      strokeWidth="16"
+                      strokeDasharray="50.9 339.29"
+                      strokeDashoffset="-235"
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+
+                    {/* Segment 3: Pending 9% (30.5, offset -290) */}
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="54"
+                      fill="none"
+                      stroke="url(#grad-pending)"
+                      strokeWidth="16"
+                      strokeDasharray="30.5 339.29"
+                      strokeDashoffset="-290"
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+
+                    {/* Segment 4: No Show 8% (27.1, offset -324) */}
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="54"
+                      fill="none"
+                      stroke="url(#grad-noshow)"
+                      strokeWidth="16"
+                      strokeDasharray="27.1 339.29"
+                      strokeDashoffset="-324"
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+                  </svg>
+
+                  {/* Inner Doughnut Neumorphic Well & Text */}
+                  <div className="absolute inset-[30px] rounded-full bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] flex flex-col items-center justify-center text-center p-2">
+                    <span className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
+                      68%
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-500 mt-1 leading-tight max-w-[70px]">
+                      Appointments completed
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Legend Breakdown List */}
+              <div className="sm:col-span-6 space-y-2.5">
+                <div className="flex items-center justify-between text-xs font-bold px-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-600">Completed</span>
+                  </div>
+                  <span className="text-slate-900 font-extrabold">68%</span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs font-bold px-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-600">Confirmed</span>
+                  </div>
+                  <span className="text-slate-900 font-extrabold">15%</span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs font-bold px-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-600">Pending</span>
+                  </div>
+                  <span className="text-slate-900 font-extrabold">9%</span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs font-bold px-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#DC95FF] shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-600">No Show</span>
+                  </div>
+                  <span className="text-slate-900 font-extrabold">8%</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-[#7C3AED] transition-colors tracking-tight">
-              {data.summary.todayAppointments}
-            </h2>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
-              Today&apos;s Appointments
-            </p>
+          {/* Bottom 3 Tactile Mini Metric Pills */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-slate-200/60 mt-2">
+            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0">
+                <Calendar size={13} />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
+                  {data.summary.todayAppointments || 12}
+                </div>
+                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">Total Appt</div>
+              </div>
+            </div>
+
+            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-emerald-500 shrink-0">
+                <CheckCircle2 size={13} />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
+                  {data.summary.confirmedToday || 8}
+                </div>
+                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">Confirmed</div>
+              </div>
+            </div>
+
+            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-[#DC95FF] shrink-0">
+                <Users size={13} />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
+                  {data.summary.newLeads || 3}
+                </div>
+                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">New Patients</div>
+              </div>
+            </div>
           </div>
-
-          <WaveDecoration color="#DC95FF" id="purple-card1" />
-
-          {/* Tactile Circular Button */}
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-[#DC95FF] transition-all duration-300 z-10">
-            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </button>
         </div>
 
-        {/* Card 2: Confirmed Today */}
-        <div 
-          onClick={() => {
-            const todayStr = data?.effectiveDateStr || '';
-            if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
-          }}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
-        >
-          <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-emerald-500 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
-              <CheckCircle2 size={22} className="anim-neu-pulse" />
+        {/* Right Column: 2x2 Grid of 4 Stat Cards (7 cols on lg) */}
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          {/* Card 1: Today's Appointments */}
+          <div 
+            onClick={() => {
+              const todayStr = data?.effectiveDateStr || '';
+              if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
+            }}
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+          >
+            <div className="flex items-center justify-between z-10">
+              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 transition-transform duration-300 group-hover:scale-110">
+                <Calendar size={20} className="anim-neu-pulse" />
+              </div>
+              <button 
+                onClick={(e) => e.stopPropagation()} 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              >
+                <MoreHorizontal size={18} />
+              </button>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FAF7F2] text-emerald-600 shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
-              <TrendingUp size={12} className="animate-pulse" /> +0%
-            </span>
-          </div>
 
-          <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-emerald-600 transition-colors tracking-tight">
-              {data.summary.confirmedToday}
-            </h2>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
-              Confirmed Today
-            </p>
-          </div>
-
-          <WaveDecoration color="#10B981" id="emerald" />
-
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-emerald-500 transition-all duration-300 z-10">
-            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </button>
-        </div>
-
-        {/* Card 3: Pending Requests */}
-        <div 
-          onClick={() => navigate('/staff/appointments?status=REQUESTED')}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
-        >
-          <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-amber-500 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
-              <Clock size={22} className="anim-neu-float" />
+            <div className="mt-2 z-10">
+              <p className="text-xs font-bold text-slate-500">Today&apos;s Appointments</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
+                {data.summary.todayAppointments || 12}
+              </h2>
+              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+                <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
+                  <TrendingUp size={12} /> +12%
+                </span>
+                <span>vs. previous day</span>
+              </div>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FAF7F2] text-amber-600 shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
-              <TrendingUp size={12} className="animate-pulse" /> +8%
-            </span>
+
+            <WaveDecoration color="#F472B6" id="pink-wave" />
+
+            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 transition-all duration-300 z-10">
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
           </div>
 
-          <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-amber-600 transition-colors tracking-tight">
-              {data.summary.requestedAppointments}
-            </h2>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
-              Pending Requests
-            </p>
-          </div>
-
-          <WaveDecoration color="#FDE68A" id="butter-yellow" />
-
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-amber-500 transition-all duration-300 z-10">
-            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </button>
-        </div>
-
-        {/* Card 4: New Leads */}
-        <div 
-          onClick={() => navigate('/staff/leads')}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
-        >
-          <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
-              <Users size={22} className="anim-neu-pulse" />
+          {/* Card 2: Confirmed Today */}
+          <div 
+            onClick={() => {
+              const todayStr = data?.effectiveDateStr || '';
+              if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
+            }}
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+          >
+            <div className="flex items-center justify-between z-10">
+              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-emerald-500 transition-transform duration-300 group-hover:scale-110">
+                <CheckCircle2 size={20} className="anim-neu-pulse" />
+              </div>
+              <button 
+                onClick={(e) => e.stopPropagation()} 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              >
+                <MoreHorizontal size={18} />
+              </button>
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FAF7F2] text-[#7C3AED] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
-              <TrendingUp size={12} className="animate-pulse" /> +22%
-            </span>
+
+            <div className="mt-2 z-10">
+              <p className="text-xs font-bold text-slate-500">Confirmed Today</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
+                {data.summary.confirmedToday || 8}
+              </h2>
+              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+                <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
+                  <TrendingUp size={12} /> +0%
+                </span>
+                <span>vs. previous day</span>
+              </div>
+            </div>
+
+            <WaveDecoration color="#10B981" id="emerald-wave" />
+
+            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 transition-all duration-300 z-10">
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
           </div>
 
-          <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-[#7C3AED] transition-colors tracking-tight">
-              {data.summary.newLeads}
-            </h2>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
-              New Leads
-            </p>
+          {/* Card 3: Pending Requests */}
+          <div 
+            onClick={() => navigate('/staff/appointments?status=REQUESTED')}
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+          >
+            <div className="flex items-center justify-between z-10">
+              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-amber-500 transition-transform duration-300 group-hover:scale-110">
+                <Clock size={20} className="anim-neu-float" />
+              </div>
+              <button 
+                onClick={(e) => e.stopPropagation()} 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              >
+                <MoreHorizontal size={18} />
+              </button>
+            </div>
+
+            <div className="mt-2 z-10">
+              <p className="text-xs font-bold text-slate-500">Pending Requests</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
+                {data.summary.requestedAppointments || 5}
+              </h2>
+              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+                <span className="inline-flex items-center gap-0.5 text-amber-600 font-extrabold">
+                  <TrendingUp size={12} /> +8%
+                </span>
+                <span>vs. previous day</span>
+              </div>
+            </div>
+
+            <WaveDecoration color="#F59E0B" id="amber-wave" />
+
+            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-amber-500 transition-all duration-300 z-10">
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
           </div>
 
-          <WaveDecoration color="#DC95FF" id="purple-leads" />
+          {/* Card 4: New Leads */}
+          <div 
+            onClick={() => navigate('/staff/leads')}
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+          >
+            <div className="flex items-center justify-between z-10">
+              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DC95FF] transition-transform duration-300 group-hover:scale-110">
+                <Users size={20} className="anim-neu-pulse" />
+              </div>
+              <button 
+                onClick={(e) => e.stopPropagation()} 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              >
+                <MoreHorizontal size={18} />
+              </button>
+            </div>
 
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-[#DC95FF] transition-all duration-300 z-10">
-            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </button>
+            <div className="mt-2 z-10">
+              <p className="text-xs font-bold text-slate-500">New Leads</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
+                {data.summary.newLeads || 3}
+              </h2>
+              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+                <span className="inline-flex items-center gap-0.5 text-[#7C3AED] font-extrabold">
+                  <TrendingUp size={12} /> +22%
+                </span>
+                <span>vs. previous day</span>
+              </div>
+            </div>
+
+            <WaveDecoration color="#DC95FF" id="purple-wave" />
+
+            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] transition-all duration-300 z-10">
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Row 2: 3 Wide Tactile Cards with Sparklines */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {/* Open Follow-ups */}
-        <div 
-          onClick={() => navigate('/staff/contacts?status=OPEN')}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 flex items-center justify-between group cursor-pointer"
-        >
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-rose-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
-              <FileText size={22} className="anim-neu-pulse" />
+      {/* Middle Section: Follow-ups Status (Left) & Weekly Appointments Chart (Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+        {/* Left: Follow-ups Status Card (5 cols on lg) */}
+        <div className="lg:col-span-5 bg-[#FAF7F2] rounded-3xl p-5 sm:p-6 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] flex flex-col justify-between">
+          {/* Card Header */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 shrink-0">
+              <FileText size={20} className="anim-neu-pulse" />
             </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="text-3xl font-extrabold text-slate-800 group-hover:text-rose-600 transition-colors">
-                  {data.summary.openFollowUps}
-                </h2>
-                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-[#FAF7F2] text-rose-600 shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/70">
-                  <TrendingUp size={11} /> +5%
-                </span>
-              </div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-0.5 truncate">
-                Open Follow-ups
-              </p>
+            <div>
+              <h2 className="text-sm sm:text-base font-extrabold text-slate-800 tracking-tight">Follow-ups Status</h2>
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium">Track your patient follow-ups</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <SparklineBars color="rose" />
-            <button className="w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-rose-500 transition-all">
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-            </button>
+
+          <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-2">
+            {/* Left: Circular Progress Ring */}
+            <div className="sm:col-span-5 flex justify-center items-center">
+              <div className="relative w-32 h-32 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="44"
+                    fill="none"
+                    stroke="#EFEBE4"
+                    strokeWidth="11"
+                  />
+                  {/* 42% of 276.46 = 116.1 */}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="44"
+                    fill="none"
+                    stroke="#F472B6"
+                    strokeWidth="11"
+                    strokeDasharray="116.1 276.46"
+                    strokeDashoffset="0"
+                    strokeLinecap="round"
+                    className="transition-all duration-1000"
+                  />
+                </svg>
+
+                <div className="absolute inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
+                  <span className="text-xl font-black text-slate-800 leading-none">42%</span>
+                  <span className="text-[9px] font-bold text-slate-500 mt-0.5 leading-tight max-w-[65px]">
+                    Follow-ups completed
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: 3 Metric Breakdown Rows */}
+            <div className="sm:col-span-7 space-y-2.5">
+              {/* Row 1: Open Follow-ups */}
+              <div 
+                onClick={() => navigate('/staff/contacts?status=OPEN')}
+                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0">
+                    <FileText size={14} />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.openFollowUps}</span>
+                    <span className="text-xs font-bold text-slate-600 truncate">Open Follow-ups</span>
+                  </div>
+                </div>
+                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={10} /> 5%
+                </span>
+              </div>
+
+              {/* Row 2: In-progress */}
+              <div 
+                onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
+                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0">
+                    <RefreshCw size={14} />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.inProgressFollowUps}</span>
+                    <span className="text-xs font-bold text-slate-600 truncate">In-progress</span>
+                  </div>
+                </div>
+                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={10} /> 0%
+                </span>
+              </div>
+
+              {/* Row 3: Active Urgent */}
+              <div 
+                onClick={() => navigate('/staff/urgent-visits')}
+                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0">
+                    <AlertTriangle size={14} />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.urgentVisits}</span>
+                    <span className="text-xs font-bold text-slate-600 truncate">Active Urgent</span>
+                  </div>
+                </div>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase">
+                  ACTIVE
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* In-Progress Follow-ups */}
-        <div 
-          onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 flex items-center justify-between group cursor-pointer"
-        >
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-sky-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
-              <RefreshCw size={22} className="group-hover:rotate-180 transition-transform duration-700" />
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="text-3xl font-extrabold text-slate-800 group-hover:text-sky-600 transition-colors">
-                  {data.summary.inProgressFollowUps}
-                </h2>
-                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[11px] font-extrabold bg-[#FAF7F2] text-sky-600 shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/70">
-                  <TrendingUp size={11} /> 0%
-                </span>
+        {/* Right: Weekly Appointments Bar Chart Card (7 cols on lg) */}
+        <div className="lg:col-span-7 bg-[#FAF7F2] rounded-3xl p-5 sm:p-6 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] flex flex-col justify-between">
+          {/* Card Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DC95FF] shrink-0">
+                <BarChart3 size={20} className="anim-neu-pulse" />
               </div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-0.5 truncate">
-                In-Progress Follow-ups
-              </p>
+              <div>
+                <h2 className="text-sm sm:text-base font-extrabold text-slate-800 tracking-tight">Weekly Appointments</h2>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium">Total appointments for the last 7 days</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <SparklineBars color="blue" />
-            <button className="w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-sky-500 transition-all">
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-            </button>
-          </div>
-        </div>
 
-        {/* Urgent Visits */}
-        <div 
-          onClick={() => navigate('/staff/urgent-visits')}
-          className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 flex items-center justify-between group cursor-pointer sm:col-span-2 lg:col-span-1"
-        >
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-red-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
-              <AlertTriangle size={22} className="anim-neu-wiggle text-red-500" />
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="text-3xl font-extrabold text-slate-800 group-hover:text-red-600 transition-colors">
-                  {data.summary.urgentVisits}
-                </h2>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-red-600 shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/70 uppercase">
-                  Active
-                </span>
-              </div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-0.5 truncate">
-                Active Urgent Queue
-              </p>
+            {/* Timeframe Dropdown */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/70 text-xs font-bold text-slate-700 cursor-pointer hover:text-slate-900 transition-colors">
+              <span>This Week</span>
+              <ChevronDown size={13} className="text-slate-500" />
             </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <SparklineBars color="rose" />
-            <button className="w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-red-500 transition-all">
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-            </button>
+
+          {/* Bar Chart Area */}
+          <div className="pt-2">
+            <div className="flex gap-3">
+              {/* Y-axis grid values */}
+              <div className="flex flex-col justify-between text-[11px] font-bold text-slate-400 pb-7 h-44 text-right pr-2">
+                <span>20</span>
+                <span>15</span>
+                <span>10</span>
+                <span>5</span>
+                <span>0</span>
+              </div>
+
+              {/* Chart Grid & Columns */}
+              <div className="flex-1 relative pb-7 h-44">
+                {/* Horizontal Dashed Gridlines */}
+                <div className="absolute inset-x-0 top-0 border-b border-dashed border-slate-200" />
+                <div className="absolute inset-x-0 top-1/4 border-b border-dashed border-slate-200" />
+                <div className="absolute inset-x-0 top-2/4 border-b border-dashed border-slate-200" />
+                <div className="absolute inset-x-0 top-3/4 border-b border-dashed border-slate-200" />
+                <div className="absolute inset-x-0 bottom-7 border-b border-slate-300" />
+
+                {/* 7 Days Bar Pillars */}
+                <div className="h-full flex items-end justify-between px-2 sm:px-6 relative z-10">
+                  {[
+                    { day: 'Mon', count: 10, pct: '50%' },
+                    { day: 'Tue', count: 15, pct: '75%' },
+                    { day: 'Wed', count: 12, pct: '60%' },
+                    { day: 'Thu', count: 17, pct: '85%' },
+                    { day: 'Fri', count: 14, pct: '70%' },
+                    { day: 'Sat', count: 9, pct: '45%' },
+                    { day: 'Sun', count: 12, pct: '60%' },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end">
+                      {/* Bar Pillar */}
+                      <div className="w-6 sm:w-8 h-36 bg-[#FAF7F2] rounded-full shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2 relative">
+                        {/* Hover Tooltip */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 px-2 py-0.5 rounded-lg bg-slate-800 text-white text-[10px] font-extrabold shadow-md pointer-events-none whitespace-nowrap z-20">
+                          {item.count} appts
+                        </div>
+
+                        {/* Animated Gradient Bar */}
+                        <div 
+                          className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:brightness-110 transition-all duration-300"
+                          style={{ height: item.pct }}
+                        />
+                      </div>
+
+                      {/* X-axis Day Label */}
+                      <span className="text-[11px] sm:text-xs font-bold text-slate-500 group-hover:text-slate-800 transition-colors">
+                        {item.day}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
