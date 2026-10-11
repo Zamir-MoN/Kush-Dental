@@ -244,13 +244,13 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
                 {filteredAppointments.map((apt) => {
                   const start = new Date(apt.startsAt);
                   return (
-                    <tr key={apt.id} className="hover:bg-[#1A1D25] transition-colors group">
+                    <tr key={apt.id} className="hover:bg-white/90 border-l-2 border-l-transparent hover:border-l-[#DC95FF] transition-all group">
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                         <div className="text-sm font-semibold text-zinc-900">
                           {formatDate(start)}
                         </div>
                         <div className="text-xs text-zinc-500 flex items-center mt-0.5">
-                          <Clock size={12} className="mr-1 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
+                          <Clock size={12} className="mr-1 text-zinc-400 group-hover:text-[#DC95FF] transition-colors" />
                           {formatTime(start)}
                         </div>
                       </td>
@@ -262,12 +262,12 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
                           </>
                         ) : (
                           <>
-                            <div className="text-sm font-medium text-[#DCA51B]">Guest Request</div>
+                            <div className="text-sm font-medium text-[#7C3AED]">Guest Request</div>
                             <div className="text-xs text-zinc-500 mt-0.5">{apt.guestName || 'Unknown'}</div>
                             <div className="text-xs text-zinc-400 mt-0.5">{apt.guestPhone || 'No Phone'}</div>
                           </>
                         )}
-                        <div className="text-xs text-zinc-500 mt-1">Doctor: {apt.doctorId ? <span className="text-[#8C6B14] font-medium">{apt.doctorId.substring(0, 8)}...</span> : 'Unassigned'}</div>
+                        <div className="text-xs text-zinc-500 mt-1">Doctor: {apt.doctorId ? <span className="text-[#7C3AED] font-medium">{apt.doctorId.substring(0, 8)}...</span> : 'Unassigned'}</div>
                       </td>
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-zinc-900">{apt.treatment}</div>
@@ -280,7 +280,7 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap text-right text-sm font-medium">
                         <Link 
                           to={`/staff/appointments/${apt.id}`} 
-                          className="text-[#8C6B14] hover:text-[#B8871B] transition-all p-1.5 inline-block hover:scale-125" 
+                          className="text-[#7C3AED] hover:text-[#DC95FF] transition-all p-1.5 inline-block hover:scale-125" 
                           title="View/Edit"
                         >
                           <Eye size={18} />

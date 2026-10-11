@@ -166,7 +166,7 @@ export const Dashboard = () => {
     }
     if (status === 'REQUESTED') {
       return (
-        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 shadow-[2px_2px_4px_#D1D9E6,-2px_-2px_4px_#FFFFFF]">
+        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#FFF4BF] text-[#713F12] border border-[#FDE68A] shadow-[2px_2px_4px_#D1D9E6,-2px_-2px_4px_#FFFFFF]">
           REQUESTED
         </span>
       );
@@ -189,7 +189,7 @@ export const Dashboard = () => {
     return (
       <div className="flex flex-col justify-center items-center h-80 gap-3">
         <div className="w-16 h-16 rounded-3xl bg-[#EBF0F7] shadow-[6px_6px_14px_#D1D9E6,-6px_-6px_14px_#FFFFFF] border border-white/80 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 text-[#DCA51B] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#DC95FF] animate-spin" />
         </div>
         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading Clinical Metrics...</span>
       </div>
@@ -226,7 +226,7 @@ export const Dashboard = () => {
         <div className="flex flex-wrap items-center gap-3 self-start sm:self-auto">
           {/* Recessed Inset Date Pill */}
           <div className="inline-flex items-center gap-2 bg-[#EBF0F7] px-4 py-2 rounded-2xl shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 text-xs font-bold text-slate-700">
-            <Calendar size={14} className="text-[#DCA51B] anim-neu-pulse" />
+            <Calendar size={14} className="text-[#DC95FF] anim-neu-pulse" />
             <span>{formattedCurrentDate}</span>
           </div>
 
@@ -235,7 +235,7 @@ export const Dashboard = () => {
             onClick={() => window.location.reload()} 
             className="group inline-flex items-center gap-2 bg-[#EBF0F7] text-slate-800 px-4 py-2 rounded-2xl text-xs font-bold border border-white/85 shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] hover:shadow-[6px_6px_14px_#D1D9E6,-6px_-6px_14px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_5px_#D1D9E6,inset_-2px_-2px_5px_#FFFFFF] active:translate-y-0 transition-all cursor-pointer"
           >
-            <Sun size={14} className="text-[#DCA51B] transition-transform duration-500 group-hover:rotate-90 group-hover:scale-110" />
+            <Sun size={14} className="text-[#DC95FF] transition-transform duration-500 group-hover:rotate-90 group-hover:scale-110" />
             <span>Today</span>
           </button>
         </div>
@@ -252,7 +252,7 @@ export const Dashboard = () => {
           className="bg-[#EBF0F7] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#D1D9E6,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#C5D0E0,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
         >
           <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DCA51B] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
+            <div className="w-12 h-12 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
               <Calendar size={22} className="anim-neu-pulse" />
             </div>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#EBF0F7] text-emerald-600 shadow-[2.5px_2.5px_5px_#D1D9E6,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
@@ -261,7 +261,7 @@ export const Dashboard = () => {
           </div>
 
           <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-[#B8860B] transition-colors tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-[#7C3AED] transition-colors tracking-tight">
               {data.summary.todayAppointments}
             </h2>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
@@ -269,10 +269,10 @@ export const Dashboard = () => {
             </p>
           </div>
 
-          <WaveDecoration color="#F59E0B" id="amber" />
+          <WaveDecoration color="#DC95FF" id="purple-card1" />
 
           {/* Tactile Circular Button */}
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-[#DCA51B] transition-all duration-300 z-10">
+          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-[#DC95FF] transition-all duration-300 z-10">
             <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -333,7 +333,7 @@ export const Dashboard = () => {
             </p>
           </div>
 
-          <WaveDecoration color="#F97316" id="orange" />
+          <WaveDecoration color="#FDE68A" id="butter-yellow" />
 
           <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-amber-500 transition-all duration-300 z-10">
             <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -346,16 +346,16 @@ export const Dashboard = () => {
           className="bg-[#EBF0F7] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#D1D9E6,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#C5D0E0,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[170px]"
         >
           <div className="flex items-center justify-between z-10">
-            <div className="w-12 h-12 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-purple-500 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
+            <div className="w-12 h-12 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
               <Users size={22} className="anim-neu-pulse" />
             </div>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#EBF0F7] text-purple-600 shadow-[2.5px_2.5px_5px_#D1D9E6,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-[#EBF0F7] text-[#7C3AED] shadow-[2.5px_2.5px_5px_#D1D9E6,-2.5px_-2.5px_5px_#FFFFFF] border border-white/80">
               <TrendingUp size={12} className="animate-pulse" /> +22%
             </span>
           </div>
 
           <div className="mt-4 z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-purple-600 transition-colors tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 group-hover:text-[#7C3AED] transition-colors tracking-tight">
               {data.summary.newLeads}
             </h2>
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">
@@ -363,9 +363,9 @@ export const Dashboard = () => {
             </p>
           </div>
 
-          <WaveDecoration color="#8B5CF6" id="purple" />
+          <WaveDecoration color="#DC95FF" id="purple-leads" />
 
-          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-purple-500 transition-all duration-300 z-10">
+          <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-slate-400 group-hover:text-[#DC95FF] transition-all duration-300 z-10">
             <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
         </div>
@@ -508,10 +508,10 @@ export const Dashboard = () => {
                 <button
                   key={apt.id}
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-[#E4EAF2]/60 transition-colors flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-white/85 border-l-4 border-l-transparent hover:border-l-[#DC95FF] transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3.5 min-w-0 pr-2">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[3.5px_3.5px_7px_#D1D9E6,-3.5px_-3.5px_7px_#FFFFFF] border border-white/80 flex items-center justify-center text-[#B8860B] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FFF4BF] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] border border-[#DC95FF]/35 flex items-center justify-center text-[#6B21A8] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
                       {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -523,11 +523,11 @@ export const Dashboard = () => {
                       </div>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 font-medium">
                         <span className="flex items-center gap-1">
-                          <Calendar size={12} className="text-[#DCA51B]" />
+                          <Calendar size={12} className="text-[#DC95FF]" />
                           {formatDate(apt.startsAt)}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={12} className="text-[#DCA51B]" />
+                          <Clock size={12} className="text-[#DC95FF]" />
                           {formatTime(apt.startsAt)}
                         </span>
                         <span className="px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 text-slate-700">
@@ -542,7 +542,7 @@ export const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DCA51B] group-hover:translate-x-0.5 shrink-0 transition-all" />
+                  <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DC95FF] group-hover:translate-x-0.5 shrink-0 transition-all" />
                 </button>
               ))
             )}
@@ -562,7 +562,7 @@ export const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-extrabold text-slate-700 bg-[#EBF0F7] shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/70">
+              <span className="px-3 py-1 rounded-full text-xs font-extrabold text-[#713F12] bg-[#FFF4BF] shadow-[inset_1.5px_1.5px_3px_#E6DC9A,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-[#FDE68A]">
                 {data.requestedAppointments.length} Total
               </span>
               <button 
@@ -585,10 +585,10 @@ export const Dashboard = () => {
                 <button
                   key={apt.id}
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-[#E4EAF2]/60 transition-colors flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-white/85 border-l-4 border-l-transparent hover:border-l-[#DC95FF] transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3.5 min-w-0 pr-2">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[3.5px_3.5px_7px_#D1D9E6,-3.5px_-3.5px_7px_#FFFFFF] border border-white/80 flex items-center justify-center text-[#B8860B] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FFF4BF] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] border border-[#DC95FF]/35 flex items-center justify-center text-[#6B21A8] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
                       {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -600,11 +600,11 @@ export const Dashboard = () => {
                       </div>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 font-medium">
                         <span className="flex items-center gap-1">
-                          <Calendar size={12} className="text-[#DCA51B]" />
+                          <Calendar size={12} className="text-[#DC95FF]" />
                           {formatDate(apt.startsAt)}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={12} className="text-[#DCA51B]" />
+                          <Clock size={12} className="text-[#DC95FF]" />
                           {formatTime(apt.startsAt)}
                         </span>
                         <span className="px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 text-slate-700">
@@ -613,7 +613,7 @@ export const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <ChevronRight size={18} className="text-slate-400 group-hover:text-amber-500 group-hover:translate-x-0.5 shrink-0 transition-all" />
+                  <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DC95FF] group-hover:translate-x-0.5 shrink-0 transition-all" />
                 </button>
               ))
             )}
@@ -627,7 +627,7 @@ export const Dashboard = () => {
         <div className="bg-[#EBF0F7] rounded-3xl border border-white/85 shadow-[8px_8px_18px_#D1D9E6,-8px_-8px_18px_#FFFFFF] overflow-hidden flex flex-col">
           <div className="px-5 sm:px-6 py-4 border-b border-slate-200/70 bg-[#EBF0F7] flex items-center justify-between shadow-[0_2px_4px_rgba(209,217,230,0.25)]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DCA51B] shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] shrink-0">
                 <Calendar size={18} className="anim-neu-pulse" />
               </div>
               <div>
@@ -657,10 +657,10 @@ export const Dashboard = () => {
                 <button
                   key={apt.id}
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-[#E4EAF2]/60 transition-colors flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-white/85 border-l-4 border-l-transparent hover:border-l-[#DC95FF] transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3.5 min-w-0 pr-2">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[3.5px_3.5px_7px_#D1D9E6,-3.5px_-3.5px_7px_#FFFFFF] border border-white/80 flex items-center justify-center text-[#B8860B] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FFF4BF] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] border border-[#DC95FF]/35 flex items-center justify-center text-[#6B21A8] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
                       {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -669,11 +669,11 @@ export const Dashboard = () => {
                       </div>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 font-medium">
                         <span className="flex items-center gap-1">
-                          <Calendar size={12} className="text-[#DCA51B]" />
+                          <Calendar size={12} className="text-[#DC95FF]" />
                           {formatDate(apt.startsAt)}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={12} className="text-[#DCA51B]" />
+                          <Clock size={12} className="text-[#DC95FF]" />
                           {formatTime(apt.startsAt)}
                         </span>
                         <span className="px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 text-slate-700">
@@ -684,7 +684,7 @@ export const Dashboard = () => {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {getStatusBadge(apt.status)}
-                    <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DCA51B] group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DC95FF] group-hover:translate-x-0.5 transition-all" />
                   </div>
                 </button>
               ))
@@ -696,7 +696,7 @@ export const Dashboard = () => {
         <div className="bg-[#EBF0F7] rounded-3xl border border-white/85 shadow-[8px_8px_18px_#D1D9E6,-8px_-8px_18px_#FFFFFF] overflow-hidden flex flex-col">
           <div className="px-5 sm:px-6 py-4 border-b border-slate-200/70 bg-[#EBF0F7] flex items-center justify-between shadow-[0_2px_4px_rgba(209,217,230,0.25)]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-purple-500 shrink-0">
+              <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#7C3AED] shrink-0">
                 <Users size={18} className="anim-neu-pulse" />
               </div>
               <div>
@@ -723,10 +723,10 @@ export const Dashboard = () => {
                 <button
                   key={lead.id}
                   onClick={() => navigate(`/staff/leads/${lead.id}`)}
-                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-[#E4EAF2]/60 transition-colors flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left px-4 sm:px-6 py-3.5 hover:bg-white/85 border-l-4 border-l-transparent hover:border-l-[#DC95FF] transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3.5 min-w-0 pr-2">
-                    <div className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[3.5px_3.5px_7px_#D1D9E6,-3.5px_-3.5px_7px_#FFFFFF] border border-white/80 flex items-center justify-center text-purple-600 font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
+                    <div className="w-10 h-10 rounded-2xl bg-[#FFF4BF] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] border border-[#DC95FF]/35 flex items-center justify-center text-[#6B21A8] font-extrabold text-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
                       {lead.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -735,24 +735,24 @@ export const Dashboard = () => {
                       </div>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 font-medium">
                         <span className="flex items-center gap-1">
-                          <Calendar size={12} className="text-[#DCA51B]" />
+                          <Calendar size={12} className="text-[#DC95FF]" />
                           {formatDate(lead.createdAt)}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={12} className="text-[#DCA51B]" />
+                          <Clock size={12} className="text-[#DC95FF]" />
                           {formatTime(lead.createdAt)}
                         </span>
-                        <span className="px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 text-[#B8860B]">
+                        <span className="px-2 py-0.5 rounded-lg text-[10px] sm:text-xs font-semibold bg-[#FFF4BF] shadow-[inset_1.5px_1.5px_3px_#E6DC9A,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-[#FDE68A] text-[#713F12]">
                           From Website
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-extrabold bg-[#EBF0F7] text-purple-600 shadow-[2px_2px_4px_#D1D9E6,-2px_-2px_4px_#FFFFFF] border border-white/80">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-extrabold bg-[#DC95FF]/20 text-[#6B21A8] shadow-[2px_2px_4px_#D1D9E6,-2px_-2px_4px_#FFFFFF] border border-[#DC95FF]/30">
                       New
                     </span>
-                    <ChevronRight size={18} className="text-slate-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight size={18} className="text-slate-400 group-hover:text-[#DC95FF] group-hover:translate-x-0.5 transition-all" />
                   </div>
                 </button>
               ))

@@ -47,7 +47,7 @@ export const PortalLayout = () => {
   const visibleNavItems = navItems.filter(item => item.allowedRoles.includes(user?.role || ''));
 
   return (
-    <div className="portal-neumorphic flex min-h-screen bg-[#EBF0F7] text-slate-800 font-sans selection:bg-[#DCA51B]/20 selection:text-slate-900">
+    <div className="portal-neumorphic flex min-h-screen bg-[#EBF0F7] text-slate-800 font-sans selection:bg-[#DC95FF]/30 selection:text-[#3B0764]">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div 
@@ -84,7 +84,7 @@ export const PortalLayout = () => {
               className={({ isActive }) =>
                 `group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${
                   isActive
-                    ? 'bg-[#EBF0F7] text-[#B8860B] font-bold border border-white/90 shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF]'
+                    ? 'bg-[#EBF0F7] text-[#7C3AED] font-bold border border-white/90 shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF]'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-[#EBF0F7] hover:shadow-[4px_4px_10px_#D1D9E6,-4px_-4px_10px_#FFFFFF] hover:-translate-y-0.5'
                 }`
               }
@@ -94,15 +94,15 @@ export const PortalLayout = () => {
                   <div className="flex items-center space-x-3.5">
                     <span className={`shrink-0 p-1.5 rounded-xl transition-all duration-300 ${
                       isActive 
-                        ? 'text-[#DCA51B] bg-amber-500/10 shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF]' 
-                        : 'group-hover:scale-110 group-hover:rotate-3 group-hover:text-[#DCA51B]'
+                        ? 'text-[#7C3AED] bg-[#DC95FF]/20 shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF]' 
+                        : 'group-hover:scale-110 group-hover:rotate-3 group-hover:text-[#DC95FF]'
                     }`}>
                       {item.icon}
                     </span>
                     <span className="tracking-wide">{item.label}</span>
                   </div>
                   {isActive && (
-                    <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-[#F5D77F] to-[#DCA51B] shadow-[0_0_8px_rgba(220,165,27,0.7)]" />
+                    <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-[#DC95FF] to-[#FFF4BF] shadow-[0_0_8px_rgba(220,149,255,0.7)]" />
                   )}
                 </>
               )}
@@ -142,8 +142,8 @@ export const PortalLayout = () => {
             </div>
 
             {/* Inset Neumorphic Search Bar (Desktop) */}
-            <div className="hidden md:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/60 w-64 lg:w-80 group focus-within:shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF,0_0_0_2px_rgba(220,165,27,0.3)] transition-all">
-              <Search size={16} className="text-slate-400 group-focus-within:text-[#DCA51B] transition-colors" />
+            <div className="hidden md:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/60 w-64 lg:w-80 group focus-within:shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF,0_0_0_2px_rgba(220,149,255,0.35)] transition-all">
+              <Search size={16} className="text-slate-400 group-focus-within:text-[#7C3AED] transition-colors" />
               <input 
                 type="text" 
                 placeholder="Search appointments, patients..." 
@@ -159,7 +159,7 @@ export const PortalLayout = () => {
               title="Notifications"
             >
               <Bell size={18} className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DCA51B] shadow-[0_0_6px_rgba(220,165,27,0.8)]" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DC95FF] shadow-[0_0_6px_rgba(220,149,255,0.9)]" />
             </button>
 
             {/* User Profile Info & Tactile Avatar */}
@@ -168,19 +168,19 @@ export const PortalLayout = () => {
                 <span className="text-xs sm:text-sm font-bold text-slate-800 truncate max-w-[180px]" title={user?.email || 'User'}>
                   {user?.email || 'User'}
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 px-2 py-0.5 text-[10px] font-extrabold text-[#B8860B] uppercase tracking-wider">
-                  <ShieldCheck size={10} className="text-[#DCA51B]" />
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#FFF4BF] shadow-[inset_1.5px_1.5px_3px_#E6DC9A,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-[#DC95FF]/30 px-2 py-0.5 text-[10px] font-extrabold text-[#6B21A8] uppercase tracking-wider">
+                  <ShieldCheck size={10} className="text-[#7C3AED]" />
                   {user?.role}
                 </span>
               </div>
               
               {/* Mobile role pill only */}
-              <span className="sm:hidden inline-flex items-center rounded-full bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 px-2 py-0.5 text-[10px] font-extrabold text-[#B8860B]">
+              <span className="sm:hidden inline-flex items-center rounded-full bg-[#FFF4BF] shadow-[inset_1.5px_1.5px_3px_#E6DC9A,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-[#DC95FF]/30 px-2 py-0.5 text-[10px] font-extrabold text-[#6B21A8]">
                 {user?.role}
               </span>
 
               {/* Tactile Neumorphic Avatar Plate */}
-              <div className="h-10 w-10 sm:h-11 sm:w-11 flex items-center justify-center rounded-2xl bg-[#EBF0F7] shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] border border-white/85 text-[#B8860B] font-extrabold text-sm shrink-0 transition-transform duration-300 hover:scale-105 select-none">
+              <div className="h-10 w-10 sm:h-11 sm:w-11 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#FFF4BF] to-[#DC95FF]/25 shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] border border-[#DC95FF]/40 text-[#6B21A8] font-extrabold text-sm shrink-0 transition-transform duration-300 hover:scale-105 select-none">
                 {user?.email?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>

@@ -168,15 +168,15 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">
-          <Link to="/staff/appointments" className="p-2.5 bg-[#181A22] rounded-xl shadow-xs border border-[#2A2E3B] text-zinc-300 hover:text-white hover:border-[#DCA51B]/40 transition-colors">
+          <Link to="/staff/appointments" className="p-2.5 bg-[#EBF0F7] rounded-2xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] border border-white/80 text-slate-700 hover:text-[#7C3AED] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] transition-all">
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-zinc-100 tracking-tight">
+            <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
               {isNew ? 'New Appointment' : 'Appointment Details'}
             </h1>
             {!isNew && (
-              <p className="text-xs font-mono text-zinc-400 mt-0.5">
+              <p className="text-xs font-mono text-slate-500 mt-0.5">
                 ID: {appointment.id}
               </p>
             )}
@@ -186,9 +186,9 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
         {!isNew && !isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="inline-flex items-center px-4 py-2 border border-[#2A2E3B] rounded-xl shadow-xs text-xs font-bold uppercase tracking-wider text-zinc-200 bg-[#181A22] hover:bg-[#20232E] hover:border-[#DCA51B]/50 transition-colors cursor-pointer"
+            className="inline-flex items-center px-4 py-2 border border-white/80 rounded-2xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] text-xs font-bold uppercase tracking-wider text-slate-700 bg-[#EBF0F7] hover:bg-white hover:text-[#7C3AED] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] transition-all cursor-pointer"
           >
-            <Edit2 size={14} className="mr-2 text-[#F5C242]" />
+            <Edit2 size={14} className="mr-2 text-[#DC95FF]" />
             Edit / Reschedule
           </button>
         )}
@@ -244,16 +244,16 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
                   <button
                     onClick={() => handleStatusUpdate('CONFIRMED')}
                     disabled={statusLoading}
-                    className="inline-flex items-center px-3.5 py-2 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/60 disabled:opacity-40 transition-all cursor-pointer"
+                    className="inline-flex items-center px-4 py-2.5 border border-emerald-400 text-xs font-bold uppercase tracking-wider rounded-xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] text-emerald-800 bg-[#ECFDF5] hover:bg-[#D1FAE5] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#A7F3D0] disabled:opacity-40 transition-all cursor-pointer"
                   >
-                    <CheckCircle size={15} className="mr-1.5 text-emerald-400" /> Confirm
+                    <CheckCircle size={15} className="mr-1.5 text-emerald-600" /> Confirm
                   </button>
                   <button
                     onClick={() => { setError(null); setShowCancelModal(true); }}
                     disabled={statusLoading}
-                    className="inline-flex items-center px-3.5 py-2 border border-rose-500/40 text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs text-rose-300 bg-rose-950/40 hover:bg-rose-900/60 disabled:opacity-40 transition-all cursor-pointer"
+                    className="inline-flex items-center px-4 py-2.5 border border-rose-400 text-xs font-bold uppercase tracking-wider rounded-xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] text-rose-800 bg-[#FFF1F2] hover:bg-[#FFE4E6] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#FECDD3] disabled:opacity-40 transition-all cursor-pointer"
                   >
-                    <Ban size={15} className="mr-1.5 text-rose-400" /> Cancel
+                    <Ban size={15} className="mr-1.5 text-rose-600" /> Cancel
                   </button>
                 </>
               )}
@@ -261,9 +261,9 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
               {appointment.status === 'CONFIRMED' && (
                 <button
                   onClick={() => navigate('/staff/appointments/new', { state: { prefill: appointment } })}
-                  className="inline-flex items-center px-3.5 py-2 border border-[#DCA51B]/40 text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs text-[#DCA51B] bg-[#DCA51B]/10 hover:bg-[#DCA51B]/20 transition-all cursor-pointer"
+                  className="inline-flex items-center px-4 py-2.5 border border-[#DC95FF]/60 text-xs font-bold uppercase tracking-wider rounded-xl shadow-[3px_3px_8px_rgba(220,149,255,0.4),-3px_-3px_8px_#FFFFFF] text-[#3B0764] bg-gradient-to-r from-[#DC95FF] to-[#FFF4BF] hover:shadow-[5px_5px_14px_rgba(220,149,255,0.5),-5px_-5px_14px_#FFFFFF] hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <Clock size={15} className="mr-1.5" /> Schedule Next Appointment
+                  <Clock size={15} className="mr-1.5 text-[#581C87]" /> Schedule Next Appointment
                 </button>
               )}
               
@@ -272,16 +272,16 @@ export const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ isDoctor }
                   <button
                     onClick={() => handleStatusUpdate('COMPLETED')}
                     disabled={statusLoading}
-                    className="inline-flex items-center px-3.5 py-2 border border-[#2A2E3B] text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs text-zinc-300 bg-[#181A22] hover:bg-[#222530] hover:text-white hover:border-blue-500/40 disabled:opacity-40 transition-all cursor-pointer"
+                    className="inline-flex items-center px-4 py-2.5 border border-blue-300 text-xs font-bold uppercase tracking-wider rounded-xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] text-blue-800 bg-[#EFF6FF] hover:bg-[#DBEAFE] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] disabled:opacity-40 transition-all cursor-pointer"
                   >
-                    <RefreshCw size={15} className="mr-1.5 text-blue-400" /> Complete
+                    <RefreshCw size={15} className="mr-1.5 text-blue-600" /> Complete
                   </button>
                   <button
                     onClick={() => handleStatusUpdate('NO_SHOW')}
                     disabled={statusLoading}
-                    className="inline-flex items-center px-3.5 py-2 border border-[#2A2E3B] text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs text-zinc-300 bg-[#181A22] hover:bg-[#222530] hover:text-white hover:border-amber-500/40 disabled:opacity-40 transition-all cursor-pointer"
+                    className="inline-flex items-center px-4 py-2.5 border border-amber-300 text-xs font-bold uppercase tracking-wider rounded-xl shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] text-amber-800 bg-[#FFFBEB] hover:bg-[#FEF3C7] hover:shadow-[5px_5px_12px_#C5D0E0,-5px_-5px_12px_#FFFFFF] disabled:opacity-40 transition-all cursor-pointer"
                   >
-                    <XCircle size={15} className="mr-1.5 text-amber-400" /> No Show
+                    <XCircle size={15} className="mr-1.5 text-amber-600" /> No Show
                   </button>
                 </>
               )}

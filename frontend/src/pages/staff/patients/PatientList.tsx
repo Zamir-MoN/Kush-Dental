@@ -111,11 +111,11 @@ export const PatientList = () => {
       <div className="bg-white p-3.5 sm:p-6 md:p-8 rounded-2xl shadow-xs border border-[#E8E2D5] flex-1 flex flex-col min-h-0">
         <div className="relative mb-4 sm:mb-6 flex-shrink-0 group">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#DCA51B] transition-colors" aria-hidden="true" />
+            <Search className="h-4 w-4 text-slate-400 group-focus-within:text-[#7C3AED] transition-colors" aria-hidden="true" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
+            className="block w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#EBF0F7] border border-white/80 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] focus:ring-2 focus:ring-[#DC95FF]/40 focus:border-[#DC95FF] transition-all outline-none"
             placeholder="Search by name (e.g. Sagar) or phone (e.g. 555-1234)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -124,7 +124,7 @@ export const PatientList = () => {
 
         {isLoading && page === 0 ? (
           <div className="flex justify-center items-center py-12 flex-1">
-            <Loader2 className="w-8 h-8 animate-spin text-[#DCA51B]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#DC95FF]" />
           </div>
         ) : error ? (
           <div className="bg-red-50 text-red-700 p-3.5 sm:p-4 rounded-xl text-xs sm:text-sm border border-red-200 flex-shrink-0">
@@ -149,29 +149,29 @@ export const PatientList = () => {
                 <li key={patient.id}>
                     <button
                       onClick={() => navigate(`/staff/patients/${patient.id}`)}
-                      className="block w-full text-left transition-all duration-150 hover:bg-[#1A1D25] border-l-2 border-l-transparent hover:border-l-[#DCA51B] group cursor-pointer"
+                      className="block w-full text-left transition-all duration-200 hover:bg-white/95 border-l-4 border-l-transparent hover:border-l-[#DC95FF] hover:shadow-[4px_4px_10px_#D1D9E6,-4px_-4px_10px_#FFFFFF] group cursor-pointer"
                     >
                       <div className="flex items-center px-3.5 py-3.5 sm:px-6">
                         <div className="min-w-0 flex-1 flex items-center">
                           <div className="flex-shrink-0">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/30 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-2xs">
-                              <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#8C6B14]" />
+                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FFF4BF] border border-[#DC95FF]/40 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-[2px_2px_5px_#D1D9E6,-2px_-2px_5px_#FFFFFF]">
+                              <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#7C3AED]" />
                             </div>
                           </div>
                           <div className="min-w-0 flex-1 px-3 sm:px-4 md:grid md:grid-cols-2 md:gap-4">
                             <div>
-                              <p className="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-[#F5C242] transition-colors truncate">{patient.fullName}</p>
-                              <p className="mt-1 flex items-center text-[11px] sm:text-xs text-zinc-400">
-                                <Phone className="flex-shrink-0 mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
-                                <span className="truncate">{patient.phone}</span>
+                              <p className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-[#7C3AED] transition-colors truncate">{patient.fullName}</p>
+                              <p className="mt-1 flex items-center text-[11px] sm:text-xs text-slate-500">
+                                <Phone className="flex-shrink-0 mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 text-slate-400 group-hover:text-[#DC95FF] transition-colors" />
+                                <span className="truncate text-slate-600 font-medium">{patient.phone}</span>
                               </p>
                             </div>
                             <div className="hidden md:block">
                               <div>
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                                   Patient ID
                                 </p>
-                                <p className="mt-0.5 flex items-center text-xs font-mono text-zinc-400 truncate">
+                                <p className="mt-0.5 flex items-center text-xs font-mono font-semibold text-slate-700 truncate">
                                   {patient.displayId || `${patient.id.substring(0, 8)}...`}
                                 </p>
                               </div>
@@ -179,7 +179,7 @@ export const PatientList = () => {
                           </div>
                         </div>
                         <div>
-                          <svg className="h-5 w-5 text-zinc-400 group-hover:text-[#DCA51B] group-hover:translate-x-0.5 transition-all" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <svg className="h-5 w-5 text-slate-400 group-hover:text-[#DC95FF] group-hover:translate-x-1 transition-all" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                           </svg>
                         </div>
@@ -190,7 +190,7 @@ export const PatientList = () => {
             </ul>
             {isFetchingNextPage && (
               <div className="py-4 flex justify-center">
-                <Loader2 className="w-6 h-6 animate-spin text-[#DCA51B]" />
+                <Loader2 className="w-6 h-6 animate-spin text-[#DC95FF]" />
               </div>
             )}
           </div>

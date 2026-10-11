@@ -1073,8 +1073,8 @@
 }
 
 .neu-input:focus {
-  border-color: #DCA51B !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 165, 27, 0.2) !important;
+  border-color: #DC95FF !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.25) !important;
 }
 
 /* ============================================================
@@ -1181,8 +1181,8 @@
 .portal-neumorphic input:focus,
 .portal-neumorphic select:focus,
 .portal-neumorphic textarea:focus {
-  border-color: #DCA51B !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 165, 27, 0.22) !important;
+  border-color: #DC95FF !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.28) !important;
   outline: none !important;
 }
 
@@ -1211,21 +1211,90 @@
 
 .portal-neumorphic table tbody tr {
   border-bottom: 1px solid rgba(209, 217, 230, 0.6) !important;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.portal-neumorphic table tbody tr:hover {
-  background-color: rgba(228, 234, 242, 0.7) !important;
+/* ============================================================
+   GLOBAL HOVER FIX: Prevent ANY row, card, or item turning dark
+   ============================================================ */
+.portal-neumorphic table tbody tr:hover,
+.portal-neumorphic [class*="hover:bg-[#1"]:hover,
+.portal-neumorphic [class*="hover:bg-[#2"]:hover,
+.portal-neumorphic [class*="hover:bg-[#0"]:hover,
+.portal-neumorphic [class*="hover:bg-zinc-8"]:hover,
+.portal-neumorphic [class*="hover:bg-zinc-9"]:hover,
+.portal-neumorphic [class*="hover:bg-slate-8"]:hover,
+.portal-neumorphic [class*="hover:bg-slate-9"]:hover {
+  background-color: #FFFFFF !important;
+  color: #1E293B !important;
 }
 
-/* Status Pills & Badges */
+.portal-neumorphic [class*="hover:bg-[#1"]:hover p,
+.portal-neumorphic [class*="hover:bg-[#1"]:hover span,
+.portal-neumorphic [class*="hover:bg-[#1"]:hover div,
+.portal-neumorphic [class*="hover:bg-[#2"]:hover p,
+.portal-neumorphic [class*="hover:bg-[#2"]:hover span,
+.portal-neumorphic [class*="hover:bg-[#2"]:hover div {
+  color: #1E293B !important;
+}
+
+.portal-neumorphic .group:hover [class*="group-hover:text-"] {
+  color: #7C3AED !important;
+}
+
+/* ============================================================
+   CONFIRM & CANCEL BUTTON FIXES (Crisp Tactile Neumorphism)
+   ============================================================ */
+.portal-neumorphic [class*="bg-emerald-950"],
+.portal-neumorphic [class*="bg-emerald-900"] {
+  background-color: #ECFDF5 !important;
+  color: #065F46 !important;
+  border: 1.5px solid #6EE7B7 !important;
+  box-shadow: 3px 3px 8px #D1D9E6, -3px -3px 8px #FFFFFF !important;
+}
+
+.portal-neumorphic [class*="bg-emerald-950"]:hover,
+.portal-neumorphic [class*="bg-emerald-900"]:hover,
+.portal-neumorphic [class*="hover:bg-emerald-900"]:hover,
+.portal-neumorphic [class*="hover:bg-emerald-800"]:hover {
+  background-color: #D1FAE5 !important;
+  color: #047857 !important;
+  border-color: #34D399 !important;
+  box-shadow: 5px 5px 12px #C5D0E0, -5px -5px 12px #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+.portal-neumorphic [class*="bg-rose-950"],
+.portal-neumorphic [class*="bg-rose-900"],
+.portal-neumorphic [class*="bg-red-950"],
+.portal-neumorphic [class*="bg-red-900"] {
+  background-color: #FFF1F2 !important;
+  color: #9F1239 !important;
+  border: 1.5px solid #FDA4AF !important;
+  box-shadow: 3px 3px 8px #D1D9E6, -3px -3px 8px #FFFFFF !important;
+}
+
+.portal-neumorphic [class*="bg-rose-950"]:hover,
+.portal-neumorphic [class*="bg-rose-900"]:hover,
+.portal-neumorphic [class*="bg-red-950"]:hover,
+.portal-neumorphic [class*="bg-red-900"]:hover,
+.portal-neumorphic [class*="hover:bg-rose-900"]:hover,
+.portal-neumorphic [class*="hover:bg-rose-800"]:hover {
+  background-color: #FFE4E6 !important;
+  color: #BE123C !important;
+  border-color: #FB7185 !important;
+  box-shadow: 5px 5px 12px #C5D0E0, -5px -5px 12px #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* Status Pills & Badges: Enhanced with Theme Colors */
 .portal-neumorphic [class*="bg-[#FAF3E0]"],
 .portal-neumorphic .bg-amber-50,
 .portal-neumorphic .bg-yellow-50,
 .portal-neumorphic .bg-yellow-100 {
-  background-color: #FEF3C7 !important;
-  color: #B45309 !important;
-  border: 1px solid #FCD34D !important;
+  background-color: #FFF4BF !important;
+  color: #713F12 !important;
+  border: 1px solid #FDE68A !important;
   box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
@@ -1259,10 +1328,29 @@
 
 .portal-neumorphic .bg-purple-50,
 .portal-neumorphic .bg-purple-100 {
-  background-color: #EDE9FE !important;
-  color: #6D28D9 !important;
-  border: 1px solid #C4B5FD !important;
+  background-color: #F3E8FF !important;
+  color: #6B21A8 !important;
+  border: 1px solid #DC95FF !important;
   box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+}
+
+/* Theme Dual Accents: #FFF4BF & #DC95FF */
+.portal-neumorphic .theme-primary-gradient {
+  background: linear-gradient(135deg, #DC95FF 0%, #FFF4BF 100%) !important;
+  color: #3B0764 !important;
+}
+
+.portal-neumorphic [class*="from-[#E5B22D]"] {
+  background: linear-gradient(135deg, #DC95FF 0%, #FFF4BF 100%) !important;
+  color: #3B0764 !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 4px 4px 10px rgba(220, 149, 255, 0.35), -4px -4px 10px #FFFFFF !important;
+}
+
+.portal-neumorphic [class*="from-[#E5B22D]"]:hover {
+  background: linear-gradient(135deg, #D484FC 0%, #FFF8D6 100%) !important;
+  box-shadow: 6px 6px 14px rgba(220, 149, 255, 0.5), -6px -6px 14px #FFFFFF !important;
+  transform: translateY(-1px);
 }
 
 /* Modals & Dialogs within Neumorphic Portal */
@@ -1286,7 +1374,7 @@
 }
 
 .portal-neumorphic ::-webkit-scrollbar-thumb:hover {
-  background: #DCA51B !important;
+  background: #DC95FF !important;
 }
 
 /* Fallback for legacy portal-dark class */
