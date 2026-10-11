@@ -890,31 +890,17 @@ export const Dashboard = () => {
                 <div className="absolute inset-x-0 top-3/4 border-b border-dashed border-slate-200" />
                 <div className="absolute inset-x-0 bottom-8 border-b border-slate-300" />
 
-                {/* 7 Days Bar Pillars with Animated Tooltips & Lift */}
-                <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-16">
+                {/* 7 Days Bar Pillars with Direct Clean Count Above Pillars (No Dark Card) */}
+                <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-10">
                   {weeklyData.days.map((item, idx) => (
-                    <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end relative overflow-visible">
-                      {/* Floating Tooltip with Crisp High-Contrast Pure White Text */}
-                      <div 
-                        className="portal-chart-tooltip opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 absolute -top-14 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-black shadow-[0_10px_25px_rgba(0,0,0,0.4)] border border-slate-700/80 whitespace-nowrap z-40 flex items-center gap-2"
-                        style={{ backgroundColor: '#0F172A', color: '#FFFFFF' }}
-                      >
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#DC95FF] shadow-[0_0_8px_#DC95FF] animate-pulse shrink-0" />
-                        <span 
-                          className="tracking-wide text-white !text-white font-black text-xs sm:text-sm"
-                          style={{ color: '#FFFFFF' }}
-                        >
-                          {item.count} {item.count === 1 ? 'Appt' : 'Appts'}
-                        </span>
-                        {/* Downward triangle indicator arrow */}
-                        <span 
-                          className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"
-                          style={{ borderTopColor: '#0F172A' }}
-                        />
-                      </div>
+                    <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end relative">
+                      {/* Clean Direct Appointment Count Above Pillar (100% visible, no dark card) */}
+                      <span className="text-xs sm:text-sm font-black text-slate-700 group-hover:text-[#7C3AED] group-hover:scale-115 transition-all duration-300 mb-2 select-none">
+                        {item.count}
+                      </span>
 
                       {/* Bar Pillar with tactile hover lift */}
-                      <div className="w-7 sm:w-10 h-40 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
+                      <div className="w-7 sm:w-10 h-38 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
                         {/* Animated Gradient Bar */}
                         <div 
                           className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:shadow-[0_4px_14px_rgba(220,149,255,0.7)] group-hover:brightness-110 transition-all duration-500"

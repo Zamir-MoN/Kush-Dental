@@ -142,12 +142,12 @@ export const PortalLayout = () => {
             </div>
 
             {/* Sleek Tactile Search Bar (Desktop) with Extended Length */}
-            <div className="hidden md:flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-[#E8E2D5] w-96 lg:w-[460px] xl:w-[500px] group focus-within:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF,0_0_0_2px_rgba(220,149,255,0.4)] transition-all">
+            <div className="hidden md:flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-[#E8E2D5] w-[360px] md:w-[420px] lg:w-[500px] xl:w-[560px] shrink-0 group focus-within:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF,0_0_0_2px_rgba(220,149,255,0.4)] transition-all">
               <Search size={16} className="text-slate-400 group-focus-within:text-[#7C3AED] shrink-0 transition-colors" />
               <input 
                 type="text" 
                 placeholder="Search appointments, patients..." 
-                className="bg-transparent text-xs sm:text-sm text-slate-700 outline-none w-full placeholder:text-slate-400 font-medium pr-4" 
+                className="bg-transparent text-xs sm:text-sm text-slate-700 outline-none w-full placeholder:text-slate-400 font-medium pr-6" 
               />
             </div>
           </div>
