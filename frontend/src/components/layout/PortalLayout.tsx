@@ -14,7 +14,6 @@ import {
   AlertTriangle,
   Search,
   Bell,
-  Sun,
   ShieldCheck
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
