@@ -1088,23 +1088,23 @@
 
 /* Base Surfaces & Cards across all Portal Pages */
 .portal-neumorphic .bg-white,
-.portal-neumorphic .bg-[#13151A],
-.portal-neumorphic .bg-[#16181E],
-.portal-neumorphic .bg-[#181A22],
-.portal-neumorphic .bg-[#1C1E26],
-.portal-neumorphic .bg-[#FAF7F2],
-.portal-neumorphic .bg-[#FCF9F7],
+.portal-neumorphic [class*="bg-[#13151A]"],
+.portal-neumorphic [class*="bg-[#16181E]"],
+.portal-neumorphic [class*="bg-[#181A22]"],
+.portal-neumorphic [class*="bg-[#1C1E26]"],
+.portal-neumorphic [class*="bg-[#FAF7F2]"],
+.portal-neumorphic [class*="bg-[#FCF9F7]"],
 .portal-neumorphic .bg-zinc-50,
 .portal-neumorphic .bg-zinc-900 {
   background-color: #EBF0F7 !important;
 }
 
 /* Borders */
-.portal-neumorphic .border-[#22252E],
-.portal-neumorphic .border-[#262936],
-.portal-neumorphic .border-[#2A2E3B],
-.portal-neumorphic .border-[#E8E2D5],
-.portal-neumorphic .border-[#E2DACB],
+.portal-neumorphic [class*="border-[#22252E]"],
+.portal-neumorphic [class*="border-[#262936]"],
+.portal-neumorphic [class*="border-[#2A2E3B]"],
+.portal-neumorphic [class*="border-[#E8E2D5]"],
+.portal-neumorphic [class*="border-[#E2DACB]"],
 .portal-neumorphic .border-zinc-200,
 .portal-neumorphic .border-zinc-100,
 .portal-neumorphic .border-zinc-800,
@@ -1127,10 +1127,10 @@
 }
 
 /* Divider Lines */
-.portal-neumorphic .divide-[#22252E] > :not([hidden]) ~ :not([hidden]),
+.portal-neumorphic [class*="divide-[#22252E]"] > :not([hidden]) ~ :not([hidden]),
 .portal-neumorphic .divide-zinc-800 > :not([hidden]) ~ :not([hidden]),
 .portal-neumorphic .divide-zinc-200 > :not([hidden]) ~ :not([hidden]),
-.portal-neumorphic .divide-[#E8E2D5] > :not([hidden]) ~ :not([hidden]) {
+.portal-neumorphic [class*="divide-[#E8E2D5]"] > :not([hidden]) ~ :not([hidden]) {
   border-color: rgba(209, 217, 230, 0.6) !important;
 }
 
@@ -1219,7 +1219,7 @@
 }
 
 /* Status Pills & Badges */
-.portal-neumorphic .bg-\[\#FAF3E0\],
+.portal-neumorphic [class*="bg-[#FAF3E0]"],
 .portal-neumorphic .bg-amber-50,
 .portal-neumorphic .bg-yellow-50,
 .portal-neumorphic .bg-yellow-100 {
