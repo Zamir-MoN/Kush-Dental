@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { apiClient } from '../../lib/apiClient';
 import { formatDate, formatTime } from '../../lib/formatters';
 import { 
@@ -222,9 +222,11 @@ export const Dashboard = () => {
       ...(data.todayAppointments || []),
       ...(data.upcomingAppointments || []),
       ...(data.requestedAppointments || [])
-    ];
+    ].filter(Boolean);
     const uniqueMap = new Map<string, DashboardAppointment>();
-    allApts.forEach(a => uniqueMap.set(a.id, a));
+    allApts.forEach(a => {
+      if (a && a.id) uniqueMap.set(a.id, a);
+    });
     const uniqueApts = Array.from(uniqueMap.values());
 
     if (analyticsTimeframe === 'Today') {
@@ -321,101 +323,113 @@ export const Dashboard = () => {
   useEffect(() => {
     if (!data) return;
 
-    const ctx = gsap.context(() => {
-      // 1. Appointment Analytics Donut & Counter
-      if (analyticsDonutRef.current) {
-        gsap.fromTo(
-          analyticsDonutRef.current,
-          { scale: 0.88, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)' }
-        );
+    try {
+      if (!gsap || typeof gsap.context !== 'function') return;
 
-        const segments = analyticsDonutRef.current.querySelectorAll('.donut-segment');
-        if (segments.length > 0) {
+      const ctx = gsap.context(() => {
+        // 1. Appointment Analytics Donut & Counter
+        if (analyticsDonutRef.current) {
           gsap.fromTo(
-            segments,
-            { strokeDashoffset: circumference, opacity: 0 },
-            { 
-              strokeDashoffset: (_i: number, target: Element) => {
-                const targetOffset = target.getAttribute('data-offset');
-                return targetOffset ? parseFloat(targetOffset) : 0;
-              },
-              opacity: 1,
-              duration: 1.2, 
-              stagger: 0.12, 
-              ease: 'power3.out' 
-            }
+            analyticsDonutRef.current,
+            { scale: 0.88, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)' }
           );
-        }
 
-        if (analyticsCounterRef.current) {
-          const countObj = { val: 0 };
-          gsap.to(countObj, {
-            val: analytics.mainPct,
-            duration: 1.3,
-            ease: 'power2.out',
-            onUpdate: () => {
-              if (analyticsCounterRef.current) {
-                analyticsCounterRef.current.textContent = `${Math.round(countObj.val)}%`;
+          const segments = analyticsDonutRef.current.querySelectorAll<SVGElement>('.donut-segment');
+          if (segments && segments.length > 0) {
+            segments.forEach((seg, i) => {
+              const targetOffset = parseFloat(seg.getAttribute('data-offset') || '0');
+              gsap.fromTo(
+                seg,
+                { strokeDashoffset: circumference, opacity: 0 },
+                { 
+                  strokeDashoffset: targetOffset, 
+                  opacity: 1, 
+                  duration: 1.1, 
+                  delay: i * 0.1, 
+                  ease: 'power3.out' 
+                }
+              );
+            });
+          }
+
+          if (analyticsCounterRef.current) {
+            const countObj = { val: 0 };
+            gsap.to(countObj, {
+              val: analytics.mainPct || 0,
+              duration: 1.3,
+              ease: 'power2.out',
+              onUpdate: () => {
+                if (analyticsCounterRef.current) {
+                  analyticsCounterRef.current.textContent = `${Math.round(countObj.val)}%`;
+                }
               }
-            }
-          });
+            });
+          }
         }
-      }
 
-      // 2. Follow-ups Status Circular Progress Ring & Counter
-      if (followUpsGaugeRef.current) {
-        gsap.fromTo(
-          followUpsGaugeRef.current,
-          { scale: 0.88, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)', delay: 0.1 }
-        );
-
-        const gaugeCircle = followUpsGaugeRef.current.querySelector('.gauge-fill');
-        if (gaugeCircle) {
+        // 2. Follow-ups Status Circular Progress Ring & Counter
+        if (followUpsGaugeRef.current) {
           gsap.fromTo(
-            gaugeCircle,
-            { strokeDasharray: `0 ${gaugeCircumference}`, opacity: 0 },
-            { 
-              strokeDasharray: `${gaugeStroke} ${gaugeCircumference}`, 
-              opacity: 1,
-              duration: 1.3, 
-              ease: 'power3.out',
-              delay: 0.15
-            }
+            followUpsGaugeRef.current,
+            { scale: 0.88, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)', delay: 0.1 }
           );
-        }
 
-        if (followUpsCounterRef.current) {
-          const gaugeObj = { val: 0 };
-          gsap.to(gaugeObj, {
-            val: followUpsCompletedPct,
-            duration: 1.3,
-            ease: 'power2.out',
-            delay: 0.15,
-            onUpdate: () => {
-              if (followUpsCounterRef.current) {
-                followUpsCounterRef.current.textContent = `${Math.round(gaugeObj.val)}%`;
+          const gaugeCircle = followUpsGaugeRef.current.querySelector<SVGElement>('.gauge-fill');
+          if (gaugeCircle) {
+            gsap.fromTo(
+              gaugeCircle,
+              { strokeDasharray: `0 ${gaugeCircumference}`, opacity: 0 },
+              { 
+                strokeDasharray: `${gaugeStroke} ${gaugeCircumference}`, 
+                opacity: 1,
+                duration: 1.3, 
+                ease: 'power3.out',
+                delay: 0.15
               }
-            }
-          });
-        }
-      }
+            );
+          }
 
-      // 3. Weekly Appointments Vertical Bar Pillars
-      if (weeklyChartRef.current) {
-        const barFills = weeklyChartRef.current.querySelectorAll('.weekly-bar-inner');
-        if (barFills.length > 0) {
-          gsap.fromTo(
-            barFills,
-            { scaleY: 0, transformOrigin: 'bottom center', opacity: 0.5 },
-            { scaleY: 1, opacity: 1, duration: 0.9, stagger: 0.07, ease: 'back.out(1.2)', delay: 0.2 }
-          );
+          if (followUpsCounterRef.current) {
+            const gaugeObj = { val: 0 };
+            gsap.to(gaugeObj, {
+              val: followUpsCompletedPct || 0,
+              duration: 1.3,
+              ease: 'power2.out',
+              delay: 0.15,
+              onUpdate: () => {
+                if (followUpsCounterRef.current) {
+                  followUpsCounterRef.current.textContent = `${Math.round(gaugeObj.val)}%`;
+                }
+              }
+            });
+          }
         }
-      }
-    });
 
-    return () => ctx.revert();
+        // 3. Weekly Appointments Vertical Bar Pillars
+        if (weeklyChartRef.current) {
+          const barFills = weeklyChartRef.current.querySelectorAll<HTMLElement>('.weekly-bar-inner');
+          if (barFills && barFills.length > 0) {
+            gsap.fromTo(
+              barFills,
+              { scaleY: 0, transformOrigin: 'bottom center', opacity: 0.5 },
+              { scaleY: 1, opacity: 1, duration: 0.9, stagger: 0.07, ease: 'back.out(1.2)', delay: 0.2 }
+            );
+          }
+        }
+      });
+
+      return () => {
+        try {
+          ctx.revert();
+        } catch {
+          // ignore
+        }
+      };
+    } catch (err) {
+      console.warn('Dashboard animation error:', err);
+    }
   }, [data, analyticsTimeframe]);
 
   // Real Weekly Appointments (Mon - Sun) derived from appointments
@@ -431,16 +445,18 @@ export const Dashboard = () => {
       ...(data.todayAppointments || []),
       ...(data.upcomingAppointments || []),
       ...(data.requestedAppointments || [])
-    ];
+    ].filter(Boolean);
     const uniqueMap = new Map<string, DashboardAppointment>();
-    allAppointments.forEach(apt => uniqueMap.set(apt.id, apt));
+    allAppointments.forEach(apt => {
+      if (apt && apt.id) uniqueMap.set(apt.id, apt);
+    });
     const uniqueApts = Array.from(uniqueMap.values());
 
     const days = dayLabels.map((dayName, idx) => {
       const targetDay = new Date(monday);
       targetDay.setUTCDate(monday.getUTCDate() + idx);
       const dateStr = targetDay.toISOString().split('T')[0];
-      const count = uniqueApts.filter(apt => apt.startsAt && apt.startsAt.startsWith(dateStr)).length;
+      const count = uniqueApts.filter(apt => apt && apt.startsAt && apt.startsAt.startsWith(dateStr)).length;
       return {
         day: dayName,
         dateStr,
