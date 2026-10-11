@@ -108,14 +108,14 @@ export const PatientList = () => {
         <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">Search patients by name or phone number.</p>
       </div>
       
-      <div className="bg-white p-3.5 sm:p-6 md:p-8 rounded-2xl shadow-xs border border-[#E8E2D5] flex-1 flex flex-col min-h-0">
+      <div className="bg-[#FAF7F2] p-4 sm:p-6 md:p-8 rounded-3xl shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] border border-white/85 flex-1 flex flex-col min-h-0">
         <div className="relative mb-4 sm:mb-6 flex-shrink-0 group">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-slate-400 group-focus-within:text-[#7C3AED] transition-colors" aria-hidden="true" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#EBF0F7] border border-white/80 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-[inset_2.5px_2.5px_5px_#D1D9E6,inset_-2.5px_-2.5px_5px_#FFFFFF] focus:ring-2 focus:ring-[#DC95FF]/40 focus:border-[#DC95FF] transition-all outline-none"
+            className="block w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#FAF7F2] border border-[#E8E2D5] rounded-full text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] focus:ring-2 focus:ring-[#DC95FF]/40 focus:border-[#DC95FF] transition-all outline-none"
             placeholder="Search by name (e.g. Sagar) or phone (e.g. 555-1234)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -140,21 +140,21 @@ export const PatientList = () => {
           </div>
         ) : (
           <div 
-            className="overflow-y-auto overflow-x-hidden bg-white border border-[#E8E2D5] rounded-xl max-h-[60vh] custom-scrollbar"
+            className="overflow-y-auto overflow-x-hidden bg-[#FAF7F2] border border-[#E8E2D5]/80 rounded-2xl shadow-[inset_2px_2px_5px_#E5DFD3,inset_-2px_-2px_5px_#FFFFFF] max-h-[60vh] custom-scrollbar"
             onScroll={handleScroll}
             data-lenis-prevent
           >
-            <ul role="list" className="divide-y divide-[#E8E2D5]">
+            <ul role="list" className="divide-y divide-[#E8E2D5]/70">
               {patients.map((patient) => (
                 <li key={patient.id}>
                     <button
                       onClick={() => navigate(`/staff/patients/${patient.id}`)}
-                      className="block w-full text-left transition-all duration-200 hover:bg-white/95 border-l-4 border-l-transparent hover:border-l-[#DC95FF] hover:shadow-[4px_4px_10px_#D1D9E6,-4px_-4px_10px_#FFFFFF] group cursor-pointer"
+                      className="block w-full text-left transition-all duration-200 hover:bg-white/95 border-l-4 border-l-transparent hover:border-l-[#DC95FF] hover:shadow-[4px_4px_10px_#E5DFD3,-4px_-4px_10px_#FFFFFF] group cursor-pointer"
                     >
                       <div className="flex items-center px-3.5 py-3.5 sm:px-6">
                         <div className="min-w-0 flex-1 flex items-center">
                           <div className="flex-shrink-0">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FFF4BF] border border-[#DC95FF]/40 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-[2px_2px_5px_#D1D9E6,-2px_-2px_5px_#FFFFFF]">
+                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FFF4BF] border border-[#DC95FF]/40 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-[2px_2px_5px_#E5DFD3,-2px_-2px_5px_#FFFFFF]">
                               <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#7C3AED]" />
                             </div>
                           </div>

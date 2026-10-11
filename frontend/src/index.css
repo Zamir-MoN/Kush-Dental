@@ -1004,68 +1004,68 @@
 
 /* Base Neumorphic Utilities */
 .neu-flat {
-  background-color: #EBF0F7;
-  box-shadow: 7px 7px 15px #D1D9E6, -7px -7px 15px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: 7px 7px 15px #E5DFD3, -7px -7px 15px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.85);
 }
 
 .neu-flat-sm {
-  background-color: #EBF0F7;
-  box-shadow: 4px 4px 10px #D1D9E6, -4px -4px 10px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: 4px 4px 10px #E5DFD3, -4px -4px 10px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.85);
 }
 
 .neu-convex {
   background: linear-gradient(145deg, #F3F7FD, #E5EBF4);
-  box-shadow: 8px 8px 18px #D1D9E6, -8px -8px 18px #FFFFFF;
+  box-shadow: 8px 8px 18px #E5DFD3, -8px -8px 18px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.9);
 }
 
 .neu-pressed, .neu-inset {
-  background-color: #EBF0F7;
-  box-shadow: inset 4px 4px 8px #D1D9E6, inset -4px -4px 8px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: inset 4px 4px 8px #E5DFD3, inset -4px -4px 8px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .neu-pressed-sm, .neu-inset-sm {
-  background-color: #EBF0F7;
-  box-shadow: inset 2px 2px 5px #D1D9E6, inset -2px -2px 5px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: inset 2px 2px 5px #E5DFD3, inset -2px -2px 5px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .neu-card {
-  background-color: #EBF0F7;
-  box-shadow: 8px 8px 18px #D1D9E6, -8px -8px 18px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: 8px 8px 18px #E5DFD3, -8px -8px 18px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 1.5rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neu-card:hover {
-  box-shadow: 12px 12px 24px #C5D0E0, -12px -12px 24px #FFFFFF;
+  box-shadow: 12px 12px 24px #DCD5C7, -12px -12px 24px #FFFFFF;
   transform: translateY(-2px);
 }
 
 .neu-button {
-  background-color: #EBF0F7;
-  box-shadow: 4px 4px 9px #D1D9E6, -4px -4px 9px #FFFFFF;
+  background-color: #FAF7F2;
+  box-shadow: 4px 4px 9px #E5DFD3, -4px -4px 9px #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.85);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .neu-button:hover {
-  box-shadow: 6px 6px 14px #C5D0E0, -6px -6px 14px #FFFFFF;
+  box-shadow: 6px 6px 14px #DCD5C7, -6px -6px 14px #FFFFFF;
   transform: translateY(-1px);
 }
 
 .neu-button:active {
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF;
+  box-shadow: inset 3px 3px 6px #E5DFD3, inset -3px -3px 6px #FFFFFF;
   transform: translateY(0);
 }
 
 .neu-input {
-  background-color: #EBF0F7 !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF !important;
+  background-color: #FAF7F2 !important;
+  box-shadow: inset 3px 3px 6px #E5DFD3, inset -3px -3px 6px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.6) !important;
   color: #1E293B !important;
   outline: none !important;
@@ -1074,14 +1074,14 @@
 
 .neu-input:focus {
   border-color: #DC95FF !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.25) !important;
+  box-shadow: inset 3px 3px 6px #E5DFD3, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.25) !important;
 }
 
 /* ============================================================
    PORTAL NEUMORPHIC GLOBAL CONTAINER & COMPONENT OVERRIDES
    ============================================================ */
 .portal-neumorphic {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
   color: #1E293B !important;
   color-scheme: light;
 }
@@ -1096,7 +1096,7 @@
 .portal-neumorphic [class*="bg-[#FCF9F7]"],
 .portal-neumorphic .bg-zinc-50,
 .portal-neumorphic .bg-zinc-900 {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
 }
 
 /* Borders */
@@ -1115,14 +1115,14 @@
 /* Neumorphic Dual Shadow Elevation for Portal Cards */
 .portal-neumorphic .shadow-xs,
 .portal-neumorphic .shadow-sm {
-  box-shadow: 6px 6px 14px #D1D9E6, -6px -6px 14px #FFFFFF !important;
+  box-shadow: 6px 6px 14px #E5DFD3, -6px -6px 14px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
 .portal-neumorphic .shadow-md,
 .portal-neumorphic .shadow-lg,
 .portal-neumorphic .shadow-xl {
-  box-shadow: 10px 10px 22px #C5D0E0, -10px -10px 22px #FFFFFF !important;
+  box-shadow: 10px 10px 22px #DCD5C7, -10px -10px 22px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.9) !important;
 }
 
@@ -1166,9 +1166,9 @@
 .portal-neumorphic input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
 .portal-neumorphic select,
 .portal-neumorphic textarea {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
   color: #1E293B !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF !important;
+  box-shadow: inset 3px 3px 6px #E5DFD3, inset -3px -3px 6px #FFFFFF !important;
   border: 1px solid rgba(255, 255, 255, 0.65) !important;
   border-radius: 0.875rem !important;
 }
@@ -1182,27 +1182,27 @@
 .portal-neumorphic select:focus,
 .portal-neumorphic textarea:focus {
   border-color: #DC95FF !important;
-  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.28) !important;
+  box-shadow: inset 3px 3px 6px #E5DFD3, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 149, 255, 0.28) !important;
   outline: none !important;
 }
 
 /* Select options */
 .portal-neumorphic option {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
   color: #1E293B !important;
 }
 
 /* Tables inside Neumorphic Portal */
 .portal-neumorphic table {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
 }
 
 .portal-neumorphic table thead,
 .portal-neumorphic table thead tr,
 .portal-neumorphic table thead th {
-  background-color: #E4EAF2 !important;
+  background-color: #F4EFE6 !important;
   color: #475569 !important;
-  border-bottom: 2px solid #D1D9E6 !important;
+  border-bottom: 2px solid #E5DFD3 !important;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.05em;
@@ -1250,7 +1250,7 @@
   background-color: #ECFDF5 !important;
   color: #065F46 !important;
   border: 1.5px solid #6EE7B7 !important;
-  box-shadow: 3px 3px 8px #D1D9E6, -3px -3px 8px #FFFFFF !important;
+  box-shadow: 3px 3px 8px #E5DFD3, -3px -3px 8px #FFFFFF !important;
 }
 
 .portal-neumorphic [class*="bg-emerald-950"]:hover,
@@ -1260,7 +1260,7 @@
   background-color: #D1FAE5 !important;
   color: #047857 !important;
   border-color: #34D399 !important;
-  box-shadow: 5px 5px 12px #C5D0E0, -5px -5px 12px #FFFFFF !important;
+  box-shadow: 5px 5px 12px #DCD5C7, -5px -5px 12px #FFFFFF !important;
   transform: translateY(-1px);
 }
 
@@ -1271,7 +1271,7 @@
   background-color: #FFF1F2 !important;
   color: #9F1239 !important;
   border: 1.5px solid #FDA4AF !important;
-  box-shadow: 3px 3px 8px #D1D9E6, -3px -3px 8px #FFFFFF !important;
+  box-shadow: 3px 3px 8px #E5DFD3, -3px -3px 8px #FFFFFF !important;
 }
 
 .portal-neumorphic [class*="bg-rose-950"]:hover,
@@ -1283,7 +1283,7 @@
   background-color: #FFE4E6 !important;
   color: #BE123C !important;
   border-color: #FB7185 !important;
-  box-shadow: 5px 5px 12px #C5D0E0, -5px -5px 12px #FFFFFF !important;
+  box-shadow: 5px 5px 12px #DCD5C7, -5px -5px 12px #FFFFFF !important;
   transform: translateY(-1px);
 }
 
@@ -1295,7 +1295,7 @@
   background-color: #FFF4BF !important;
   color: #713F12 !important;
   border: 1px solid #FDE68A !important;
-  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+  box-shadow: 2px 2px 5px #E5DFD3, -2px -2px 5px #FFFFFF !important;
 }
 
 .portal-neumorphic .bg-blue-50,
@@ -1303,7 +1303,7 @@
   background-color: #DBEAFE !important;
   color: #1D4ED8 !important;
   border: 1px solid #93C5FD !important;
-  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+  box-shadow: 2px 2px 5px #E5DFD3, -2px -2px 5px #FFFFFF !important;
 }
 
 .portal-neumorphic .bg-emerald-50,
@@ -1313,7 +1313,7 @@
   background-color: #D1FAE5 !important;
   color: #047857 !important;
   border: 1px solid #6EE7B7 !important;
-  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+  box-shadow: 2px 2px 5px #E5DFD3, -2px -2px 5px #FFFFFF !important;
 }
 
 .portal-neumorphic .bg-rose-50,
@@ -1323,7 +1323,7 @@
   background-color: #FFE4E6 !important;
   color: #BE123C !important;
   border: 1px solid #FDA4AF !important;
-  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+  box-shadow: 2px 2px 5px #E5DFD3, -2px -2px 5px #FFFFFF !important;
 }
 
 .portal-neumorphic .bg-purple-50,
@@ -1331,7 +1331,7 @@
   background-color: #F3E8FF !important;
   color: #6B21A8 !important;
   border: 1px solid #DC95FF !important;
-  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
+  box-shadow: 2px 2px 5px #E5DFD3, -2px -2px 5px #FFFFFF !important;
 }
 
 /* Theme Dual Accents: #FFF4BF & #DC95FF */
@@ -1355,21 +1355,21 @@
 
 /* Modals & Dialogs within Neumorphic Portal */
 .portal-neumorphic [role="dialog"] {
-  background-color: #EBF0F7 !important;
+  background-color: #FAF7F2 !important;
   border: 1px solid rgba(255, 255, 255, 0.9) !important;
-  box-shadow: 16px 16px 36px #C5D0E0, -16px -16px 36px #FFFFFF !important;
+  box-shadow: 16px 16px 36px #DCD5C7, -16px -16px 36px #FFFFFF !important;
   color: #1E293B !important;
   border-radius: 1.75rem !important;
 }
 
 /* Scrollbars within Neumorphic Portal */
 .portal-neumorphic ::-webkit-scrollbar-track {
-  background: #EBF0F7 !important;
+  background: #FAF7F2 !important;
 }
 
 .portal-neumorphic ::-webkit-scrollbar-thumb {
   background: #C8D3E2 !important;
-  border: 2px solid #EBF0F7 !important;
+  border: 2px solid #FAF7F2 !important;
   border-radius: 9999px !important;
 }
 
