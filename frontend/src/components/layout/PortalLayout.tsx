@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { AnimatedLogo } from '../ui/AnimatedLogo';
+import { NotificationCenter } from './NotificationCenter';
 
 export const PortalLayout = () => {
   const { user, logout } = useAuth();
@@ -146,14 +147,8 @@ export const PortalLayout = () => {
           </div>
           
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            {/* Quick Action Icon: Notifications */}
-            <button 
-              className="w-10 h-10 rounded-2xl bg-[#FAF7F2] shadow-[4px_4px_9px_#E5DFD3,-4px_-4px_9px_#FFFFFF] hover:shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#E5DFD3,inset_-2px_-2px_5px_#FFFFFF] border border-white/80 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-all cursor-pointer relative group"
-              title="Notifications"
-            >
-              <Bell size={18} className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DC95FF] shadow-[0_0_6px_rgba(220,149,255,0.9)]" />
-            </button>
+            {/* Working Interactive Notification Center */}
+            <NotificationCenter />
 
             {/* User Profile Info & Tactile Avatar */}
             <div className="flex items-center gap-3 pl-2 sm:pl-3 border-l border-slate-300/60">
