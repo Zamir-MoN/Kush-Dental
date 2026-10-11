@@ -1035,10 +1035,10 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-2">
+          <div className="flex flex-col sm:flex-row items-center gap-3.5 sm:gap-4 py-2">
             {/* Left: Circular Progress Ring */}
-            <div className="sm:col-span-5 flex justify-center items-center" ref={followUpsGaugeRef}>
-              <div className="relative w-32 h-32 flex items-center justify-center">
+            <div className="w-28 h-28 sm:w-32 sm:h-32 shrink-0 flex justify-center items-center" ref={followUpsGaugeRef}>
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
                   <defs>
                     <linearGradient id="grad-followup" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1070,7 +1070,7 @@ export const Dashboard = () => {
                   )}
                 </svg>
 
-                <div className="absolute inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
+                <div className="absolute inset-[16px] sm:inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
                   <span 
                     ref={followUpsCounterRef}
                     className="text-xl font-black text-slate-800 leading-none"
@@ -1085,60 +1085,60 @@ export const Dashboard = () => {
             </div>
 
             {/* Right: 3 Metric Breakdown Rows with High-Contrast Text & Tactile Hover */}
-            <div className="sm:col-span-7 space-y-2.5">
+            <div className="flex-1 min-w-0 w-full space-y-2 sm:space-y-2.5">
               {/* Row 1: Open Follow-ups */}
               <div 
                 onClick={() => navigate('/staff/contacts?status=OPEN')}
-                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
+                className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0 transition-transform group-hover:scale-105">
-                    <FileText size={15} />
+                <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0 transition-transform group-hover:scale-105">
+                    <FileText size={14} />
                   </div>
-                  <div>
-                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{openFollowUps}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">Open Follow-ups</span>
+                  <div className="flex items-baseline gap-1.5 min-w-0">
+                    <span className="text-sm sm:text-base font-black text-slate-800 shrink-0">{openFollowUps}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 truncate">Open Follow-ups</span>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
-                  <TrendingUp size={11} /> 5%
+                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={10} /> 5%
                 </span>
               </div>
 
               {/* Row 2: In-progress */}
               <div 
                 onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
-                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
+                className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0 transition-transform group-hover:scale-105">
-                    <RefreshCw size={15} />
+                <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0 transition-transform group-hover:scale-105">
+                    <RefreshCw size={14} />
                   </div>
-                  <div>
-                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{inProgressFollowUps}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">In-progress</span>
+                  <div className="flex items-baseline gap-1.5 min-w-0">
+                    <span className="text-sm sm:text-base font-black text-slate-800 shrink-0">{inProgressFollowUps}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 truncate">In-progress</span>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
-                  <TrendingUp size={11} /> 0%
+                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={10} /> 0%
                 </span>
               </div>
 
               {/* Row 3: Active Urgent */}
               <div 
                 onClick={() => navigate('/staff/urgent-visits')}
-                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
+                className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0 transition-transform group-hover:scale-105">
-                    <AlertTriangle size={15} />
+                <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0 transition-transform group-hover:scale-105">
+                    <AlertTriangle size={14} />
                   </div>
-                  <div>
-                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{urgentVisits}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">Active Urgent</span>
+                  <div className="flex items-baseline gap-1.5 min-w-0">
+                    <span className="text-sm sm:text-base font-black text-slate-800 shrink-0">{urgentVisits}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 truncate">Active Urgent</span>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase tracking-wide">
+                <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase tracking-wide">
                   ACTIVE
                 </span>
               </div>
