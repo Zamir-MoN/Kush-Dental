@@ -363,7 +363,10 @@ export const NotificationCenter: React.FC = () => {
               </div>
 
               {/* Notification Items List */}
-              <div className="divide-y divide-[#E8E2D5]/60 max-h-[380px] overflow-y-auto custom-scrollbar bg-[#FAF7F2]">
+              <div 
+                className="divide-y divide-[#E8E2D5]/60 max-h-[360px] overflow-y-auto portal-notifications-scroll overscroll-contain bg-[#FAF7F2] pr-0.5"
+                data-lenis-prevent
+              >
                 {filteredNotifications.length === 0 ? (
                   <div className="py-12 px-6 text-center">
                     <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_5px_#E5DFD3,inset_-2px_-2px_5px_#FFFFFF] border border-white mx-auto flex items-center justify-center text-slate-400 mb-3">

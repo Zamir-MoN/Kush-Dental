@@ -131,6 +131,32 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Sleek Minimalist Notification Popover Scrollbar */
+  .portal-notifications-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(180, 170, 155, 0.45) transparent;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .portal-notifications-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .portal-notifications-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .portal-notifications-scroll::-webkit-scrollbar-thumb {
+    background: rgba(180, 170, 155, 0.45);
+    border-radius: 9999px;
+  }
+  .portal-notifications-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(150, 140, 125, 0.7);
+  }
+  .portal-notifications-scroll::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
 
 @layer components {
