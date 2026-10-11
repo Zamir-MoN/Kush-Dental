@@ -49,12 +49,16 @@ class DashboardSummary(BaseModel):
     openFollowUps: int
     inProgressFollowUps: int
     urgentVisits: int
+    totalAppointments: Optional[int] = 0
+    totalConfirmed: Optional[int] = 0
+    totalCompleted: Optional[int] = 0
 
 class DashboardResponse(BaseModel):
     summary: DashboardSummary
     todayAppointments: List[DashboardAppointment]
     requestedAppointments: List[DashboardAppointment]
     upcomingAppointments: List[DashboardAppointment]
+    recentAppointments: Optional[List[DashboardAppointment]] = []
     recentLeads: List[DashboardLead]
     effectiveDate: datetime
     effectiveDateStr: str

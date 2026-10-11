@@ -84,7 +84,15 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
     upcoming_rows = await db.execute(upcoming_apts_query)
     upcoming_appointments = [map_appointment(r) for r in upcoming_rows.all()]
 
-    # 4. Recent Leads (bounded limit 5)
+    # 4. Recent Past Appointments (limit 30 for weekly analytics & historical pipeline)
+    recent_apts_query = base_apt_query\
+        .where(Appointment.startsAt < now_utc)\
+        .order_by(Appointment.startsAt.desc())\
+        .limit(30)
+    recent_apts_rows = await db.execute(recent_apts_query)
+    recent_appointments = [map_appointment(r) for r in recent_apts_rows.all()]
+
+    # 5. Recent Leads (bounded limit 5)
     # STAFF and DOCTOR currently have the same visibility to Leads based on existing Lead API (no filtering per user).
     # We will enforce limit and order.
     recent_leads_query = select(Lead)\
@@ -103,7 +111,7 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
         } for l in recent_leads_rows.scalars().all()
     ]
 
-    # 5. Summary Counts
+    # 6. Summary Counts
     # Use explicit aggregate COUNT queries
     count_today_query = select(func.count())\
         .select_from(Appointment)\
@@ -119,6 +127,21 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
         .select_from(Appointment)\
         .where(Appointment.deletedAt.is_(None), Appointment.startsAt >= start_utc, Appointment.startsAt < next_start_utc, Appointment.status == AppointmentStatus.CONFIRMED)
     count_conf_today = (await db.execute(count_conf_today_query)).scalar() or 0
+
+    count_total_query = select(func.count())\
+        .select_from(Appointment)\
+        .where(Appointment.deletedAt.is_(None))
+    count_total = (await db.execute(count_total_query)).scalar() or 0
+
+    count_total_conf_query = select(func.count())\
+        .select_from(Appointment)\
+        .where(Appointment.deletedAt.is_(None), Appointment.status == AppointmentStatus.CONFIRMED)
+    count_total_conf = (await db.execute(count_total_conf_query)).scalar() or 0
+
+    count_total_comp_query = select(func.count())\
+        .select_from(Appointment)\
+        .where(Appointment.deletedAt.is_(None), Appointment.status == AppointmentStatus.COMPLETED)
+    count_total_comp = (await db.execute(count_total_comp_query)).scalar() or 0
 
     count_new_leads_query = select(func.count())\
         .select_from(Lead)\
@@ -157,11 +180,15 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
             "newLeads": count_new_leads,
             "openFollowUps": count_open_follow_ups,
             "inProgressFollowUps": count_in_progress,
-            "urgentVisits": count_urgent
+            "urgentVisits": count_urgent,
+            "totalAppointments": count_total,
+            "totalConfirmed": count_total_conf,
+            "totalCompleted": count_total_comp
         },
         todayAppointments=today_appointments,
         requestedAppointments=requested_appointments,
         upcomingAppointments=upcoming_appointments,
+        recentAppointments=recent_appointments,
         recentLeads=recent_leads,
         effectiveDate=now_ist,
         effectiveDateStr=now_ist.strftime("%Y-%m-%d")

@@ -18,6 +18,9 @@ interface DashboardSummary {
   openFollowUps: number;
   inProgressFollowUps: number;
   urgentVisits: number;
+  totalAppointments?: number;
+  totalConfirmed?: number;
+  totalCompleted?: number;
 }
 
 interface DashboardPatient {
@@ -58,6 +61,7 @@ interface DashboardResponse {
   todayAppointments: DashboardAppointment[];
   requestedAppointments: DashboardAppointment[];
   upcomingAppointments: DashboardAppointment[];
+  recentAppointments?: DashboardAppointment[];
   recentLeads: DashboardLead[];
   effectiveDate: string;
   effectiveDateStr: string;
@@ -95,8 +99,8 @@ export const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Timeframe state for Appointment Analytics circle graph
-  const [analyticsTimeframe, setAnalyticsTimeframe] = useState<'Today' | 'This Week' | 'All'>('Today');
+  // Timeframe state for Appointment Analytics circle graph (default to All so full clinic overview displays)
+  const [analyticsTimeframe, setAnalyticsTimeframe] = useState<'All' | 'This Week' | 'Today'>('All');
   const [isTimeframeOpen, setIsTimeframeOpen] = useState(false);
 
   // GSAP Animation Refs
@@ -139,6 +143,13 @@ export const Dashboard = () => {
       clearInterval(intervalId);
     };
   }, []);
+
+  // If today has appointments scheduled, set default view to Today, otherwise All
+  useEffect(() => {
+    if (data?.summary?.todayAppointments && data.summary.todayAppointments > 0) {
+      setAnalyticsTimeframe('Today');
+    }
+  }, [data?.summary?.todayAppointments]);
 
   const formattedCurrentDate = data?.effectiveDateStr ? new Intl.DateTimeFormat('en-US', { 
     weekday: 'short', 
@@ -212,7 +223,8 @@ export const Dashboard = () => {
     const allApts = [
       ...(data.todayAppointments || []),
       ...(data.upcomingAppointments || []),
-      ...(data.requestedAppointments || [])
+      ...(data.requestedAppointments || []),
+      ...(data.recentAppointments || [])
     ].filter(Boolean);
     const uniqueMap = new Map<string, DashboardAppointment>();
     allApts.forEach(a => {
@@ -228,14 +240,30 @@ export const Dashboard = () => {
       const recordedToday = data.summary.todayAppointments ?? todayList.length;
       other = Math.max(0, recordedToday - (completed + confirmed + pending));
     } else if (analyticsTimeframe === 'This Week') {
-      completed = uniqueApts.filter(a => a.status === 'COMPLETED').length;
-      confirmed = uniqueApts.filter(a => a.status === 'CONFIRMED').length;
-      pending = uniqueApts.filter(a => a.status === 'REQUESTED').length || (data.summary.requestedAppointments ?? 0);
-      other = uniqueApts.filter(a => a.status === 'CANCELLED' || a.status === 'NO_SHOW').length;
+      const baseDate = data.effectiveDateStr ? new Date(`${data.effectiveDateStr}T00:00:00Z`) : new Date();
+      const dayOfWeek = baseDate.getUTCDay(); // 0: Sun, 1: Mon, ...
+      const distanceToMonday = (dayOfWeek + 6) % 7;
+      const monday = new Date(baseDate);
+      monday.setUTCDate(baseDate.getUTCDate() - distanceToMonday);
+      const sunday = new Date(monday);
+      sunday.setUTCDate(monday.getUTCDate() + 6);
+      const mondayStr = monday.toISOString().split('T')[0];
+      const sundayStr = sunday.toISOString().split('T')[0];
+
+      const thisWeekApts = uniqueApts.filter(a => {
+        if (!a || !a.startsAt) return false;
+        const dStr = a.startsAt.split('T')[0];
+        return dStr >= mondayStr && dStr <= sundayStr;
+      });
+
+      completed = thisWeekApts.filter(a => a.status === 'COMPLETED').length;
+      confirmed = thisWeekApts.filter(a => a.status === 'CONFIRMED').length;
+      pending = thisWeekApts.filter(a => a.status === 'REQUESTED').length;
+      other = thisWeekApts.filter(a => a.status === 'CANCELLED' || a.status === 'NO_SHOW').length;
     } else {
-      // All Active Pipeline
-      completed = uniqueApts.filter(a => a.status === 'COMPLETED').length;
-      confirmed = uniqueApts.filter(a => a.status === 'CONFIRMED').length;
+      // All Clinic Appointments (Pipeline)
+      completed = data.summary.totalCompleted ?? uniqueApts.filter(a => a.status === 'COMPLETED').length;
+      confirmed = data.summary.totalConfirmed ?? uniqueApts.filter(a => a.status === 'CONFIRMED').length;
       pending = data.summary.requestedAppointments ?? uniqueApts.filter(a => a.status === 'REQUESTED').length;
       other = uniqueApts.filter(a => a.status === 'CANCELLED' || a.status === 'NO_SHOW').length;
     }
@@ -254,7 +282,7 @@ export const Dashboard = () => {
         pendingPct: 0,
         otherPct: 0,
         mainPct: 0,
-        mainLabel: 'Appointments completed'
+        mainLabel: analyticsTimeframe === 'Today' ? 'No visits today' : 'No appointments'
       };
     }
 
@@ -264,7 +292,7 @@ export const Dashboard = () => {
     const otherPct = Math.max(0, 100 - (completedPct + confirmedPct + pendingPct));
 
     const mainPct = completedPct;
-    const mainLabel = 'Appointments completed';
+    const mainLabel = 'Completed';
 
     return {
       total,
@@ -435,7 +463,8 @@ export const Dashboard = () => {
     const allAppointments = [
       ...(data.todayAppointments || []),
       ...(data.upcomingAppointments || []),
-      ...(data.requestedAppointments || [])
+      ...(data.requestedAppointments || []),
+      ...(data.recentAppointments || [])
     ].filter(Boolean);
     const uniqueMap = new Map<string, DashboardAppointment>();
     allAppointments.forEach(apt => {
@@ -537,7 +566,9 @@ export const Dashboard = () => {
                 </div>
                 <div>
                   <h2 className="text-sm sm:text-base font-extrabold text-slate-800 tracking-tight">Appointment Analytics</h2>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium">Overview of today&apos;s appointments</p>
+                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium">
+                    {analyticsTimeframe === 'All' ? 'Overview of all clinic appointments' : analyticsTimeframe === 'This Week' ? "Overview of this week's appointments" : "Overview of today's appointments"}
+                  </p>
                 </div>
               </div>
 
@@ -554,7 +585,7 @@ export const Dashboard = () => {
 
                 {isTimeframeOpen && (
                   <div className="absolute right-0 top-full mt-1.5 w-32 bg-[#FAF7F2] rounded-2xl shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] border border-white/90 p-1.5 z-50 flex flex-col gap-1">
-                    {(['Today', 'This Week', 'All'] as const).map((tf) => (
+                    {(['All', 'This Week', 'Today'] as const).map((tf) => (
                       <button
                         key={tf}
                         type="button"
@@ -776,7 +807,7 @@ export const Dashboard = () => {
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
-                  {analyticsTimeframe === 'Today' ? totalToday : analytics.total}
+                  {analytics.total}
                 </div>
                 <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
                   Total Appt
@@ -798,7 +829,7 @@ export const Dashboard = () => {
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
-                  {confirmedToday}
+                  {analytics.confirmed}
                 </div>
                 <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
                   Confirmed
