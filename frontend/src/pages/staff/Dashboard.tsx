@@ -190,6 +190,87 @@ export const Dashboard = () => {
 
   if (!data) return null;
 
+  // Real clinical statistics derived from backend response
+  const totalToday = data.summary.todayAppointments ?? 0;
+  const confirmedToday = data.summary.confirmedToday ?? 0;
+  const requestedCount = data.summary.requestedAppointments ?? 0;
+  const newLeadsCount = data.summary.newLeads ?? 0;
+  const openFollowUps = data.summary.openFollowUps ?? 0;
+  const inProgressFollowUps = data.summary.inProgressFollowUps ?? 0;
+  const urgentVisits = data.summary.urgentVisits ?? 0;
+
+  // Breakdown for appointment analytics
+  const completedToday = data.todayAppointments?.filter(a => a.status === 'COMPLETED').length ?? 0;
+  const otherToday = Math.max(0, totalToday - (completedToday + confirmedToday + requestedCount));
+
+  // Dynamic percentages for appointment analytics
+  const completedPct = totalToday > 0 ? Math.round((completedToday / totalToday) * 100) : 0;
+  const confirmedPct = totalToday > 0 ? Math.round((confirmedToday / totalToday) * 100) : 0;
+  const pendingPct = totalToday > 0 ? Math.round((requestedCount / totalToday) * 100) : 0;
+  const otherPct = totalToday > 0 ? Math.max(0, 100 - completedPct - confirmedPct - pendingPct) : 0;
+
+  // SVG Doughnut circumference calculations (circumference = 2 * PI * 54 ≈ 339.29)
+  const circumference = 339.29;
+  const completedStroke = (completedPct / 100) * circumference;
+  const confirmedStroke = (confirmedPct / 100) * circumference;
+  const pendingStroke = (pendingPct / 100) * circumference;
+  const otherStroke = (otherPct / 100) * circumference;
+
+  const confirmedOffset = -completedStroke;
+  const pendingOffset = -(completedStroke + confirmedStroke);
+  const otherOffset = -(completedStroke + confirmedStroke + pendingStroke);
+
+  // Follow-ups completion metric
+  const totalFollowUps = openFollowUps + inProgressFollowUps + urgentVisits;
+  const followUpsCompletedPct = totalFollowUps > 0 
+    ? Math.round((inProgressFollowUps / totalFollowUps) * 100) 
+    : 0;
+  const gaugeCircumference = 276.46;
+  const gaugeStroke = (followUpsCompletedPct / 100) * gaugeCircumference;
+
+  // Real Weekly Appointments (Mon - Sun) derived from appointments
+  const getWeeklyData = () => {
+    const baseDate = data.effectiveDateStr ? new Date(`${data.effectiveDateStr}T00:00:00Z`) : new Date();
+    const dayOfWeek = baseDate.getUTCDay(); // 0: Sun, 1: Mon, ...
+    const distanceToMonday = (dayOfWeek + 6) % 7;
+    const monday = new Date(baseDate);
+    monday.setUTCDate(baseDate.getUTCDate() - distanceToMonday);
+
+    const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const allAppointments = [
+      ...(data.todayAppointments || []),
+      ...(data.upcomingAppointments || []),
+      ...(data.requestedAppointments || [])
+    ];
+    const uniqueMap = new Map<string, DashboardAppointment>();
+    allAppointments.forEach(apt => uniqueMap.set(apt.id, apt));
+    const uniqueApts = Array.from(uniqueMap.values());
+
+    const days = dayLabels.map((dayName, idx) => {
+      const targetDay = new Date(monday);
+      targetDay.setUTCDate(monday.getUTCDate() + idx);
+      const dateStr = targetDay.toISOString().split('T')[0];
+      const count = uniqueApts.filter(apt => apt.startsAt && apt.startsAt.startsWith(dateStr)).length;
+      return {
+        day: dayName,
+        dateStr,
+        count,
+        isToday: dateStr === data.effectiveDateStr
+      };
+    });
+
+    const maxCount = Math.max(5, ...days.map(d => d.count));
+    return {
+      maxCount,
+      days: days.map(d => ({
+        ...d,
+        pct: `${Math.max(d.count > 0 ? 18 : 6, Math.min(100, Math.round((d.count / maxCount) * 100)))}%`
+      }))
+    };
+  };
+
+  const weeklyData = getWeeklyData();
+
   return (
     <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-8 sm:pb-12">
       {/* Top Header Row with Neumorphic Controls */}
@@ -280,147 +361,198 @@ export const Dashboard = () => {
                       strokeWidth="16"
                     />
 
-                    {/* Segment 1: Completed 68% (Circumference ~339.29, 68% = 230.7, offset 0) */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="54"
-                      fill="none"
-                      stroke="url(#grad-completed)"
-                      strokeWidth="16"
-                      strokeDasharray="230.7 339.29"
-                      strokeDashoffset="0"
-                      strokeLinecap="round"
-                      className="transition-all duration-1000"
-                    />
+                    {totalToday > 0 ? (
+                      <>
+                        {/* Segment 1: Completed */}
+                        {completedStroke > 0 && (
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="54"
+                            fill="none"
+                            stroke="url(#grad-completed)"
+                            strokeWidth="16"
+                            strokeDasharray={`${completedStroke} ${circumference}`}
+                            strokeDashoffset="0"
+                            strokeLinecap="round"
+                            className="transition-all duration-1000"
+                          />
+                        )}
 
-                    {/* Segment 2: Confirmed 15% (50.9, offset -235) */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="54"
-                      fill="none"
-                      stroke="url(#grad-confirmed)"
-                      strokeWidth="16"
-                      strokeDasharray="50.9 339.29"
-                      strokeDashoffset="-235"
-                      strokeLinecap="round"
-                      className="transition-all duration-1000"
-                    />
+                        {/* Segment 2: Confirmed */}
+                        {confirmedStroke > 0 && (
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="54"
+                            fill="none"
+                            stroke="url(#grad-confirmed)"
+                            strokeWidth="16"
+                            strokeDasharray={`${confirmedStroke} ${circumference}`}
+                            strokeDashoffset={confirmedOffset}
+                            strokeLinecap="round"
+                            className="transition-all duration-1000"
+                          />
+                        )}
 
-                    {/* Segment 3: Pending 9% (30.5, offset -290) */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="54"
-                      fill="none"
-                      stroke="url(#grad-pending)"
-                      strokeWidth="16"
-                      strokeDasharray="30.5 339.29"
-                      strokeDashoffset="-290"
-                      strokeLinecap="round"
-                      className="transition-all duration-1000"
-                    />
+                        {/* Segment 3: Pending */}
+                        {pendingStroke > 0 && (
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="54"
+                            fill="none"
+                            stroke="url(#grad-pending)"
+                            strokeWidth="16"
+                            strokeDasharray={`${pendingStroke} ${circumference}`}
+                            strokeDashoffset={pendingOffset}
+                            strokeLinecap="round"
+                            className="transition-all duration-1000"
+                          />
+                        )}
 
-                    {/* Segment 4: No Show 8% (27.1, offset -324) */}
-                    <circle
-                      cx="80"
-                      cy="80"
-                      r="54"
-                      fill="none"
-                      stroke="url(#grad-noshow)"
-                      strokeWidth="16"
-                      strokeDasharray="27.1 339.29"
-                      strokeDashoffset="-324"
-                      strokeLinecap="round"
-                      className="transition-all duration-1000"
-                    />
+                        {/* Segment 4: Other / No Show */}
+                        {otherStroke > 0 && (
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="54"
+                            fill="none"
+                            stroke="url(#grad-noshow)"
+                            strokeWidth="16"
+                            strokeDasharray={`${otherStroke} ${circumference}`}
+                            strokeDashoffset={otherOffset}
+                            strokeLinecap="round"
+                            className="transition-all duration-1000"
+                          />
+                        )}
+                      </>
+                    ) : (
+                      /* Neutral elegant ring when 0 appointments today */
+                      <circle
+                        cx="80"
+                        cy="80"
+                        r="54"
+                        fill="none"
+                        stroke="#E2DDD5"
+                        strokeWidth="16"
+                        strokeDasharray="20 339.29"
+                        strokeLinecap="round"
+                      />
+                    )}
                   </svg>
 
                   {/* Inner Doughnut Neumorphic Well & Text */}
                   <div className="absolute inset-[30px] rounded-full bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] flex flex-col items-center justify-center text-center p-2">
                     <span className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
-                      68%
+                      {completedPct}%
                     </span>
-                    <span className="text-[10px] font-bold text-slate-500 mt-1 leading-tight max-w-[70px]">
-                      Appointments completed
+                    <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 mt-1 leading-tight max-w-[85px]">
+                      {totalToday === 0 ? 'No appts today' : 'Appointments completed'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Legend Breakdown List */}
-              <div className="sm:col-span-6 space-y-2.5">
-                <div className="flex items-center justify-between text-xs font-bold px-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[1px_1px_3px_#E5DFD3]" />
-                    <span className="text-slate-600">Completed</span>
+              {/* Right: Legend Breakdown List with Larger Readable Text & Hover States */}
+              <div className="sm:col-span-6 space-y-2">
+                <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-3 h-3 rounded-full bg-pink-500 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-700">Completed</span>
                   </div>
-                  <span className="text-slate-900 font-extrabold">68%</span>
+                  <span className="text-slate-900 font-black">{completedPct}% <span className="text-xs font-semibold text-slate-500">({completedToday})</span></span>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-bold px-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[1px_1px_3px_#E5DFD3]" />
-                    <span className="text-slate-600">Confirmed</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-700">Confirmed</span>
                   </div>
-                  <span className="text-slate-900 font-extrabold">15%</span>
+                  <span className="text-slate-900 font-black">{confirmedPct}% <span className="text-xs font-semibold text-slate-500">({confirmedToday})</span></span>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-bold px-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[1px_1px_3px_#E5DFD3]" />
-                    <span className="text-slate-600">Pending</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-3 h-3 rounded-full bg-amber-400 shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-700">Pending</span>
                   </div>
-                  <span className="text-slate-900 font-extrabold">9%</span>
+                  <span className="text-slate-900 font-black">{pendingPct}% <span className="text-xs font-semibold text-slate-500">({requestedCount})</span></span>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-bold px-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#DC95FF] shadow-[1px_1px_3px_#E5DFD3]" />
-                    <span className="text-slate-600">No Show</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-3 h-3 rounded-full bg-[#DC95FF] shadow-[1px_1px_3px_#E5DFD3]" />
+                    <span className="text-slate-700">No Show</span>
                   </div>
-                  <span className="text-slate-900 font-extrabold">8%</span>
+                  <span className="text-slate-900 font-black">{otherPct}% <span className="text-xs font-semibold text-slate-500">({otherToday})</span></span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Bottom 3 Tactile Mini Metric Pills */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-slate-200/60 mt-2">
-            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0">
-                <Calendar size={13} />
+          {/* Bottom 3 Tactile Mini Metric Pills with Increased Text Size & Rich Hover */}
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-4 border-t border-slate-200/60 mt-3">
+            {/* Mini Pill 1: Total Appt */}
+            <div 
+              onClick={() => {
+                const todayStr = data?.effectiveDateStr || '';
+                if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
+              }}
+              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              title="View today's appointments"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <Calendar size={18} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
-                  {data.summary.todayAppointments || 12}
+                <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
+                  {totalToday}
                 </div>
-                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">Total Appt</div>
+                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                  Total Appt
+                </div>
               </div>
             </div>
 
-            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-emerald-500 shrink-0">
-                <CheckCircle2 size={13} />
+            {/* Mini Pill 2: Confirmed */}
+            <div 
+              onClick={() => {
+                const todayStr = data?.effectiveDateStr || '';
+                if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
+              }}
+              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              title="View confirmed appointments"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <CheckCircle2 size={18} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
-                  {data.summary.confirmedToday || 8}
+                <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
+                  {confirmedToday}
                 </div>
-                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">Confirmed</div>
+                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                  Confirmed
+                </div>
               </div>
             </div>
 
-            <div className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-[#DC95FF] shrink-0">
-                <Users size={13} />
+            {/* Mini Pill 3: New Patients */}
+            <div 
+              onClick={() => navigate('/staff/leads')}
+              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              title="View new patient leads"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <Users size={18} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight">
-                  {data.summary.newLeads || 3}
+                <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
+                  {newLeadsCount}
                 </div>
-                <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">New Patients</div>
+                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                  New Patients
+                </div>
               </div>
             </div>
           </div>
@@ -434,7 +566,7 @@ export const Dashboard = () => {
               const todayStr = data?.effectiveDateStr || '';
               if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
             }}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
               <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 transition-transform duration-300 group-hover:scale-110">
@@ -443,17 +575,18 @@ export const Dashboard = () => {
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                title="Options"
               >
                 <MoreHorizontal size={18} />
               </button>
             </div>
 
             <div className="mt-2 z-10">
-              <p className="text-xs font-bold text-slate-500">Today&apos;s Appointments</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
-                {data.summary.todayAppointments || 12}
+              <p className="text-xs sm:text-sm font-bold text-slate-500">Today&apos;s Appointments</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-pink-600 transition-colors">
+                {totalToday}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
                   <TrendingUp size={12} /> +12%
                 </span>
@@ -463,8 +596,8 @@ export const Dashboard = () => {
 
             <WaveDecoration color="#F472B6" id="pink-wave" />
 
-            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 transition-all duration-300 z-10">
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 transition-all duration-300 z-10">
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
@@ -474,7 +607,7 @@ export const Dashboard = () => {
               const todayStr = data?.effectiveDateStr || '';
               if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
             }}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
               <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-emerald-500 transition-transform duration-300 group-hover:scale-110">
@@ -483,17 +616,18 @@ export const Dashboard = () => {
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                title="Options"
               >
                 <MoreHorizontal size={18} />
               </button>
             </div>
 
             <div className="mt-2 z-10">
-              <p className="text-xs font-bold text-slate-500">Confirmed Today</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
-                {data.summary.confirmedToday || 8}
+              <p className="text-xs sm:text-sm font-bold text-slate-500">Confirmed Today</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-emerald-600 transition-colors">
+                {confirmedToday}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
                   <TrendingUp size={12} /> +0%
                 </span>
@@ -503,15 +637,15 @@ export const Dashboard = () => {
 
             <WaveDecoration color="#10B981" id="emerald-wave" />
 
-            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 transition-all duration-300 z-10">
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 transition-all duration-300 z-10">
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
           {/* Card 3: Pending Requests */}
           <div 
             onClick={() => navigate('/staff/appointments?status=REQUESTED')}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
               <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-amber-500 transition-transform duration-300 group-hover:scale-110">
@@ -520,17 +654,18 @@ export const Dashboard = () => {
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                title="Options"
               >
                 <MoreHorizontal size={18} />
               </button>
             </div>
 
             <div className="mt-2 z-10">
-              <p className="text-xs font-bold text-slate-500">Pending Requests</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
-                {data.summary.requestedAppointments || 5}
+              <p className="text-xs sm:text-sm font-bold text-slate-500">Pending Requests</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-amber-600 transition-colors">
+                {requestedCount}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-amber-600 font-extrabold">
                   <TrendingUp size={12} /> +8%
                 </span>
@@ -540,15 +675,15 @@ export const Dashboard = () => {
 
             <WaveDecoration color="#F59E0B" id="amber-wave" />
 
-            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-amber-500 transition-all duration-300 z-10">
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-amber-500 transition-all duration-300 z-10">
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
           {/* Card 4: New Leads */}
           <div 
             onClick={() => navigate('/staff/leads')}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
               <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DC95FF] transition-transform duration-300 group-hover:scale-110">
@@ -557,17 +692,18 @@ export const Dashboard = () => {
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                title="Options"
               >
                 <MoreHorizontal size={18} />
               </button>
             </div>
 
             <div className="mt-2 z-10">
-              <p className="text-xs font-bold text-slate-500">New Leads</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mt-0.5">
-                {data.summary.newLeads || 3}
+              <p className="text-xs sm:text-sm font-bold text-slate-500">New Leads</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-[#7C3AED] transition-colors">
+                {newLeadsCount}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-[11px] font-bold text-slate-500">
+              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-[#7C3AED] font-extrabold">
                   <TrendingUp size={12} /> +22%
                 </span>
@@ -577,8 +713,8 @@ export const Dashboard = () => {
 
             <WaveDecoration color="#DC95FF" id="purple-wave" />
 
-            <button className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] transition-all duration-300 z-10">
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] transition-all duration-300 z-10">
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>
@@ -612,23 +748,37 @@ export const Dashboard = () => {
                     stroke="#EFEBE4"
                     strokeWidth="11"
                   />
-                  {/* 42% of 276.46 = 116.1 */}
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="44"
-                    fill="none"
-                    stroke="#F472B6"
-                    strokeWidth="11"
-                    strokeDasharray="116.1 276.46"
-                    strokeDashoffset="0"
-                    strokeLinecap="round"
-                    className="transition-all duration-1000"
-                  />
+                  {gaugeStroke > 0 ? (
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="44"
+                      fill="none"
+                      stroke="#F472B6"
+                      strokeWidth="11"
+                      strokeDasharray={`${gaugeStroke} ${gaugeCircumference}`}
+                      strokeDashoffset="0"
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+                  ) : (
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="44"
+                      fill="none"
+                      stroke="#E2DDD5"
+                      strokeWidth="11"
+                      strokeDasharray="10 276.46"
+                      strokeLinecap="round"
+                    />
+                  )}
                 </svg>
 
                 <div className="absolute inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
-                  <span className="text-xl font-black text-slate-800 leading-none">42%</span>
+                  <span className="text-xl font-black text-slate-800 leading-none">
+                    {followUpsCompletedPct}%
+                  </span>
                   <span className="text-[9px] font-bold text-slate-500 mt-0.5 leading-tight max-w-[65px]">
                     Follow-ups completed
                   </span>
@@ -636,61 +786,61 @@ export const Dashboard = () => {
               </div>
             </div>
 
-            {/* Right: 3 Metric Breakdown Rows */}
+            {/* Right: 3 Metric Breakdown Rows with High-Contrast Text & Tactile Hover */}
             <div className="sm:col-span-7 space-y-2.5">
               {/* Row 1: Open Follow-ups */}
               <div 
                 onClick={() => navigate('/staff/contacts?status=OPEN')}
-                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0">
-                    <FileText size={14} />
+                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0 transition-transform group-hover:scale-105">
+                    <FileText size={15} />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.openFollowUps}</span>
-                    <span className="text-xs font-bold text-slate-600 truncate">Open Follow-ups</span>
+                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{openFollowUps}</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">Open Follow-ups</span>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
-                  <TrendingUp size={10} /> 5%
+                <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={11} /> 5%
                 </span>
               </div>
 
               {/* Row 2: In-progress */}
               <div 
                 onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
-                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0">
-                    <RefreshCw size={14} />
+                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0 transition-transform group-hover:scale-105">
+                    <RefreshCw size={15} />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.inProgressFollowUps}</span>
-                    <span className="text-xs font-bold text-slate-600 truncate">In-progress</span>
+                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{inProgressFollowUps}</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">In-progress</span>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
-                  <TrendingUp size={10} /> 0%
+                <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
+                  <TrendingUp size={11} /> 0%
                 </span>
               </div>
 
               {/* Row 3: Active Urgent */}
               <div 
                 onClick={() => navigate('/staff/urgent-visits')}
-                className="flex items-center justify-between p-2 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 hover:bg-white/60 transition-colors cursor-pointer"
+                className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0">
-                    <AlertTriangle size={14} />
+                  <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0 transition-transform group-hover:scale-105">
+                    <AlertTriangle size={15} />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-sm font-extrabold text-slate-800 mr-1.5">{data.summary.urgentVisits}</span>
-                    <span className="text-xs font-bold text-slate-600 truncate">Active Urgent</span>
+                    <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{urgentVisits}</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">Active Urgent</span>
                   </div>
                 </div>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase">
+                <span className="px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase tracking-wide">
                   ACTIVE
                 </span>
               </div>
@@ -719,55 +869,52 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          {/* Bar Chart Area */}
-          <div className="pt-2">
-            <div className="flex gap-3">
+          {/* Bar Chart Area with Visible Overflow & Generous Padding for Floating Tooltips */}
+          <div className="pt-4 overflow-visible">
+            <div className="flex gap-3 overflow-visible">
               {/* Y-axis grid values */}
-              <div className="flex flex-col justify-between text-[11px] font-bold text-slate-400 pb-7 h-44 text-right pr-2">
-                <span>20</span>
-                <span>15</span>
-                <span>10</span>
-                <span>5</span>
+              <div className="flex flex-col justify-between text-xs font-black text-slate-400 pb-8 h-48 text-right pr-2 shrink-0">
+                <span>{weeklyData.maxCount}</span>
+                <span>{Math.round(weeklyData.maxCount * 0.75)}</span>
+                <span>{Math.round(weeklyData.maxCount * 0.5)}</span>
+                <span>{Math.round(weeklyData.maxCount * 0.25)}</span>
                 <span>0</span>
               </div>
 
               {/* Chart Grid & Columns */}
-              <div className="flex-1 relative pb-7 h-44">
+              <div className="flex-1 relative pb-8 h-48 overflow-visible">
                 {/* Horizontal Dashed Gridlines */}
                 <div className="absolute inset-x-0 top-0 border-b border-dashed border-slate-200" />
                 <div className="absolute inset-x-0 top-1/4 border-b border-dashed border-slate-200" />
                 <div className="absolute inset-x-0 top-2/4 border-b border-dashed border-slate-200" />
                 <div className="absolute inset-x-0 top-3/4 border-b border-dashed border-slate-200" />
-                <div className="absolute inset-x-0 bottom-7 border-b border-slate-300" />
+                <div className="absolute inset-x-0 bottom-8 border-b border-slate-300" />
 
-                {/* 7 Days Bar Pillars */}
-                <div className="h-full flex items-end justify-between px-2 sm:px-6 relative z-10">
-                  {[
-                    { day: 'Mon', count: 10, pct: '50%' },
-                    { day: 'Tue', count: 15, pct: '75%' },
-                    { day: 'Wed', count: 12, pct: '60%' },
-                    { day: 'Thu', count: 17, pct: '85%' },
-                    { day: 'Fri', count: 14, pct: '70%' },
-                    { day: 'Sat', count: 9, pct: '45%' },
-                    { day: 'Sun', count: 12, pct: '60%' },
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end">
-                      {/* Bar Pillar */}
-                      <div className="w-6 sm:w-8 h-36 bg-[#FAF7F2] rounded-full shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2 relative">
-                        {/* Hover Tooltip */}
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 px-2 py-0.5 rounded-lg bg-slate-800 text-white text-[10px] font-extrabold shadow-md pointer-events-none whitespace-nowrap z-20">
-                          {item.count} appts
-                        </div>
+                {/* 7 Days Bar Pillars with Animated Tooltips & Lift */}
+                <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-12">
+                  {weeklyData.days.map((item, idx) => (
+                    <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end relative overflow-visible">
+                      {/* Floating Tooltip with Larger Readable Text & Animated Indicator */}
+                      <div className="opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0 absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-black shadow-[0_8px_20px_rgba(0,0,0,0.3)] border border-slate-700/60 whitespace-nowrap z-30 flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-[#DC95FF] animate-pulse shrink-0" />
+                        <span className="tracking-wide">
+                          {item.count} {item.count === 1 ? 'Appt' : 'Appts'}
+                        </span>
+                        {/* Downward triangle indicator arrow */}
+                        <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
+                      </div>
 
+                      {/* Bar Pillar with tactile hover lift */}
+                      <div className="w-7 sm:w-10 h-36 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
                         {/* Animated Gradient Bar */}
                         <div 
-                          className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:brightness-110 transition-all duration-300"
+                          className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:shadow-[0_4px_14px_rgba(220,149,255,0.7)] group-hover:brightness-110 transition-all duration-500"
                           style={{ height: item.pct }}
                         />
                       </div>
 
-                      {/* X-axis Day Label */}
-                      <span className="text-[11px] sm:text-xs font-bold text-slate-500 group-hover:text-slate-800 transition-colors">
+                      {/* X-axis Day Label with Scaling Animation */}
+                      <span className={`text-xs sm:text-sm font-extrabold transition-all duration-300 ${item.isToday ? 'text-[#7C3AED] underline underline-offset-4' : 'text-slate-600'} group-hover:text-[#7C3AED] group-hover:scale-110`}>
                         {item.day}
                       </span>
                     </div>
