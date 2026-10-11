@@ -177,42 +177,33 @@ export const Dashboard = () => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-80 gap-3">
-        <div className="w-16 h-16 rounded-3xl bg-[#FAF7F2] shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] border border-white/80 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 text-[#DC95FF] animate-spin" />
-        </div>
-        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading Clinical Metrics...</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#FAF7F2] shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] border border-rose-300 rounded-3xl p-6 flex items-start text-rose-700">
-        <AlertCircle className="h-6 w-6 text-rose-500 mt-0.5 mr-3 shrink-0 anim-neu-pulse" />
-        <div>
-          <h3 className="text-sm font-bold text-rose-900">Error loading dashboard</h3>
-          <p className="mt-1 text-xs text-rose-700">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!data) return null;
-
-  // Real clinical statistics derived from backend response
-  const totalToday = data.summary.todayAppointments ?? 0;
-  const confirmedToday = data.summary.confirmedToday ?? 0;
-  const requestedCount = data.summary.requestedAppointments ?? 0;
-  const newLeadsCount = data.summary.newLeads ?? 0;
-  const openFollowUps = data.summary.openFollowUps ?? 0;
-  const inProgressFollowUps = data.summary.inProgressFollowUps ?? 0;
-  const urgentVisits = data.summary.urgentVisits ?? 0;
+  // Real clinical statistics derived from backend response (null-safe for initial render)
+  const totalToday = data?.summary?.todayAppointments ?? 0;
+  const confirmedToday = data?.summary?.confirmedToday ?? 0;
+  const requestedCount = data?.summary?.requestedAppointments ?? 0;
+  const newLeadsCount = data?.summary?.newLeads ?? 0;
+  const openFollowUps = data?.summary?.openFollowUps ?? 0;
+  const inProgressFollowUps = data?.summary?.inProgressFollowUps ?? 0;
+  const urgentVisits = data?.summary?.urgentVisits ?? 0;
 
   // Multi-timeframe appointment analytics calculations
   const getAnalytics = () => {
+    if (!data) {
+      return {
+        total: 0,
+        completed: 0,
+        confirmed: 0,
+        pending: 0,
+        other: 0,
+        completedPct: 0,
+        confirmedPct: 0,
+        pendingPct: 0,
+        otherPct: 0,
+        mainPct: 0,
+        mainLabel: 'No appts today'
+      };
+    }
+
     let completed = 0;
     let confirmed = 0;
     let pending = 0;
@@ -434,6 +425,13 @@ export const Dashboard = () => {
 
   // Real Weekly Appointments (Mon - Sun) derived from appointments
   const getWeeklyData = () => {
+    if (!data) {
+      return {
+        maxCount: 5,
+        days: []
+      };
+    }
+
     const baseDate = data.effectiveDateStr ? new Date(`${data.effectiveDateStr}T00:00:00Z`) : new Date();
     const dayOfWeek = baseDate.getUTCDay(); // 0: Sun, 1: Mon, ...
     const distanceToMonday = (dayOfWeek + 6) % 7;
@@ -476,6 +474,31 @@ export const Dashboard = () => {
   };
 
   const weeklyData = getWeeklyData();
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-80 gap-3">
+        <div className="w-16 h-16 rounded-3xl bg-[#FAF7F2] shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] border border-white/80 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 text-[#DC95FF] animate-spin" />
+        </div>
+        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading Clinical Metrics...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#FAF7F2] shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] border border-rose-300 rounded-3xl p-6 flex items-start text-rose-700">
+        <AlertCircle className="h-6 w-6 text-rose-500 mt-0.5 mr-3 shrink-0 anim-neu-pulse" />
+        <div>
+          <h3 className="text-sm font-bold text-rose-900">Error loading dashboard</h3>
+          <p className="mt-1 text-xs text-rose-700">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) return null;
 
   return (
     <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-8 sm:pb-12">
