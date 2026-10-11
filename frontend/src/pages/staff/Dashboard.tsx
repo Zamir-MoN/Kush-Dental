@@ -791,25 +791,25 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          {/* Bottom 3 Tactile Mini Metric Pills with Increased Text Size & Rich Hover */}
-          <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-4 border-t border-slate-200/60 mt-3">
+          {/* Bottom 3 Tactile Mini Metric Pills */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-2.5 pt-3.5 border-t border-slate-200/60 mt-3">
             {/* Mini Pill 1: Total Appt */}
             <div 
               onClick={() => {
                 const todayStr = data?.effectiveDateStr || '';
                 if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
               }}
-              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2 sm:gap-2.5 transition-all duration-300 cursor-pointer group"
               title="View today's appointments"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <Calendar size={18} />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <Calendar size={15} />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
                   {analytics.total}
                 </div>
-                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
+                <div className="text-[10px] sm:text-[11px] font-bold text-slate-600 truncate mt-0.5">
                   Total Appt
                 </div>
               </div>
@@ -821,37 +821,37 @@ export const Dashboard = () => {
                 const todayStr = data?.effectiveDateStr || '';
                 if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
               }}
-              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2 sm:gap-2.5 transition-all duration-300 cursor-pointer group"
               title="View confirmed appointments"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <CheckCircle2 size={18} />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <CheckCircle2 size={15} />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
                   {analytics.confirmed}
                 </div>
-                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
+                <div className="text-[10px] sm:text-[11px] font-bold text-slate-600 truncate mt-0.5">
                   Confirmed
                 </div>
               </div>
             </div>
 
-            {/* Mini Pill 3: New Patients */}
+            {/* Mini Pill 3: New Leads */}
             <div 
               onClick={() => navigate('/staff/leads')}
-              className="bg-[#FAF7F2] p-2.5 sm:p-3 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2.5 sm:gap-3 transition-all duration-300 cursor-pointer group"
+              className="bg-[#FAF7F2] p-2 sm:p-2.5 rounded-2xl shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_8px_#E5DFD3,-3px_-3px_8px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center gap-2 sm:gap-2.5 transition-all duration-300 cursor-pointer group"
               title="View new patient leads"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#FAF7F2] shadow-[2.5px_2.5px_5px_#E5DFD3,-2.5px_-2.5px_5px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] shrink-0 transition-transform duration-300 group-hover:scale-110">
-                <Users size={18} />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] shrink-0 transition-transform duration-300 group-hover:scale-110">
+                <Users size={15} />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
                   {newLeadsCount}
                 </div>
-                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
-                  New Patients
+                <div className="text-[10px] sm:text-[11px] font-bold text-slate-600 truncate mt-0.5">
+                  New Leads
                 </div>
               </div>
             </div>
