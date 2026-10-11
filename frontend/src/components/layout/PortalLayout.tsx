@@ -11,7 +11,11 @@ import {
   X,
   Target,
   FileText,
-  AlertTriangle
+  AlertTriangle,
+  Search,
+  Bell,
+  Sun,
+  ShieldCheck
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { AnimatedLogo } from '../ui/AnimatedLogo';
@@ -44,108 +48,148 @@ export const PortalLayout = () => {
   const visibleNavItems = navItems.filter(item => item.allowedRoles.includes(user?.role || ''));
 
   return (
-    <div className="portal-dark flex min-h-screen bg-[#0D0E12] text-zinc-100">
+    <div className="portal-neumorphic flex min-h-screen bg-[#EBF0F7] text-slate-800 font-sans selection:bg-[#DCA51B]/20 selection:text-slate-900">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Neumorphic Sidebar */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-[#13151A] border-r border-[#22252E] shadow-2xl md:shadow-none transition-transform duration-300 ease-in-out md:static md:translate-x-0 flex flex-col
+        className={`fixed inset-y-0 left-0 z-50 w-64 sm:w-72 transform bg-[#EBF0F7] border-r border-white/80 shadow-[8px_0_24px_rgba(209,217,230,0.6)] md:shadow-[6px_0_18px_rgba(209,217,230,0.45)] transition-transform duration-300 ease-in-out md:static md:translate-x-0 flex flex-col
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <div className="flex h-18 sm:h-20 items-center justify-between px-6 border-b border-[#22252E] bg-[#16181E]">
-          <BrandLogo isDark={true} size="sm" />
+        {/* Brand Header */}
+        <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200/60 bg-[#EBF0F7]">
+          <div className="p-1 rounded-2xl bg-[#EBF0F7] shadow-[inset_2px_2px_5px_#D1D9E6,inset_-2px_-2px_5px_#FFFFFF]">
+            <BrandLogo isDark={false} size="sm" />
+          </div>
           <button 
-            className="md:hidden text-zinc-400 hover:text-white p-1.5 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" 
+            className="md:hidden text-slate-500 hover:text-slate-800 p-2 rounded-xl bg-[#EBF0F7] shadow-[3px_3px_6px_#D1D9E6,-3px_-3px_6px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] transition-all cursor-pointer" 
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
         
-        <nav className="flex-1 space-y-1.5 px-3.5 py-5 overflow-y-auto custom-scrollbar">
+        {/* Navigation Items */}
+        <nav className="flex-1 space-y-2.5 px-4 py-6 overflow-y-auto custom-scrollbar">
           {visibleNavItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
-                `group flex items-center space-x-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all ${
+                `group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 ${
                   isActive
-                    ? 'bg-[#DCA51B]/15 text-[#F5C242] border border-[#DCA51B]/35 shadow-[0_0_15px_rgba(220,165,27,0.12)]'
-                    : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+                    ? 'bg-[#EBF0F7] text-[#B8860B] font-bold border border-white/90 shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF]'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-[#EBF0F7] hover:shadow-[4px_4px_10px_#D1D9E6,-4px_-4px_10px_#FFFFFF] hover:-translate-y-0.5'
                 }`
               }
             >
-              <span className="shrink-0 transition-transform duration-300 group-hover:scale-115 group-hover:-translate-y-0.5 group-active:scale-95">
-                {item.icon}
-              </span>
-              <span className="transition-colors">{item.label}</span>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center space-x-3.5">
+                    <span className={`shrink-0 p-1.5 rounded-xl transition-all duration-300 ${
+                      isActive 
+                        ? 'text-[#DCA51B] bg-amber-500/10 shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF]' 
+                        : 'group-hover:scale-110 group-hover:rotate-3 group-hover:text-[#DCA51B]'
+                    }`}>
+                      {item.icon}
+                    </span>
+                    <span className="tracking-wide">{item.label}</span>
+                  </div>
+                  {isActive && (
+                    <span className="w-1.5 h-4 rounded-full bg-gradient-to-b from-[#F5D77F] to-[#DCA51B] shadow-[0_0_8px_rgba(220,165,27,0.7)]" />
+                  )}
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
         
-        <div className="p-4 border-t border-[#22252E] bg-[#16181E]">
+        {/* Logout Bottom Bar */}
+        <div className="p-4 border-t border-slate-200/60 bg-[#EBF0F7]">
           <button
             onClick={handleLogout}
-            className="group flex w-full items-center space-x-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all cursor-pointer"
+            className="group flex w-full items-center justify-center space-x-2.5 rounded-2xl px-4 py-3 text-sm font-bold text-rose-600 bg-[#EBF0F7] border border-white/80 shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] hover:shadow-[6px_6px_14px_#D1D9E6,-6px_-6px_14px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] active:translate-y-0 transition-all cursor-pointer"
           >
             <span className="shrink-0 transition-transform duration-300 group-hover:scale-115 group-hover:-rotate-12">
-              <LogOut size={18} />
+              <LogOut size={17} />
             </span>
-            <span>Logout</span>
+            <span>Logout Portal</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col overflow-hidden bg-[#0D0E12]">
-        {/* Top Header */}
-        <header className="flex h-16 sm:h-20 items-center justify-between bg-[#13151A]/90 backdrop-blur-md px-3.5 sm:px-6 md:px-8 border-b border-[#22252E] shadow-xs z-30">
-          <div className="flex items-center gap-2 shrink-0">
+      <div className="flex flex-1 flex-col overflow-hidden bg-[#EBF0F7]">
+        {/* Neumorphic Top Header */}
+        <header className="flex h-18 sm:h-20 items-center justify-between bg-[#EBF0F7]/95 backdrop-blur-md px-4 sm:px-6 md:px-8 border-b border-white/80 shadow-[0_4px_16px_rgba(209,217,230,0.4)] z-30">
+          <div className="flex items-center gap-3">
             <button 
-              className="md:hidden text-zinc-300 p-2 -ml-1 rounded-xl hover:bg-white/5 active:scale-95 transition-all cursor-pointer"
+              className="md:hidden text-slate-600 p-2 rounded-2xl bg-[#EBF0F7] shadow-[3px_3px_7px_#D1D9E6,-3px_-3px_7px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#D1D9E6,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all cursor-pointer"
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open navigation menu"
             >
-              <Menu size={22} />
+              <Menu size={20} />
             </button>
             <div className="md:hidden flex items-center gap-2">
               <AnimatedLogo size={24} className="w-6 h-6 shrink-0" animate={false} />
-              <span className="font-serif font-bold text-sm text-white tracking-tight">Kush Dental</span>
+              <span className="font-serif font-bold text-sm text-slate-800 tracking-tight">Kush Dental</span>
+            </div>
+
+            {/* Inset Neumorphic Search Bar (Desktop) */}
+            <div className="hidden md:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[#EBF0F7] shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF] border border-white/60 w-64 lg:w-80 group focus-within:shadow-[inset_3px_3px_6px_#D1D9E6,inset_-3px_-3px_6px_#FFFFFF,0_0_0_2px_rgba(220,165,27,0.3)] transition-all">
+              <Search size={16} className="text-slate-400 group-focus-within:text-[#DCA51B] transition-colors" />
+              <input 
+                type="text" 
+                placeholder="Search appointments, patients..." 
+                className="bg-transparent text-xs text-slate-700 outline-none w-full placeholder:text-slate-400 font-medium" 
+              />
             </div>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* Desktop user email + role */}
-            <div className="hidden sm:flex flex-col items-end min-w-0">
-              <span className="text-xs sm:text-sm font-bold text-zinc-200 truncate max-w-[200px]" title={user?.email || 'User'}>
-                {user?.email || 'User'}
-              </span>
-              <span className="inline-flex items-center rounded-full bg-[#DCA51B]/15 border border-[#DCA51B]/35 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-[#F5C242]">
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            {/* Quick Action Icon: Notifications */}
+            <button 
+              className="w-10 h-10 rounded-2xl bg-[#EBF0F7] shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] hover:shadow-[6px_6px_14px_#D1D9E6,-6px_-6px_14px_#FFFFFF] active:shadow-[inset_2px_2px_5px_#D1D9E6,inset_-2px_-2px_5px_#FFFFFF] border border-white/80 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-all cursor-pointer relative group"
+              title="Notifications"
+            >
+              <Bell size={18} className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DCA51B] shadow-[0_0_6px_rgba(220,165,27,0.8)]" />
+            </button>
+
+            {/* User Profile Info & Tactile Avatar */}
+            <div className="flex items-center gap-3 pl-2 sm:pl-3 border-l border-slate-300/60">
+              <div className="hidden sm:flex flex-col items-end min-w-0">
+                <span className="text-xs sm:text-sm font-bold text-slate-800 truncate max-w-[180px]" title={user?.email || 'User'}>
+                  {user?.email || 'User'}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 px-2 py-0.5 text-[10px] font-extrabold text-[#B8860B] uppercase tracking-wider">
+                  <ShieldCheck size={10} className="text-[#DCA51B]" />
+                  {user?.role}
+                </span>
+              </div>
+              
+              {/* Mobile role pill only */}
+              <span className="sm:hidden inline-flex items-center rounded-full bg-[#EBF0F7] shadow-[inset_1.5px_1.5px_3px_#D1D9E6,inset_-1.5px_-1.5px_3px_#FFFFFF] border border-white/70 px-2 py-0.5 text-[10px] font-extrabold text-[#B8860B]">
                 {user?.role}
               </span>
-            </div>
-            
-            {/* Mobile role pill only */}
-            <span className="sm:hidden inline-flex items-center rounded-full bg-[#DCA51B]/15 border border-[#DCA51B]/35 px-2 py-0.5 text-[10px] font-bold text-[#F5C242]">
-              {user?.role}
-            </span>
 
-            {/* User Avatar Circle */}
-            <div className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-2xl bg-[#DCA51B]/20 border border-[#DCA51B]/40 text-[#F5C242] font-bold text-xs sm:text-sm shadow-xs shrink-0 transition-transform duration-300 hover:scale-105">
-              {user?.email?.charAt(0).toUpperCase() || 'U'}
+              {/* Tactile Neumorphic Avatar Plate */}
+              <div className="h-10 w-10 sm:h-11 sm:w-11 flex items-center justify-center rounded-2xl bg-[#EBF0F7] shadow-[4px_4px_9px_#D1D9E6,-4px_-4px_9px_#FFFFFF] border border-white/85 text-[#B8860B] font-extrabold text-sm shrink-0 transition-transform duration-300 hover:scale-105 select-none">
+                {user?.email?.charAt(0).toUpperCase() || 'U'}
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 custom-scrollbar bg-[#0D0E12]">
+        {/* Page Content Viewport */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 custom-scrollbar bg-[#EBF0F7]">
           <Outlet />
         </main>
       </div>

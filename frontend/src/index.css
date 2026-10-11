@@ -949,259 +949,348 @@
 }
 
 /* ============================================================
-   ADMIN & STAFF PORTAL DARK LUXURY THEME SYSTEM
+   ADMIN & STAFF PORTAL NEUMORPHIC LUXURY THEME SYSTEM
    ============================================================ */
-.portal-dark {
-  background-color: #0D0E12 !important;
-  color: #F3F4F6 !important;
-  color-scheme: dark;
+
+/* Animated SVG Keyframes */
+@keyframes neu-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
-/* Base Surfaces & Cards */
-.portal-dark .bg-white {
-  background-color: #13151A !important;
+@keyframes neu-pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
-.portal-dark .bg-\[\#FAF7F2\],
-.portal-dark .bg-\[\#FAF7F2\]\/40,
-.portal-dark .bg-\[\#FAF7F2\]\/50,
-.portal-dark .bg-\[\#FAF7F2\]\/60 {
-  background-color: #16181E !important;
+@keyframes neu-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-10deg); }
+  40% { transform: rotate(10deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(6deg); }
 }
 
-.portal-dark .bg-\[\#FCF9F7\],
-.portal-dark .bg-zinc-50 {
-  background-color: #181A22 !important;
+@keyframes neu-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes neu-shimmer {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.anim-neu-float {
+  animation: neu-float 3.2s ease-in-out infinite;
+}
+
+.anim-neu-pulse {
+  animation: neu-pulse-subtle 2.4s ease-in-out infinite;
+}
+
+.anim-neu-wiggle {
+  animation: neu-wiggle 1.6s ease-in-out infinite;
+}
+
+.anim-neu-spin {
+  animation: neu-spin-slow 10s linear infinite;
+}
+
+.anim-neu-shimmer {
+  animation: neu-shimmer 2s ease-in-out infinite;
+}
+
+/* Base Neumorphic Utilities */
+.neu-flat {
+  background-color: #EBF0F7;
+  box-shadow: 7px 7px 15px #D1D9E6, -7px -7px 15px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.neu-flat-sm {
+  background-color: #EBF0F7;
+  box-shadow: 4px 4px 10px #D1D9E6, -4px -4px 10px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.neu-convex {
+  background: linear-gradient(145deg, #F3F7FD, #E5EBF4);
+  box-shadow: 8px 8px 18px #D1D9E6, -8px -8px 18px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.neu-pressed, .neu-inset {
+  background-color: #EBF0F7;
+  box-shadow: inset 4px 4px 8px #D1D9E6, inset -4px -4px 8px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.neu-pressed-sm, .neu-inset-sm {
+  background-color: #EBF0F7;
+  box-shadow: inset 2px 2px 5px #D1D9E6, inset -2px -2px 5px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.neu-card {
+  background-color: #EBF0F7;
+  box-shadow: 8px 8px 18px #D1D9E6, -8px -8px 18px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neu-card:hover {
+  box-shadow: 12px 12px 24px #C5D0E0, -12px -12px 24px #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.neu-button {
+  background-color: #EBF0F7;
+  box-shadow: 4px 4px 9px #D1D9E6, -4px -4px 9px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neu-button:hover {
+  box-shadow: 6px 6px 14px #C5D0E0, -6px -6px 14px #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.neu-button:active {
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF;
+  transform: translateY(0);
+}
+
+.neu-input {
+  background-color: #EBF0F7 !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  color: #1E293B !important;
+  outline: none !important;
+  transition: all 0.2s ease;
+}
+
+.neu-input:focus {
+  border-color: #DCA51B !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 165, 27, 0.2) !important;
+}
+
+/* ============================================================
+   PORTAL NEUMORPHIC GLOBAL CONTAINER & COMPONENT OVERRIDES
+   ============================================================ */
+.portal-neumorphic {
+  background-color: #EBF0F7 !important;
+  color: #1E293B !important;
+  color-scheme: light;
+}
+
+/* Base Surfaces & Cards across all Portal Pages */
+.portal-neumorphic .bg-white,
+.portal-neumorphic .bg-[#13151A],
+.portal-neumorphic .bg-[#16181E],
+.portal-neumorphic .bg-[#181A22],
+.portal-neumorphic .bg-[#1C1E26],
+.portal-neumorphic .bg-[#FAF7F2],
+.portal-neumorphic .bg-[#FCF9F7],
+.portal-neumorphic .bg-zinc-50,
+.portal-neumorphic .bg-zinc-900 {
+  background-color: #EBF0F7 !important;
 }
 
 /* Borders */
-.portal-dark .border-\[\#E8E2D5\],
-.portal-dark .border-\[\#E2DACB\],
-.portal-dark .border-zinc-200,
-.portal-dark .border-zinc-100 {
-  border-color: #22252E !important;
+.portal-neumorphic .border-[#22252E],
+.portal-neumorphic .border-[#262936],
+.portal-neumorphic .border-[#2A2E3B],
+.portal-neumorphic .border-[#E8E2D5],
+.portal-neumorphic .border-[#E2DACB],
+.portal-neumorphic .border-zinc-200,
+.portal-neumorphic .border-zinc-100,
+.portal-neumorphic .border-zinc-800,
+.portal-neumorphic .border-zinc-700 {
+  border-color: rgba(209, 217, 230, 0.7) !important;
 }
 
-.portal-dark .divide-\[\#E8E2D5\] > :not([hidden]) ~ :not([hidden]),
-.portal-dark .divide-\[\#E8E2D5\]\/70 > :not([hidden]) ~ :not([hidden]),
-.portal-dark .divide-zinc-200 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #22252E !important;
+/* Neumorphic Dual Shadow Elevation for Portal Cards */
+.portal-neumorphic .shadow-xs,
+.portal-neumorphic .shadow-sm {
+  box-shadow: 6px 6px 14px #D1D9E6, -6px -6px 14px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Typography Overrides */
-.portal-dark .text-zinc-900,
-.portal-dark .text-zinc-800,
-.portal-dark .text-gray-900,
-.portal-dark .text-gray-800,
-.portal-dark h1,
-.portal-dark h2,
-.portal-dark h3,
-.portal-dark h4 {
-  color: #F4F4F5 !important;
+.portal-neumorphic .shadow-md,
+.portal-neumorphic .shadow-lg,
+.portal-neumorphic .shadow-xl {
+  box-shadow: 10px 10px 22px #C5D0E0, -10px -10px 22px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
 }
 
-.portal-dark .text-zinc-700,
-.portal-dark .text-zinc-600,
-.portal-dark .text-gray-700,
-.portal-dark .text-gray-600 {
-  color: #D4D4D8 !important;
+/* Divider Lines */
+.portal-neumorphic .divide-[#22252E] > :not([hidden]) ~ :not([hidden]),
+.portal-neumorphic .divide-zinc-800 > :not([hidden]) ~ :not([hidden]),
+.portal-neumorphic .divide-zinc-200 > :not([hidden]) ~ :not([hidden]),
+.portal-neumorphic .divide-[#E8E2D5] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(209, 217, 230, 0.6) !important;
 }
 
-.portal-dark .text-zinc-500,
-.portal-dark .text-zinc-400,
-.portal-dark .text-gray-500,
-.portal-dark .text-gray-400 {
-  color: #9CA3AF !important;
+/* Typography Hierarchy in Neumorphic Light Theme */
+.portal-neumorphic h1,
+.portal-neumorphic h2,
+.portal-neumorphic h3,
+.portal-neumorphic h4 {
+  color: #0F172A !important;
 }
 
-.portal-dark dt {
-  color: #9CA3AF !important;
+.portal-neumorphic .text-white,
+.portal-neumorphic .text-zinc-100,
+.portal-neumorphic .text-zinc-200,
+.portal-neumorphic .text-gray-900,
+.portal-neumorphic .text-zinc-900 {
+  color: #1E293B !important;
 }
 
-.portal-dark dd {
-  color: #F4F4F5 !important;
+.portal-neumorphic .text-zinc-300,
+.portal-neumorphic .text-zinc-400,
+.portal-neumorphic .text-gray-600,
+.portal-neumorphic .text-zinc-600 {
+  color: #475569 !important;
 }
 
-/* Hover States Overrides - prevent light/white flash in dark mode */
-.portal-dark .hover\:bg-\[\#FAF7F2\]\/60:hover,
-.portal-dark .hover\:bg-\[\#FAF7F2\]:hover,
-.portal-dark .hover\:bg-\[\#FAF7F2\]\/50:hover,
-.portal-dark .hover\:bg-\[\#FAF7F2\]\/40:hover,
-.portal-dark .hover\:bg-\[\#FCF9F7\]:hover,
-.portal-dark .hover\:bg-gray-50:hover,
-.portal-dark .hover\:bg-gray-100:hover,
-.portal-dark .hover\:bg-zinc-50:hover,
-.portal-dark .hover\:bg-zinc-100:hover {
-  background-color: #1A1D25 !important;
+.portal-neumorphic .text-zinc-500,
+.portal-neumorphic .text-gray-500 {
+  color: #64748B !important;
 }
 
-.portal-dark .hover\:bg-\[\#F5EACB\]:hover {
-  background-color: rgba(220, 165, 27, 0.25) !important;
+/* Form Inputs, Selects, Textareas inside Neumorphic Portal */
+.portal-neumorphic input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.portal-neumorphic select,
+.portal-neumorphic textarea {
+  background-color: #EBF0F7 !important;
+  color: #1E293B !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  border-radius: 0.875rem !important;
 }
 
-/* Tiptap / ProseMirror Content Editor in Dark Mode */
-.portal-dark .ProseMirror {
-  color: #E4E4E7 !important;
+.portal-neumorphic input::placeholder,
+.portal-neumorphic textarea::placeholder {
+  color: #94A3B8 !important;
 }
 
-.portal-dark .ProseMirror h1,
-.portal-dark .ProseMirror h2,
-.portal-dark .ProseMirror h3,
-.portal-dark .ProseMirror h4 {
-  color: #FFFFFF !important;
-}
-
-.portal-dark .ProseMirror p,
-.portal-dark .ProseMirror li {
-  color: #D4D4D8 !important;
-}
-
-.portal-dark .ProseMirror strong,
-.portal-dark .ProseMirror b {
-  color: #FFFFFF !important;
-}
-
-.portal-dark .ProseMirror em,
-.portal-dark .ProseMirror i {
-  color: #E4E4E7 !important;
-}
-
-.portal-dark .ProseMirror blockquote {
-  background-color: #1A1D25 !important;
-  color: #E4E4E7 !important;
-  border-left-color: #DCA51B !important;
-}
-
-.portal-dark .ProseMirror code {
-  background-color: #1A1D25 !important;
-  color: #F5C242 !important;
-  border: 1px solid #2A2E3B !important;
-}
-
-.portal-dark .ProseMirror hr {
-  border-color: #22252E !important;
-}
-
-.portal-dark .ProseMirror a {
-  color: #F5C242 !important;
-}
-
-/* Interactive Elements & Form Controls */
-.portal-dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
-.portal-dark select,
-.portal-dark textarea {
-  background-color: #181A22 !important;
-  color: #F3F4F6 !important;
-  border-color: #2A2E3B !important;
-}
-
-.portal-dark input::placeholder,
-.portal-dark textarea::placeholder {
-  color: #52525B !important;
-}
-
-.portal-dark input:focus,
-.portal-dark select:focus,
-.portal-dark textarea:focus {
+.portal-neumorphic input:focus,
+.portal-neumorphic select:focus,
+.portal-neumorphic textarea:focus {
   border-color: #DCA51B !important;
-  box-shadow: 0 0 0 2px rgba(220, 165, 27, 0.25) !important;
+  box-shadow: inset 3px 3px 6px #D1D9E6, inset -3px -3px 6px #FFFFFF, 0 0 0 3px rgba(220, 165, 27, 0.22) !important;
   outline: none !important;
 }
 
-/* Option dropdown elements */
-.portal-dark option {
-  background-color: #13151A !important;
-  color: #F3F4F6 !important;
+/* Select options */
+.portal-neumorphic option {
+  background-color: #EBF0F7 !important;
+  color: #1E293B !important;
 }
 
-/* Tables */
-.portal-dark table thead,
-.portal-dark table thead tr,
-.portal-dark table thead th {
-  background-color: #16181E !important;
-  color: #A1A1AA !important;
-  border-color: #22252E !important;
+/* Tables inside Neumorphic Portal */
+.portal-neumorphic table {
+  background-color: #EBF0F7 !important;
 }
 
-.portal-dark table tbody tr {
-  border-color: #22252E !important;
+.portal-neumorphic table thead,
+.portal-neumorphic table thead tr,
+.portal-neumorphic table thead th {
+  background-color: #E4EAF2 !important;
+  color: #475569 !important;
+  border-bottom: 2px solid #D1D9E6 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
 }
 
-.portal-dark table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.03) !important;
+.portal-neumorphic table tbody tr {
+  border-bottom: 1px solid rgba(209, 217, 230, 0.6) !important;
+  transition: background-color 0.2s ease;
 }
 
-/* Status Badges & Pills */
-.portal-dark .bg-\[\#FAF3E0\],
-.portal-dark .bg-amber-50,
-.portal-dark .bg-yellow-50,
-.portal-dark .bg-yellow-100 {
-  background-color: rgba(220, 165, 27, 0.14) !important;
-  color: #F5C242 !important;
-  border-color: rgba(220, 165, 27, 0.3) !important;
+.portal-neumorphic table tbody tr:hover {
+  background-color: rgba(228, 234, 242, 0.7) !important;
 }
 
-.portal-dark .text-\[\#8C6B14\] {
-  color: #F5C242 !important;
+/* Status Pills & Badges */
+.portal-neumorphic .bg-\[\#FAF3E0\],
+.portal-neumorphic .bg-amber-50,
+.portal-neumorphic .bg-yellow-50,
+.portal-neumorphic .bg-yellow-100 {
+  background-color: #FEF3C7 !important;
+  color: #B45309 !important;
+  border: 1px solid #FCD34D !important;
+  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
-.portal-dark .bg-blue-50,
-.portal-dark .bg-blue-100 {
-  background-color: rgba(59, 130, 246, 0.14) !important;
-  color: #60A5FA !important;
-  border-color: rgba(59, 130, 246, 0.28) !important;
+.portal-neumorphic .bg-blue-50,
+.portal-neumorphic .bg-blue-100 {
+  background-color: #DBEAFE !important;
+  color: #1D4ED8 !important;
+  border: 1px solid #93C5FD !important;
+  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
-.portal-dark .bg-emerald-50,
-.portal-dark .bg-emerald-100,
-.portal-dark .bg-green-50,
-.portal-dark .bg-green-100 {
-  background-color: rgba(16, 185, 129, 0.14) !important;
-  color: #34D399 !important;
-  border-color: rgba(16, 185, 129, 0.28) !important;
+.portal-neumorphic .bg-emerald-50,
+.portal-neumorphic .bg-emerald-100,
+.portal-neumorphic .bg-green-50,
+.portal-neumorphic .bg-green-100 {
+  background-color: #D1FAE5 !important;
+  color: #047857 !important;
+  border: 1px solid #6EE7B7 !important;
+  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
-.portal-dark .bg-rose-50,
-.portal-dark .bg-rose-100,
-.portal-dark .bg-red-50,
-.portal-dark .bg-red-100 {
-  background-color: rgba(244, 63, 94, 0.14) !important;
-  color: #FB7185 !important;
-  border-color: rgba(244, 63, 94, 0.28) !important;
+.portal-neumorphic .bg-rose-50,
+.portal-neumorphic .bg-rose-100,
+.portal-neumorphic .bg-red-50,
+.portal-neumorphic .bg-red-100 {
+  background-color: #FFE4E6 !important;
+  color: #BE123C !important;
+  border: 1px solid #FDA4AF !important;
+  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
-.portal-dark .bg-purple-50,
-.portal-dark .bg-purple-100 {
-  background-color: rgba(168, 85, 247, 0.14) !important;
-  color: #C084FC !important;
-  border-color: rgba(168, 85, 247, 0.28) !important;
+.portal-neumorphic .bg-purple-50,
+.portal-neumorphic .bg-purple-100 {
+  background-color: #EDE9FE !important;
+  color: #6D28D9 !important;
+  border: 1px solid #C4B5FD !important;
+  box-shadow: 2px 2px 5px #D1D9E6, -2px -2px 5px #FFFFFF !important;
 }
 
-.portal-dark .bg-orange-50,
-.portal-dark .bg-orange-100 {
-  background-color: rgba(249, 115, 22, 0.14) !important;
-  color: #FB923C !important;
-  border-color: rgba(249, 115, 22, 0.28) !important;
+/* Modals & Dialogs within Neumorphic Portal */
+.portal-neumorphic [role="dialog"] {
+  background-color: #EBF0F7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 16px 16px 36px #C5D0E0, -16px -16px 36px #FFFFFF !important;
+  color: #1E293B !important;
+  border-radius: 1.75rem !important;
 }
 
-/* Modals & Dialogs within Portal */
-.portal-dark [role="dialog"] {
-  background-color: #13151A !important;
-  border-color: #22252E !important;
-  color: #F3F4F6 !important;
+/* Scrollbars within Neumorphic Portal */
+.portal-neumorphic ::-webkit-scrollbar-track {
+  background: #EBF0F7 !important;
 }
 
-/* Scrollbars within portal */
-.portal-dark ::-webkit-scrollbar-track {
-  background: #121418 !important;
+.portal-neumorphic ::-webkit-scrollbar-thumb {
+  background: #C8D3E2 !important;
+  border: 2px solid #EBF0F7 !important;
+  border-radius: 9999px !important;
 }
-.portal-dark ::-webkit-scrollbar-thumb {
-  background: #252834 !important;
-  border: 2px solid #121418 !important;
-}
-.portal-dark ::-webkit-scrollbar-thumb:hover {
+
+.portal-neumorphic ::-webkit-scrollbar-thumb:hover {
   background: #DCA51B !important;
 }
 
-
-
+/* Fallback for legacy portal-dark class */
+.portal-dark {
+  background-color: #0D0E12 !important;
+  color: #F3F4F6 !important;
+}
