@@ -1142,11 +1142,11 @@
   color: #0F172A !important;
 }
 
-.portal-neumorphic .text-white,
-.portal-neumorphic .text-zinc-100,
-.portal-neumorphic .text-zinc-200,
-.portal-neumorphic .text-gray-900,
-.portal-neumorphic .text-zinc-900 {
+.portal-neumorphic .text-white:not(.portal-chart-tooltip):not(.portal-chart-tooltip *),
+.portal-neumorphic .text-zinc-100:not(.portal-chart-tooltip):not(.portal-chart-tooltip *),
+.portal-neumorphic .text-zinc-200:not(.portal-chart-tooltip):not(.portal-chart-tooltip *),
+.portal-neumorphic .text-gray-900:not(.portal-chart-tooltip):not(.portal-chart-tooltip *),
+.portal-neumorphic .text-zinc-900:not(.portal-chart-tooltip):not(.portal-chart-tooltip *) {
   color: #1E293B !important;
 }
 
@@ -1377,11 +1377,26 @@
   background: #DC95FF !important;
 }
 
-/* Chart Tooltip High Contrast */
+/* Chart Tooltip High Contrast (White & Butter Cream Accent) */
 .portal-chart-tooltip,
+.portal-chart-tooltip *,
 .portal-chart-tooltip span,
-.portal-chart-tooltip p {
+.portal-chart-tooltip strong,
+.portal-chart-tooltip p,
+.portal-neumorphic .portal-chart-tooltip,
+.portal-neumorphic .portal-chart-tooltip *,
+.portal-neumorphic div.portal-chart-tooltip span,
+.portal-neumorphic div.portal-chart-tooltip strong {
   color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.portal-chart-tooltip strong,
+.portal-chart-tooltip .tooltip-count,
+.portal-neumorphic .portal-chart-tooltip strong,
+.portal-neumorphic .portal-chart-tooltip .tooltip-count {
+  color: #FFF4BF !important;
+  -webkit-text-fill-color: #FFF4BF !important;
 }
 
 /* Fallback for legacy portal-dark class */

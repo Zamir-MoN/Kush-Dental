@@ -894,17 +894,28 @@ export const Dashboard = () => {
                 <div className="h-full flex items-end justify-between px-2 sm:px-5 relative z-10 overflow-visible pt-16">
                   {weeklyData.days.map((item, idx) => (
                     <div key={idx} className="flex flex-col items-center group cursor-pointer h-full justify-end relative overflow-visible">
-                      {/* Floating Tooltip with Crisp High-Contrast Pure White Text */}
+                      {/* Floating Tooltip with Crisp High-Contrast Pure White & Butter Cream Text */}
                       <div 
-                        className="portal-chart-tooltip opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 absolute -top-14 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-black shadow-[0_10px_25px_rgba(0,0,0,0.4)] border border-slate-700/80 whitespace-nowrap z-40 flex items-center gap-2"
+                        className="portal-chart-tooltip opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 transform -translate-y-2 group-hover:translate-y-0 absolute -top-14 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.5)] border border-slate-700/80 whitespace-nowrap z-50 flex items-center gap-2"
                         style={{ backgroundColor: '#0F172A', color: '#FFFFFF' }}
                       >
                         <span className="w-2.5 h-2.5 rounded-full bg-[#DC95FF] shadow-[0_0_8px_#DC95FF] animate-pulse shrink-0" />
                         <span 
-                          className="tracking-wide text-white !text-white font-black text-xs sm:text-sm"
-                          style={{ color: '#FFFFFF' }}
+                          className="tracking-wide font-black text-xs sm:text-sm flex items-center gap-1.5"
+                          style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF' }}
                         >
-                          {item.count} {item.count === 1 ? 'Appt' : 'Appts'}
+                          <strong 
+                            className="tooltip-count font-black text-xs sm:text-sm"
+                            style={{ color: '#FFF4BF', WebkitTextFillColor: '#FFF4BF' }}
+                          >
+                            {item.count}
+                          </strong>
+                          <span 
+                            className="tooltip-label font-bold text-xs sm:text-sm"
+                            style={{ color: '#FFFFFF', WebkitTextFillColor: '#FFFFFF' }}
+                          >
+                            {item.count === 1 ? 'Appt' : 'Appts'}
+                          </span>
                         </span>
                         {/* Downward triangle indicator arrow */}
                         <span 
