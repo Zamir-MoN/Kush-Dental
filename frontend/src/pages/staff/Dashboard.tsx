@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
 import { apiClient } from '../../lib/apiClient';
 import { formatDate, formatTime } from '../../lib/formatters';
 import { 
@@ -93,6 +94,17 @@ export const Dashboard = () => {
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Timeframe state for Appointment Analytics circle graph
+  const [analyticsTimeframe, setAnalyticsTimeframe] = useState<'Today' | 'This Week' | 'All'>('Today');
+  const [isTimeframeOpen, setIsTimeframeOpen] = useState(false);
+
+  // GSAP Animation Refs
+  const analyticsDonutRef = useRef<HTMLDivElement | null>(null);
+  const analyticsCounterRef = useRef<HTMLSpanElement | null>(null);
+  const followUpsGaugeRef = useRef<HTMLDivElement | null>(null);
+  const followUpsCounterRef = useRef<HTMLSpanElement | null>(null);
+  const weeklyChartRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -199,34 +211,212 @@ export const Dashboard = () => {
   const inProgressFollowUps = data.summary.inProgressFollowUps ?? 0;
   const urgentVisits = data.summary.urgentVisits ?? 0;
 
-  // Breakdown for appointment analytics
-  const completedToday = data.todayAppointments?.filter(a => a.status === 'COMPLETED').length ?? 0;
-  const otherToday = Math.max(0, totalToday - (completedToday + confirmedToday + requestedCount));
+  // Multi-timeframe appointment analytics calculations
+  const getAnalytics = () => {
+    let completed = 0;
+    let confirmed = 0;
+    let pending = 0;
+    let other = 0;
 
-  // Dynamic percentages for appointment analytics
-  const completedPct = totalToday > 0 ? Math.round((completedToday / totalToday) * 100) : 0;
-  const confirmedPct = totalToday > 0 ? Math.round((confirmedToday / totalToday) * 100) : 0;
-  const pendingPct = totalToday > 0 ? Math.round((requestedCount / totalToday) * 100) : 0;
-  const otherPct = totalToday > 0 ? Math.max(0, 100 - completedPct - confirmedPct - pendingPct) : 0;
+    const allApts = [
+      ...(data.todayAppointments || []),
+      ...(data.upcomingAppointments || []),
+      ...(data.requestedAppointments || [])
+    ];
+    const uniqueMap = new Map<string, DashboardAppointment>();
+    allApts.forEach(a => uniqueMap.set(a.id, a));
+    const uniqueApts = Array.from(uniqueMap.values());
+
+    if (analyticsTimeframe === 'Today') {
+      completed = data.todayAppointments?.filter(a => a.status === 'COMPLETED').length ?? 0;
+      confirmed = data.summary.confirmedToday ?? (data.todayAppointments?.filter(a => a.status === 'CONFIRMED').length ?? 0);
+      pending = data.summary.requestedAppointments ?? (data.todayAppointments?.filter(a => a.status === 'REQUESTED').length ?? 0);
+      const recordedToday = data.summary.todayAppointments ?? data.todayAppointments?.length ?? 0;
+      other = Math.max(0, recordedToday - (completed + confirmed));
+    } else if (analyticsTimeframe === 'This Week') {
+      completed = uniqueApts.filter(a => a.status === 'COMPLETED').length;
+      confirmed = uniqueApts.filter(a => a.status === 'CONFIRMED').length;
+      pending = uniqueApts.filter(a => a.status === 'REQUESTED').length || (data.summary.requestedAppointments ?? 0);
+      other = uniqueApts.filter(a => a.status === 'CANCELLED' || a.status === 'NO_SHOW').length;
+    } else {
+      // All Active Pipeline
+      completed = uniqueApts.filter(a => a.status === 'COMPLETED').length;
+      confirmed = uniqueApts.filter(a => a.status === 'CONFIRMED').length;
+      pending = data.summary.requestedAppointments ?? uniqueApts.filter(a => a.status === 'REQUESTED').length;
+      other = uniqueApts.filter(a => a.status === 'CANCELLED' || a.status === 'NO_SHOW').length;
+    }
+
+    const total = completed + confirmed + pending + other;
+
+    if (total === 0) {
+      return {
+        total: 0,
+        completed: 0,
+        confirmed: 0,
+        pending: 0,
+        other: 0,
+        completedPct: 0,
+        confirmedPct: 0,
+        pendingPct: 0,
+        otherPct: 0,
+        mainPct: 0,
+        mainLabel: 'No appts today'
+      };
+    }
+
+    const completedPct = Math.round((completed / total) * 100);
+    const confirmedPct = Math.round((confirmed / total) * 100);
+    const pendingPct = Math.round((pending / total) * 100);
+    const otherPct = Math.max(0, 100 - (completedPct + confirmedPct + pendingPct));
+
+    let mainPct = completedPct;
+    let mainLabel = 'Appointments completed';
+
+    if (completed === 0 && pending > 0) {
+      mainPct = pendingPct;
+      mainLabel = 'Pending Requests';
+    } else if (completed === 0 && confirmed > 0) {
+      mainPct = confirmedPct;
+      mainLabel = 'Appointments confirmed';
+    }
+
+    return {
+      total,
+      completed,
+      confirmed,
+      pending,
+      other,
+      completedPct,
+      confirmedPct,
+      pendingPct,
+      otherPct,
+      mainPct,
+      mainLabel
+    };
+  };
+
+  const analytics = getAnalytics();
 
   // SVG Doughnut circumference calculations (circumference = 2 * PI * 54 ≈ 339.29)
   const circumference = 339.29;
-  const completedStroke = (completedPct / 100) * circumference;
-  const confirmedStroke = (confirmedPct / 100) * circumference;
-  const pendingStroke = (pendingPct / 100) * circumference;
-  const otherStroke = (otherPct / 100) * circumference;
+  const completedStroke = (analytics.completedPct / 100) * circumference;
+  const confirmedStroke = (analytics.confirmedPct / 100) * circumference;
+  const pendingStroke = (analytics.pendingPct / 100) * circumference;
+  const otherStroke = (analytics.otherPct / 100) * circumference;
 
   const confirmedOffset = -completedStroke;
   const pendingOffset = -(completedStroke + confirmedStroke);
   const otherOffset = -(completedStroke + confirmedStroke + pendingStroke);
 
-  // Follow-ups completion metric
+  // Follow-ups completion metric: When 0 pending follow-ups, clinic is 100% caught up!
   const totalFollowUps = openFollowUps + inProgressFollowUps + urgentVisits;
   const followUpsCompletedPct = totalFollowUps > 0 
     ? Math.round((inProgressFollowUps / totalFollowUps) * 100) 
-    : 0;
+    : 100;
+  const followUpsLabel = totalFollowUps > 0 ? 'Follow-ups completed' : 'All follow-ups clear';
   const gaugeCircumference = 276.46;
   const gaugeStroke = (followUpsCompletedPct / 100) * gaugeCircumference;
+
+  // GSAP Smooth Appearing Animations on Circle Graphs & Weekly Chart
+  useEffect(() => {
+    if (!data) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Appointment Analytics Donut & Counter
+      if (analyticsDonutRef.current) {
+        gsap.fromTo(
+          analyticsDonutRef.current,
+          { scale: 0.88, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)' }
+        );
+
+        const segments = analyticsDonutRef.current.querySelectorAll('.donut-segment');
+        if (segments.length > 0) {
+          gsap.fromTo(
+            segments,
+            { strokeDashoffset: circumference, opacity: 0 },
+            { 
+              strokeDashoffset: (_i: number, target: Element) => {
+                const targetOffset = target.getAttribute('data-offset');
+                return targetOffset ? parseFloat(targetOffset) : 0;
+              },
+              opacity: 1,
+              duration: 1.2, 
+              stagger: 0.12, 
+              ease: 'power3.out' 
+            }
+          );
+        }
+
+        if (analyticsCounterRef.current) {
+          const countObj = { val: 0 };
+          gsap.to(countObj, {
+            val: analytics.mainPct,
+            duration: 1.3,
+            ease: 'power2.out',
+            onUpdate: () => {
+              if (analyticsCounterRef.current) {
+                analyticsCounterRef.current.textContent = `${Math.round(countObj.val)}%`;
+              }
+            }
+          });
+        }
+      }
+
+      // 2. Follow-ups Status Circular Progress Ring & Counter
+      if (followUpsGaugeRef.current) {
+        gsap.fromTo(
+          followUpsGaugeRef.current,
+          { scale: 0.88, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)', delay: 0.1 }
+        );
+
+        const gaugeCircle = followUpsGaugeRef.current.querySelector('.gauge-fill');
+        if (gaugeCircle) {
+          gsap.fromTo(
+            gaugeCircle,
+            { strokeDasharray: `0 ${gaugeCircumference}`, opacity: 0 },
+            { 
+              strokeDasharray: `${gaugeStroke} ${gaugeCircumference}`, 
+              opacity: 1,
+              duration: 1.3, 
+              ease: 'power3.out',
+              delay: 0.15
+            }
+          );
+        }
+
+        if (followUpsCounterRef.current) {
+          const gaugeObj = { val: 0 };
+          gsap.to(gaugeObj, {
+            val: followUpsCompletedPct,
+            duration: 1.3,
+            ease: 'power2.out',
+            delay: 0.15,
+            onUpdate: () => {
+              if (followUpsCounterRef.current) {
+                followUpsCounterRef.current.textContent = `${Math.round(gaugeObj.val)}%`;
+              }
+            }
+          });
+        }
+      }
+
+      // 3. Weekly Appointments Vertical Bar Pillars
+      if (weeklyChartRef.current) {
+        const barFills = weeklyChartRef.current.querySelectorAll('.weekly-bar-inner');
+        if (barFills.length > 0) {
+          gsap.fromTo(
+            barFills,
+            { scaleY: 0, transformOrigin: 'bottom center', opacity: 0.5 },
+            { scaleY: 1, opacity: 1, duration: 0.9, stagger: 0.07, ease: 'back.out(1.2)', delay: 0.2 }
+          );
+        }
+      }
+    });
+
+    return () => ctx.revert();
+  }, [data, analyticsTimeframe]);
 
   // Real Weekly Appointments (Mon - Sun) derived from appointments
   const getWeeklyData = () => {
@@ -320,16 +510,44 @@ export const Dashboard = () => {
               </div>
 
               {/* Timeframe Dropdown Pill */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/70 text-xs font-bold text-slate-700 cursor-pointer hover:text-slate-900 transition-colors">
-                <span>Today</span>
-                <ChevronDown size={13} className="text-slate-500" />
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsTimeframeOpen(!isTimeframeOpen)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] hover:shadow-[2px_2px_6px_#E5DFD3,-2px_-2px_6px_#FFFFFF] border border-white/70 text-xs font-bold text-slate-700 cursor-pointer hover:text-slate-900 transition-all"
+                >
+                  <span>{analyticsTimeframe}</span>
+                  <ChevronDown size={13} className={`text-slate-500 transition-transform duration-200 ${isTimeframeOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isTimeframeOpen && (
+                  <div className="absolute right-0 top-full mt-1.5 w-32 bg-[#FAF7F2] rounded-2xl shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] border border-white/90 p-1.5 z-50 flex flex-col gap-1">
+                    {(['Today', 'This Week', 'All'] as const).map((tf) => (
+                      <button
+                        key={tf}
+                        type="button"
+                        onClick={() => {
+                          setAnalyticsTimeframe(tf);
+                          setIsTimeframeOpen(false);
+                        }}
+                        className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                          analyticsTimeframe === tf 
+                            ? 'bg-[#FFF4BF] text-slate-900 shadow-[inset_1px_1px_2px_#E5DFD3]' 
+                            : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
+                        }`}
+                      >
+                        {tf}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Doughnut Chart & Legend Section */}
             <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-2 sm:py-3">
               {/* Left: SVG Doughnut Chart */}
-              <div className="sm:col-span-6 flex justify-center items-center relative">
+              <div className="sm:col-span-6 flex justify-center items-center relative" ref={analyticsDonutRef}>
                 <div className="relative w-40 h-40 sm:w-44 sm:h-44 flex items-center justify-center">
                   <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
                     <defs>
@@ -361,7 +579,7 @@ export const Dashboard = () => {
                       strokeWidth="16"
                     />
 
-                    {totalToday > 0 ? (
+                    {analytics.total > 0 ? (
                       <>
                         {/* Segment 1: Completed */}
                         {completedStroke > 0 && (
@@ -374,8 +592,9 @@ export const Dashboard = () => {
                             strokeWidth="16"
                             strokeDasharray={`${completedStroke} ${circumference}`}
                             strokeDashoffset="0"
+                            data-offset="0"
                             strokeLinecap="round"
-                            className="transition-all duration-1000"
+                            className="donut-segment transition-all duration-700"
                           />
                         )}
 
@@ -390,8 +609,9 @@ export const Dashboard = () => {
                             strokeWidth="16"
                             strokeDasharray={`${confirmedStroke} ${circumference}`}
                             strokeDashoffset={confirmedOffset}
+                            data-offset={confirmedOffset}
                             strokeLinecap="round"
-                            className="transition-all duration-1000"
+                            className="donut-segment transition-all duration-700"
                           />
                         )}
 
@@ -406,8 +626,9 @@ export const Dashboard = () => {
                             strokeWidth="16"
                             strokeDasharray={`${pendingStroke} ${circumference}`}
                             strokeDashoffset={pendingOffset}
+                            data-offset={pendingOffset}
                             strokeLinecap="round"
-                            className="transition-all duration-1000"
+                            className="donut-segment transition-all duration-700"
                           />
                         )}
 
@@ -422,13 +643,14 @@ export const Dashboard = () => {
                             strokeWidth="16"
                             strokeDasharray={`${otherStroke} ${circumference}`}
                             strokeDashoffset={otherOffset}
+                            data-offset={otherOffset}
                             strokeLinecap="round"
-                            className="transition-all duration-1000"
+                            className="donut-segment transition-all duration-700"
                           />
                         )}
                       </>
                     ) : (
-                      /* Neutral elegant ring when 0 appointments today */
+                      /* Neutral elegant ring when 0 appointments */
                       <circle
                         cx="80"
                         cy="80"
@@ -444,11 +666,14 @@ export const Dashboard = () => {
 
                   {/* Inner Doughnut Neumorphic Well & Text */}
                   <div className="absolute inset-[30px] rounded-full bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] flex flex-col items-center justify-center text-center p-2">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none">
-                      {completedPct}%
+                    <span 
+                      ref={analyticsCounterRef}
+                      className="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-none"
+                    >
+                      {analytics.mainPct}%
                     </span>
                     <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 mt-1 leading-tight max-w-[85px]">
-                      {totalToday === 0 ? 'No appts today' : 'Appointments completed'}
+                      {analytics.mainLabel}
                     </span>
                   </div>
                 </div>
@@ -461,7 +686,10 @@ export const Dashboard = () => {
                     <span className="w-3 h-3 rounded-full bg-pink-500 shadow-[1px_1px_3px_#E5DFD3]" />
                     <span className="text-slate-700">Completed</span>
                   </div>
-                  <span className="text-slate-900 font-black">{completedPct}% <span className="text-xs font-semibold text-slate-500">({completedToday})</span></span>
+                  <span className="text-slate-900 font-black">
+                    {analytics.completedPct}%{' '}
+                    <span className="text-xs font-semibold text-slate-500">({analytics.completed})</span>
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
@@ -469,7 +697,10 @@ export const Dashboard = () => {
                     <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-[1px_1px_3px_#E5DFD3]" />
                     <span className="text-slate-700">Confirmed</span>
                   </div>
-                  <span className="text-slate-900 font-black">{confirmedPct}% <span className="text-xs font-semibold text-slate-500">({confirmedToday})</span></span>
+                  <span className="text-slate-900 font-black">
+                    {analytics.confirmedPct}%{' '}
+                    <span className="text-xs font-semibold text-slate-500">({analytics.confirmed})</span>
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
@@ -477,7 +708,10 @@ export const Dashboard = () => {
                     <span className="w-3 h-3 rounded-full bg-amber-400 shadow-[1px_1px_3px_#E5DFD3]" />
                     <span className="text-slate-700">Pending</span>
                   </div>
-                  <span className="text-slate-900 font-black">{pendingPct}% <span className="text-xs font-semibold text-slate-500">({requestedCount})</span></span>
+                  <span className="text-slate-900 font-black">
+                    {analytics.pendingPct}%{' '}
+                    <span className="text-xs font-semibold text-slate-500">({analytics.pending})</span>
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl hover:bg-white/80 transition-colors">
@@ -485,7 +719,10 @@ export const Dashboard = () => {
                     <span className="w-3 h-3 rounded-full bg-[#DC95FF] shadow-[1px_1px_3px_#E5DFD3]" />
                     <span className="text-slate-700">No Show</span>
                   </div>
-                  <span className="text-slate-900 font-black">{otherPct}% <span className="text-xs font-semibold text-slate-500">({otherToday})</span></span>
+                  <span className="text-slate-900 font-black">
+                    {analytics.otherPct}%{' '}
+                    <span className="text-xs font-semibold text-slate-500">({analytics.other})</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -507,7 +744,7 @@ export const Dashboard = () => {
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
-                  {totalToday}
+                  {totalToday || analytics.total}
                 </div>
                 <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
                   Total Appt
@@ -737,9 +974,15 @@ export const Dashboard = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-12 items-center gap-4 py-2">
             {/* Left: Circular Progress Ring */}
-            <div className="sm:col-span-5 flex justify-center items-center">
+            <div className="sm:col-span-5 flex justify-center items-center" ref={followUpsGaugeRef}>
               <div className="relative w-32 h-32 flex items-center justify-center">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <defs>
+                    <linearGradient id="grad-followup" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#DC95FF" />
+                      <stop offset="100%" stopColor="#F472B6" />
+                    </linearGradient>
+                  </defs>
                   <circle
                     cx="60"
                     cy="60"
@@ -748,39 +991,29 @@ export const Dashboard = () => {
                     stroke="#EFEBE4"
                     strokeWidth="11"
                   />
-                  {gaugeStroke > 0 ? (
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="44"
-                      fill="none"
-                      stroke="#F472B6"
-                      strokeWidth="11"
-                      strokeDasharray={`${gaugeStroke} ${gaugeCircumference}`}
-                      strokeDashoffset="0"
-                      strokeLinecap="round"
-                      className="transition-all duration-1000"
-                    />
-                  ) : (
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="44"
-                      fill="none"
-                      stroke="#E2DDD5"
-                      strokeWidth="11"
-                      strokeDasharray="10 276.46"
-                      strokeLinecap="round"
-                    />
-                  )}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="44"
+                    fill="none"
+                    stroke="url(#grad-followup)"
+                    strokeWidth="11"
+                    strokeDasharray={`${gaugeStroke} ${gaugeCircumference}`}
+                    strokeDashoffset="0"
+                    strokeLinecap="round"
+                    className="gauge-fill transition-all duration-700"
+                  />
                 </svg>
 
                 <div className="absolute inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
-                  <span className="text-xl font-black text-slate-800 leading-none">
+                  <span 
+                    ref={followUpsCounterRef}
+                    className="text-xl font-black text-slate-800 leading-none"
+                  >
                     {followUpsCompletedPct}%
                   </span>
                   <span className="text-[9px] font-bold text-slate-500 mt-0.5 leading-tight max-w-[65px]">
-                    Follow-ups completed
+                    {followUpsLabel}
                   </span>
                 </div>
               </div>
@@ -870,7 +1103,7 @@ export const Dashboard = () => {
           </div>
 
           {/* Bar Chart Area with Visible Overflow & Generous Padding for Floating Tooltips */}
-          <div className="pt-6 overflow-visible">
+          <div className="pt-6 overflow-visible" ref={weeklyChartRef}>
             <div className="flex gap-3 overflow-visible">
               {/* Y-axis grid values */}
               <div className="flex flex-col justify-between text-xs font-black text-slate-400 pb-8 h-56 text-right pr-2 shrink-0">
@@ -928,7 +1161,7 @@ export const Dashboard = () => {
                       <div className="w-7 sm:w-10 h-40 bg-[#FAF7F2] rounded-full shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-white/70 p-1 flex items-end justify-center mb-2.5 relative transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_6px_14px_rgba(220,149,255,0.25)]">
                         {/* Animated Gradient Bar */}
                         <div 
-                          className="w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:shadow-[0_4px_14px_rgba(220,149,255,0.7)] group-hover:brightness-110 transition-all duration-500"
+                          className="weekly-bar-inner w-full rounded-full bg-gradient-to-t from-[#DC95FF] to-[#F472B6] shadow-[0_2px_8px_rgba(220,149,255,0.45)] group-hover:shadow-[0_4px_14px_rgba(220,149,255,0.7)] group-hover:brightness-110 transition-all duration-500"
                           style={{ height: item.pct }}
                         />
                       </div>
