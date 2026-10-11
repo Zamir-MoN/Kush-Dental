@@ -13,7 +13,6 @@ import {
   FileText,
   AlertTriangle,
   Search,
-  Bell,
   ShieldCheck
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';

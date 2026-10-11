@@ -31,7 +31,6 @@ export const NotificationCenter: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'ALL' | 'UNREAD' | 'URGENT'>('ALL');
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -58,7 +57,6 @@ export const NotificationCenter: React.FC = () => {
 
   const fetchLiveNotifications = async () => {
     try {
-      setLoading(true);
       const readIds = new Set(getStoredIds(READ_STORAGE_KEY));
       const dismissedIds = new Set(getStoredIds(DISMISSED_STORAGE_KEY));
 
@@ -151,8 +149,6 @@ export const NotificationCenter: React.FC = () => {
       setNotifications(activeItems);
     } catch (e) {
       console.error('Failed to process notifications:', e);
-    } finally {
-      setLoading(false);
     }
   };
 
