@@ -129,13 +129,6 @@ export const PortalLayout = () => {
         {/* Neumorphic Top Header */}
         <header className="flex h-18 sm:h-20 items-center justify-between bg-[#FAF7F2]/95 backdrop-blur-md px-4 sm:px-6 md:px-8 border-b border-[#E8E2D5]/80 shadow-[0_4px_16px_rgba(229,223,211,0.4)] z-30">
           <div className="flex items-center gap-3">
-            <button 
-              className="md:hidden text-slate-600 p-2 rounded-2xl bg-[#FAF7F2] shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all cursor-pointer"
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open navigation menu"
-            >
-              <Menu size={20} />
-            </button>
             <div className="md:hidden flex items-center gap-2">
               <AnimatedLogo size={24} className="w-6 h-6 shrink-0" animate={false} />
               <span className="font-serif font-bold text-sm text-slate-800 tracking-tight">Kush Dental</span>
