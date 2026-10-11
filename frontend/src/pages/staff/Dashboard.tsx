@@ -221,11 +221,12 @@ export const Dashboard = () => {
     const uniqueApts = Array.from(uniqueMap.values());
 
     if (analyticsTimeframe === 'Today') {
-      completed = data.todayAppointments?.filter(a => a.status === 'COMPLETED').length ?? 0;
-      confirmed = data.summary.confirmedToday ?? (data.todayAppointments?.filter(a => a.status === 'CONFIRMED').length ?? 0);
-      pending = data.summary.requestedAppointments ?? (data.todayAppointments?.filter(a => a.status === 'REQUESTED').length ?? 0);
-      const recordedToday = data.summary.todayAppointments ?? data.todayAppointments?.length ?? 0;
-      other = Math.max(0, recordedToday - (completed + confirmed));
+      const todayList = data.todayAppointments || [];
+      completed = todayList.filter(a => a.status === 'COMPLETED').length;
+      confirmed = data.summary.confirmedToday ?? todayList.filter(a => a.status === 'CONFIRMED').length;
+      pending = todayList.filter(a => a.status === 'REQUESTED').length;
+      const recordedToday = data.summary.todayAppointments ?? todayList.length;
+      other = Math.max(0, recordedToday - (completed + confirmed + pending));
     } else if (analyticsTimeframe === 'This Week') {
       completed = uniqueApts.filter(a => a.status === 'COMPLETED').length;
       confirmed = uniqueApts.filter(a => a.status === 'CONFIRMED').length;
@@ -253,7 +254,7 @@ export const Dashboard = () => {
         pendingPct: 0,
         otherPct: 0,
         mainPct: 0,
-        mainLabel: 'No appts today'
+        mainLabel: 'Appointments completed'
       };
     }
 
@@ -262,16 +263,8 @@ export const Dashboard = () => {
     const pendingPct = Math.round((pending / total) * 100);
     const otherPct = Math.max(0, 100 - (completedPct + confirmedPct + pendingPct));
 
-    let mainPct = completedPct;
-    let mainLabel = 'Appointments completed';
-
-    if (completed === 0 && pending > 0) {
-      mainPct = pendingPct;
-      mainLabel = 'Pending Requests';
-    } else if (completed === 0 && confirmed > 0) {
-      mainPct = confirmedPct;
-      mainLabel = 'Appointments confirmed';
-    }
+    const mainPct = completedPct;
+    const mainLabel = 'Appointments completed';
 
     return {
       total,
@@ -301,12 +294,12 @@ export const Dashboard = () => {
   const pendingOffset = -(completedStroke + confirmedStroke);
   const otherOffset = -(completedStroke + confirmedStroke + pendingStroke);
 
-  // Follow-ups completion metric: When 0 pending follow-ups, clinic is 100% caught up!
+  // Follow-ups completion metric: Real percentage based on in-progress / resolved vs total
   const totalFollowUps = openFollowUps + inProgressFollowUps + urgentVisits;
   const followUpsCompletedPct = totalFollowUps > 0 
     ? Math.round((inProgressFollowUps / totalFollowUps) * 100) 
-    : 100;
-  const followUpsLabel = totalFollowUps > 0 ? 'Follow-ups completed' : 'All follow-ups clear';
+    : 0;
+  const followUpsLabel = 'Follow-ups completed';
   const gaugeCircumference = 276.46;
   const gaugeStroke = (followUpsCompletedPct / 100) * gaugeCircumference;
 
@@ -783,9 +776,9 @@ export const Dashboard = () => {
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
-                  {totalToday || analytics.total}
+                  {analyticsTimeframe === 'Today' ? totalToday : analytics.total}
                 </div>
-                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
                   Total Appt
                 </div>
               </div>
@@ -807,7 +800,7 @@ export const Dashboard = () => {
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
                   {confirmedToday}
                 </div>
-                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
                   Confirmed
                 </div>
               </div>
@@ -826,7 +819,7 @@ export const Dashboard = () => {
                 <div className="text-sm sm:text-base font-black text-slate-800 leading-tight">
                   {newLeadsCount}
                 </div>
-                <div className="text-xs font-bold text-slate-600 truncate mt-0.5">
+                <div className="text-[11px] sm:text-xs font-bold text-slate-600 whitespace-nowrap mt-0.5">
                   New Patients
                 </div>
               </div>
@@ -1030,18 +1023,20 @@ export const Dashboard = () => {
                     stroke="#EFEBE4"
                     strokeWidth="11"
                   />
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="44"
-                    fill="none"
-                    stroke="url(#grad-followup)"
-                    strokeWidth="11"
-                    strokeDasharray={`${gaugeStroke} ${gaugeCircumference}`}
-                    strokeDashoffset="0"
-                    strokeLinecap="round"
-                    className="gauge-fill transition-all duration-700"
-                  />
+                  {gaugeStroke > 0 && (
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="44"
+                      fill="none"
+                      stroke="url(#grad-followup)"
+                      strokeWidth="11"
+                      strokeDasharray={`${gaugeStroke} ${gaugeCircumference}`}
+                      strokeDashoffset="0"
+                      strokeLinecap="round"
+                      className="gauge-fill transition-all duration-700"
+                    />
+                  )}
                 </svg>
 
                 <div className="absolute inset-[18px] rounded-full bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] flex flex-col items-center justify-center text-center p-1">
@@ -1065,13 +1060,13 @@ export const Dashboard = () => {
                 onClick={() => navigate('/staff/contacts?status=OPEN')}
                 className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-pink-500 shrink-0 transition-transform group-hover:scale-105">
                     <FileText size={15} />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{openFollowUps}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">Open Follow-ups</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">Open Follow-ups</span>
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-rose-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
@@ -1084,13 +1079,13 @@ export const Dashboard = () => {
                 onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
                 className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-sky-500 shrink-0 transition-transform group-hover:scale-105">
                     <RefreshCw size={15} />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{inProgressFollowUps}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">In-progress</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">In-progress</span>
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-0.5 px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-sky-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0">
@@ -1103,13 +1098,13 @@ export const Dashboard = () => {
                 onClick={() => navigate('/staff/urgent-visits')}
                 className="flex items-center justify-between p-2.5 rounded-2xl bg-[#FAF7F2] shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF] hover:shadow-[3px_3px_7px_#E5DFD3,-3px_-3px_7px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/80 transition-all duration-200 cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-[#FAF7F2] shadow-[2px_2px_4px_#E5DFD3,-2px_-2px_4px_#FFFFFF] border border-white/80 flex items-center justify-center text-red-500 shrink-0 transition-transform group-hover:scale-105">
                     <AlertTriangle size={15} />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <span className="text-sm sm:text-base font-black text-slate-800 mr-1.5">{urgentVisits}</span>
-                    <span className="text-xs sm:text-sm font-bold text-slate-600 truncate">Active Urgent</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-600 whitespace-nowrap">Active Urgent</span>
                   </div>
                 </div>
                 <span className="px-2.5 py-1 rounded-full text-xs font-black bg-[#FAF7F2] text-red-600 shadow-[1.5px_1.5px_3px_#E5DFD3,-1.5px_-1.5px_3px_#FFFFFF] border border-white/80 shrink-0 uppercase tracking-wide">
