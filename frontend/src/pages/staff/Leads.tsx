@@ -145,7 +145,70 @@ const LeadList: React.FC = () => {
                 </div>
             ) : (
                 <div className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] overflow-hidden">
-                    <div className="overflow-x-auto custom-scrollbar">
+                    {/* Mobile Card Stack (Phone Screens < md) */}
+                    <div className="md:hidden divide-y divide-[#E8E2D5]">
+                        {filteredLeads.map((lead) => (
+                            <div key={lead.id} className="p-3.5 sm:p-4 bg-white hover:bg-[#FAF7F2]/60 active:bg-[#FAF7F2] transition-colors space-y-2.5">
+                                <div className="flex items-start justify-between gap-2">
+                                    <div className="min-w-0">
+                                        <div className="text-sm font-bold text-zinc-900 truncate">{lead.name}</div>
+                                        <div className="text-[11px] text-zinc-500 font-medium mt-0.5">
+                                            {new Date(lead.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-1.5 shrink-0 justify-end">
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${statusColors[lead.status]}`}>
+                                            {lead.status}
+                                        </span>
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${qualColors[lead.leadQualification || 'UNREVIEWED']}`}>
+                                            {lead.leadQualification || 'UNREVIEWED'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="text-xs text-zinc-700 font-medium">
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-zinc-500">Treatment:</span>
+                                        <span className="font-semibold text-zinc-900">{lead.desiredTreatment || 'General Dental'}</span>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] text-zinc-600">
+                                        <a href={`tel:${lead.phone}`} className="text-[#8C6B14] font-bold hover:underline inline-flex items-center gap-1">
+                                            <span>📞</span>
+                                            <span>{lead.phone}</span>
+                                        </a>
+                                        {lead.email && <span className="truncate text-zinc-500">✉️ {lead.email}</span>}
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                                    <Link 
+                                        to={`/staff/leads/${lead.id}`} 
+                                        className="text-xs font-bold text-[#8C6B14] hover:text-[#B8871B] inline-flex items-center gap-1.5 py-1 px-3 rounded-lg bg-[#FAF7F2] border border-[#E8E2D5]"
+                                    >
+                                        <Eye size={14} />
+                                        <span>View Details</span>
+                                    </Link>
+                                    {isDoctor && (
+                                        <button 
+                                            onClick={() => handleDelete(lead.id)} 
+                                            className="text-xs font-bold text-rose-600 hover:text-rose-800 inline-flex items-center gap-1 py-1 px-2.5 rounded-lg bg-rose-50 border border-rose-200 cursor-pointer"
+                                        >
+                                            <Trash2 size={14} />
+                                            <span>Delete</span>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                        {filteredLeads.length === 0 && leads.length > 0 && (
+                            <div className="p-6 text-center text-gray-500 text-xs">
+                                No leads match the current filter.
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Desktop Table (Screens >= md) */}
+                    <div className="hidden md:block overflow-x-auto custom-scrollbar">
                         <table className="min-w-full divide-y divide-[#E8E2D5]">
                             <thead className="bg-[#FAF7F2]">
                                 <tr>

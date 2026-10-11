@@ -188,9 +188,97 @@ export const PortalLayout = () => {
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 custom-scrollbar bg-[#FAF7F2]">
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 custom-scrollbar bg-[#FAF7F2]">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navigation Bar (Doctor & Staff Mobile Quick Bar) */}
+        <nav 
+          aria-label="Mobile Navigation"
+          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-t border-[#E8E2D5]/90 px-1 py-1.5 shadow-[0_-4px_18px_rgba(229,223,211,0.65)] flex items-center justify-around safe-bottom"
+        >
+          <NavLink
+            to="/staff/dashboard"
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'text-[#7C3AED] font-bold bg-[#DC95FF]/15 shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <LayoutDashboard size={19} className={isActive ? 'text-[#7C3AED] scale-105' : 'text-slate-500'} />
+                <span className="text-[10px] mt-0.5 tracking-tight font-bold">Dashboard</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/staff/urgent-visits"
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 relative ${
+                isActive
+                  ? 'text-rose-600 font-bold bg-rose-500/10 shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <AlertTriangle size={19} className={isActive ? 'text-rose-600 scale-105' : 'text-slate-500'} />
+                <span className="text-[10px] mt-0.5 tracking-tight font-bold">Urgent</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/staff/appointments"
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'text-[#7C3AED] font-bold bg-[#DC95FF]/15 shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <CalendarDays size={19} className={isActive ? 'text-[#7C3AED] scale-105' : 'text-slate-500'} />
+                <span className="text-[10px] mt-0.5 tracking-tight font-bold">Appts</span>
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/staff/leads"
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'text-[#7C3AED] font-bold bg-[#DC95FF]/15 shadow-[inset_1.5px_1.5px_3px_#E5DFD3,inset_-1.5px_-1.5px_3px_#FFFFFF]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <Target size={19} className={isActive ? 'text-[#7C3AED] scale-105' : 'text-slate-500'} />
+                <span className="text-[10px] mt-0.5 tracking-tight font-bold">Leads</span>
+              </>
+            )}
+          </NavLink>
+
+          {/* More Drawer Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl text-slate-500 hover:text-slate-800 active:bg-slate-200/50 transition-all cursor-pointer"
+          >
+            <Menu size={19} className="text-slate-600" />
+            <span className="text-[10px] mt-0.5 tracking-tight font-bold">More</span>
+          </button>
+        </nav>
       </div>
     </div>
   );

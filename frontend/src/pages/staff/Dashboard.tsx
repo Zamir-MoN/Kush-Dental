@@ -523,15 +523,15 @@ export const Dashboard = () => {
   if (!data) return null;
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-8 sm:pb-12">
+    <div className="space-y-4 sm:space-y-6 md:space-y-8 max-w-7xl mx-auto pb-6 sm:pb-12">
       {/* Top Header Row with Neumorphic Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
             Operational Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-            Welcome back, doctor. Here is your practice overview for today.
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 sm:mt-1">
+            Welcome back. Here is your practice overview for today.
           </p>
         </div>
 
@@ -858,46 +858,49 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        {/* Right Column: 2x2 Grid of 4 Stat Cards (7 cols on lg) */}
-        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+        {/* Right Column: 2x2 Grid of 4 Stat Cards (7 cols on lg, 2 cols on mobile) */}
+        <div className="lg:col-span-7 grid grid-cols-2 gap-2.5 sm:gap-5">
           {/* Card 1: Today's Appointments */}
           <div 
             onClick={() => {
               const todayStr = data?.effectiveDateStr || '';
               if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
             }}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-white/85 shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] sm:shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[142px] sm:min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
-              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 transition-transform duration-300 group-hover:scale-110">
-                <Calendar size={20} className="anim-neu-pulse" />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] sm:shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-pink-500 transition-transform duration-300 group-hover:scale-110">
+                <Calendar size={17} className="anim-neu-pulse sm:hidden" />
+                <Calendar size={20} className="anim-neu-pulse hidden sm:block" />
               </div>
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
                 title="Options"
               >
-                <MoreHorizontal size={18} />
+                <MoreHorizontal size={16} className="sm:hidden" />
+                <MoreHorizontal size={18} className="hidden sm:block" />
               </button>
             </div>
 
-            <div className="mt-2 z-10">
-              <p className="text-xs sm:text-sm font-bold text-slate-500">Today&apos;s Appointments</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-pink-600 transition-colors">
+            <div className="mt-1.5 sm:mt-2 z-10">
+              <p className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-500 leading-tight">Today&apos;s Appts</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-pink-600 transition-colors">
                 {totalToday}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
+              <div className="flex items-center gap-1 mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
-                  <TrendingUp size={12} /> +12%
+                  <TrendingUp size={11} /> +12%
                 </span>
-                <span>vs. previous day</span>
+                <span className="hidden sm:inline">vs. yesterday</span>
               </div>
             </div>
 
             <WaveDecoration color="#F472B6" id="pink-wave" />
 
-            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 transition-all duration-300 z-10">
-              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FAF7F2] shadow-[2px_2px_5px_#E5DFD3,-2px_-2px_5px_#FFFFFF] sm:shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-pink-500 transition-all duration-300 z-10">
+              <ArrowRight size={13} className="sm:hidden transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight size={15} className="hidden sm:block transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
@@ -907,114 +910,123 @@ export const Dashboard = () => {
               const todayStr = data?.effectiveDateStr || '';
               if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
             }}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-white/85 shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] sm:shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[142px] sm:min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
-              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-emerald-500 transition-transform duration-300 group-hover:scale-110">
-                <CheckCircle2 size={20} className="anim-neu-pulse" />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] sm:shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-emerald-500 transition-transform duration-300 group-hover:scale-110">
+                <CheckCircle2 size={17} className="anim-neu-pulse sm:hidden" />
+                <CheckCircle2 size={20} className="anim-neu-pulse hidden sm:block" />
               </div>
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
                 title="Options"
               >
-                <MoreHorizontal size={18} />
+                <MoreHorizontal size={16} className="sm:hidden" />
+                <MoreHorizontal size={18} className="hidden sm:block" />
               </button>
             </div>
 
-            <div className="mt-2 z-10">
-              <p className="text-xs sm:text-sm font-bold text-slate-500">Confirmed Today</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-emerald-600 transition-colors">
+            <div className="mt-1.5 sm:mt-2 z-10">
+              <p className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-500 leading-tight">Confirmed Today</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-emerald-600 transition-colors">
                 {confirmedToday}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
+              <div className="flex items-center gap-1 mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-emerald-600 font-extrabold">
-                  <TrendingUp size={12} /> +0%
+                  <TrendingUp size={11} /> +0%
                 </span>
-                <span>vs. previous day</span>
+                <span className="hidden sm:inline">vs. yesterday</span>
               </div>
             </div>
 
             <WaveDecoration color="#10B981" id="emerald-wave" />
 
-            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 transition-all duration-300 z-10">
-              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FAF7F2] shadow-[2px_2px_5px_#E5DFD3,-2px_-2px_5px_#FFFFFF] sm:shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-emerald-500 transition-all duration-300 z-10">
+              <ArrowRight size={13} className="sm:hidden transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight size={15} className="hidden sm:block transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
           {/* Card 3: Pending Requests */}
           <div 
             onClick={() => navigate('/staff/appointments?status=REQUESTED')}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-white/85 shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] sm:shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[142px] sm:min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
-              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-amber-500 transition-transform duration-300 group-hover:scale-110">
-                <Clock size={20} className="anim-neu-float" />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] sm:shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-amber-500 transition-transform duration-300 group-hover:scale-110">
+                <Clock size={17} className="anim-neu-float sm:hidden" />
+                <Clock size={20} className="anim-neu-float hidden sm:block" />
               </div>
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
                 title="Options"
               >
-                <MoreHorizontal size={18} />
+                <MoreHorizontal size={16} className="sm:hidden" />
+                <MoreHorizontal size={18} className="hidden sm:block" />
               </button>
             </div>
 
-            <div className="mt-2 z-10">
-              <p className="text-xs sm:text-sm font-bold text-slate-500">Pending Requests</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-amber-600 transition-colors">
+            <div className="mt-1.5 sm:mt-2 z-10">
+              <p className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-500 leading-tight">Pending Requests</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-amber-600 transition-colors">
                 {requestedCount}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
+              <div className="flex items-center gap-1 mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-amber-600 font-extrabold">
-                  <TrendingUp size={12} /> +8%
+                  <TrendingUp size={11} /> +8%
                 </span>
-                <span>vs. previous day</span>
+                <span className="hidden sm:inline">vs. yesterday</span>
               </div>
             </div>
 
             <WaveDecoration color="#F59E0B" id="amber-wave" />
 
-            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-amber-500 transition-all duration-300 z-10">
-              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FAF7F2] shadow-[2px_2px_5px_#E5DFD3,-2px_-2px_5px_#FFFFFF] sm:shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-amber-500 transition-all duration-300 z-10">
+              <ArrowRight size={13} className="sm:hidden transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight size={15} className="hidden sm:block transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
 
           {/* Card 4: New Leads */}
           <div 
             onClick={() => navigate('/staff/leads')}
-            className="bg-[#FAF7F2] rounded-3xl p-5 border border-white/85 shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[175px]"
+            className="bg-[#FAF7F2] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 border border-white/85 shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] sm:shadow-[8px_8px_18px_#E5DFD3,-8px_-8px_18px_#FFFFFF] hover:shadow-[12px_12px_24px_#DCD5C7,-12px_-12px_24px_#FFFFFF] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer min-h-[142px] sm:min-h-[175px]"
           >
             <div className="flex items-center justify-between z-10">
-              <div className="w-11 h-11 rounded-2xl bg-[#FAF7F2] shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DC95FF] transition-transform duration-300 group-hover:scale-110">
-                <Users size={20} className="anim-neu-pulse" />
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#FAF7F2] shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] sm:shadow-[inset_3px_3px_6px_#E5DFD3,inset_-3px_-3px_6px_#FFFFFF] border border-white/70 flex items-center justify-center text-[#DC95FF] transition-transform duration-300 group-hover:scale-110">
+                <Users size={17} className="anim-neu-pulse sm:hidden" />
+                <Users size={20} className="anim-neu-pulse hidden sm:block" />
               </div>
               <button 
                 onClick={(e) => e.stopPropagation()} 
                 className="text-slate-400 hover:text-slate-600 transition-colors p-1"
                 title="Options"
               >
-                <MoreHorizontal size={18} />
+                <MoreHorizontal size={16} className="sm:hidden" />
+                <MoreHorizontal size={18} className="hidden sm:block" />
               </button>
             </div>
 
-            <div className="mt-2 z-10">
-              <p className="text-xs sm:text-sm font-bold text-slate-500">New Leads</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-[#7C3AED] transition-colors">
+            <div className="mt-1.5 sm:mt-2 z-10">
+              <p className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-500 leading-tight">New Leads</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 tracking-tight mt-0.5 group-hover:text-[#7C3AED] transition-colors">
                 {newLeadsCount}
               </h2>
-              <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-slate-500">
+              <div className="flex items-center gap-1 mt-0.5 sm:mt-1 text-[10px] sm:text-xs font-bold text-slate-500">
                 <span className="inline-flex items-center gap-0.5 text-[#7C3AED] font-extrabold">
-                  <TrendingUp size={12} /> +22%
+                  <TrendingUp size={11} /> +22%
                 </span>
-                <span>vs. previous day</span>
+                <span className="hidden sm:inline">vs. yesterday</span>
               </div>
             </div>
 
             <WaveDecoration color="#DC95FF" id="purple-wave" />
 
-            <button className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#FAF7F2] shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] transition-all duration-300 z-10">
-              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            <button className="absolute bottom-2.5 right-2.5 sm:bottom-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FAF7F2] shadow-[2px_2px_5px_#E5DFD3,-2px_-2px_5px_#FFFFFF] sm:shadow-[3px_3px_6px_#E5DFD3,-3px_-3px_6px_#FFFFFF] group-hover:shadow-[inset_2px_2px_4px_#E5DFD3,inset_-2px_-2px_4px_#FFFFFF] border border-white/85 flex items-center justify-center text-[#DC95FF] transition-all duration-300 z-10">
+              <ArrowRight size={13} className="sm:hidden transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight size={15} className="hidden sm:block transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
         </div>

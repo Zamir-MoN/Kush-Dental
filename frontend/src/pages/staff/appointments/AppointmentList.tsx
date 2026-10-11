@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Eye, AlertCircle, Plus, CheckCircle } from 'lucide-react';
 import { apiClient } from '../../../lib/apiClient';
 import { formatDate, formatTime } from '../../../lib/formatters';
@@ -9,6 +9,7 @@ interface AppointmentListProps {
 }
 
 export const AppointmentList: React.FC<AppointmentListProps> = () => {
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -229,7 +230,86 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
         </div>
       ) : (
         <div className="bg-white shadow-xs rounded-2xl border border-[#E8E2D5] overflow-hidden">
-          <div className="overflow-x-auto custom-scrollbar">
+          {/* Mobile Card Stack (Phone Screens < md) */}
+          <div className="md:hidden divide-y divide-[#E8E2D5]">
+            {filteredAppointments.map((apt) => {
+              const start = new Date(apt.startsAt);
+              return (
+                <div 
+                  key={apt.id}
+                  onClick={() => navigate(`/staff/appointments/${apt.id}`)}
+                  className="p-3.5 sm:p-4 bg-white hover:bg-[#FAF7F2]/70 active:bg-[#FAF7F2] transition-colors cursor-pointer space-y-2.5"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      {apt.patient ? (
+                        <>
+                          <div className="text-sm font-bold text-zinc-900 truncate">
+                            {apt.patient.fullName}
+                          </div>
+                          <div className="text-[11px] text-zinc-500 font-mono mt-0.5">
+                            ID: {apt.patient.displayId || apt.patientId?.substring(0, 8)}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-sm font-bold text-[#7C3AED] truncate">
+                            Guest Request
+                          </div>
+                          <div className="text-[11px] text-zinc-700 font-medium mt-0.5 truncate">
+                            {apt.guestName || 'Unknown'} {apt.guestPhone ? `(${apt.guestPhone})` : ''}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border ${getStatusColor(apt.status)}`}>
+                        {apt.status}
+                      </span>
+                      <Link 
+                        to={`/staff/appointments/${apt.id}`} 
+                        onClick={(e) => e.stopPropagation()}
+                        className="p-1.5 text-[#7C3AED] hover:text-[#DC95FF] rounded-xl bg-[#FAF7F2] border border-[#E8E2D5]" 
+                        title="View/Edit"
+                      >
+                        <Eye size={15} />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-600">
+                    <span className="flex items-center gap-1 font-semibold text-zinc-800">
+                      <Calendar size={13} className="text-[#DC95FF]" />
+                      {formatDate(start)}
+                    </span>
+                    <span className="flex items-center gap-1 font-medium text-zinc-700">
+                      <Clock size={13} className="text-[#DC95FF]" />
+                      {formatTime(start)}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#FAF7F2] border border-[#E8E2D5] text-zinc-800">
+                      {apt.treatment}
+                    </span>
+                  </div>
+
+                  <div className="text-[11px] text-zinc-500 flex items-center justify-between pt-1 border-t border-slate-100">
+                    <span>
+                      Doctor: <strong className="text-zinc-700 font-semibold">{apt.doctor?.name || (apt.doctorId ? apt.doctorId.substring(0, 8) + '...' : 'Unassigned')}</strong>
+                    </span>
+                    <span className="text-[#7C3AED] font-bold text-[11px]">View &rarr;</span>
+                  </div>
+                </div>
+              );
+            })}
+            {filteredAppointments.length === 0 && appointments.length > 0 && (
+              <div className="p-6 text-center text-zinc-500 text-xs">
+                No appointments match the current status filter.
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Table (Screens >= md) */}
+          <div className="hidden md:block overflow-x-auto custom-scrollbar">
             <table className="min-w-full divide-y divide-[#E8E2D5]">
               <thead className="bg-[#FAF7F2]">
                 <tr>

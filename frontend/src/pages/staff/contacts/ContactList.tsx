@@ -161,7 +161,57 @@ export const ContactList = ({ isUrgentQueue = false }: ContactListProps) => {
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] overflow-hidden">
-          <div className="overflow-x-auto custom-scrollbar">
+          {/* Mobile Card Stack (Phone Screens < md) */}
+          <div className="md:hidden divide-y divide-[#E8E2D5]">
+            {data?.data.map((contact) => (
+              <div
+                key={contact.id}
+                onClick={() => navigate(isUrgentQueue ? `/staff/urgent-visits/${contact.id}` : `/staff/contacts/${contact.id}`)}
+                className={`p-3.5 sm:p-4 hover:bg-[#FAF7F2]/70 active:bg-[#FAF7F2] cursor-pointer transition-colors space-y-2 ${contact.priority === 'URGENT' ? 'bg-red-50/25' : 'bg-white'}`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="h-9 w-9 bg-[#FAF3E0] border border-[#DCA51B]/30 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs">
+                      <User className="h-4 w-4 text-[#8C6B14]" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold text-zinc-900 truncate flex items-center gap-1.5">
+                        <span className="truncate">{contact.patient?.fullName || 'Unknown Patient'}</span>
+                        {contact.priority === 'URGENT' && (
+                          <span className="px-1.5 py-0.5 bg-red-100 text-red-800 text-[10px] font-extrabold rounded uppercase tracking-wider border border-red-200 shrink-0">
+                            Urgent
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-zinc-500 flex items-center mt-0.5">
+                        <Phone className="w-3 h-3 mr-1 text-zinc-400" />
+                        <span className="truncate">{contact.patient?.phone || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className={`px-2 py-0.5 inline-flex text-[10px] font-extrabold uppercase tracking-wider rounded-lg border shrink-0 ${getStatusColor(contact.status)}`}>
+                    {contact.status.replace('_', ' ')}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1.5 border-t border-slate-100">
+                  <span>Created: {new Date(contact.createdAt).toLocaleDateString()}</span>
+                  {contact.nextFollowUpAt ? (
+                    <span className="text-[#8C6B14] font-semibold flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-[#DCA51B]" />
+                      Follow-up: {new Date(contact.nextFollowUpAt).toLocaleDateString()}
+                    </span>
+                  ) : (
+                    <span className="text-zinc-400">No follow-up set</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table (Screens >= md) */}
+          <div className="hidden md:block overflow-x-auto custom-scrollbar">
             <table className="min-w-full divide-y divide-[#E8E2D5]">
               <thead className="bg-[#FAF7F2]">
                 <tr>
