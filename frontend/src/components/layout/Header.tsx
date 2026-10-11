@@ -77,10 +77,10 @@ export const Header = () => {
                   <Link 
                     key={link.name}
                     to={link.to} 
-                    className={`relative px-4 sm:px-5 py-1.5 rounded-full font-sans text-[13.5px] tracking-[0.01em] transition-colors duration-200 z-10 select-none ${
+                    className={`relative px-4 sm:px-5 py-1.5 rounded-full font-sans text-[13.5px] tracking-[0.01em] transition-all duration-200 z-10 select-none ${
                       isActive 
                         ? 'text-[#141518] font-bold' 
-                        : 'text-[#423E38] hover:text-[#141518] font-medium'
+                        : 'text-[#423E38] hover:text-[#141518] hover:bg-white/30 font-medium'
                     }`}
                   >
                     {isActive && (
@@ -100,7 +100,7 @@ export const Header = () => {
             <div className="hidden lg:flex items-center shrink-0">
               <Link 
                 to="/book" 
-                className="btn-gold-luxury py-2 px-5 text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-2 shadow-[0_4px_16px_rgba(220,165,27,0.35)]"
+                className="btn-gold-solid py-2 px-5 text-xs font-bold tracking-wider rounded-full cursor-pointer inline-flex items-center gap-2 shadow-[0_4px_16px_rgba(220,165,27,0.35)]"
               >
                 <Calendar className="w-3.5 h-3.5 shrink-0" />
                 <span>BOOK A VISIT</span>
@@ -111,7 +111,7 @@ export const Header = () => {
             <div className="lg:hidden flex items-center gap-2 sm:gap-2.5 shrink-0">
               <Link 
                 to="/book" 
-                className="btn-gold-luxury py-1.5 px-2.5 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-xl cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-[0_3px_12px_rgba(220,165,27,0.3)]"
+                className="btn-gold-solid py-1.5 px-3 sm:px-4 text-[10.5px] sm:text-xs font-bold tracking-wider rounded-full cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-[0_3px_12px_rgba(220,165,27,0.3)]"
               >
                 <Calendar className="w-3.5 h-3.5 shrink-0" />
                 <span className="whitespace-nowrap">BOOK A VISIT</span>

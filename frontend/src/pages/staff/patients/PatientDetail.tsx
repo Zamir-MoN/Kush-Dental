@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Phone, Mail, Calendar, Clock, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
 import { apiClient } from '../../../lib/apiClient';
+import { formatDate, formatTime } from '../../../lib/formatters';
 
 interface Patient {
   id: string;
+  displayId?: string;
   fullName: string;
   phone: string;
   email?: string;
@@ -19,14 +21,14 @@ interface Appointment {
   doctorId?: string;
 }
 
-export const PatientDetail = () => {
-  const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
-  };
-  const formatTime = (dateString: string) => {
-    return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date(dateString));
-  };
+interface AppointmentListResponse {
+  data: Appointment[];
+  total: number;
+  skip: number;
+  limit: number;
+}
 
+export const PatientDetail = () => {  // Formatting handled by imported global utilities
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
@@ -48,9 +50,9 @@ export const PatientDetail = () => {
       const p = await apiClient<Patient>(`/api/v1/patients/${id}`);
       setPatient(p);
       
-      const apts = await apiClient<Appointment[]>(`/api/v1/appointments?patientId=${id}&orderDesc=true&limit=${LIMIT}`);
-      setAppointments(apts);
-      if (apts.length < LIMIT) {
+      const response = await apiClient<AppointmentListResponse>(`/api/v1/appointments?patientId=${id}&orderDesc=true&limit=${LIMIT}`);
+      setAppointments(response.data);
+      if (response.data.length < LIMIT) {
         setHasMore(false);
       }
     } catch (err: any) {
@@ -72,12 +74,12 @@ export const PatientDetail = () => {
     setIsLoadingMore(true);
     try {
       const skip = appointments.length;
-      const apts = await apiClient<Appointment[]>(`/api/v1/appointments?patientId=${id}&orderDesc=true&skip=${skip}&limit=${LIMIT}`);
+      const response = await apiClient<AppointmentListResponse>(`/api/v1/appointments?patientId=${id}&orderDesc=true&skip=${skip}&limit=${LIMIT}`);
       
-      if (apts.length > 0) {
-        setAppointments(prev => [...prev, ...apts]);
+      if (response.data.length > 0) {
+        setAppointments(prev => [...prev, ...response.data]);
       }
-      if (apts.length < LIMIT) {
+      if (response.data.length < LIMIT) {
         setHasMore(false);
       }
     } catch (err: any) {
@@ -153,7 +155,7 @@ export const PatientDetail = () => {
           <dl className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#E8E2D5]">
             <div className="px-6 py-5">
               <dt className="text-xs font-bold uppercase tracking-wider text-zinc-400">Patient ID</dt>
-              <dd className="mt-1 text-xs font-mono text-zinc-700 break-all">{patient.id}</dd>
+              <dd className="mt-1 text-xs font-mono text-zinc-700 break-all">{patient.displayId || patient.id}</dd>
             </div>
             <div className="px-6 py-5">
               <dt className="text-xs font-bold uppercase tracking-wider text-zinc-400">Total Appointments</dt>

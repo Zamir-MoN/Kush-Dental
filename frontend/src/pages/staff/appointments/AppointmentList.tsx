@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Calendar, Clock, Eye, AlertCircle, Plus } from 'lucide-react';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { Calendar, Clock, Eye, AlertCircle, Plus, CheckCircle } from 'lucide-react';
 import { apiClient } from '../../../lib/apiClient';
+import { formatDate, formatTime } from '../../../lib/formatters';
 
 interface AppointmentListProps {
   isDoctor: boolean;
@@ -12,14 +13,49 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
+  const [total, setTotal] = useState(0);
+  
+  const [effectiveStartDate, setEffectiveStartDate] = useState('');
+  const [effectiveEndDate, setEffectiveEndDate] = useState('');
+  
   const [skip, setSkip] = useState(0);
   const limit = 20;
 
-  // Filters
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [doctorId, setDoctorId] = useState('');
-  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const [successMsg] = useState<string | null>((location.state as any)?.successMsg || null);
+
+  useEffect(() => {
+    if ((location.state as any)?.successMsg) {
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+  
+  // Filters from URL
+  const startDate = searchParams.get('startDate') || '';
+  const endDate = searchParams.get('endDate') || '';
+  const doctorId = searchParams.get('doctorId') || '';
+  const statusFilter = searchParams.get('status') || 'ALL';
+
+  const handleFilterChange = (key: string, value: string) => {
+    setSearchParams(prev => {
+      // If we are changing a non-date filter and dates are implicit, make them explicit
+      // so we don't accidentally auto-snap to a different date when the query broadens.
+      if (key !== 'startDate' && key !== 'endDate') {
+        if (!prev.has('startDate') && effectiveStartDate) {
+          prev.set('startDate', effectiveStartDate);
+        }
+        if (!prev.has('endDate') && effectiveEndDate) {
+          prev.set('endDate', effectiveEndDate);
+        }
+      }
+
+      if (value && value !== 'ALL') prev.set(key, value);
+      else prev.delete(key);
+      return prev;
+    }, { replace: true });
+    setSkip(0);
+  };
 
   const [doctors, setDoctors] = useState<any[]>([]);
 
@@ -65,9 +101,21 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
       if (doctorId) {
         query.append('doctorId', doctorId);
       }
+      if (statusFilter && statusFilter !== 'ALL') {
+        query.append('status', statusFilter);
+      }
 
-      const data = await apiClient<any[]>(`/api/v1/appointments?${query.toString()}`);
-      setAppointments(data);
+      const data = await apiClient<any>(`/api/v1/appointments?${query.toString()}`);
+      setAppointments(data.data);
+      setTotal(data.total);
+      
+      if (!startDate && !endDate) {
+        setEffectiveStartDate(data.effectiveStartDateStr || '');
+        setEffectiveEndDate(data.effectiveEndDateStr || '');
+      } else {
+        setEffectiveStartDate('');
+        setEffectiveEndDate('');
+      }
     } catch (err: any) {
       setError(err.details?.detail || err.message || 'Failed to load appointments');
     } finally {
@@ -77,25 +125,29 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
 
   useEffect(() => {
     fetchAppointments();
-  }, [skip, startDate, endDate, doctorId]);
+  }, [skip, startDate, endDate, doctorId, statusFilter]);
 
-  const filteredAppointments = statusFilter === 'ALL'
-    ? appointments
-    : appointments.filter(a => a.status === statusFilter);
+  const filteredAppointments = appointments;
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'REQUESTED': return 'bg-blue-100 text-blue-800';
       case 'CONFIRMED': return 'bg-green-100 text-green-800';
       case 'CANCELLED': return 'bg-red-100 text-red-800';
-      case 'COMPLETED': return 'bg-gray-100 text-gray-800';
+      case 'COMPLETED': return 'bg-white text-zinc-700 border-zinc-200';
       case 'NO_SHOW': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-white text-zinc-700 border-zinc-200';
     }
   };
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      {successMsg && (
+        <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl flex items-start border border-emerald-200 text-sm">
+          <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
+          <p>{successMsg}</p>
+        </div>
+      )}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">Appointments</h1>
@@ -116,8 +168,8 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
           <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Start Date</label>
           <input
             type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            value={startDate || effectiveStartDate}
+            onChange={(e) => handleFilterChange('startDate', e.target.value)}
             className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
@@ -125,8 +177,8 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
           <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">End Date</label>
           <input
             type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            value={endDate || effectiveEndDate}
+            onChange={(e) => handleFilterChange('endDate', e.target.value)}
             className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all"
           />
         </div>
@@ -134,7 +186,7 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
           <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Doctor Filter</label>
           <select
             value={doctorId}
-            onChange={(e) => setDoctorId(e.target.value)}
+            onChange={(e) => handleFilterChange('doctorId', e.target.value)}
             className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all cursor-pointer font-medium"
           >
             <option value="">All Doctors</option>
@@ -147,7 +199,7 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
           <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-600 mb-1.5">Status Filter</label>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={(e) => handleFilterChange('status', e.target.value)}
             className="w-full px-3 py-2 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] transition-all cursor-pointer font-medium"
           >
             <option value="ALL">All Statuses</option>
@@ -191,21 +243,31 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
               <tbody className="bg-white divide-y divide-[#E8E2D5]">
                 {filteredAppointments.map((apt) => {
                   const start = new Date(apt.startsAt);
-                  const end = new Date(apt.endsAt);
                   return (
                     <tr key={apt.id} className="hover:bg-[#1A1D25] transition-colors group">
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                         <div className="text-sm font-semibold text-zinc-900">
-                          {start.toLocaleDateString()}
+                          {formatDate(start)}
                         </div>
                         <div className="text-xs text-zinc-500 flex items-center mt-0.5">
                           <Clock size={12} className="mr-1 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
-                          {start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {formatTime(start)}
                         </div>
                       </td>
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-zinc-900">Patient: <span className="font-mono text-xs text-zinc-600">{apt.patientId.substring(0, 8)}...</span></div>
-                        <div className="text-xs text-zinc-500 mt-0.5">Doctor: {apt.doctorId ? <span className="text-[#8C6B14] font-medium">{apt.doctorId.substring(0, 8)}...</span> : 'Unassigned'}</div>
+                        {apt.patient ? (
+                          <>
+                            <div className="text-sm font-medium text-zinc-900">Patient: <span className="font-mono text-xs text-zinc-600">{apt.patient.displayId || apt.patientId.substring(0, 8)}</span></div>
+                            <div className="text-xs text-zinc-500 mt-0.5">{apt.patient.fullName}</div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-sm font-medium text-[#DCA51B]">Guest Request</div>
+                            <div className="text-xs text-zinc-500 mt-0.5">{apt.guestName || 'Unknown'}</div>
+                            <div className="text-xs text-zinc-400 mt-0.5">{apt.guestPhone || 'No Phone'}</div>
+                          </>
+                        )}
+                        <div className="text-xs text-zinc-500 mt-1">Doctor: {apt.doctorId ? <span className="text-[#8C6B14] font-medium">{apt.doctorId.substring(0, 8)}...</span> : 'Unassigned'}</div>
                       </td>
                       <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-zinc-900">{apt.treatment}</div>
@@ -243,14 +305,14 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
               <button
                 onClick={() => setSkip(Math.max(0, skip - limit))}
                 disabled={skip === 0}
-                className="relative inline-flex items-center px-3 py-1.5 border border-[#E2DACB] text-xs font-semibold rounded-lg text-zinc-700 bg-white hover:bg-[#FAF7F2] disabled:opacity-40"
+                className="relative inline-flex items-center px-4 py-2 border border-[#E2DACB] text-xs font-semibold rounded-lg text-zinc-700 bg-white hover:bg-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
               >
                 Previous
               </button>
               <button
                 onClick={() => setSkip(skip + limit)}
-                disabled={appointments.length < limit}
-                className="ml-3 relative inline-flex items-center px-3 py-1.5 border border-[#E2DACB] text-xs font-semibold rounded-lg text-zinc-700 bg-white hover:bg-[#FAF7F2] disabled:opacity-40"
+                disabled={skip + limit >= total}
+                className="ml-3 relative inline-flex items-center px-4 py-2 border border-[#E2DACB] text-xs font-semibold rounded-lg text-zinc-700 bg-white hover:bg-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
               >
                 Next
               </button>
@@ -258,7 +320,7 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-zinc-600">
-                  Showing <span className="font-semibold text-zinc-900">{appointments.length > 0 ? skip + 1 : 0}</span> to <span className="font-semibold text-zinc-900">{skip + appointments.length}</span> results
+                  Showing <span className="font-semibold text-zinc-900">{total > 0 ? skip + 1 : 0}</span> to <span className="font-semibold text-zinc-900">{Math.min(skip + limit, total)}</span> of <span className="font-semibold text-zinc-900">{total}</span> results
                 </p>
               </div>
               <div>
@@ -266,14 +328,14 @@ export const AppointmentList: React.FC<AppointmentListProps> = () => {
                   <button
                     onClick={() => setSkip(Math.max(0, skip - limit))}
                     disabled={skip === 0}
-                    className="relative inline-flex items-center px-3 py-1.5 rounded-lg border border-[#E2DACB] bg-white text-xs font-semibold text-zinc-700 hover:bg-[#FAF7F2] disabled:opacity-40 transition-colors"
+                    className="relative inline-flex items-center px-4 py-2 rounded-lg border border-[#E2DACB] bg-white text-xs font-semibold text-zinc-700 hover:bg-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
                   >
                     Previous
                   </button>
                   <button
                     onClick={() => setSkip(skip + limit)}
-                    disabled={appointments.length < limit}
-                    className="relative inline-flex items-center px-3 py-1.5 rounded-lg border border-[#E2DACB] bg-white text-xs font-semibold text-zinc-700 hover:bg-[#FAF7F2] disabled:opacity-40 transition-colors"
+                    disabled={skip + limit >= total}
+                    className="relative inline-flex items-center px-4 py-2 rounded-lg border border-[#E2DACB] bg-white text-xs font-semibold text-zinc-700 hover:bg-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors"
                   >
                     Next
                   </button>

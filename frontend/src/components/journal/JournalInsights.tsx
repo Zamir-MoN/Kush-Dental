@@ -107,7 +107,7 @@ export const JournalInsights: React.FC<JournalInsightsProps> = ({ showFilters = 
               className="space-y-6 lg:space-y-8"
             >
               {/* Grand Panoramic Lead Feature (Obsidian Edition) */}
-              <div className="bg-[#141518] text-white rounded-3xl border border-white/10 hover:border-[#DCA51B]/60 shadow-2xl transition-all duration-400 overflow-hidden group reveal-up">
+              <div className="bg-[#141518] text-white rounded-3xl border border-white/10 hover:border-[#DCA51B]/60 shadow-2xl hover:shadow-[0_20px_50px_rgba(220,165,27,0.15)] hover:-translate-y-1 transition-all duration-400 ease-out overflow-hidden group reveal-up">
                 <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
                   
                   {/* Left: Cinematic Clinical Image */}
@@ -216,7 +216,7 @@ export const JournalInsights: React.FC<JournalInsightsProps> = ({ showFilters = 
                   <Link
                     key={post.id}
                     to={`/blog/${post.id}`}
-                    className="bg-white rounded-3xl border border-[#E8E2D5] hover:border-[#DCA51B]/60 p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer reveal-up"
+                    className="bg-white rounded-3xl border border-[#E8E2D5] hover:border-[#DCA51B] p-5 sm:p-6 shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-400 ease-out flex flex-col justify-between group cursor-pointer reveal-up"
                   >
                     <div>
                       {/* Card Image */}

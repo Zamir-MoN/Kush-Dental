@@ -21,9 +21,9 @@ async def login(
 ):
     try:
         token_resp, raw_refresh_token = await auth_service.authenticate_user(db, login_req)
-        record_login_success(request)
+        await record_login_success(request)
     except HTTPException as e:
-        record_login_failure(request)
+        await record_login_failure(request)
         raise e
     
     # Set Refresh Token HttpOnly Cookie

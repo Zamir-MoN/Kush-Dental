@@ -1,12 +1,12 @@
 # DXGen API Integration Guide
 
-This guide explains how to integrate the **DXGen AI Content Generation API** (`http://51.20.121.253:3101`) into any website, CMS, web app, or backend service.
+This guide explains how to integrate the **DXGen AI Content Generation API** (`http://3.109.4.37:3101`) into any website, CMS, web app, or backend service.
 
 ---
 
 ## 1. Quick Overview
 
-* **Base Endpoint**: `http://51.20.121.253:3101/api/v1`
+* **Base Endpoint**: `http://3.109.4.37:3101/api/v1`
 * **Authentication**: Bearer Token in HTTP Header (`Authorization: Bearer YOUR_API_KEY`)
 * **Request Format**: JSON (`Content-Type: application/json`)
 * **Response Format**: JSON with structured content, SEO tags, FAQs, and usage metadata.
@@ -16,7 +16,7 @@ This guide explains how to integrate the **DXGen AI Content Generation API** (`h
 ## 2. Getting Your API Key
 
 1. Open the DXGen Dashboard in your browser:  
-   👉 **`http://51.20.121.253:3101`**
+   👉 **`http://3.109.4.37:3101`**
 2. Navigate to **API Keys** in the sidebar.
 3. Click **Create New API Key**:
    * **Name**: Name of your website (e.g., `MyBlog Integration`)
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
   try {
     const { topic, keywords } = await req.json();
 
-    const response = await fetch('http://51.20.121.253:3101/api/v1/generate/blog', {
+    const response = await fetch('http://3.109.4.37:3101/api/v1/generate/blog', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
 const DXGEN_API_KEY = 'YOUR_API_KEY_HERE'; // Replace with dxt_live_...
 
 async function generateArticle(topic) {
-  const response = await fetch('http://51.20.121.253:3101/api/v1/generate', {
+  const response = await fetch('http://3.109.4.37:3101/api/v1/generate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ generateArticle('10 Essential Web Design Tips for 2026');
 ```python
 import requests
 
-API_URL = "http://51.20.121.253:3101/api/v1/generate"
+API_URL = "http://3.109.4.37:3101/api/v1/generate"
 API_KEY = "YOUR_API_KEY_HERE" # e.g. dxt_live_...
 
 headers = {
@@ -175,7 +175,7 @@ To automatically publish articles or generate copy in WordPress or custom PHP:
 
 ```php
 <?php
-$api_url = 'http://51.20.121.253:3101/api/v1/generate';
+$api_url = 'http://3.109.4.37:3101/api/v1/generate';
 $api_key = 'YOUR_API_KEY_HERE'; // Replace with dxt_live_...
 
 $payload = [
@@ -220,7 +220,7 @@ if (!empty($result['success'])) {
 ### E. cURL (Terminal / Command Line)
 
 ```bash
-curl -X POST http://51.20.121.253:3101/api/v1/generate \
+curl -X POST http://3.109.4.37:3101/api/v1/generate \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -321,7 +321,7 @@ All error responses return a standardized format:
 You can test if the API is active anytime with a simple GET request:
 
 ```bash
-curl http://51.20.121.253:3101/api/v1/health
+curl http://3.109.4.37:3101/api/v1/health
 ```
 
 Output:

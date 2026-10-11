@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Users } from '../Users';
 import { apiClient } from '../../../lib/apiClient';
@@ -128,7 +128,9 @@ describe('Users Directory', () => {
       const page2Calls = vi.mocked(apiClient).mock.calls.filter(args => (args[0] as string).includes('skip=50'));
       expect(page2Calls.length).toBe(1);
       
-      resolvePage2({ total: 100, skip: 50, limit: 50, data: [] });
+      await act(async () => {
+        resolvePage2({ total: 100, skip: 50, limit: 50, data: [] });
+      });
     });
   });
 
@@ -210,7 +212,9 @@ describe('Users Directory', () => {
         expect(saveBtn).toBeDisabled();
       });
       
-      resolvePatch({ id: 'staff1', email: 'newstaff@test.com', role: 'STAFF' });
+      await act(async () => {
+        resolvePatch({ id: 'staff1', email: 'newstaff@test.com', role: 'STAFF' });
+      });
     });
 
     it('Displays useful error on PATCH 409 conflict and keeps modal open', async () => {
@@ -341,8 +345,9 @@ describe('Users Directory', () => {
         expect(confirmBtns[1]).toBeDisabled();
       });
       
-      // Simulate error
-      rejectDelete(new Error('Cannot deactivate user'));
+      await act(async () => {
+        rejectDelete(new Error('Cannot deactivate user'));
+      });
       
       await waitFor(() => {
         expect(screen.getByText('Cannot deactivate user')).toBeInTheDocument();

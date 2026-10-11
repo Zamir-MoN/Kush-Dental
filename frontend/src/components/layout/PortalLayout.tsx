@@ -10,7 +10,8 @@ import {
   Menu,
   X,
   Target,
-  FileText
+  FileText,
+  AlertTriangle
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { AnimatedLogo } from '../ui/AnimatedLogo';
@@ -31,6 +32,7 @@ export const PortalLayout = () => {
 
   const navItems = [
     { label: 'Dashboard', path: '/staff/dashboard', icon: <LayoutDashboard size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },
+    { label: 'Urgent Visits', path: '/staff/urgent-visits', icon: <AlertTriangle size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },
     { label: 'Follow-ups', path: '/staff/contacts', icon: <UserCircle size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },
     { label: 'Leads', path: '/staff/leads', icon: <Target size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },
     { label: 'Appointments', path: '/staff/appointments', icon: <CalendarDays size={20} />, allowedRoles: ['DOCTOR', 'STAFF'] },

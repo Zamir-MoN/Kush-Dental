@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Query, Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 from app.db.session import get_db
 from app.api.dependencies import require_roles
-from app.models import User, Role, ContactStatus
+from app.models import User, Role, ContactStatus, Priority
 from app.schemas.contact import ContactListResponse, ContactResponse, ContactCreate, ContactUpdate
 from app.services import contact_service
 
@@ -14,12 +14,22 @@ router = APIRouter()
 async def list_contacts(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
-    status: Optional[ContactStatus] = None,
+    status: Optional[List[ContactStatus]] = Query(None),
+    priority: Optional[Priority] = Query(None),
+    priority_sort: bool = Query(False),
     q: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_roles([Role.DOCTOR, Role.STAFF]))
 ):
-    contacts, total = await contact_service.get_contacts(db, skip, limit, status, q)
+    contacts, total = await contact_service.get_contacts(
+        db=db, 
+        skip=skip, 
+        limit=limit, 
+        status=status, 
+        priority=priority,
+        priority_sort=priority_sort,
+        q=q
+    )
     return ContactListResponse(
         total=total,
         skip=skip,

@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import func
+from sqlalchemy import func, case
 from typing import Optional, List, Tuple
 from uuid import UUID
 from datetime import datetime, timezone
 
-from app.models import Contact, ContactStatus, Patient, Lead, Appointment
+from app.models import Contact, ContactStatus, Patient, Lead, Appointment, Priority
 from app.schemas.contact import ContactCreate, ContactUpdate
 
 async def get_by_id(db: AsyncSession, contact_id: UUID) -> Optional[Tuple[Contact, Optional[Patient], Optional[Lead], Optional[Appointment]]]:
@@ -29,7 +29,9 @@ async def get_contacts(
     db: AsyncSession, 
     skip: int = 0, 
     limit: int = 100, 
-    status: Optional[ContactStatus] = None,
+    status: Optional[List[ContactStatus]] = None,
+    priority: Optional[Priority] = None,
+    priority_sort: bool = False,
     q: Optional[str] = None
 ) -> Tuple[List[Tuple[Contact, Optional[Patient], Optional[Lead], Optional[Appointment]]], int]:
     base_query = select(Contact, Patient, Lead, Appointment)\
@@ -41,8 +43,16 @@ async def get_contacts(
     count_base = select(Contact).where(Contact.deletedAt.is_(None))
     
     if status:
-        base_query = base_query.where(Contact.status == status)
-        count_base = count_base.where(Contact.status == status)
+        if isinstance(status, list) and len(status) > 0:
+            base_query = base_query.where(Contact.status.in_(status))
+            count_base = count_base.where(Contact.status.in_(status))
+        else:
+            base_query = base_query.where(Contact.status == status)
+            count_base = count_base.where(Contact.status == status)
+
+    if priority:
+        base_query = base_query.where(Contact.priority == priority)
+        count_base = count_base.where(Contact.priority == priority)
 
     if q:
         search_term = f"%{q}%"
@@ -62,10 +72,22 @@ async def get_contacts(
     count_query = select(func.count()).select_from(count_base.subquery())
     total = (await db.execute(count_query)).scalar() or 0
 
-    query = base_query.order_by(
-        Contact.nextFollowUpAt.asc().nulls_last(),
-        Contact.createdAt.desc()
-    ).offset(skip).limit(limit)
+    if priority_sort:
+        query = base_query.order_by(
+            case(
+                (Contact.priority == Priority.URGENT, 1),
+                (Contact.priority == Priority.HIGH, 2),
+                else_=3
+            ).asc(),
+            Contact.createdAt.desc()
+        )
+    else:
+        query = base_query.order_by(
+            Contact.nextFollowUpAt.asc().nulls_last(),
+            Contact.createdAt.desc()
+        )
+        
+    query = query.offset(skip).limit(limit)
 
     results = await db.execute(query)
     rows = results.all()

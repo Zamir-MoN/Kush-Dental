@@ -6,6 +6,7 @@ import { apiClient } from '../../../lib/apiClient';
 
 interface PatientLookupResponse {
   id: string;
+  displayId: string;
   fullName: string;
   phone: string;
 }
@@ -16,7 +17,6 @@ interface PatientSearchResponse {
   limit: number;
   data: PatientLookupResponse[];
 }
-
 export const PatientList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [patients, setPatients] = useState<PatientLookupResponse[]>([]);
@@ -147,44 +147,44 @@ export const PatientList = () => {
             <ul role="list" className="divide-y divide-[#E8E2D5]">
               {patients.map((patient) => (
                 <li key={patient.id}>
-                  <button
-                    onClick={() => navigate(`/staff/patients/${patient.id}`)}
-                    className="block w-full text-left transition-all duration-150 hover:bg-[#1A1D25] border-l-2 border-l-transparent hover:border-l-[#DCA51B] group cursor-pointer"
-                  >
-                    <div className="flex items-center px-3.5 py-3.5 sm:px-6">
-                      <div className="min-w-0 flex-1 flex items-center">
-                        <div className="flex-shrink-0">
-                          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/30 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-2xs">
-                            <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#8C6B14]" />
+                    <button
+                      onClick={() => navigate(`/staff/patients/${patient.id}`)}
+                      className="block w-full text-left transition-all duration-150 hover:bg-[#1A1D25] border-l-2 border-l-transparent hover:border-l-[#DCA51B] group cursor-pointer"
+                    >
+                      <div className="flex items-center px-3.5 py-3.5 sm:px-6">
+                        <div className="min-w-0 flex-1 flex items-center">
+                          <div className="flex-shrink-0">
+                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-[#FAF3E0] border border-[#DCA51B]/30 flex items-center justify-center transition-transform duration-200 group-hover:scale-110 shadow-2xs">
+                              <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#8C6B14]" />
+                            </div>
                           </div>
-                        </div>
-                        <div className="min-w-0 flex-1 px-3 sm:px-4 md:grid md:grid-cols-2 md:gap-4">
-                          <div>
-                            <p className="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-[#F5C242] transition-colors truncate">{patient.fullName}</p>
-                            <p className="mt-1 flex items-center text-[11px] sm:text-xs text-zinc-400">
-                              <Phone className="flex-shrink-0 mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
-                              <span className="truncate">{patient.phone}</span>
-                            </p>
-                          </div>
-                          <div className="hidden md:block">
+                          <div className="min-w-0 flex-1 px-3 sm:px-4 md:grid md:grid-cols-2 md:gap-4">
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                                Patient ID
+                              <p className="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-[#F5C242] transition-colors truncate">{patient.fullName}</p>
+                              <p className="mt-1 flex items-center text-[11px] sm:text-xs text-zinc-400">
+                                <Phone className="flex-shrink-0 mr-1.5 h-3 w-3 sm:h-3.5 sm:w-3.5 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
+                                <span className="truncate">{patient.phone}</span>
                               </p>
-                              <p className="mt-0.5 flex items-center text-xs font-mono text-zinc-400 truncate">
-                                {patient.id.substring(0, 8)}...
-                              </p>
+                            </div>
+                            <div className="hidden md:block">
+                              <div>
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                                  Patient ID
+                                </p>
+                                <p className="mt-0.5 flex items-center text-xs font-mono text-zinc-400 truncate">
+                                  {patient.displayId || `${patient.id.substring(0, 8)}...`}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
+                        <div>
+                          <svg className="h-5 w-5 text-zinc-400 group-hover:text-[#DCA51B] group-hover:translate-x-0.5 transition-all" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                       </div>
-                      <div>
-                        <svg className="h-5 w-5 text-zinc-400 group-hover:text-[#DCA51B] group-hover:translate-x-0.5 transition-all" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                    </div>
-                  </button>
+                    </button>
                 </li>
               ))}
             </ul>

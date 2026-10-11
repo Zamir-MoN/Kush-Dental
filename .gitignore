@@ -15,6 +15,8 @@ dist-ssr
 .env.local
 .env.*.local
 .env
+*.env
+frontend/.env
 backend/.env
 python_backend/.env
 
@@ -54,8 +56,37 @@ wheels/
 *.sln
 *.sw?
 
-# Temporary archives and test logs
+# Temporary archives, backups, and process logs
 *.tar
 *.zip
+*.backup
+ecosystem.config.js.*
 git_diff_*.txt
 git_status.txt
+p.txt
+
+# Root-level ad-hoc scratch scripts
+/test_*.py
+/check_db.py
+/verify_appointments.py
+
+# Python backend scratch scripts and text logs
+python_backend/*.txt
+python_backend/audit_*.py
+python_backend/init_test_db*.py
+python_backend/db_inventory.py
+python_backend/check_*.py
+python_backend/print_*.py
+python_backend/delete_*.py
+python_backend/reset_db.py
+python_backend/inspect_blog.py
+python_backend/patch_*.py
+python_backend/run_drain.sh
+python_backend/test_*.py
+python_backend/debug_frontend.py
+python_backend/dump_*.py
+python_backend/fix_test*.py
+python_backend/get_*.py
+python_backend/verify_*.py
+python_backend/tests/audit_appointment_default.py
+

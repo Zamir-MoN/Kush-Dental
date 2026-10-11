@@ -16,7 +16,10 @@ const mockDashboardData = {
     todayAppointments: 5,
     requestedAppointments: 2,
     confirmedToday: 3,
-    newLeads: 4
+    newLeads: 4,
+    openFollowUps: 8,
+    inProgressFollowUps: 9,
+    urgentVisits: 7
   },
   todayAppointments: [
     {
@@ -95,6 +98,7 @@ describe('Dashboard', () => {
     expect(screen.getByText('3')).toBeInTheDocument(); // Confirmed Today
     expect(screen.getByText('2')).toBeInTheDocument(); // Requests
     expect(screen.getByText('4')).toBeInTheDocument(); // Leads
+    expect(screen.getByText('7')).toBeInTheDocument(); // Urgent Visits
   });
 
   it('renders today appointments', async () => {
@@ -135,8 +139,8 @@ describe('Dashboard', () => {
     
     await waitFor(() => {
       expect(screen.getByText('Bob')).toBeInTheDocument();
-      expect(screen.getByText('Whitening')).toBeInTheDocument();
-      expect(screen.getByText('NEW')).toBeInTheDocument();
+      expect(screen.getByText('From Website')).toBeInTheDocument();
+      expect(screen.getByText('New')).toBeInTheDocument();
     });
   });
 });

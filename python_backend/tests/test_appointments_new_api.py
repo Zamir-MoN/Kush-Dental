@@ -69,7 +69,7 @@ async def test_patch_appointment(client: AsyncClient, staff_auth_headers: dict, 
     assert res.json()["treatment"] == "Surgery"
 
 @pytest.mark.asyncio
-async def test_date_filters(client: AsyncClient, staff_auth_headers: dict, db_patient, doctor_user, db_session):
+async def test_date_filters(client: AsyncClient, doctor_auth_headers: dict, db_patient, doctor_user, db_session):
     from app.services.appointment_service import create_appointment
     now = datetime.now(timezone.utc)
     apt = await create_appointment(db_session, AppointmentCreate(patientId=db_patient.id, doctorId=doctor_user.id, treatment="Exam", startsAt=now, endsAt=now+timedelta(hours=1)), doctor_user.id)
@@ -78,12 +78,12 @@ async def test_date_filters(client: AsyncClient, staff_auth_headers: dict, db_pa
     start = (now - timedelta(days=1)).isoformat().replace('+00:00', 'Z')
     end = (now + timedelta(days=1)).isoformat().replace('+00:00', 'Z')
     
-    res = await client.get(f"/api/v1/appointments?startDate={start}&endDate={end}", headers=staff_auth_headers)
+    res = await client.get(f"/api/v1/appointments?startDate={start}&endDate={end}&patientId={db_patient.id}", headers=doctor_auth_headers)
     assert res.status_code == 200
-    assert len(res.json()) >= 1
+    assert len(res.json()["data"]) >= 1
     
     start_future = (now + timedelta(days=10)).isoformat().replace('+00:00', 'Z')
     end_future = (now + timedelta(days=11)).isoformat().replace('+00:00', 'Z')
-    res = await client.get(f"/api/v1/appointments?startDate={start_future}&endDate={end_future}", headers=staff_auth_headers)
+    res = await client.get(f"/api/v1/appointments?startDate={start_future}&endDate={end_future}&patientId={db_patient.id}", headers=doctor_auth_headers)
     assert res.status_code == 200
-    assert len(res.json()) == 0
+    assert len(res.json()["data"]) == 0

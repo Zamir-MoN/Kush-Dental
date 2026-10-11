@@ -11,35 +11,34 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def process_public_booking(db: AsyncSession, lead_data: PublicLeadCreate, idempotency_key: str):
+async def process_public_booking(db: AsyncSession, lead_id: str, lead_data: PublicLeadCreate):
     """
-    Handles the atomic creation of Patient, Lead, and Appointment
-    for a public booking request.
+    Handles the atomic creation of Patient and Appointment
+    for a public booking request, using a pre-existing Lead as a durable inbox.
     """
-    import json
-    import hashlib
-    
     try:
-        normalized_phone = normalize_phone(lead_data.phone)
+        from app.models import Lead, Contact
+        from sqlalchemy import select
+        import uuid
         
-        # 4. Canonical Payload Fingerprint
-        # Normalize fields for deterministic hashing
-        payload_dict = {
-            "name": lead_data.name.strip().lower(),
-            "phone": normalized_phone,
-            "email": lead_data.email.strip().lower() if lead_data.email else None,
-            "desiredTreatment": lead_data.desiredTreatment.strip() if lead_data.desiredTreatment else None,
-        }
+        # 1. Lock the Lead to prevent concurrent duplicate processing
+        lead_query = await db.execute(select(Lead).where(Lead.id == uuid.UUID(lead_id)).with_for_update())
+        lead = lead_query.scalar_one_or_none()
         
-        if lead_data.startsAt and lead_data.endsAt:
-            payload_dict["startsAt"] = lead_data.startsAt.isoformat()
-            payload_dict["endsAt"] = lead_data.endsAt.isoformat()
+        if not lead:
+            raise ValueError(f"Lead {lead_id} not found during processing")
             
-        canonical_json = json.dumps(payload_dict, sort_keys=True)
-        fingerprint = hashlib.sha256(canonical_json.encode('utf-8')).hexdigest()
+        # 2. Check if already processed (Idempotency safety)
+        # If a Contact already exists for this lead, the queue already successfully processed it.
+        contact_query = await db.execute(select(Contact).where(Contact.leadId == lead.id))
+        if contact_query.scalar_one_or_none():
+            logger.info(f"Lead {lead_id} already processed. Skipping.")
+            return
+
+        normalized_phone = lead.phone
         
-        # 1. Resolve or Create Patient
-        patient = await patient_repo.get_by_phone(db, normalized_phone)
+        # 3. Resolve or Create Patient
+        patient = await patient_repo.get_by_phone_and_name(db, normalized_phone, lead.name)
         
         if not patient:
             try:
@@ -47,95 +46,46 @@ async def process_public_booking(db: AsyncSession, lead_data: PublicLeadCreate, 
                 # on concurrent creation doesn't poison the main transaction.
                 async with db.begin_nested():
                     patient_in = PatientCreate(
-                        fullName=lead_data.name,
+                        fullName=lead.name,
                         phone=normalized_phone,
-                        email=lead_data.email
+                        email=lead.email
                     )
                     patient = await patient_repo.create(db, patient_in)
             except IntegrityError:
                 # A concurrent transaction just created this patient.
-                # The nested transaction rolled back safely.
-                # We can now fetch the patient.
-                patient = await patient_repo.get_by_phone(db, normalized_phone)
+                patient = await patient_repo.get_by_phone_and_name(db, normalized_phone, lead.name)
                 if not patient:
-                    # Should theoretically never happen unless deleted immediately
                     raise RuntimeError("Failed to resolve patient during concurrent booking")
 
-        # 2. Create Lead
-        import uuid
-        from fastapi import HTTPException
-        from sqlalchemy import select
-        from app.models import Lead
-        
-        from app.repositories import lead_repo
-        
-        internal_lead = LeadCreate(
-            name=lead_data.name,
-            email=lead_data.email,
-            phone=normalized_phone,
-            desiredTreatment=lead_data.desiredTreatment,
-            notes=None,
-            idempotencyKey=uuid.UUID(idempotency_key),
-            payloadFingerprint=fingerprint
-        )
-        
-        try:
-            async with db.begin_nested():
-                internal_lead_created = await lead_repo.create(db, internal_lead)
-        except IntegrityError as e:
-            if 'idempotencyKey' in str(e):
-                # We found a concurrent or past identical request!
-                existing = await db.execute(select(Lead).where(Lead.idempotencyKey == uuid.UUID(idempotency_key)))
-                existing_lead = existing.scalar_one()
-                if existing_lead.payloadFingerprint != fingerprint:
-                    raise HTTPException(status_code=409, detail="Idempotency key already used with a different payload.")
-                
-                # Because we caught this, we should abort the CURRENT booking attempt
-                # and just return success without executing the rest.
-                # The outer db.commit() will still run and commit the Patient if it was created, which is safe.
-                return
-            raise e
-
-        # 3. Create Appointment (if dates provided)
+        # 4. Create Appointment (if dates provided)
         apt = None
-        if lead_data.startsAt and lead_data.endsAt:
-            if lead_data.endsAt <= lead_data.startsAt:
-                raise ValueError("End time must be strictly after start time")
+        if lead_data.startsAt:
+            # Auto-calculate end time (1 hour duration)
+            from datetime import timedelta
+            endsAt = lead_data.startsAt + timedelta(hours=1)
                 
             apt_in = AppointmentCreate(
                 patientId=patient.id,
                 doctorId=None,
-                treatment=lead_data.desiredTreatment or "Consultation",
+                treatment=lead.desiredTreatment or "Consultation",
                 startsAt=lead_data.startsAt,
-                endsAt=lead_data.endsAt
+                endsAt=endsAt
             )
             
-            # Create the appointment via service to ensure audit log and overlaps are handled
             apt = await appointment_service.create_appointment(db, apt_in, actor_id=None)
         
-        # 4. Create Follow-up Contact
+        # 5. Create Follow-up Contact
         from datetime import datetime, timezone
-        from app.models import Contact, ContactStatus
+        from app.models import ContactStatus
         
-        lead_id = internal_lead_created.id if 'internal_lead_created' in locals() else None
-        
-        try:
-            async with db.begin_nested():
-                contact = Contact(
-                    patientId=patient.id,
-                    leadId=lead_id,
-                    appointmentId=apt.id if apt else None,
-                    status=ContactStatus.OPEN,
-                    updatedAt=datetime.now(timezone.utc)
-                )
-                db.add(contact)
-                await db.flush()
-        except IntegrityError as e:
-            if 'Contact_leadId_key' in str(e):
-                # A contact for this lead already exists. Safe to ignore.
-                pass
-            else:
-                raise e
+        contact = Contact(
+            patientId=patient.id,
+            leadId=lead.id,
+            appointmentId=apt.id if apt else None,
+            status=ContactStatus.OPEN,
+            updatedAt=datetime.now(timezone.utc)
+        )
+        db.add(contact)
         
         await db.commit()
     except Exception as e:

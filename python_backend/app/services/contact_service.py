@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from typing import Optional, List, Tuple
 from fastapi import HTTPException
-from app.models import ContactStatus, AuditResult, Role
+from app.models import ContactStatus, AuditResult, Role, Priority
 from app.schemas.contact import ContactCreate, ContactUpdate, ContactUpdateStatus, ContactResponse, ContactPatient, ContactLead, ContactAppointment
 from app.repositories import contact_repo, audit_repo
 
@@ -15,7 +15,15 @@ def map_to_response(row: Tuple) -> ContactResponse:
         
     lead_data = None
     if lead:
-        lead_data = ContactLead(id=lead.id, status=lead.status.value, desiredTreatment=lead.desiredTreatment)
+        lead_data = ContactLead(
+            id=lead.id, 
+            name=lead.name,
+            phone=lead.phone,
+            email=lead.email,
+            status=lead.status.value, 
+            desiredTreatment=lead.desiredTreatment,
+            notes=lead.notes
+        )
         
     apt_data = None
     if appointment:
@@ -27,6 +35,8 @@ def map_to_response(row: Tuple) -> ContactResponse:
         "leadId": contact.leadId,
         "appointmentId": contact.appointmentId,
         "status": contact.status,
+        "priority": contact.priority,
+        "source": contact.source,
         "notes": contact.notes,
         "outcome": contact.outcome,
         "nextFollowUpAt": contact.nextFollowUpAt,
@@ -44,10 +54,12 @@ async def get_contacts(
     db: AsyncSession,
     skip: int = 0,
     limit: int = 100,
-    status: Optional[ContactStatus] = None,
+    status: Optional[List[ContactStatus]] = None,
+    priority: Optional[Priority] = None,
+    priority_sort: bool = False,
     q: Optional[str] = None
 ) -> Tuple[List[ContactResponse], int]:
-    rows, total = await contact_repo.get_contacts(db, skip, limit, status, q)
+    rows, total = await contact_repo.get_contacts(db, skip, limit, status, priority, priority_sort, q)
     return [map_to_response(row) for row in rows], total
 
 async def get_contact(db: AsyncSession, contact_id: UUID) -> ContactResponse:
@@ -60,6 +72,34 @@ async def create_contact(db: AsyncSession, contact_in: ContactCreate, actor_id: 
     if contact_in.patientId is None and contact_in.leadId is None and contact_in.appointmentId is None:
         raise HTTPException(status_code=422, detail="Contact must reference at least one patient, lead, or appointment.")
         
+    # Relationship validation
+    if contact_in.patientId:
+        from app.repositories import patient_repo
+        p = await patient_repo.get_by_id(db, contact_in.patientId)
+        if not p:
+            raise HTTPException(status_code=422, detail="Invalid patientId")
+            
+    if contact_in.appointmentId:
+        from app.repositories import appointment_repo
+        apt = await appointment_repo.get_by_id(db, contact_in.appointmentId)
+        if not apt:
+            raise HTTPException(status_code=422, detail="Invalid appointmentId")
+        if contact_in.patientId and apt.patientId != contact_in.patientId:
+            raise HTTPException(status_code=422, detail="Appointment does not belong to the specified patient")
+        # Auto-fill patientId if missing
+        if not contact_in.patientId:
+            contact_in.patientId = apt.patientId
+
+    if contact_in.leadId:
+        from app.repositories import lead_repo
+        lead = await lead_repo.get_by_id(db, contact_in.leadId)
+        if not lead:
+            raise HTTPException(status_code=422, detail="Invalid leadId")
+        # A lead doesn't explicitly have a patientId unless converted, but usually contacts are either lead-based OR patient-based
+        if contact_in.patientId:
+            # Maybe restrict having both unless the lead is converted to that patient?
+            pass
+
     contact = await contact_repo.create(db, contact_in)
     await audit_repo.log_event(
         db=db,
@@ -74,11 +114,9 @@ async def create_contact(db: AsyncSession, contact_in: ContactCreate, actor_id: 
     return map_to_response(row)
 
 async def update_contact(db: AsyncSession, contact_id: UUID, contact_in: ContactUpdate, actor_id: UUID) -> ContactResponse:
-    row = await contact_repo.get_by_id(db, contact_id)
-    if not row:
+    contact = await contact_repo.get_by_id_for_update(db, contact_id)
+    if not contact:
         raise HTTPException(status_code=404, detail="Contact not found")
-    
-    contact, _, _, _ = row
     
     if contact.status in TERMINAL_STATES and contact_in.nextFollowUpAt is not None:
         contact_in.nextFollowUpAt = None
@@ -101,11 +139,9 @@ async def update_contact(db: AsyncSession, contact_id: UUID, contact_in: Contact
     return map_to_response(updated_row)
 
 async def delete_contact(db: AsyncSession, contact_id: UUID, actor_id: UUID) -> None:
-    row = await contact_repo.get_by_id(db, contact_id)
-    if not row:
+    contact = await contact_repo.get_by_id_for_update(db, contact_id)
+    if not contact:
         raise HTTPException(status_code=404, detail="Contact not found")
-    
-    contact, _, _, _ = row
     
     from datetime import datetime, timezone
     contact.deletedAt = datetime.now(timezone.utc)

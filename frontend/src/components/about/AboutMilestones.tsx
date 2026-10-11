@@ -21,40 +21,40 @@ interface Milestone {
 
 const milestones: Milestone[] = [
   {
-    year: '2008',
-    title: 'Dental Surgery Distinction',
-    description: 'Graduated with clinical honors in Dental Surgery (BDS).',
+    year: '2002',
+    title: 'Graduation (BDS)',
+    description: 'Graduation BDS from KLE Dental College, Bengaluru.',
     icon: ToothIcon
   },
   {
-    year: '2010',
-    title: 'Advanced Smile Design',
-    description: 'Specialized in aesthetic smile restorations and biomimetic care.',
-    icon: SmileCurveIcon
-  },
-  {
-    year: '2012',
-    title: 'Founded Kush Dental Clinic',
-    description: 'Established Kush Dental for comfortable, gentle dental treatments.',
+    year: '2003',
+    title: 'Clinical Practice',
+    description: 'Commenced active clinical dental practice delivering comprehensive patient care.',
     icon: DentalMirrorIcon
   },
   {
     year: '2015',
-    title: '3D Guided Implants',
-    description: 'Introduced low-radiation 3D imaging and computer-guided implants.',
+    title: 'Post Graduate (MDS)',
+    description: 'Post graduate from Vydehi Dental College, Bengaluru in MDS Oral and Maxillofacial Surgery.',
+    icon: SmileCurveIcon
+  },
+  {
+    year: '2015',
+    title: 'Implantologist',
+    description: 'Certified Implantologist practicing advanced surgical and guided implantology.',
     icon: DentalImplantIcon
   },
   {
-    year: '2020',
-    title: '10,000+ Restored Smiles',
-    description: 'Surpassed 10,000 healthy, natural smiles restored for patients.',
-    icon: ToothSparkleIcon
+    year: '2016',
+    title: 'Laser Surgery',
+    description: 'Integrated advanced minimally invasive dental laser surgery protocols.',
+    icon: DentalScanIcon
   },
   {
-    year: '2024',
-    title: 'Digital Scanner Suites',
-    description: 'Integrated 3D intraoral scanners and same-day digital crown milling.',
-    icon: DentalScanIcon
+    year: '2018',
+    title: 'Hair Transplant',
+    description: 'Advanced clinical training and surgical practice in hair transplantation.',
+    icon: ToothSparkleIcon
   }
 ];
 
@@ -165,7 +165,7 @@ export const AboutMilestones = () => {
 
               return (
                 <div
-                  key={item.year}
+                  key={`${item.year}-${index}`}
                   ref={(el) => {
                     itemsRef.current[index] = el;
                   }}
@@ -187,9 +187,9 @@ export const AboutMilestones = () => {
                       isEven ? 'md:text-right' : 'md:text-left'
                     }`}
                   >
-                    <div className="bg-[#1B1C20] border border-white/10 hover:border-[#DCA51B]/60 p-6 sm:p-7 rounded-3xl group cursor-default shadow-xl hover:shadow-[0_10px_30px_rgba(220,165,27,0.12)] transition-all duration-300">
+                    <div className="bg-[#1B1C20] border border-white/10 hover:border-[#DCA51B]/70 hover:-translate-y-1 p-6 sm:p-7 rounded-3xl group cursor-default shadow-xl hover:shadow-[0_16px_36px_rgba(220,165,27,0.18)] transition-all duration-400 ease-out">
                       <div className={`flex items-center gap-2.5 mb-2 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
-                        <div className="w-8 h-8 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform shadow-inner">
+                        <div className="w-8 h-8 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] shrink-0 group-hover:scale-110 group-hover:bg-[#DCA51B] group-hover:text-[#121316] transition-all duration-300 shadow-inner">
                           <Icon className="w-4 h-4" />
                         </div>
                         <span className="font-serif font-bold text-lg sm:text-xl text-[#DCA51B] tracking-tight">

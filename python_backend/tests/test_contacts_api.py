@@ -40,7 +40,7 @@ async def test_create_contact_duplicate_lead(client: AsyncClient, staff_auth_hea
     from app.models import Lead, LeadStatus
     from datetime import datetime, timezone
     import uuid
-    l = Lead(name="Dup Test", phone="123", status=LeadStatus.NEW, createdAt=datetime.now(timezone.utc), updatedAt=datetime.now(timezone.utc))
+    l = Lead(name="Dup Test", phone="1234567890", status=LeadStatus.NEW, createdAt=datetime.now(timezone.utc), updatedAt=datetime.now(timezone.utc))
     db_session.add(l)
     await db_session.commit()
     await db_session.refresh(l)
@@ -89,7 +89,11 @@ async def test_get_contacts(client: AsyncClient, staff_auth_headers: dict, sampl
     assert response.status_code == 200
     data = response.json()
     assert data["total"] >= 1
-    assert data["data"][0]["status"] == "OPEN"
+    
+    # Find our contact in the list
+    contact_data = next((c for c in data["data"] if c["id"] == str(sample_contact.id)), None)
+    assert contact_data is not None
+    assert contact_data["status"] == "OPEN"
 
 @pytest.mark.asyncio
 async def test_get_contact_detail(client: AsyncClient, staff_auth_headers: dict, sample_contact):

@@ -8,6 +8,8 @@ interface ContactResponse {
   status: string;
   nextFollowUpAt: string | null;
   createdAt: string;
+  priority: string;
+  source: string;
   patient: { fullName: string; phone: string } | null;
   lead: { status: string; desiredTreatment: string | null } | null;
   appointment: { status: string; startsAt: string } | null;
@@ -20,7 +22,11 @@ interface ContactsData {
   data: ContactResponse[];
 }
 
-export const ContactList = () => {
+interface ContactListProps {
+  isUrgentQueue?: boolean;
+}
+
+export const ContactList = ({ isUrgentQueue = false }: ContactListProps) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState<ContactsData | null>(null);
@@ -41,7 +47,15 @@ export const ContactList = () => {
         query.append('skip', skip.toString());
         query.append('limit', limit.toString());
         if (q) query.append('q', q);
-        if (status) query.append('status', status);
+        
+        if (isUrgentQueue) {
+          query.append('priority', 'URGENT');
+          query.append('status', 'OPEN');
+          query.append('status', 'IN_PROGRESS');
+          query.append('priority_sort', 'true');
+        } else if (status) {
+          query.append('status', status);
+        }
 
         const res = await apiClient<ContactsData>(`/api/v1/contacts?${query.toString()}`);
         setData(res);
@@ -54,7 +68,7 @@ export const ContactList = () => {
       }
     };
     fetchContacts();
-  }, [q, status, page]);
+  }, [q, status, page, isUrgentQueue]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchParams(prev => {
@@ -90,8 +104,12 @@ export const ContactList = () => {
     <div className="space-y-4 sm:space-y-6 max-w-6xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">Follow-ups</h1>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">Manage patient contacts and enquiries</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">
+            {isUrgentQueue ? 'Urgent Visits' : 'Follow-ups'}
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-500 mt-0.5">
+            {isUrgentQueue ? 'Manage active urgent requests' : 'Manage patient contacts and enquiries'}
+          </p>
         </div>
       </div>
 
@@ -107,22 +125,24 @@ export const ContactList = () => {
               onChange={handleSearch}
             />
           </div>
-          <div className="w-full sm:w-52 relative group">
-            <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none group-focus-within:text-[#DCA51B] transition-colors" />
-            <select
-              className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] appearance-none transition-all cursor-pointer font-medium"
-              value={status}
-              onChange={handleStatusFilter}
-            >
-              <option value="">All Statuses</option>
-              <option value="OPEN">Open</option>
-              <option value="IN_PROGRESS">In Progress</option>
-              <option value="CONTACTED">Contacted</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="NO_RESPONSE">No Response</option>
-              <option value="CANCELLED">Cancelled</option>
-            </select>
-          </div>
+          {!isUrgentQueue && (
+            <div className="w-full sm:w-52 relative group">
+              <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none group-focus-within:text-[#DCA51B] transition-colors" />
+              <select
+                className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-[#FAF7F2] border border-[#E2DACB] rounded-xl text-xs sm:text-sm text-zinc-900 focus:ring-2 focus:ring-[#DCA51B]/30 focus:border-[#DCA51B] appearance-none transition-all cursor-pointer font-medium"
+                value={status}
+                onChange={handleStatusFilter}
+              >
+                <option value="">All Statuses</option>
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="CONTACTED">Contacted</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="NO_RESPONSE">No Response</option>
+                <option value="CANCELLED">Cancelled</option>
+              </select>
+            </div>
+          )}
         </div>
       </div>
 
@@ -135,9 +155,9 @@ export const ContactList = () => {
           <AlertCircle className="w-5 h-5 mr-2" />
           {error}
         </div>
-      ) : data?.data.length === 0 ? (
+      ) : !data?.data || data.data.length === 0 ? (
         <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] p-10 sm:p-12 text-center text-xs sm:text-sm text-zinc-500">
-          No follow-ups found matching your criteria.
+          {isUrgentQueue ? 'No active urgent visits found.' : 'No follow-ups found matching your criteria.'}
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow-xs border border-[#E8E2D5] overflow-hidden">
@@ -155,8 +175,8 @@ export const ContactList = () => {
                 {data?.data.map((contact) => (
                   <tr 
                     key={contact.id} 
-                    className="hover:bg-[#FAF7F2]/60 cursor-pointer transition-colors group"
-                    onClick={() => navigate(`/staff/contacts/${contact.id}`)}
+                    className={`hover:bg-[#FAF7F2]/60 cursor-pointer transition-colors group ${contact.priority === 'URGENT' ? 'bg-red-50/20' : ''}`}
+                    onClick={() => navigate(isUrgentQueue ? `/staff/urgent-visits/${contact.id}` : `/staff/contacts/${contact.id}`)}
                   >
                     <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -164,8 +184,13 @@ export const ContactList = () => {
                           <User className="h-4 w-4 sm:h-5 sm:w-5 text-[#8C6B14]" />
                         </div>
                         <div className="ml-3 sm:ml-4">
-                          <div className="text-xs sm:text-sm font-semibold text-zinc-900 group-hover:text-[#8C6B14] transition-colors">
+                          <div className="text-xs sm:text-sm font-semibold text-zinc-900 group-hover:text-[#8C6B14] transition-colors flex items-center gap-2">
                             {contact.patient?.fullName || 'Unknown Patient'}
+                            {contact.priority === 'URGENT' && (
+                              <span className="px-1.5 py-0.5 bg-red-100 text-red-800 text-[10px] font-bold rounded uppercase tracking-wider border border-red-200">
+                                Urgent
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] sm:text-xs text-zinc-500 flex items-center mt-0.5">
                             <Phone className="w-3 h-3 mr-1 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />

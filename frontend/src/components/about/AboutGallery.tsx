@@ -288,8 +288,9 @@ export const AboutGallery: React.FC = () => {
         </div>
 
         {/* Interactive Category Filter Pills */}
-        <div className="flex items-center justify-center gap-2 sm:gap-2.5 overflow-x-auto pb-4 mb-8 sm:mb-12 no-scrollbar reveal-up">
-          <div className="inline-flex items-center p-1.5 rounded-2xl bg-white border border-[#E8E2D5] shadow-xs">
+        <div className="w-full overflow-x-auto pb-4 mb-8 sm:mb-12 no-scrollbar reveal-up">
+          <div className="flex sm:justify-center px-4">
+            <div className="inline-flex items-center p-1.5 rounded-2xl bg-white border border-[#E8E2D5] shadow-xs w-max">
             {categories.map((category) => {
               const isActive = activeCategory === category;
               const count = category === 'View All' 
@@ -317,8 +318,9 @@ export const AboutGallery: React.FC = () => {
             })}
           </div>
         </div>
+      </div>
 
-        {/* Bento / Responsive Gallery Grid */}
+      {/* Bento / Responsive Gallery Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { apiClient } from '../../../lib/apiClient';
 import { Phone, Calendar, Clock, ArrowLeft, CheckCircle2, FileText, Loader2, AlertCircle, Trash2 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
+import { formatDateTime } from '../../../lib/formatters';
 
 interface ContactResponse {
   id: string;
@@ -11,8 +12,10 @@ interface ContactResponse {
   outcome: string | null;
   nextFollowUpAt: string | null;
   createdAt: string;
+  priority: string;
+  source: string;
   patient: { id: string; fullName: string; phone: string } | null;
-  lead: { id: string; status: string; desiredTreatment: string | null } | null;
+  lead: { id: string; name?: string; phone?: string; email?: string; notes?: string; status: string; desiredTreatment: string | null } | null;
   appointment: { id: string; status: string; startsAt: string } | null;
 }
 
@@ -27,7 +30,11 @@ const ALLOWED_TRANSITIONS: Record<string, string[]> = {
 
 const TERMINAL_STATES = ['COMPLETED', 'NO_RESPONSE', 'CANCELLED'];
 
-export const ContactDetail = () => {
+interface ContactDetailProps {
+  isUrgentQueue?: boolean;
+}
+
+export const ContactDetail = ({ isUrgentQueue = false }: ContactDetailProps) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [contact, setContact] = useState<ContactResponse | null>(null);
@@ -37,6 +44,7 @@ export const ContactDetail = () => {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const { user } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isConverting, setIsConverting] = useState(false);
 
   // Form State
   const [status, setStatus] = useState('');
@@ -66,6 +74,24 @@ export const ContactDetail = () => {
     };
     if (id) fetchContact();
   }, [id]);
+
+  const handleConvertLead = async () => {
+    if (!contact?.lead?.id) return;
+    try {
+      setIsConverting(true);
+      setError(null);
+      setSuccessMsg(null);
+      await apiClient(`/api/v1/leads/${contact.lead.id}/convert`, { method: 'POST' });
+      const res = await apiClient<ContactResponse>(`/api/v1/contacts/${id}`);
+      setContact(res);
+      setStatus(res.status);
+      setSuccessMsg('Lead successfully converted to Patient.');
+    } catch (err: any) {
+      setError(err.message || 'Failed to convert lead');
+    } finally {
+      setIsConverting(false);
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -154,11 +180,11 @@ export const ContactDetail = () => {
   return (
     <div className="space-y-4 sm:space-y-6 max-w-4xl mx-auto pb-12">
       <button
-        onClick={() => navigate('/staff/contacts')}
+        onClick={() => navigate(isUrgentQueue ? '/staff/urgent-visits' : '/staff/contacts')}
         className="group flex items-center text-xs sm:text-sm font-semibold text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4 mr-1 transition-transform group-hover:-translate-x-0.5" />
-        Back to List
+        Back to {isUrgentQueue ? 'Urgent Queue' : 'List'}
       </button>
 
       {successMsg && (
@@ -181,22 +207,56 @@ export const ContactDetail = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="h-12 w-12 sm:h-16 sm:w-16 bg-gradient-to-br from-[#E5B22D] to-[#B8871B] rounded-2xl flex items-center justify-center text-[#141518] text-xl sm:text-2xl font-bold shadow-xs">
-                {contact?.patient?.fullName.charAt(0) || 'U'}
+                {(contact?.patient?.fullName || contact?.lead?.name || 'U').charAt(0).toUpperCase()}
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">
-                  {contact?.patient?.fullName || 'Unknown Patient'}
+                <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight flex items-center gap-2">
+                  {contact?.patient?.fullName || contact?.lead?.name || 'Unknown Patient'}
+                  {contact?.priority === 'URGENT' && (
+                    <span className="px-2 py-1 bg-red-100 text-red-800 text-[10px] font-bold rounded uppercase tracking-wider border border-red-200 ml-2">
+                      Urgent Priority
+                    </span>
+                  )}
                 </h1>
                 <div className="mt-0.5 sm:mt-1 flex space-x-6 text-xs sm:text-sm text-zinc-500">
-                  <a href={`tel:${contact?.patient?.phone}`} className="group flex items-center hover:text-[#8C6B14] transition-colors">
+                  <a href={`tel:${contact?.patient?.phone || contact?.lead?.phone}`} className="group flex items-center hover:text-[#8C6B14] transition-colors">
                     <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 text-zinc-400 group-hover:text-[#DCA51B] transition-colors" />
-                    {contact?.patient?.phone || 'N/A'}
+                    {contact?.patient?.phone || contact?.lead?.phone || 'N/A'}
                   </a>
+                  {contact?.source === 'URGENT_VISIT' && (
+                    <span className="flex items-center text-red-700/80 font-medium">
+                      Source: Urgent Visit Request
+                    </span>
+                  )}
+                  {(!contact?.patient && contact?.lead?.email) && (
+                    <span className="flex items-center text-zinc-500 font-medium">
+                      Email: {contact.lead.email}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
-            {user?.role === 'DOCTOR' && (
-              <div>
+            <div className="flex gap-2">
+              {!contact?.patient && contact?.lead && (
+                <button
+                  onClick={handleConvertLead}
+                  disabled={isConverting}
+                  className="flex items-center px-4 py-2 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+                >
+                  {isConverting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
+                  Convert Lead to Patient
+                </button>
+              )}
+              {!contact?.appointment && contact?.patient && (
+                <button
+                  onClick={() => navigate(`/staff/appointments/new?patientId=${contact.patient?.id}`)}
+                  className="flex items-center px-4 py-2 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#E5B22D] via-[#DCA51B] to-[#C49216] text-[#141518] rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Create Appointment
+                </button>
+              )}
+              {user?.role === 'DOCTOR' && (
                 <button
                   onClick={handleDelete}
                   disabled={isDeleting}
@@ -205,8 +265,8 @@ export const ContactDetail = () => {
                   {isDeleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
                   Delete Follow-up
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
@@ -300,6 +360,12 @@ export const ContactDetail = () => {
                         <dd className="font-semibold text-zinc-900">{contact.lead.desiredTreatment}</dd>
                       </div>
                     )}
+                    {contact.lead.notes && (
+                      <div className="flex flex-col mt-2 pt-2 border-t border-[#E2DACB]/50">
+                        <dt className="text-zinc-500 mb-1">Problem Description</dt>
+                        <dd className="font-medium text-zinc-800 whitespace-pre-wrap">{contact.lead.notes}</dd>
+                      </div>
+                    )}
                   </dl>
                 </div>
               )}
@@ -318,9 +384,7 @@ export const ContactDetail = () => {
                       <dt className="text-zinc-500">Scheduled For</dt>
                       <dd className="font-bold text-[#8C6B14] flex items-center bg-[#FAF3E0] border border-[#DCA51B]/30 px-2.5 py-1 rounded-lg text-xs">
                         <Clock className="w-3.5 h-3.5 mr-1 text-[#DCA51B] anim-icon-float" />
-                        {new Date(contact.appointment.startsAt).toLocaleString(undefined, {
-                          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                        })}
+                        {formatDateTime(contact.appointment.startsAt)}
                       </dd>
                     </div>
                   </dl>

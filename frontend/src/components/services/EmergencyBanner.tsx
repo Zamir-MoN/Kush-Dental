@@ -40,15 +40,15 @@ export const EmergencyBanner = () => {
           
           <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-4 shrink-0 w-full sm:w-auto">
             <a 
-              href="tel:+13105550199"
+              href="tel:+919341131921"
               className="btn-gold-luxury group cursor-pointer w-full sm:w-auto"
             >
               <Phone className="w-4 h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
-              <span>CALL DIRECT: (310) 555-0199</span>
+              <span>CALL DIRECT: 9341131921</span>
             </a>
 
             <Link
-              to="/book"
+              to="/urgent-visit"
               className="text-white hover:text-[#DCA51B] font-sans font-bold text-xs uppercase tracking-wider px-7 py-3.5 border border-white/20 hover:border-[#DCA51B] rounded-xl transition-colors text-center w-full sm:w-auto cursor-pointer"
             >
               REQUEST URGENT VISIT

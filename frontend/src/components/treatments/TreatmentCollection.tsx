@@ -53,22 +53,26 @@ export const TreatmentCollection = () => {
             return (
               <div 
                 key={i} 
-                className={`border rounded-2xl transition-all duration-300 ${
+                className={`border rounded-2xl transition-all duration-300 group hover:-translate-y-0.5 ${
                   isExpanded 
-                    ? 'bg-white shadow-md border-[#DCA51B]/50' 
-                    : 'bg-white/60 hover:bg-white border-[#E8E2D5]'
+                    ? 'bg-white shadow-lg border-[#DCA51B]' 
+                    : 'bg-white/70 hover:bg-white border-[#E8E2D5] hover:border-[#DCA51B]/50 hover:shadow-md'
                 }`}
               >
-                <div 
-                  className="py-4 sm:py-4.5 px-4 sm:px-6 flex justify-between items-center cursor-pointer select-none"
+                <button
+                  id={`accordion-button-${i}`}
+                  type="button"
+                  className="w-full text-left py-4 sm:py-4.5 px-4 sm:px-6 flex justify-between items-center cursor-pointer select-none focus:outline-none focus:ring-2 focus:ring-[#DCA51B] focus:ring-inset rounded-2xl"
                   onClick={() => toggleAccordion(i)}
+                  aria-expanded={isExpanded}
+                  aria-controls={`accordion-panel-${i}`}
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-[#FAF7F2] border border-[#E8E2D5] text-[#DCA51B] flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:border-[#DCA51B]/50 transition-all duration-300">
                       <TreatmentIcon className="w-4 h-4" />
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-                      <span className="font-serif font-bold text-base sm:text-lg text-zinc-900">
+                      <span className="font-serif font-bold text-base sm:text-lg text-zinc-900 group-hover:text-[#DCA51B] transition-colors duration-200">
                         0{i + 1}. {treatment.title}
                       </span>
                       <span className="text-[10px] sm:text-xs font-sans font-bold tracking-widest text-[#DCA51B] uppercase">
@@ -81,16 +85,19 @@ export const TreatmentCollection = () => {
                     animate={{ rotate: isExpanded ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      isExpanded ? 'bg-[#DCA51B] text-[#141518]' : 'bg-[#FAF7F2] text-zinc-600'
+                      isExpanded ? 'bg-[#DCA51B] text-[#141518]' : 'bg-[#FAF7F2] text-zinc-600 group-hover:bg-[#FAF0D8] group-hover:text-[#141518]'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </motion.div>
-                </div>
+                </button>
                 
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div 
+                      id={`accordion-panel-${i}`}
+                      role="region"
+                      aria-labelledby={`accordion-button-${i}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

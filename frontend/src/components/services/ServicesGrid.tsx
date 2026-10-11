@@ -2,19 +2,25 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollReveal } from '../../hooks/useGsap';
-import { ArrowRight, ArrowUpRight, CheckCircle2, X, Calendar, Sparkles } from 'lucide-react';
+import { useModalAccessibility } from '../../hooks/useModalAccessibility';
+import { ArrowRight, ArrowUpRight, CheckCircle2, X, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { 
   DentalMirrorIcon, 
   ToothSparkleIcon, 
   DentalImplantIcon, 
   DentalCrownIcon, 
-  ToothIcon 
+  ToothIcon,
+  SmileCurveIcon,
+  DentalScanIcon,
+  DentalShieldIcon 
 } from '../common/DentalIcons';
+import { services as allDataServices } from '../../data';
 
 interface ServiceItem {
   id: number;
   number: string;
+  slug: string;
   title: string;
   category: string;
   categoryLabel: string;
@@ -30,112 +36,63 @@ interface ServiceItem {
   imgPosition?: string;
 }
 
-const services: ServiceItem[] = [
-  {
-    id: 1,
-    number: '01',
-    title: 'Professional Teeth Cleaning',
-    category: 'Preventive',
-    categoryLabel: 'PREVENTIVE CARE',
-    desc: 'Ultrasonic cleaning and polishing to protect your gum health.',
-    benefits: ['Plaque & tartar removal', 'Gum health check', 'Fresher breath'],
-    duration: '45–60 mins',
-    icon: ToothSparkleIcon,
-    img: '/images/services/service-cleaning.jpg',
-    isDark: true,
-    inverted: false,
-    scriptText: 'Cleaner\nHealthier\nHappier',
-    scriptPosition: 'bottom-right'
-  },
-  {
-    id: 2,
-    number: '02',
-    title: 'Laser Teeth Whitening',
-    category: 'Cosmetic',
-    categoryLabel: 'COSMETIC',
-    desc: 'In-office whitening brightening teeth up to 8 shades in one visit.',
-    benefits: ['Brighter, whiter smile', 'Safe & painless procedure', 'Instant confidence boost'],
-    duration: '60 mins',
-    icon: Sparkles,
-    img: '/images/services/service-whitening.jpg',
-    isDark: false,
-    inverted: false,
-    scriptText: 'Whiter\nBrighter\nYou',
-    scriptPosition: 'top-right'
-  },
-  {
-    id: 3,
-    number: '03',
-    title: '3D Dental Implants',
-    category: 'Surgical',
-    categoryLabel: 'SURGICAL',
-    desc: 'Computer-guided dental implants for permanent, natural function.',
-    benefits: ['Looks and feels like real teeth', 'Permanent bone-safe solution', 'Advanced 3D planning'],
-    duration: 'Phased Care',
-    icon: DentalImplantIcon,
-    img: '/images/services/service-implants.jpg',
-    isDark: false,
-    inverted: true,
-    scriptText: 'A Stronger\nSmile for\nLife',
-    scriptPosition: 'top-left'
-  },
-  {
-    id: 4,
-    number: '04',
-    title: 'Custom Porcelain Veneers',
-    category: 'Cosmetic',
-    categoryLabel: 'COSMETIC',
-    desc: 'Custom porcelain covers to fix chips and discoloration naturally.',
-    benefits: ['Stain-resistant porcelain', 'Natural-looking results', 'Long-lasting smile'],
-    duration: '2 Visits',
-    icon: ToothIcon,
-    img: '/images/services/restorative care.png',
-    isDark: true,
-    inverted: true,
-    scriptText: 'Natural\nBeautiful\nSmile',
-    scriptPosition: 'bottom-left'
-  },
-  {
-    id: 5,
-    number: '05',
-    title: 'Wisdom Tooth Removal',
-    category: 'Surgical',
-    categoryLabel: 'SURGICAL',
-    desc: 'Comfortable wisdom tooth extractions with gentle sedation.',
-    benefits: ['Calm sedation options', 'Fast and gentle recovery', 'Prevents misalignment'],
-    duration: '45 mins',
-    icon: DentalMirrorIcon,
-    img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=900&auto=format&fit=crop',
-    isDark: true,
-    inverted: false,
-    scriptText: 'Gentle\nSafe\nComfort',
-    scriptPosition: 'bottom-right'
-  },
-  {
-    id: 6,
-    number: '06',
-    title: 'Gentle Root Canal Therapy',
-    category: 'Restorative',
-    categoryLabel: 'RESTORATIVE',
-    desc: 'Pain-free care to treat tooth infection and save your natural tooth.',
-    benefits: ['Painless local numbing', 'Saves your natural tooth', 'Reinforces tooth structure'],
-    duration: '1–2 Visits',
-    icon: DentalCrownIcon,
-    img: '/images/services/root canal.png',
-    isDark: false,
-    inverted: false,
-    imgPosition: '85% center',
-    scriptText: 'Painless\nLasting\nRelief',
-    scriptPosition: 'bottom-right'
+const getServiceGridIcon = (id: number) => {
+  switch (id) {
+    case 1: return DentalImplantIcon; // 01 Dental Implants
+    case 2: return SmileCurveIcon;    // 02 Smile Design
+    case 3: return ToothSparkleIcon;  // 03 Clear Aligners
+    case 4: return DentalCrownIcon;    // 04 Root Canal Treatment
+    case 5: return DentalCrownIcon;    // 05 Crown and Bridge
+    case 6: return DentalMirrorIcon;   // 06 Wisdom Tooth Removal
+    case 7: return DentalMirrorIcon;   // 07 Minor Oral Surgery
+    case 8: return ToothSparkleIcon;   // 08 Teeth Whitening
+    case 9: return ToothIcon;          // 09 Dental Cavity Restoration
+    case 10: return ToothSparkleIcon;  // 10 Laser Soft Tissue Treatment
+    case 11: return DentalScanIcon;    // 11 Diagnostic OPG and CBCT
+    case 12: return DentalShieldIcon;  // 12 Geriatric Dental Care
+    default: return ToothIcon;
   }
-];
+};
+
+const scriptTexts: Record<number, { text: string; position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }> = {
+  1: { text: 'Permanent\nNatural\nStrength', position: 'bottom-right' },
+  2: { text: 'Harmonious\nRadiant\nConfidence', position: 'top-right' },
+  3: { text: 'Discreet\nWire-Free\nComfort', position: 'bottom-left' },
+  4: { text: 'Painless\nLasting\nRelief', position: 'bottom-right' },
+  5: { text: 'Durable\nSeamless\nCeramics', position: 'top-left' },
+  6: { text: 'Gentle\nSafe\nRecovery', position: 'bottom-right' },
+  7: { text: 'Hospital\nSterile\nPrecision', position: 'bottom-left' },
+  8: { text: 'Whiter\nBrighter\nYou', position: 'top-right' },
+  9: { text: 'Invisible\nNatural\nEnamel', position: 'bottom-right' },
+  10: { text: 'Gentle\nDiode\nLaser', position: 'top-left' },
+  11: { text: '3D Digital\nSub-Millimeter\nClarity', position: 'bottom-right' },
+  12: { text: 'Compassionate\nSenior\nCare', position: 'bottom-left' }
+};
+
+const services: ServiceItem[] = allDataServices.map((s, idx) => ({
+  id: s.id,
+  number: s.number,
+  slug: s.slug,
+  title: s.title,
+  category: s.category,
+  categoryLabel: s.categoryLabel,
+  desc: s.description,
+  benefits: s.benefits,
+  duration: s.duration,
+  icon: getServiceGridIcon(s.id),
+  img: s.image,
+  isDark: idx % 2 === 0, // Alternates dark & light cards for luxury visual rhythm
+  inverted: idx % 2 !== 0,
+  scriptText: scriptTexts[s.id]?.text || 'Personalized\nGentle\nCare',
+  scriptPosition: scriptTexts[s.id]?.position || 'bottom-right'
+}));
 
 const categories = [
-  { name: 'All Services', count: 6 },
-  { name: 'Cosmetic', count: 2 },
-  { name: 'Preventive', count: 1 },
-  { name: 'Restorative', count: 1 },
-  { name: 'Surgical', count: 2 }
+  { name: 'All Services', count: services.length },
+  { name: 'Surgical', count: services.filter(s => s.category === 'Surgical').length },
+  { name: 'Cosmetic', count: services.filter(s => s.category === 'Cosmetic').length },
+  { name: 'Restorative', count: services.filter(s => s.category === 'Restorative').length },
+  { name: 'Preventive', count: services.filter(s => s.category === 'Preventive').length }
 ];
 
 export const ServicesGrid = () => {
@@ -143,6 +100,11 @@ export const ServicesGrid = () => {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
+
+  const { modalRef } = useModalAccessibility({
+    isOpen: !!selectedService,
+    onClose: () => setSelectedService(null),
+  });
 
   useEffect(() => {
     if (selectedService) {
@@ -154,6 +116,19 @@ export const ServicesGrid = () => {
       document.body.style.overflow = '';
     };
   }, [selectedService]);
+
+  // Smooth scroll to targeted service if URL has hash (e.g., #service-01)
+  useEffect(() => {
+    if (window.location.hash) {
+      const targetId = window.location.hash.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+      }
+    }
+  }, []);
 
   const filteredServices = services.filter(s => 
     activeCategory === 'All Services' || s.category === activeCategory
@@ -207,19 +182,32 @@ export const ServicesGrid = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className={`w-full ${filteredServices.length === 1 ? 'max-w-[700px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 lg:gap-8'}`}
+            className={`w-full ${filteredServices.length === 1 ? 'max-w-[700px] mx-auto' : 'grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 lg:gap-8 items-stretch'}`}
           >
-            {filteredServices.map((service) => {
+            {filteredServices.map((service, index) => {
               const Icon = service.icon;
-              const isDark = service.isDark;
-              const isInverted = service.inverted;
+              // TRUE ZIGZAG ARCHITECTURAL RHYTHM:
+              // Row 0, 2, 4 (even rows): Both cards have [Content Left | Image Right] (isInverted = false)
+              //   - Left Col (col 0): Dark Obsidian (#141518)
+              //   - Right Col (col 1): Pure White (#FFFFFF)
+              // Row 1, 3, 5 (odd rows): Both cards have [Image Left | Content Right] (isInverted = true)
+              //   - Left Col (col 0): Pure White (#FFFFFF)
+              //   - Right Col (col 1): Dark Obsidian (#141518)
+              const row = Math.floor(index / 2);
+              const col = index % 2;
+              const isDark = (row + col) % 2 === 0;
+              const isInverted = row % 2 === 1;
               const cardBg = isDark ? '#141518' : '#FFFFFF';
+              const scriptPos = !isInverted 
+                ? (isDark ? 'bottom-right' : 'top-right')
+                : (isDark ? 'bottom-left' : 'top-left');
 
               return (
                 <div
                   key={service.id}
+                  id={`service-${service.number}`}
                   onClick={() => setSelectedService(service)}
-                  className={`relative rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border group cursor-pointer flex flex-col ${
+                  className={`relative rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 ease-out border group cursor-pointer flex flex-col h-full scroll-mt-32 ${
                     isInverted ? 'sm:flex-row-reverse' : 'sm:flex-row'
                   } ${
                     isDark 
@@ -229,7 +217,7 @@ export const ServicesGrid = () => {
                 >
                   
                   {/* Content Column */}
-                  <div className={`w-full sm:w-[55%] lg:w-[56%] p-5 sm:p-6 lg:p-7.5 flex flex-col justify-between relative z-10 ${
+                  <div className={`w-full sm:w-[55%] lg:w-[56%] p-5 sm:p-6 lg:p-7.5 flex flex-col justify-between h-full relative z-10 ${
                     isInverted ? 'sm:pl-6 lg:pl-8' : 'sm:pr-4 lg:pr-6'
                   }`}>
                     <div>
@@ -262,7 +250,7 @@ export const ServicesGrid = () => {
                         {service.benefits.map((benefit, idx) => (
                           <div key={idx} className="flex items-center gap-2">
                             <CheckCircle2 className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                            <span className={`text-xs sm:text-[12.5px] font-sans font-normal truncate ${
+                            <span className={`text-xs sm:text-[12.5px] font-sans font-normal leading-snug ${
                               isDark ? 'text-zinc-200' : 'text-zinc-700'
                             }`}>
                               {benefit}
@@ -279,27 +267,27 @@ export const ServicesGrid = () => {
                     >
                       <Link
                         to="/book"
-                        className="bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 font-sans font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs uppercase tracking-wider inline-flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all active:scale-95"
+                        className="btn-gold-solid px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs uppercase tracking-wider inline-flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all"
                       >
                         <span>BOOK VISIT</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        <ArrowRight className="w-3.5 h-3.5 shrink-0 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
 
                       <button
                         type="button"
                         onClick={() => setSelectedService(service)}
-                        className={`text-[11px] sm:text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1 transition-colors cursor-pointer py-1 ${
+                        className={`text-[11px] sm:text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1 transition-all duration-200 cursor-pointer py-1 group/btn ${
                           isDark ? 'text-white/85 hover:text-[#DCA51B]' : 'text-zinc-700 hover:text-[#DCA51B]'
                         }`}
                       >
                         <span>VIEW DETAILS</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-[#DCA51B]" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-[#DCA51B] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                       </button>
                     </div>
                   </div>
 
                   {/* Image Column */}
-                  <div className={`w-full sm:w-[45%] lg:w-[44%] min-h-[200px] sm:min-h-0 relative overflow-hidden shrink-0 ${
+                  <div className={`w-full sm:w-[45%] lg:w-[44%] min-h-[220px] sm:min-h-0 h-full relative overflow-hidden shrink-0 ${
                     isDark ? 'bg-[#141518]' : 'bg-white'
                   }`}>
                     <img 
@@ -310,16 +298,20 @@ export const ServicesGrid = () => {
                     />
 
                     {/* Soft gradient overlay for contrast */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none" />
+                    <div className={`absolute inset-0 pointer-events-none ${
+                      isDark 
+                        ? 'bg-gradient-to-t from-black/65 via-black/15 to-transparent' 
+                        : 'bg-gradient-to-b from-white/20 via-transparent to-transparent'
+                    }`} />
 
                     {/* Cursive Handwriting Script Text */}
                     {service.scriptText && (
                       <div className={`absolute z-10 pointer-events-none font-script text-2xl sm:text-[28px] lg:text-3xl leading-[1.1] font-bold select-none ${
-                        service.scriptPosition === 'top-left'
-                          ? 'top-4 left-4 sm:left-5 text-left text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
-                          : service.scriptPosition === 'top-right'
-                            ? 'top-4 right-4 sm:right-5 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)]'
-                            : service.scriptPosition === 'bottom-left'
+                        scriptPos === 'top-left'
+                          ? 'top-4 left-4 sm:left-5 text-left text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.95)]'
+                          : scriptPos === 'top-right'
+                            ? 'top-4 right-4 sm:right-5 text-right text-zinc-900 drop-shadow-[0_1px_4px_rgba(255,255,255,0.95)]'
+                            : scriptPos === 'bottom-left'
                               ? 'bottom-4 left-4 sm:left-5 text-left text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
                               : 'bottom-4 right-4 sm:right-5 text-right text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
                       }`}>
@@ -384,6 +376,10 @@ export const ServicesGrid = () => {
                 className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-md cursor-pointer"
               />
               <motion.div
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-title"
                 initial={{ top: '100%', left: '50%', x: '-50%', y: 0, opacity: 0 }}
                 animate={{ top: '50%', left: '50%', x: '-50%', y: '-50%', opacity: 1 }}
                 exit={{ top: '100%', left: '50%', x: '-50%', y: 0, opacity: 0 }}
@@ -404,7 +400,7 @@ export const ServicesGrid = () => {
                     {selectedService.categoryLabel}
                   </span>
                   
-                  <h2 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-[#141518] pr-10">
+                  <h2 id="modal-title" className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 text-[#141518] pr-10">
                     {selectedService.title}
                   </h2>
                   
@@ -435,7 +431,7 @@ export const ServicesGrid = () => {
                   <Link 
                     to="/book" 
                     onClick={() => setSelectedService(null)}
-                    className="bg-[#DCA51B] hover:bg-[#E5B22E] text-zinc-950 px-7 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans text-sm font-bold"
+                    className="btn-gold-luxury px-7 py-3 rounded-xl shadow-md transition-all inline-flex items-center gap-2 font-sans text-sm font-bold uppercase tracking-wider"
                   >
                     <Calendar className="w-4 h-4 text-[#141518]" />
                     <span>BOOK CONSULTATION</span>

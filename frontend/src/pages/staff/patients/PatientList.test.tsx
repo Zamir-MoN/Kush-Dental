@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { PatientList } from './PatientList';
 import { apiClient } from '../../../lib/apiClient';
@@ -162,7 +162,9 @@ describe('PatientList', () => {
     });
     
     // Resolve promise to clean up
-    resolvePage2!({ total: 100, skip: 50, limit: 50, data: [] });
+    await act(async () => {
+      resolvePage2!({ total: 100, skip: 50, limit: 50, data: [] });
+    });
   });
 
   it('stops fetching when hasMore is false', async () => {
@@ -267,7 +269,9 @@ describe('PatientList', () => {
     fireEvent.change(input, { target: { value: '9625' } });
     
     // 4. Resolve the 9625 request first
-    resolveQ2!({ total: 1, skip: 0, limit: 50, data: [{ id: '2', fullName: 'Q2 Patient', phone: '9625' }] });
+    await act(async () => {
+      resolveQ2!({ total: 1, skip: 0, limit: 50, data: [{ id: '2', fullName: 'Q2 Patient', phone: '9625' }] });
+    });
     
     // 5. Verify 9625 patient appears
     await waitFor(() => {
@@ -275,7 +279,9 @@ describe('PatientList', () => {
     });
     
     // 6. Resolve the old 962 request afterward
-    resolveQ1!({ total: 1, skip: 0, limit: 50, data: [{ id: '1', fullName: 'Q1 Patient', phone: '962' }] });
+    await act(async () => {
+      resolveQ1!({ total: 1, skip: 0, limit: 50, data: [{ id: '1', fullName: 'Q1 Patient', phone: '962' }] });
+    });
     
     // 7. Verify the old 962 result DOES NOT overwrite the 9625 result
     await new Promise(r => setTimeout(r, 100)); // Wait to ensure state doesn't change
@@ -329,7 +335,9 @@ describe('PatientList', () => {
     });
 
     // Resolve page 2
-    resolvePage2!({ total: 100, skip: 50, limit: 50, data: [{ id: '2', fullName: 'Patient 2', phone: '456' }] });
+    await act(async () => {
+      resolvePage2!({ total: 100, skip: 50, limit: 50, data: [{ id: '2', fullName: 'Patient 2', phone: '456' }] });
+    });
 
     // Verify spinner disappears and page 2 appends
     await waitFor(() => {

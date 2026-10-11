@@ -8,7 +8,7 @@ from app.schemas.user import UserUpdate, UserResponse
 
 async def update_user(db: AsyncSession, user_id: UUID, update_data: UserUpdate, actor_id: UUID) -> UserResponse:
     try:
-        user = await user_repo.get_by_id(db, user_id)
+        user = await user_repo.get_by_id_for_update(db, user_id)
         if not user or user.deletedAt:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
             
@@ -42,7 +42,7 @@ async def deactivate_user(db: AsyncSession, user_id: UUID, actor_id: UUID) -> No
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Cannot deactivate own account")
 
     try:
-        user = await user_repo.get_by_id(db, user_id)
+        user = await user_repo.get_by_id_for_update(db, user_id)
         if not user or user.deletedAt:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 

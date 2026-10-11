@@ -1,0 +1,58 @@
+name: Security Checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  audit-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install Dependencies
+        run: npm ci
+      - name: Audit Dependencies
+        run: npm audit --audit-level=high
+      - name: Run Frontend Tests
+        run: npm run test
+
+  audit-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python_backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Audit Python Dependencies
+        run: pip install pip-audit && pip-audit -r requirements.txt
+      - name: Run Backend Tests
+        run: NODE_ENV=test PYTHONPATH=. pytest tests/ -v
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Detect accidentally tracked .env files
+        run: |
+          if git ls-files | grep -E '\.env$'; then
+            echo "Error: Tracked .env files discovered!"
+            exit 1
+          fi

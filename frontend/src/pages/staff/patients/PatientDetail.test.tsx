@@ -33,8 +33,8 @@ describe('PatientDetail', () => {
 
     vi.mocked(apiClient).mockImplementation(async (url) => {
       if (url.includes('/patients/123')) return mockPatient;
-      if (url.includes('/appointments?patientId=123')) return mockAppointments;
-      return [];
+      if (url.includes('/appointments?patientId=123')) return { data: mockAppointments, total: 2, skip: 0, limit: 5 };
+      return { data: [], total: 0, skip: 0, limit: 5 };
     });
 
     renderComponent();

@@ -33,7 +33,7 @@ This document breaks the backend implementation into safe, verifiable phases.
 - [x] Run initial migration.
 
 ### Phase 2 Environment Report
-- **VPS Environment**: `ayan` (51.20.121.253) running Ubuntu 22.04 LTS.
+- **VPS Environment**: `ayan` (3.109.4.37) running Ubuntu 22.04 LTS.
 - **Backend Port**: `8010` (Managed via PM2 `kush-dental-dev`).
 - **PostgreSQL Database Name**: `kush_dental_dev` (Local user `kush_dental_dev`).
 - **Migration Status**: Completed successfully using `npx prisma migrate deploy`. GiST exclusion constraint verified natively in PostgreSQL.

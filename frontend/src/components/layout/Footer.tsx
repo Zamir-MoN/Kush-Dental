@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BrandLogo } from './BrandLogo';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
 
 export const Footer = () => {
   const location = useLocation();
@@ -28,10 +28,10 @@ export const Footer = () => {
             {/* Social Icons */}
             <div className="flex items-center gap-3">
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/kush_dentalclinic" 
                 target="_blank" 
-                rel="noreferrer" 
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-[#DCA51B] hover:border-[#DCA51B] transition-colors"
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-[#141518] hover:bg-[#DCA51B] hover:border-[#DCA51B] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(220,165,27,0.35)] transition-all duration-300"
                 aria-label="Instagram"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -39,25 +39,14 @@ export const Footer = () => {
                 </svg>
               </a>
               <a 
-                href="https://facebook.com" 
+                href="https://wa.me/919341131921" 
                 target="_blank" 
-                rel="noreferrer" 
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-[#DCA51B] hover:border-[#DCA51B] transition-colors"
-                aria-label="Facebook"
+                rel="noopener noreferrer" 
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-[#141518] hover:bg-[#DCA51B] hover:border-[#DCA51B] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(220,165,27,0.35)] transition-all duration-300"
+                aria-label="WhatsApp"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-              </a>
-              <a 
-                href="https://linkedin.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 hover:text-[#DCA51B] hover:border-[#DCA51B] transition-colors"
-                aria-label="LinkedIn"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  <path d="M12.031 0C5.396 0 .012 5.385.012 12.02c0 2.122.553 4.195 1.603 6.01L0 24l6.115-1.604c1.764.954 3.756 1.458 5.916 1.458 6.635 0 12.02-5.385 12.02-12.02S18.666 0 12.031 0zm0 21.84c-1.785 0-3.535-.48-5.07-1.39l-.364-.216-3.77.99.99-3.676-.237-.378c-.997-1.59-1.524-3.427-1.524-5.312 0-5.518 4.492-10.01 10.01-10.01 5.517 0 10.009 4.492 10.009 10.01s-4.492 10.01-10.009 10.01zm5.495-7.514c-.301-.151-1.785-.882-2.062-.983-.277-.1-.478-.15-.679.151-.2.302-.779.983-.955 1.184-.176.202-.352.227-.653.076-1.566-.788-2.684-1.427-3.69-2.909-.258-.379.258-.352.846-1.53.076-.151.038-.277-.038-.428-.075-.15-.679-1.637-.93-2.241-.244-.59-.492-.51-.679-.52h-.578c-.201 0-.527.076-.804.378-.276.302-1.055 1.032-1.055 2.518 0 1.486 1.08 2.922 1.231 3.123.15.2 2.13 3.254 5.161 4.561 2.052.883 2.825.955 3.864.793 1.155-.181 2.228-.912 2.535-1.794.306-.882.306-1.637.214-1.794-.092-.151-.343-.227-.644-.378z"/>
                 </svg>
               </a>
             </div>
@@ -69,11 +58,11 @@ export const Footer = () => {
               QUICK LINKS
             </h4>
             <nav className="text-zinc-400 text-sm flex flex-col space-y-3.5 font-sans">
-              <Link to="/" className="hover:text-white transition-colors w-max">Home</Link>
-              <Link to="/services" className="hover:text-white transition-colors w-max">Services</Link>
-              <Link to="/about" className="hover:text-white transition-colors w-max">About Us</Link>
-              <Link to="/blog" className="hover:text-white transition-colors w-max">Journal & Blog</Link>
-              <Link to="/book" className="hover:text-white transition-colors w-max">Book Consultation</Link>
+              <Link to="/" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Home</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Services</Link>
+              <Link to="/about" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">About Us</Link>
+              <Link to="/blog" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Journal & Blog</Link>
+              <Link to="/book" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Book Consultation</Link>
             </nav>
           </div>
 
@@ -83,11 +72,11 @@ export const Footer = () => {
               TREATMENTS
             </h4>
             <nav className="text-zinc-400 text-sm flex flex-col space-y-3.5 font-sans">
-              <Link to="/services" className="hover:text-white transition-colors w-max">Porcelain Veneers</Link>
-              <Link to="/services" className="hover:text-white transition-colors w-max">Dental Implants</Link>
-              <Link to="/services" className="hover:text-white transition-colors w-max">Clear Aligners</Link>
-              <Link to="/services" className="hover:text-white transition-colors w-max">Smile Makeovers</Link>
-              <Link to="/services" className="hover:text-white transition-colors w-max">Ceramic Crowns</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Dental Implants</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Smile Design</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Clear Aligners</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Root Canal Care</Link>
+              <Link to="/services" className="hover:text-[#DCA51B] hover:translate-x-1.5 transition-all duration-200 w-max inline-block">Crown & Bridge</Link>
             </nav>
           </div>
 
@@ -97,21 +86,17 @@ export const Footer = () => {
               CLINIC & HOURS
             </h4>
             <div className="text-zinc-400 text-sm space-y-4 font-sans">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#DCA51B] shrink-0 mt-1" />
-                <span>123 Luxury Lane, Suite 100, Beverly Hills, CA 90210</span>
+              <div className="flex items-start gap-3 group">
+                <MapPin className="w-4 h-4 text-[#DCA51B] shrink-0 mt-1 group-hover:scale-110 transition-transform duration-200" />
+                <span className="group-hover:text-zinc-200 transition-colors">Kush Dental Clinic, Marathahalli, Bangalore</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                <span>+1 (310) 555-0199</span>
+              <div className="flex items-center gap-3 group">
+                <Phone className="w-4 h-4 text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform duration-200" />
+                <a href="tel:9341131921" className="hover:text-[#DCA51B] transition-colors">9341131921</a>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#DCA51B] shrink-0" />
-                <span>concierge@kushdental.com</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-4 h-4 text-[#DCA51B] shrink-0 mt-1" />
-                <span>Mon – Sat: 8:00 AM – 7:00 PM<br />Sunday: By Appointment</span>
+              <div className="flex items-center gap-3 group">
+                <Mail className="w-4 h-4 text-[#DCA51B] shrink-0 group-hover:scale-110 transition-transform duration-200" />
+                <a href="mailto:bhdental23@gmail.com" className="hover:text-[#DCA51B] transition-colors">bhdental23@gmail.com</a>
               </div>
             </div>
           </div>
@@ -123,8 +108,8 @@ export const Footer = () => {
           <p>© {new Date().getFullYear()} Kush Dental Clinic. All Rights Reserved.</p>
           
           <div className="flex items-center gap-6">
-            <Link to="/" className="hover:text-zinc-300 transition-colors">Privacy Policy</Link>
-            <Link to="/" className="hover:text-zinc-300 transition-colors">Terms of Service</Link>
+            <Link to="/privacy-policy" className="hover:text-zinc-300 transition-colors">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-zinc-300 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

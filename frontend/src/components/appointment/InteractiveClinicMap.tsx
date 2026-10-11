@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Navigation, Phone, Clock } from 'lucide-react';
+import { MapPin, Navigation, Phone } from 'lucide-react';
 
 export const InteractiveClinicMap: React.FC = () => {
   return (
@@ -9,11 +9,11 @@ export const InteractiveClinicMap: React.FC = () => {
       <div className="relative w-full flex-1 min-h-[220px] overflow-hidden bg-[#f0ede6]">
         <iframe
           title="Kush Dental Clinic Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1153.0789488490495!2d77.69586481959116!3d12.95143335619798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae12787798874b%3A0x687afb0cc8d30bcf!2sKush%20Dental%20Clinic!5e1!3m2!1sen!2sin!4v1791321853313!5m2!1sen!2sin"
           className="w-full h-full border-0 absolute inset-0 grayscale-[25%] contrast-[1.05]"
           allowFullScreen
           loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
         
         {/* Floating Clinic Pin Badge */}
@@ -23,7 +23,7 @@ export const InteractiveClinicMap: React.FC = () => {
           </div>
           <div>
             <p className="font-display font-bold text-xs text-tertiary leading-tight">Kush Dental Clinic</p>
-            <p className="text-[10px] text-neutral">Medical Arcade • Suite 402</p>
+            <p className="text-[10px] text-neutral">Marathahalli, Bangalore</p>
           </div>
         </div>
       </div>
@@ -32,27 +32,20 @@ export const InteractiveClinicMap: React.FC = () => {
       <div className="bg-white p-5 sm:p-6 border-t border-border/30 flex flex-col gap-3.5 shrink-0">
         <div className="flex justify-between items-center">
           <div>
-            <h4 className="font-display font-bold text-sm sm:text-base text-tertiary">Kush Dental Clinic & Aesthetics</h4>
-            <p className="text-neutral text-xs">Suite 402, High Street Medical Arcade</p>
+            <h4 className="font-display font-bold text-sm sm:text-base text-tertiary">Kush Dental Clinic</h4>
+            <p className="text-neutral text-xs">Marathahalli, Bangalore</p>
           </div>
-          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            Open Today
-          </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-xs border-t border-border/30 pt-2.5 text-neutral">
-          <div className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-secondary shrink-0" />
-            <span>09:00 AM – 07:00 PM</span>
-          </div>
+        <div className="grid grid-cols-1 gap-2 text-xs border-t border-border/30 pt-2.5 text-neutral">
           <div className="flex items-center gap-1.5">
             <Phone className="w-3.5 h-3.5 text-secondary shrink-0" />
-            <span>+1 (800) 587-4336</span>
+            <span>9341131921</span>
           </div>
         </div>
 
         <a 
-          href="https://maps.google.com/?q=Dental+Clinic" 
+          href="https://maps.google.com/?q=Kush+Dental+Clinic,+Marathahalli,+Bangalore" 
           target="_blank" 
           rel="noopener noreferrer"
           className="btn-gold-luxury w-full py-3.5 px-4 text-xs flex items-center justify-center gap-2 text-center"

@@ -5,8 +5,8 @@ from uuid import UUID
 from app.db.session import get_db
 from app.schemas.patient import PatientCreate, PatientUpdate, PatientResponse, PatientSearchResponse
 from app.schemas.appointment import PatientLookupResponse
-from app.repositories import patient_repo
-from app.models import Role, User
+from app.models import Role, User, AuditResult
+from app.repositories import patient_repo, audit_repo
 from app.api.dependencies import require_roles, verify_csrf_token
 
 router = APIRouter()
@@ -36,22 +36,24 @@ async def search_patients(
 @router.post("", response_model=PatientResponse, status_code=status.HTTP_201_CREATED, dependencies=[Depends(verify_csrf_token)])
 async def create_patient(
     patient_in: PatientCreate,
-    current_user: User = Depends(require_roles([Role.DOCTOR])),
+    current_user: User = Depends(require_roles([Role.DOCTOR, Role.STAFF])),
     db: AsyncSession = Depends(get_db)
 ):
     try:
         patient = await patient_repo.create(db, patient_in)
+        await audit_repo.log_event(db, "PATIENT_CREATED", "Patient", AuditResult.SUCCESS, actor_id=current_user.id, resource_id=patient.id)
         await db.commit()
         return patient
     except Exception as e:
+        await audit_repo.log_event(db, "PATIENT_CREATED", "Patient", AuditResult.FAILURE, actor_id=current_user.id)
         await db.rollback()
         raise e
 
 @router.get("", response_model=List[PatientResponse])
 async def list_patients(
-    skip: int = 0,
-    limit: int = 100,
-    current_user: User = Depends(require_roles([Role.DOCTOR])),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    current_user: User = Depends(require_roles([Role.DOCTOR, Role.STAFF])),
     db: AsyncSession = Depends(get_db)
 ):
     return await patient_repo.get_all(db, skip=skip, limit=limit)
@@ -59,7 +61,7 @@ async def list_patients(
 @router.get("/{patient_id}", response_model=PatientResponse)
 async def get_patient(
     patient_id: UUID,
-    current_user: User = Depends(require_roles([Role.DOCTOR])),
+    current_user: User = Depends(require_roles([Role.DOCTOR, Role.STAFF])),
     db: AsyncSession = Depends(get_db)
 ):
     patient = await patient_repo.get_by_id(db, patient_id)
@@ -71,7 +73,7 @@ async def get_patient(
 async def update_patient(
     patient_id: UUID,
     patient_update: PatientUpdate,
-    current_user: User = Depends(require_roles([Role.DOCTOR])),
+    current_user: User = Depends(require_roles([Role.DOCTOR, Role.STAFF])),
     db: AsyncSession = Depends(get_db)
 ):
     patient = await patient_repo.get_by_id(db, patient_id)
@@ -80,8 +82,10 @@ async def update_patient(
     
     try:
         patient = await patient_repo.update(db, patient, patient_update)
+        await audit_repo.log_event(db, "PATIENT_UPDATED", "Patient", AuditResult.SUCCESS, actor_id=current_user.id, resource_id=patient.id)
         await db.commit()
         return patient
     except Exception as e:
+        await audit_repo.log_event(db, "PATIENT_UPDATED", "Patient", AuditResult.FAILURE, actor_id=current_user.id, resource_id=patient.id)
         await db.rollback()
         raise e

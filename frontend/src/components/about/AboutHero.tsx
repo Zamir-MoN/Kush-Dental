@@ -3,7 +3,6 @@ import { useScrollReveal } from '../../hooks/useGsap';
 import { Link } from 'react-router-dom';
 import { 
   Calendar, 
-  ArrowRight, 
   CheckCircle2 
 } from 'lucide-react';
 import { AnimatedWaveContours } from '../common/AnimatedWaveContours';
@@ -50,19 +49,11 @@ export const AboutHero: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center gap-3.5">
             <Link 
               to="/book" 
-              className="btn-gold-luxury group cursor-pointer py-3 px-7 text-xs sm:text-sm font-bold tracking-wider shadow-lg shadow-[#DCA51B]/20 hover:shadow-xl hover:shadow-[#DCA51B]/30"
+              className="btn-gold-solid group cursor-pointer py-3 px-7 text-xs sm:text-sm font-bold tracking-wider shadow-lg shadow-[#DCA51B]/20 hover:shadow-xl hover:shadow-[#DCA51B]/30"
             >
-              <Calendar className="w-4 h-4 text-[#141518]" />
+              <Calendar className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
               <span>BOOK A CONSULTATION</span>
             </Link>
-            
-            <a 
-              href="#standard" 
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-[#E8E2D5] hover:border-[#DCA51B]/60 bg-white hover:bg-zinc-50 text-zinc-800 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-xs"
-            >
-              <span>OUR PHILOSOPHY</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#DCA51B]" />
-            </a>
           </div>
 
         </div>
@@ -71,7 +62,7 @@ export const AboutHero: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6 items-end mb-10 sm:mb-12">
           
           {/* Card 1: Left - Operatory Suite (Span 4) */}
-          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border border-[#E8E2D5] bg-white shadow-md hover:shadow-xl transition-all duration-500 h-[220px] sm:h-[280px] reveal-up">
+          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border border-[#E8E2D5] hover:border-[#DCA51B]/60 bg-white shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 ease-out h-[220px] sm:h-[280px] reveal-up">
             <img 
               src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1200&auto=format&fit=crop" 
               alt="State of the Art Operatory Suite" 
@@ -87,11 +78,11 @@ export const AboutHero: React.FC = () => {
           </div>
 
           {/* Card 2: Center - Chief Specialist Focal Portrait (Span 4, Featured) */}
-          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border-2 border-[#DCA51B]/70 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 h-[280px] sm:h-[350px] md:h-[370px] -mt-0 md:-mt-3 reveal-up z-20">
+          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border-2 border-[#DCA51B]/70 hover:border-[#DCA51B] bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 ease-out h-[280px] sm:h-[350px] md:h-[370px] -mt-0 md:-mt-3 reveal-up z-20">
             <img 
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop" 
-              alt="Dr. Amit Kumar & Lead Specialists" 
-              className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              src="/images/doctor-amit-kumar.jpg" 
+              alt="Dr. Amit Kumar" 
+              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
 
@@ -111,7 +102,7 @@ export const AboutHero: React.FC = () => {
           </div>
 
           {/* Card 3: Right - Biomimetic Ceramic Lab (Span 4) */}
-          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border border-[#E8E2D5] bg-white shadow-md hover:shadow-xl transition-all duration-500 h-[220px] sm:h-[280px] reveal-up">
+          <div className="md:col-span-4 rounded-3xl overflow-hidden relative group border border-[#E8E2D5] hover:border-[#DCA51B]/60 bg-white shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 ease-out h-[220px] sm:h-[280px] reveal-up">
             <img 
               src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop" 
               alt="Biomimetic Ceramic Dental Studio" 

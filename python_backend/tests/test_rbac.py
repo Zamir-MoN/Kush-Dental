@@ -16,9 +16,9 @@ async def test_doctor_can_create_user(client: AsyncClient, doctor_auth_headers: 
     resp = await client.post("/api/v1/users", json=payload, headers=doctor_auth_headers)
     assert resp.status_code == 201
 
-async def test_staff_cannot_access_patients(client: AsyncClient, staff_auth_headers: dict):
+async def test_staff_can_access_patients(client: AsyncClient, staff_auth_headers: dict):
     resp = await client.get("/api/v1/patients", headers=staff_auth_headers)
-    assert resp.status_code == 403
+    assert resp.status_code == 200
 
 async def test_doctor_can_access_patients(client: AsyncClient, doctor_auth_headers: dict):
     resp = await client.get("/api/v1/patients", headers=doctor_auth_headers)
@@ -36,14 +36,14 @@ async def test_staff_cannot_delete_lead(client: AsyncClient, staff_auth_headers:
     resp = await client.delete(f"/api/v1/leads/{uuid.uuid4()}", headers=staff_auth_headers)
     assert resp.status_code == 403
 
-async def test_staff_cannot_post_patch_patients(client: AsyncClient, staff_auth_headers: dict):
+async def test_staff_can_post_patch_patients(client: AsyncClient, staff_auth_headers: dict, db_patient):
     # POST
-    resp_post = await client.post("/api/v1/patients", json={"fullName":"x", "phone":"1"}, headers=staff_auth_headers)
-    assert resp_post.status_code == 403
+    resp_post = await client.post("/api/v1/patients", json={"fullName":"x", "phone":f"99{str(uuid.uuid4().int)[:8]}"}, headers=staff_auth_headers)
+    assert resp_post.status_code == 201
     
     # PATCH
-    resp_patch = await client.patch(f"/api/v1/patients/{uuid.uuid4()}", json={"fullName":"x"}, headers=staff_auth_headers)
-    assert resp_patch.status_code == 403
+    resp_patch = await client.patch(f"/api/v1/patients/{db_patient.id}", json={"fullName":"y"}, headers=staff_auth_headers)
+    assert resp_patch.status_code == 200
 
 async def test_staff_cannot_get_user_by_id(client: AsyncClient, staff_auth_headers: dict):
     resp = await client.get(f"/api/v1/users/{uuid.uuid4()}", headers=staff_auth_headers)

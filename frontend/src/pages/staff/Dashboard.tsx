@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../../lib/apiClient';
+import { formatDate, formatTime } from '../../lib/formatters';
 import { 
   Calendar, Clock, User, CheckCircle2, 
   ChevronRight, Loader2, AlertCircle, 
-  Users, ArrowRight, TrendingUp, Sun, FileText, RefreshCw
+  Users, ArrowRight, TrendingUp, Sun, FileText, RefreshCw, AlertTriangle
 } from 'lucide-react';
 
 interface DashboardSummary {
@@ -14,6 +15,7 @@ interface DashboardSummary {
   newLeads: number;
   openFollowUps: number;
   inProgressFollowUps: number;
+  urgentVisits: number;
 }
 
 interface DashboardPatient {
@@ -33,7 +35,10 @@ interface DashboardAppointment {
   endsAt: string;
   treatment: string;
   status: string;
-  patient: DashboardPatient;
+  patient: DashboardPatient | null;
+  guestName?: string | null;
+  guestPhone?: string | null;
+  guestEmail?: string | null;
   doctor: DashboardDoctor | null;
 }
 
@@ -52,6 +57,8 @@ interface DashboardResponse {
   requestedAppointments: DashboardAppointment[];
   upcomingAppointments: DashboardAppointment[];
   recentLeads: DashboardLead[];
+  effectiveDate: string;
+  effectiveDateStr: string;
 }
 
 const WaveDecoration = ({ color, id }: { color: string; id: string }) => (
@@ -103,36 +110,47 @@ export const Dashboard = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      setIsLoading(true);
+    let isMounted = true;
+    let isFetching = false;
+
+    const fetchDashboard = async (showLoading = true) => {
+      if (isFetching) return;
+      isFetching = true;
+      if (showLoading) setIsLoading(true);
       setError(null);
       try {
         const response = await apiClient<DashboardResponse>('/api/v1/dashboard');
-        setData(response);
+        if (isMounted) setData(response);
       } catch (err: any) {
-        setError(err.message || 'Failed to load dashboard data');
+        if (isMounted) setError(err.message || 'Failed to load dashboard data');
       } finally {
-        setIsLoading(false);
+        isFetching = false;
+        if (isMounted && showLoading) {
+          setIsLoading(false);
+        }
       }
     };
 
-    fetchDashboard();
+    fetchDashboard(true);
+
+    const intervalId = setInterval(() => {
+      fetchDashboard(false);
+    }, 30000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
   }, []);
 
-  const formatDate = (dateString: string) => {
-    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(dateString));
-  };
-  
-  const formatTime = (dateString: string) => {
-    return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date(dateString));
-  };
 
-  const formattedCurrentDate = new Intl.DateTimeFormat('en-US', { 
+  const formattedCurrentDate = data?.effectiveDateStr ? new Intl.DateTimeFormat('en-US', { 
     weekday: 'short', 
     month: 'short', 
     day: 'numeric', 
-    year: 'numeric' 
-  }).format(new Date());
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).format(new Date(`${data.effectiveDateStr}T00:00:00Z`)) : '';
 
   const getStatusBadge = (status: string) => {
     if (status === 'CONFIRMED') {
@@ -207,7 +225,10 @@ export const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         {/* Card 1: Today's Appointments */}
         <div 
-          onClick={() => navigate('/staff/appointments')}
+          onClick={() => {
+            const todayStr = data?.effectiveDateStr || '';
+            if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
+          }}
           className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm relative overflow-hidden flex flex-col justify-between hover:border-[#DCA51B]/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer"
         >
           <div className="flex items-center justify-between z-10">
@@ -230,7 +251,10 @@ export const Dashboard = () => {
 
         {/* Card 2: Confirmed Today */}
         <div 
-          onClick={() => navigate('/staff/appointments')}
+          onClick={() => {
+            const todayStr = data?.effectiveDateStr || '';
+            if (todayStr) navigate(`/staff/appointments?status=CONFIRMED&startDate=${todayStr}&endDate=${todayStr}`);
+          }}
           className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm relative overflow-hidden flex flex-col justify-between hover:border-emerald-500/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer"
         >
           <div className="flex items-center justify-between z-10">
@@ -253,7 +277,7 @@ export const Dashboard = () => {
 
         {/* Card 3: Pending Requests */}
         <div 
-          onClick={() => navigate('/staff/appointments')}
+          onClick={() => navigate('/staff/appointments?status=REQUESTED')}
           className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm relative overflow-hidden flex flex-col justify-between hover:border-amber-500/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer"
         >
           <div className="flex items-center justify-between z-10">
@@ -298,11 +322,11 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* Row 2: 2 Wide Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+      {/* Row 2: 3 Wide Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
         {/* Open Follow-ups */}
         <div 
-          onClick={() => navigate('/staff/contacts')}
+          onClick={() => navigate('/staff/contacts?status=OPEN')}
           className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm flex items-center justify-between hover:border-rose-500/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer"
         >
           <div className="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -329,7 +353,7 @@ export const Dashboard = () => {
 
         {/* In-Progress Follow-ups */}
         <div 
-          onClick={() => navigate('/staff/contacts')}
+          onClick={() => navigate('/staff/contacts?status=IN_PROGRESS')}
           className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm flex items-center justify-between hover:border-sky-500/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer"
         >
           <div className="flex items-center gap-3 sm:gap-4 min-w-0">
@@ -349,6 +373,30 @@ export const Dashboard = () => {
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             <SparklineBars color="blue" />
             <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-sky-400 group-hover:bg-sky-500/20 group-hover:border-sky-500/50 transition-all duration-300 shadow-xs">
+              <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Urgent Visits */}
+        <div 
+          onClick={() => navigate('/staff/urgent-visits')}
+          className="bg-[#13151A] rounded-3xl p-4 sm:p-5 border border-[#22252E] shadow-sm flex items-center justify-between hover:border-red-500/40 hover:shadow-lg hover:shadow-black/40 transition-all duration-300 group cursor-pointer sm:col-span-2 lg:col-span-1"
+        >
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-500 shadow-xs shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
+              <AlertTriangle size={22} className="anim-icon-pulse" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-red-500 transition-colors">{data.summary.urgentVisits}</h2>
+              </div>
+              <p className="text-xs font-medium text-zinc-400 mt-0.5 truncate">Active Urgent Queue</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <SparklineBars color="rose" />
+            <button className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 group-hover:text-red-500 group-hover:bg-red-500/20 group-hover:border-red-500/50 transition-all duration-300 shadow-xs">
               <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -374,7 +422,10 @@ export const Dashboard = () => {
                 {data.todayAppointments.length} Total
               </span>
               <button 
-                onClick={() => navigate('/staff/appointments')}
+                onClick={() => {
+                  const todayStr = data?.effectiveDateStr || '';
+                  if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}&endDate=${todayStr}`);
+                }}
                 className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-[#F5C242] hover:bg-[#DCA51B]/15 hover:border-[#DCA51B]/40 transition-all shadow-xs cursor-pointer group"
                 title="View Appointments"
               >
@@ -383,7 +434,7 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar">
+          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
             {data.todayAppointments.length === 0 ? (
               <div className="px-4 sm:px-6 py-10 sm:py-12 text-center text-xs text-zinc-500 font-medium">
                 No appointments scheduled for today.
@@ -393,16 +444,16 @@ export const Dashboard = () => {
                 <button
                   key={apt.id}
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-3.5 sm:px-6 py-3 sm:py-4 hover:bg-[#181A22] transition-colors flex items-center justify-between group cursor-pointer border-l-4 border-l-[#DCA51B]"
+                  className="w-full text-left px-3.5 sm:px-6 py-3 sm:py-4 hover:bg-[#181A22] transition-colors flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 pr-2">
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 flex items-center justify-center text-[#F5C242] font-bold text-xs sm:text-sm shrink-0 shadow-xs transition-transform duration-200 group-hover:scale-105">
-                      {apt.patient.fullName.charAt(0)}
+                      {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
                         <span className="font-bold text-xs sm:text-sm text-zinc-100 truncate">
-                          {apt.patient.fullName}
+                          {apt.patient?.fullName || apt.guestName || 'Guest'}
                         </span>
                         {getStatusBadge(apt.status)}
                       </div>
@@ -451,7 +502,7 @@ export const Dashboard = () => {
                 {data.requestedAppointments.length} Total
               </span>
               <button 
-                onClick={() => navigate('/staff/appointments')}
+                onClick={() => navigate('/staff/appointments?status=REQUESTED')}
                 className="w-7 h-7 rounded-full bg-[#1C1E26] border border-[#2A2E3B] flex items-center justify-center text-zinc-400 hover:text-amber-400 hover:bg-amber-500/15 hover:border-amber-500/40 transition-all shadow-xs cursor-pointer group"
                 title="View Pending"
               >
@@ -460,7 +511,7 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar">
+          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
             {data.requestedAppointments.length === 0 ? (
               <div className="px-4 sm:px-6 py-10 sm:py-12 text-center text-xs text-zinc-500 font-medium">
                 No pending appointment requests.
@@ -470,16 +521,16 @@ export const Dashboard = () => {
                 <button
                   key={apt.id}
                   onClick={() => navigate(`/staff/appointments/${apt.id}`)}
-                  className="w-full text-left px-3.5 sm:px-6 py-3 sm:py-4 hover:bg-[#181A22] transition-colors flex items-center justify-between group cursor-pointer border-l-4 border-l-amber-500/80"
+                  className="w-full text-left px-3.5 sm:px-6 py-3 sm:py-4 hover:bg-[#181A22] transition-colors flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 pr-2">
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 flex items-center justify-center text-[#F5C242] font-bold text-xs sm:text-sm shrink-0 shadow-xs transition-transform duration-200 group-hover:scale-105">
-                      {apt.patient.fullName.charAt(0)}
+                      {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
                         <span className="font-bold text-xs sm:text-sm text-zinc-100 truncate">
-                          {apt.patient.fullName}
+                          {apt.patient?.fullName || apt.guestName || 'Guest'}
                         </span>
                         {getStatusBadge(apt.status)}
                       </div>
@@ -527,7 +578,10 @@ export const Dashboard = () => {
               </div>
             </div>
             <button 
-              onClick={() => navigate('/staff/appointments')}
+              onClick={() => {
+                const todayStr = data?.effectiveDateStr || '';
+                if (todayStr) navigate(`/staff/appointments?startDate=${todayStr}`);
+              }}
               className="px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold text-zinc-300 bg-[#1C1E26] hover:bg-[#252834] border border-[#2A2E3B] rounded-xl flex items-center gap-1 transition-all shadow-xs cursor-pointer group"
             >
               <span>View All</span>
@@ -535,7 +589,7 @@ export const Dashboard = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar">
+          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
             {data.upcomingAppointments.length === 0 ? (
               <div className="px-4 sm:px-6 py-10 sm:py-12 text-center text-xs text-zinc-500 font-medium">
                 No upcoming appointments found.
@@ -549,11 +603,11 @@ export const Dashboard = () => {
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 pr-2">
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#DCA51B]/15 border border-[#DCA51B]/35 flex items-center justify-center text-[#F5C242] font-bold text-xs sm:text-sm shrink-0 shadow-xs transition-transform duration-200 group-hover:scale-105">
-                      {apt.patient.fullName.charAt(0)}
+                      {(apt.patient?.fullName || apt.guestName || 'G').charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <div className="font-bold text-xs sm:text-sm text-zinc-100 truncate mb-1">
-                        {apt.patient.fullName}
+                        {apt.patient?.fullName || apt.guestName || 'Guest'}
                       </div>
                       <div className="flex flex-wrap items-center gap-x-2.5 sm:gap-x-3 gap-y-1 text-[11px] sm:text-xs text-zinc-400 font-medium">
                         <span className="flex items-center gap-1">
@@ -601,7 +655,7 @@ export const Dashboard = () => {
             </button>
           </div>
 
-          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar">
+          <div className="divide-y divide-[#22252E] max-h-[380px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
             {data.recentLeads.length === 0 ? (
               <div className="px-4 sm:px-6 py-10 sm:py-12 text-center text-xs text-zinc-500 font-medium">
                 No recent leads found.

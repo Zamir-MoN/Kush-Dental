@@ -9,6 +9,7 @@ from app.db.session import get_db
 from app.models import User, Role
 from app.repositories import user_repo
 from app.utils.security import decode_access_token
+from app.utils.logger import logger
 
 security = HTTPBearer(auto_error=False)
 
@@ -30,7 +31,7 @@ async def get_current_user(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     
     user = await user_repo.get_by_id(db, user_id)
-    if user is None:
+    if user is None or user.deletedAt is not None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
         
     return user
@@ -38,6 +39,7 @@ async def get_current_user(
 def require_roles(allowed_roles: list[Role]):
     async def role_checker(current_user: User = Depends(get_current_user)):
         if current_user.role not in allowed_roles:
+            logger.warning("Failed authorization attempt", extra={"actor_id": str(current_user.id), "required_roles": [r.value for r in allowed_roles]})
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
         return current_user
     return role_checker
@@ -50,17 +52,27 @@ async def verify_csrf_token(request: Request):
     csrf_header = request.headers.get("x-csrf-token")
     
     if not csrf_cookie or not csrf_header:
+        logger.warning("CSRF token missing", extra={"path": request.url.path})
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="CSRF token missing")
         
     if not secrets.compare_digest(csrf_cookie, csrf_header):
+        logger.warning("CSRF token mismatch", extra={"path": request.url.path})
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="CSRF token mismatch")
         
     # Origin validation as defense-in-depth
     origin = request.headers.get("origin")
-    if origin and origin != settings.CORS_ORIGIN:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Origin")
+    referer = request.headers.get("referer")
+    
+    if origin:
+        if origin != settings.CORS_ORIGIN:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Origin")
+    elif referer:
+        if not referer.startswith(settings.CORS_ORIGIN):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Referer")
 
 async def verify_body_size(request: Request):
+    if hasattr(request, "_body"):
+        return
     # Check Content-Length first
     cl = request.headers.get('content-length')
     if cl and int(cl) > settings.MAX_REQUEST_BODY_SIZE:

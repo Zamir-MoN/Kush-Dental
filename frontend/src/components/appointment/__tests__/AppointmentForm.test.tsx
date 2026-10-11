@@ -13,6 +13,16 @@ vi.mock('../../../hooks/useGsap', () => ({
   useScrollReveal: vi.fn(),
 }));
 
+vi.mock('@marsidev/react-turnstile', () => ({
+  Turnstile: ({ onSuccess }: any) => {
+    // Automatically trigger success with dummy token in test environment
+    if (onSuccess) {
+      Promise.resolve().then(() => onSuccess('1x00000000000000000000AA'));
+    }
+    return null;
+  }
+}));
+
 describe('ContactForm (Home Inquiry)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -51,7 +61,10 @@ describe('ContactForm (Home Inquiry)', () => {
     fireEvent.change(screen.getByRole('textbox', { name: /Email Address/i }), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByRole('textbox', { name: /Phone Number/i }), { target: { value: '555-1234' } });
     
-    fireEvent.submit(screen.getByRole('button', { name: /SEND INQUIRY/i }));
+    const submitBtn = screen.getByRole('button', { name: /SEND INQUIRY/i });
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
+    
+    fireEvent.submit(submitBtn);
 
     await waitFor(() => {
       expect(apiClient).toHaveBeenCalledWith('/api/v1/public/leads', expect.objectContaining({
@@ -75,5 +88,76 @@ describe('ContactForm (Home Inquiry)', () => {
     await waitFor(() => {
       expect(screen.getByText('Inquiry Sent')).toBeInTheDocument();
     });
+  });
+
+  it('keeps success state indefinitely after successful submission', async () => {
+    vi.mocked(apiClient).mockResolvedValueOnce({ success: true, message: 'Your appointment request has been received.' });
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <ContactForm />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByRole('textbox', { name: /Full Name/i }), { target: { value: 'Test User' } });
+    fireEvent.change(screen.getByRole('textbox', { name: /Email Address/i }), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByRole('textbox', { name: /Phone Number/i }), { target: { value: '555-1234' } });
+    
+    const submitBtn = screen.getByRole('button', { name: /SEND INQUIRY/i });
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
+    
+    fireEvent.submit(submitBtn);
+
+    // Wait for the async apiClient call and state update
+    await waitFor(() => {
+      expect(screen.getByText('Inquiry Sent')).toBeInTheDocument();
+    });
+
+    vi.useFakeTimers();
+    
+    // Advance time by 10 minutes (600000ms)
+    vi.advanceTimersByTime(600000);
+    
+    // The success message should still be there, and the form should NOT be there
+    expect(screen.getByText('Inquiry Sent')).toBeInTheDocument();
+    expect(screen.queryByRole('textbox', { name: /Full Name/i })).not.toBeInTheDocument();
+
+    // Rerender to ensure React reconciliation doesn't reset it
+    rerender(
+      <MemoryRouter>
+        <ContactForm />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Inquiry Sent')).toBeInTheDocument();
+    
+    vi.useRealTimers();
+  });
+
+  it('leaves form visible and shows error on failed submission', async () => {
+    vi.mocked(apiClient).mockRejectedValueOnce(new Error('Network error or server unreachable'));
+
+    render(
+      <MemoryRouter>
+        <ContactForm />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByRole('textbox', { name: /Full Name/i }), { target: { value: 'Test User' } });
+    fireEvent.change(screen.getByRole('textbox', { name: /Email Address/i }), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByRole('textbox', { name: /Phone Number/i }), { target: { value: '555-1234' } });
+    
+    const submitBtn = screen.getByRole('button', { name: /SEND INQUIRY/i });
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
+    
+    fireEvent.submit(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText('Network error or server unreachable')).toBeInTheDocument();
+    });
+
+    // Form should still be fully visible and editable
+    expect(screen.getByRole('textbox', { name: /Full Name/i })).toBeInTheDocument();
+    expect(screen.queryByText('Inquiry Sent')).not.toBeInTheDocument();
   });
 });

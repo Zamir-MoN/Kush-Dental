@@ -1,16 +1,14 @@
-from fastapi import Request, HTTPException, status
+from fastapi import Request, HTTPException, status, Depends
 import time
 import asyncio
 from collections import defaultdict
 from typing import Dict, Tuple
 
 from app.core.config import settings
+from app.api.dependencies import get_current_user
+from app.models import User
 
-# In-memory store: IP -> (failure_count, last_failure_time)
-_failed_attempts: Dict[str, Tuple[int, float]] = defaultdict(lambda: (0, 0.0))
 
-# In-memory store for public leads: IP -> (submission_count, first_submission_time)
-_public_lead_attempts: Dict[str, Tuple[int, float]] = defaultdict(lambda: (0, 0.0))
 
 def get_client_ip(request: Request) -> str:
     # Handle trusted proxies safely
@@ -21,60 +19,108 @@ def get_client_ip(request: Request) -> str:
         # If client is a trusted proxy, parse the forwarded header
         if client_ip in settings.TRUSTED_PROXIES:
             ips = [ip.strip() for ip in forwarded.split(",")]
-            # The right-most IP is the proxy, we trust the one before it, etc.
-            # For simplicity, if the client is trusted, we take the first IP.
-            # In a real environment, you'd iterate from right to left checking against trusted list.
-            return ips[0]
+            # Iterate from right to left (most trustworthy to least)
+            for ip in reversed(ips):
+                if ip not in settings.TRUSTED_PROXIES:
+                    return ip
+            return ips[-1]
             
     return client_ip
 
+import redis.asyncio as aioredis
+
 async def check_login_rate_limit(request: Request):
     ip = get_client_ip(request)
-    now = time.time()
     
-    attempts, last_time = _failed_attempts[ip]
+    redis_key = f"login_rl:{ip}"
+    redis_client = aioredis.from_url(settings.CELERY_BROKER_URL)
     
-    # Reset after 15 minutes of inactivity
-    if now - last_time > 900:
-        attempts = 0
+    try:
+        attempts = await redis_client.get(redis_key)
+        attempts = int(attempts) if attempts else 0
         
-    if attempts > 0:
-        # Progressive delay (tarpitting)
-        delay = min(2 ** attempts, 10.0) # max 10 seconds delay
-        await asyncio.sleep(delay)
-        
-    if attempts >= 10:
-        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many login attempts")
+        if attempts > 0:
+            # Progressive delay (tarpitting)
+            delay = min(2 ** attempts, 10.0) # max 10 seconds delay
+            await asyncio.sleep(delay)
+            
+        if attempts >= int(getattr(settings, "LOGIN_MAX_ATTEMPTS", 10)):
+            raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many login attempts")
+    finally:
+        await redis_client.aclose()
 
-def record_login_failure(request: Request):
+async def record_login_failure(request: Request):
     ip = get_client_ip(request)
-    attempts, _ = _failed_attempts[ip]
+    redis_key = f"login_rl:{ip}"
+    redis_client = aioredis.from_url(settings.CELERY_BROKER_URL)
     
-    # Reset after 15 minutes handled by check_login_rate_limit, but we just increment here
-    # Actually if time passed we should reset before incrementing, but we can do it simple:
-    now = time.time()
-    if now - _failed_attempts[ip][1] > 900:
-        attempts = 0
-        
-    _failed_attempts[ip] = (attempts + 1, now)
+    try:
+        count = await redis_client.incr(redis_key)
+        if count == 1:
+            await redis_client.expire(redis_key, 900) # Reset after 15 minutes
+    finally:
+        await redis_client.aclose()
 
-def record_login_success(request: Request):
+async def record_login_success(request: Request):
     ip = get_client_ip(request)
-    if ip in _failed_attempts:
-        del _failed_attempts[ip]
+    redis_key = f"login_rl:{ip}"
+    redis_client = aioredis.from_url(settings.CELERY_BROKER_URL)
+    
+    try:
+        await redis_client.delete(redis_key)
+    finally:
+        await redis_client.aclose()
 
 async def check_public_lead_rate_limit(request: Request):
     ip = get_client_ip(request)
-    now = time.time()
     
-    count, first_time = _public_lead_attempts[ip]
+    # Parse rate limit setting
+    limit_str = getattr(settings, "PUBLIC_LEAD_RATE_LIMIT", "5/minute")
+    try:
+        max_requests_str, window_str = limit_str.split("/")
+        max_requests = int(max_requests_str)
+        if window_str == "minute":
+            window = 60
+        elif window_str == "hour":
+            window = 3600
+        else:
+            window = 60
+    except ValueError:
+        max_requests, window = 5, 60
+        
+    redis_key = f"public_lead_rl:{ip}"
     
-    # Reset window every hour (3600 seconds)
-    if now - first_time > 3600:
-        count = 0
-        first_time = now
-        
-    if count >= 3:
-        raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many lead submissions")
-        
-    _public_lead_attempts[ip] = (count + 1, first_time)
+    redis_client = aioredis.from_url(settings.CELERY_BROKER_URL)
+    
+    try:
+        count = await redis_client.incr(redis_key)
+        if count == 1:
+            await redis_client.expire(redis_key, window)
+            
+        if count > max_requests:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many requests. Please wait a moment and try again.",
+                headers={"Retry-After": str(window)}
+            )
+    finally:
+        await redis_client.aclose()
+
+async def check_dxgen_rate_limit(user: User = Depends(get_current_user)):
+    limit = int(getattr(settings, "DXGEN_MAX_REQUESTS_PER_MINUTE", 10))
+    redis_key = f"dxgen_rl:{user.id}"
+    
+    redis_client = aioredis.from_url(settings.CELERY_BROKER_URL)
+    try:
+        count = await redis_client.incr(redis_key)
+        if count == 1:
+            await redis_client.expire(redis_key, 60)
+            
+        if count > limit:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="AI Service rate limit exceeded. Please wait.",
+                headers={"Retry-After": "60"}
+            )
+    finally:
+        await redis_client.aclose()

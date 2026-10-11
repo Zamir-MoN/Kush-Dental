@@ -32,11 +32,11 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
     }
 
     if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      editor.chain().extendMarkRange('link').unsetLink().focus().run();
       return;
     }
 
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+    editor.chain().extendMarkRange('link').setLink({ href: url }).focus().run();
   };
 
   const ToolbarButton = ({ 
@@ -52,6 +52,7 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
   }) => (
     <button
       type="button"
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       disabled={disabled}
       className={`p-2 rounded-lg transition-colors cursor-pointer ${
@@ -67,16 +68,16 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
   return (
     <div className="flex flex-wrap gap-1 p-2 border-b border-[#22252E] bg-[#16181E] rounded-t-xl items-center">
       <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1">
-        <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')}>
+        <ToolbarButton onClick={() => editor.chain().toggleBold().focus().run()} isActive={editor.isActive('bold')}>
           <Bold size={16} />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive('italic')}>
+        <ToolbarButton onClick={() => editor.chain().toggleItalic().focus().run()} isActive={editor.isActive('italic')}>
           <Italic size={16} />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive('underline')}>
+        <ToolbarButton onClick={() => editor.chain().toggleUnderline().focus().run()} isActive={editor.isActive('underline')}>
           <UnderlineIcon size={16} />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} isActive={editor.isActive('strike')}>
+        <ToolbarButton onClick={() => editor.chain().toggleStrike().focus().run()} isActive={editor.isActive('strike')}>
           <Strikethrough size={16} />
         </ToolbarButton>
       </div>
@@ -102,7 +103,7 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
       <div className="flex gap-1 border-r border-[#22252E] pr-2 mr-1 items-center">
         <input
           type="color"
-          onInput={event => editor.chain().focus().setColor((event.target as HTMLInputElement).value).run()}
+          onInput={event => editor.chain().setColor((event.target as HTMLInputElement).value).focus().run()}
           value={editor.getAttributes('textStyle').color || '#E4E4E7'}
           className="w-8 h-8 rounded cursor-pointer border border-[#2A2E3B] p-0.5 bg-[#181A22]"
           title="Text Color"
@@ -140,16 +141,16 @@ const MenuBar = ({ editor, onAutoFormat }: { editor: Editor | null; onAutoFormat
         <ToolbarButton onClick={setLink} isActive={editor.isActive('link')}>
           <LinkIcon size={16} />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().unsetLink().run()} disabled={!editor.isActive('link')}>
+        <ToolbarButton onClick={() => editor.chain().unsetLink().focus().run()} disabled={!editor.isActive('link')}>
           <Unlink size={16} />
         </ToolbarButton>
       </div>
 
       <div className="flex gap-1">
-        <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+        <ToolbarButton onClick={() => editor.chain().undo().focus().run()} disabled={!editor.can().undo()}>
           <Undo size={16} />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+        <ToolbarButton onClick={() => editor.chain().redo().focus().run()} disabled={!editor.can().redo()}>
           <Redo size={16} />
         </ToolbarButton>
       </div>

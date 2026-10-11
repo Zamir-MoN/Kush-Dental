@@ -3,6 +3,7 @@
  * Ensures headings (#, ##, ###), bold text (**text**), lists (*, -), blockquotes (>),
  * and paragraphs are properly formatted instead of collapsing into raw text.
  */
+import DOMPurify from 'dompurify';
 
 export function isMarkdown(text: string): boolean {
   if (!text) return false;
@@ -26,7 +27,10 @@ export function formatMarkdownToHtml(raw: string, options?: MarkdownOptions): st
 
   // If already clean HTML without raw markdown markers, return as is
   if (/<(p|h[1-6]|ul|ol|table|blockquote)[\s>]/i.test(text) && !/(#{1,4}\s|\*\*[^*]+\*\*|^\s*[\*\-]\s+)/m.test(text)) {
-    return text;
+    return DOMPurify.sanitize(text, {
+      ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'span', 'div', 'u', 's', 'strike', 'del'],
+      ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'style'],
+    });
   }
 
   // If text is wrapped in HTML tags like <p>...</p> but contains raw markdown markers (#, **, *),
@@ -78,6 +82,8 @@ export function formatMarkdownToHtml(raw: string, options?: MarkdownOptions): st
       .replace(/_([^_]+)_/g, '<em>$1</em>')
       // Code: `code`
       .replace(/`([^`]+)`/g, '<code>$1</code>')
+      // Strikethrough: ~~text~~
+      .replace(/~~([^~]+)~~/g, '<s>$1</s>')
       // Links: [text](url)
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   }
@@ -125,6 +131,15 @@ export function formatMarkdownToHtml(raw: string, options?: MarkdownOptions): st
       flushParagraph();
       closeLists();
       closeBlockquote();
+      continue;
+    }
+
+    // Pass-through existing valid HTML block tags that survived the regex strip (e.g., h1-h6, ul, ol, blockquote)
+    if (/^<(h[1-6]|ul|ol|li|blockquote|table)[\s>]/i.test(trimmed)) {
+      flushParagraph();
+      closeLists();
+      closeBlockquote();
+      htmlParts.push(trimmed);
       continue;
     }
 
@@ -233,5 +248,9 @@ export function formatMarkdownToHtml(raw: string, options?: MarkdownOptions): st
   closeLists();
   closeBlockquote();
 
-  return htmlParts.join('\n');
+  const rawHtml = htmlParts.join('\n');
+  return DOMPurify.sanitize(rawHtml, {
+    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'span', 'div', 'u', 's', 'strike', 'del'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'style'],
+  });
 }

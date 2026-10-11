@@ -161,9 +161,9 @@ export const Hero: React.FC = () => {
               >
                 <Link 
                   to="/book" 
-                  className="btn-gold-luxury group cursor-pointer shadow-xl shadow-[#DCA51B]/25 py-2 sm:py-3.5 px-3.5 sm:px-8 text-[10px] sm:text-sm font-bold tracking-wider"
+                  className="btn-gold-solid group cursor-pointer shadow-xl shadow-[#DCA51B]/25 py-2.5 sm:py-3.5 px-5 sm:px-8 text-xs sm:text-sm font-bold tracking-wider"
                 >
-                  <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
                   <span>BOOK A CONSULTATION</span>
                 </Link>
               </motion.div>
@@ -173,7 +173,7 @@ export const Hero: React.FC = () => {
                 initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 14 }}
                 animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
                 transition={{ duration: isMobile ? 0.3 : 0.6, delay: isMobile ? 0 : 0.72, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-1 sm:gap-2.5 py-1 sm:py-1.5 px-2 sm:px-3.5 rounded-full bg-white/[0.06] border border-white/12 backdrop-blur-md mb-3 sm:mb-5"
+                className="inline-flex items-center gap-1 sm:gap-2.5 py-1 sm:py-1.5 px-2 sm:px-3.5 rounded-full bg-white/[0.06] border border-white/12 hover:border-[#DCA51B]/40 hover:bg-white/[0.1] backdrop-blur-md mb-3 sm:mb-5 transition-all duration-300 cursor-default"
               >
                 <div className="flex items-center text-[#DCA51B] gap-0.5 sm:gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -195,12 +195,12 @@ export const Hero: React.FC = () => {
                   initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
                   animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 0.80, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
+                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/50 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(220,165,27,0.15)] rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-400 ease-out group cursor-default"
                 >
-                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
+                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 text-[#DCA51B]">
                     <ToothSparkleIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
-                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white block leading-tight">
+                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white group-hover:text-[#DCA51B] transition-colors duration-300 block leading-tight">
                     15+
                   </span>
                   <span className="text-[9px] sm:text-xs text-zinc-300 font-sans block mt-0.5 sm:mt-1 leading-tight font-medium">
@@ -213,12 +213,12 @@ export const Hero: React.FC = () => {
                   initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
                   animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 0.90, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
+                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/50 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(220,165,27,0.15)] rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-400 ease-out group cursor-default"
                 >
-                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
+                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 text-[#DCA51B]">
                     <SmileCurveIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
-                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white block leading-tight">
+                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white group-hover:text-[#DCA51B] transition-colors duration-300 block leading-tight">
                     12k+
                   </span>
                   <span className="text-[9px] sm:text-xs text-zinc-300 font-sans block mt-0.5 sm:mt-1 leading-tight font-medium">
@@ -231,19 +231,18 @@ export const Hero: React.FC = () => {
                   initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
                   animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: isMobile ? 0.3 : 0.65, delay: isMobile ? 0 : 1.00, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/35 rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-300 group"
+                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#DCA51B]/50 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(220,165,27,0.15)] rounded-xl sm:rounded-2xl p-2 sm:p-3 lg:p-3.5 transition-all duration-400 ease-out group cursor-default"
                 >
-                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-105 group-hover:bg-[#DCA51B]/25 transition-all text-[#DCA51B]">
+                  <div className="w-6 h-6 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#DCA51B]/15 border border-[#DCA51B]/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 text-[#DCA51B]">
                     <DentalShieldIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
-                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white block leading-tight">
+                  <span className="font-serif font-bold text-lg sm:text-[26px] text-white group-hover:text-[#DCA51B] transition-colors duration-300 block leading-tight">
                     100%
                   </span>
                   <span className="text-[9px] sm:text-xs text-zinc-300 font-sans block mt-0.5 sm:mt-1 leading-tight font-medium">
                     Gentle Care
                   </span>
                 </motion.div>
-
               </div>
             </div>
 

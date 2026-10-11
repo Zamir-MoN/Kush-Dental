@@ -37,7 +37,7 @@ export const BlogCreate: React.FC = () => {
       await apiClient('/api/v1/blog', { method: 'POST', data: formData });
       navigate('/staff/blog');
     } catch (err: any) {
-      setError(err.details?.detail || 'Failed to save draft');
+      setError(err.message || 'Failed to save draft');
     } finally {
       setLoading(false);
     }

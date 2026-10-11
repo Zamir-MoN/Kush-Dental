@@ -1,8 +1,17 @@
-from pydantic import BaseModel, constr, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
 from uuid import UUID
 from datetime import datetime
 from app.models import BlogStatus
+
+def validate_url_scheme(v: Optional[str]) -> Optional[str]:
+    if v:
+        v_stripped = v.strip()
+        lower_v = v_stripped.lower()
+        if not (lower_v.startswith('http://') or lower_v.startswith('https://')):
+            raise ValueError("URL must start with http:// or https://")
+        return v_stripped
+    return v
 
 class BlogBase(BaseModel):
     title: str = Field(min_length=1, max_length=255)
@@ -12,6 +21,11 @@ class BlogBase(BaseModel):
     coverImage: Optional[str] = None
     category: Optional[str] = None
     tags: Optional[List[str]] = None
+
+    @field_validator('coverImage', mode='before')
+    @classmethod
+    def validate_cover_image(cls, v):
+        return validate_url_scheme(v)
 
 class BlogCreate(BlogBase):
     pass
@@ -24,6 +38,11 @@ class BlogUpdate(BaseModel):
     coverImage: Optional[str] = None
     category: Optional[str] = None
     tags: Optional[List[str]] = None
+
+    @field_validator('coverImage', mode='before')
+    @classmethod
+    def validate_cover_image(cls, v):
+        return validate_url_scheme(v)
 
 class BlogResponse(BlogBase):
     id: UUID

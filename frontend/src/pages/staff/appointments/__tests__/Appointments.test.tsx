@@ -43,9 +43,10 @@ describe('Appointments Portal', () => {
     // @ts-ignore
     (apiClientModule.apiClient as any).mockResolvedValueOnce([{ id: 'd1', name: 'Dr. Smith' }]); // doctors
     // @ts-ignore
-    (apiClientModule.apiClient as any).mockResolvedValueOnce([
-      { id: 'a1', patientId: 'p1', treatment: 'Cleaning', status: 'CONFIRMED', startsAt: '2025-01-01T10:00:00Z', endsAt: '2025-01-01T11:00:00Z' }
-    ]); // appointments
+    (apiClientModule.apiClient as any).mockResolvedValueOnce({
+      data: [{ id: 'a1', patientId: 'p1', treatment: 'Cleaning', status: 'CONFIRMED', startsAt: '2025-01-01T10:00:00Z', endsAt: '2025-01-01T11:00:00Z', patient: { id: 'p1', fullName: 'Test', phone: '123' } }],
+      total: 1, skip: 0, limit: 20
+    }); // appointments
 
     renderComponent('/staff/appointments');
     
@@ -59,7 +60,10 @@ describe('Appointments Portal', () => {
 
   it('submits date filters correctly', async () => {
     // @ts-ignore
-    (apiClientModule.apiClient as any).mockResolvedValue([]);
+    (apiClientModule.apiClient as any).mockImplementation(async (url: string) => {
+      if (url.includes('/doctors')) return [];
+      return { data: [], total: 0, skip: 0, limit: 20 };
+    });
     renderComponent('/staff/appointments');
     
     // Using simple query selectors since there are two date inputs
@@ -73,23 +77,24 @@ describe('Appointments Portal', () => {
   });
 
   it('patient phone lookup works and creates appointment', async () => {
-    // @ts-ignore
-    (apiClientModule.apiClient as any)
-      .mockResolvedValueOnce([{ id: 'd1', name: 'Dr. Smith' }]) // doctors
-      .mockResolvedValueOnce([{ id: 'p1', fullName: 'John Doe', phone: '555-1234' }]) // patient lookup
-      .mockResolvedValueOnce({ id: 'new-apt-id' }); // create apt
+    (apiClientModule.apiClient as any).mockImplementation(async (url: string) => {
+      if (url.includes('/doctors')) return [{ id: 'd1', name: 'Dr. Smith' }];
+      if (url.includes('startDate=')) return { data: [], total: 0 };
+      if (url.includes('/search')) return { data: [{ id: 'p1', fullName: 'John Doe', phone: '555-1234' }] };
+      if (url.includes('/appointments')) return { id: 'new-apt-id' };
+      return {};
+    });
 
     renderComponent('/staff/appointments/new', false);
     
-    const phoneInput = screen.getByPlaceholderText('e.g. 555-1234 or Sagar');
+    const phoneInput = screen.getByPlaceholderText('Search by Name or Phone Number');
     fireEvent.change(phoneInput, { target: { value: '555-1234' } });
-    
-    const searchBtn = screen.getByRole('button', { name: '' }); // the search icon button
-    fireEvent.click(searchBtn);
     
     await waitFor(() => {
       expect(screen.getByText('John Doe')).toBeInTheDocument();
     });
+
+    fireEvent.click(screen.getByText('John Doe'));
 
     // Fill form
     const startsAt = document.querySelectorAll('input[type="datetime-local"]')[0];
@@ -146,7 +151,7 @@ describe('Appointments Portal', () => {
   });
 
   it('STAFF cannot render COMPLETED actions, but DOCTOR can', async () => {
-    const mockApt = { id: 'a1', patientId: 'p1', treatment: 'Cleaning', status: 'CONFIRMED', startsAt: '2025-01-01T10:00:00Z', endsAt: '2025-01-01T11:00:00Z' };
+    const mockApt = { id: 'a1', patientId: 'p1', treatment: 'Cleaning', status: 'REQUESTED', startsAt: '2025-01-01T10:00:00Z', endsAt: '2025-01-01T11:00:00Z' };
     
     // @ts-ignore
     apiClientModule.apiClient.mockResolvedValueOnce(mockApt);
@@ -171,19 +176,22 @@ describe('Appointments Portal', () => {
   });
 
   it('displays 409 overlap error', async () => {
-    // @ts-ignore
-    (apiClientModule.apiClient as any)
-      .mockResolvedValueOnce([{ id: 'd1', name: 'Dr. Smith' }]) 
-      .mockResolvedValueOnce([{ id: 'p1', fullName: 'John Doe', phone: '555-1234' }]) 
-      .mockRejectedValueOnce({ status: 409 }); 
+    (apiClientModule.apiClient as any).mockImplementation(async (url: string, options?: any) => {
+      if (url.includes('/doctors')) return [{ id: 'd1', name: 'Dr. Smith' }];
+      if (url.includes('startDate=')) return { data: [], total: 0 };
+      if (url.includes('/search')) return { data: [{ id: 'p1', fullName: 'John Doe', phone: '555-1234' }] };
+      if (url.includes('/appointments') && options?.method === 'POST') throw { status: 409 };
+      return {};
+    });
 
     renderComponent('/staff/appointments/new', true);
     
-    const phoneInput = screen.getByPlaceholderText('e.g. 555-1234 or Sagar');
+    const phoneInput = screen.getByPlaceholderText('Search by Name or Phone Number');
     fireEvent.change(phoneInput, { target: { value: '555-1234' } });
-    fireEvent.click(screen.getByRole('button', { name: '' }));
     
     await waitFor(() => expect(screen.getByText('John Doe')).toBeInTheDocument());
+
+    fireEvent.click(screen.getByText('John Doe'));
 
     const startsAt = document.querySelectorAll('input[type="datetime-local"]')[0];
     const endsAt = document.querySelectorAll('input[type="datetime-local"]')[1];

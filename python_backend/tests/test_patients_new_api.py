@@ -68,13 +68,13 @@ async def test_staff_allowed_patient_search(client: AsyncClient, staff_auth_head
     # Ensure no clinical fields like treatment history are exposed in search
     assert "clinical_notes" not in patient
 
-async def test_staff_cannot_access_patient_detail(client: AsyncClient, staff_auth_headers: dict, db_patient):
+async def test_staff_can_access_patient_detail(client: AsyncClient, staff_auth_headers: dict, db_patient):
     res = await client.get(f"/api/v1/patients/{db_patient.id}", headers=staff_auth_headers)
-    assert res.status_code == 403
+    assert res.status_code == 200
 
-async def test_staff_cannot_use_patientId_filtering(client: AsyncClient, staff_auth_headers: dict, db_patient):
+async def test_staff_can_use_patientId_filtering(client: AsyncClient, staff_auth_headers: dict, db_patient):
     res = await client.get(f"/api/v1/appointments?patientId={db_patient.id}", headers=staff_auth_headers)
-    assert res.status_code == 403
+    assert res.status_code == 200
 
 async def test_patient_detail_returns_correct_patient(client: AsyncClient, doctor_auth_headers: dict, db_patient):
     res = await client.get(f"/api/v1/patients/{db_patient.id}", headers=doctor_auth_headers)
@@ -87,7 +87,7 @@ async def test_patient_appointment_history(client: AsyncClient, doctor_auth_head
     # Fetch history
     res = await client.get(f"/api/v1/appointments?patientId={db_patient.id}&orderDesc=true", headers=doctor_auth_headers)
     assert res.status_code == 200
-    data = res.json()
+    data = res.json()["data"]
     
     # Only contains that patient's appointments
     assert len(data) >= 1
@@ -114,7 +114,7 @@ async def test_patient_history_pagination_and_ordering(client: AsyncClient, doct
     # Fetch history with limit=2, orderDesc=true
     res = await client.get(f"/api/v1/appointments?patientId={db_patient.id}&orderDesc=true&limit=2", headers=doctor_auth_headers)
     assert res.status_code == 200
-    data = res.json()
+    data = res.json()["data"]
     
     # Should be newest first (Tx 2, then Tx 1)
     assert len(data) == 2
@@ -124,7 +124,7 @@ async def test_patient_history_pagination_and_ordering(client: AsyncClient, doct
     # Fetch next page
     res_page2 = await client.get(f"/api/v1/appointments?patientId={db_patient.id}&orderDesc=true&skip=2&limit=2", headers=doctor_auth_headers)
     assert res_page2.status_code == 200
-    data_page2 = res_page2.json()
+    data_page2 = res_page2.json()["data"]
     assert len(data_page2) >= 1
     assert data_page2[0]["treatment"] == "Tx 0"
 
@@ -176,3 +176,43 @@ async def test_patient_search_pagination_and_limits(client: AsyncClient, doctor_
     json_data2 = res2.json()
     assert len(json_data2["data"]) == 2
     assert json_data["data"][0]["id"] != json_data2["data"][0]["id"] # Deterministic ordering verified indirectly
+
+async def test_doctor_search_patients_with_country_code(client: AsyncClient, doctor_auth_headers: dict, db_session):
+    import uuid
+    random_suffix = str(uuid.uuid4().int)[:6]
+    national_phone = f"962560{random_suffix}"
+    stored_phone = f"+91{national_phone}"
+    
+    patient_in = PatientCreate(fullName="Country Code Test", email=f"countrycode_{random_suffix}@test.com", phone=stored_phone)
+    p = await patient_repo.create(db_session, patient_in)
+    await db_session.commit()
+    
+    # 1. Exact full number
+    res = await client.get(f"/api/v1/patients/search?q={stored_phone}", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert any(pt["phone"] == stored_phone for pt in res.json()["data"])
+    
+    # 2. National prefix search (e.g. 962560)
+    res = await client.get(f"/api/v1/patients/search?q=962560", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert any(pt["phone"] == stored_phone for pt in res.json()["data"])
+    
+    # 3. Short prefix
+    res = await client.get(f"/api/v1/patients/search?q=962", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert any(pt["phone"] == stored_phone for pt in res.json()["data"])
+    
+    # 4. National format string
+    res = await client.get(f"/api/v1/patients/search?q={national_phone}", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert any(pt["phone"] == stored_phone for pt in res.json()["data"])
+
+    # 5. 91-prefixed search
+    res = await client.get(f"/api/v1/patients/search?q=91962560", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert any(pt["phone"] == stored_phone for pt in res.json()["data"])
+    
+    # 6. Mid-number substring rejection (6091)
+    res = await client.get(f"/api/v1/patients/search?q=560{random_suffix[:1]}", headers=doctor_auth_headers)
+    assert res.status_code == 200
+    assert not any(pt["phone"] == stored_phone for pt in res.json()["data"])

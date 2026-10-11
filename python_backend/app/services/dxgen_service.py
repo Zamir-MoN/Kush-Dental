@@ -33,7 +33,7 @@ async def _make_request(method: str, endpoint: str, payload: dict = None) -> dic
     ]
     if getattr(settings, "DXGEN_BASE_URL", None):
         base = settings.DXGEN_BASE_URL.rstrip('/')
-        if base not in candidate_urls and "51.20.121.253" not in base:
+        if base not in candidate_urls and "3.109.4.37" not in base:
             candidate_urls.append(base)
 
     last_error = None

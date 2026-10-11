@@ -3,8 +3,8 @@ from typing import Optional, List
 from uuid import UUID
 from datetime import datetime, timezone
 from fastapi import HTTPException, status
-from app.models import Lead, LeadStatus, User
-from app.repositories import lead_repo
+from app.models import Lead, LeadStatus, User, AuditResult
+from app.repositories import lead_repo, audit_repo
 from app.schemas.lead import LeadCreate, LeadUpdate
 
 async def create_lead(db: AsyncSession, lead_data: LeadCreate) -> Lead:
@@ -37,11 +37,26 @@ async def update_lead_status(db: AsyncSession, lead_id: UUID, new_status: LeadSt
         await db.rollback()
         raise e
 
-async def update_lead(db: AsyncSession, lead_id: UUID, lead_update: LeadUpdate) -> Lead:
+async def update_lead(db: AsyncSession, lead_id: UUID, lead_update: LeadUpdate, current_user: Optional[User] = None) -> Lead:
     lead = await get_lead(db, lead_id)
     
     try:
+        old_qualification = lead.leadQualification
+        
         lead = await lead_repo.update(db, lead, lead_update)
+        
+        if old_qualification != lead.leadQualification:
+            event_name = f"LEAD_QUALIFIED_{lead.leadQualification.name}" if lead.leadQualification.name in ["POSITIVE", "NEGATIVE"] else "LEAD_QUALIFICATION_CHANGED"
+            metadata = {
+                "previous": old_qualification.name if old_qualification else None,
+                "new": lead.leadQualification.name,
+            }
+            if lead.leadQualification.name == "NEGATIVE":
+                metadata["negativeReason"] = lead.negativeReason
+            
+            actor_id = current_user.id if current_user else None
+            await audit_repo.log_event(db, event_name, "Lead", AuditResult.SUCCESS, actor_id=actor_id, resource_id=lead.id, metadata_=metadata)
+            
         await db.commit()
         return lead
     except Exception as e:
@@ -64,10 +79,10 @@ from app.repositories import patient_repo
 from app.schemas.patient import PatientCreate
 from sqlalchemy.exc import IntegrityError
 
-async def convert_lead(db: AsyncSession, lead_id: UUID) -> Lead:
+async def convert_lead(db: AsyncSession, lead_id: UUID, current_user: Optional[User] = None) -> Lead:
     try:
         # Lock Lead
-        result = await db.execute(select(Lead).where(Lead.id == lead_id).with_for_update())
+        result = await db.execute(select(Lead).where(Lead.id == lead_id, Lead.deletedAt.is_(None)).with_for_update())
         lead = result.scalar_one_or_none()
         if not lead:
             await db.rollback()
@@ -77,23 +92,66 @@ async def convert_lead(db: AsyncSession, lead_id: UUID) -> Lead:
             await db.rollback()
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Lead is already converted")
 
-        # Create Patient
+        lead_id = lead.id
+
+        # Check existing exact match proactively
+        from app.utils.phone import normalize_phone
+        normalized_phone = normalize_phone(lead.phone)
+        existing_patient = await patient_repo.get_by_phone_and_name(db, normalized_phone, lead.name)
+
+        if existing_patient:
+            await db.rollback()
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail={
+                "code": "PATIENT_ALREADY_EXISTS",
+                "existingPatient": {
+                    "id": str(existing_patient.id),
+                    "fullName": existing_patient.fullName,
+                    "phone": existing_patient.phone,
+                    "displayId": existing_patient.displayId or ""
+                },
+                "lead": {
+                    "id": str(lead.id),
+                    "name": lead.name,
+                    "phone": lead.phone
+                }
+            })
+
+        # Create Patient (Different name, or completely new phone)
         try:
             patient_data = PatientCreate(fullName=lead.name, phone=lead.phone, email=lead.email)
-            await patient_repo.create(db, patient_data)
+            patient = await patient_repo.create(db, patient_data)
             
             # Mark Lead CONVERTED
             lead.status = LeadStatus.CONVERTED
             lead.updatedAt = datetime.now(timezone.utc)
             await db.flush()
+            
+            # Associate existing Contacts with the new Patient
+            from sqlalchemy import update
+            from app.models import Contact
+            await db.execute(
+                update(Contact)
+                .where(Contact.leadId == lead_id, Contact.deletedAt.is_(None))
+                .values(patientId=patient.id, updatedAt=datetime.now(timezone.utc))
+            )
+            await db.flush()
+            
+            actor_id = current_user.id if current_user else None
+            await audit_repo.log_event(db, "LEAD_CONVERTED", "Lead", AuditResult.SUCCESS, actor_id=actor_id, resource_id=lead_id)
+            await audit_repo.log_event(db, "PATIENT_CREATED", "Patient", AuditResult.SUCCESS, actor_id=actor_id, resource_id=patient.id)
         except IntegrityError:
             await db.rollback()
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Patient with this phone already exists")
+            actor_id = current_user.id if current_user else None
+            await audit_repo.log_event(db, "LEAD_CONVERTED", "Lead", AuditResult.FAILURE, actor_id=actor_id, resource_id=lead_id)
+            await db.commit()
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Failed to create patient due to database conflict")
 
         await db.commit()
         return lead
     except HTTPException:
         raise
     except Exception as e:
+        actor_id = current_user.id if current_user else None
+        await audit_repo.log_event(db, "LEAD_CONVERTED", "Lead", AuditResult.FAILURE, actor_id=actor_id, resource_id=lead_id)
         await db.rollback()
         raise e

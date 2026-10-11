@@ -13,7 +13,7 @@ from app.utils.security import verify_password, get_password_hash, check_needs_r
 async def authenticate_user(db: AsyncSession, login_req: LoginRequest) -> Tuple[TokenResponse, str]:
     try:
         user = await user_repo.get_by_email(db, login_req.email)
-        if not user:
+        if not user or user.deletedAt is not None:
             await audit_repo.log_event(db, "LOGIN", "User", AuditResult.FAILURE, metadata_={"email": login_req.email})
             await db.commit()
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
@@ -78,13 +78,14 @@ async def refresh_session(db: AsyncSession, raw_refresh_token: str) -> Tuple[Tok
         
         await refresh_token_repo.create_replacement(db, token_record, new_hashed_refresh_token)
         
-        user = await user_repo.get_by_id(db, token_record.userId)
-        if not user:
+        user = await user_repo.get_by_id_for_update(db, token_record.userId)
+        if not user or user.deletedAt is not None:
             await db.rollback()
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
             
         access_token = create_access_token({"sub": str(user.id), "role": user.role.value})
         
+        await audit_repo.log_event(db, "SESSION_REFRESHED", "User", AuditResult.SUCCESS, actor_id=user.id)
         await db.commit()
         
         token_resp = TokenResponse(
@@ -107,6 +108,7 @@ async def logout_user(db: AsyncSession, raw_refresh_token: str) -> None:
     
     try:
         await refresh_token_repo.revoke_token(db, hashed_refresh_token)
+        await audit_repo.log_event(db, "LOGOUT", "User", AuditResult.SUCCESS)
         await db.commit()
     except Exception as e:
         await db.rollback()

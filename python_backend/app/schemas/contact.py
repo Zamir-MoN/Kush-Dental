@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from uuid import UUID
 from datetime import datetime
 from typing import Optional
-from app.models import ContactStatus
+from app.models import ContactStatus, Priority, Source
 
 class ContactPatient(BaseModel):
     id: UUID
@@ -11,8 +11,12 @@ class ContactPatient(BaseModel):
 
 class ContactLead(BaseModel):
     id: UUID
+    name: str
+    phone: str
+    email: Optional[str] = None
     status: str
     desiredTreatment: Optional[str] = None
+    notes: Optional[str] = None
 
 class ContactAppointment(BaseModel):
     id: UUID
@@ -24,23 +28,27 @@ class ContactBase(BaseModel):
     leadId: Optional[UUID] = None
     appointmentId: Optional[UUID] = None
     status: ContactStatus = ContactStatus.OPEN
-    notes: Optional[str] = None
-    outcome: Optional[str] = None
+    priority: Priority = Priority.NORMAL
+    source: Source = Source.INQUIRY
+    notes: Optional[str] = Field(None, max_length=5000)
+    outcome: Optional[str] = Field(None, max_length=1000)
     nextFollowUpAt: Optional[datetime] = None
 
 class ContactCreate(ContactBase):
+    model_config = ConfigDict(extra="forbid")
     pass
 
 class ContactUpdate(BaseModel):
-    notes: Optional[str] = None
-    outcome: Optional[str] = None
+    notes: Optional[str] = Field(None, max_length=5000)
+    outcome: Optional[str] = Field(None, max_length=1000)
     nextFollowUpAt: Optional[datetime] = None
 
     model_config = ConfigDict(extra='forbid')
 
 class ContactUpdateStatus(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     status: ContactStatus
-    outcome: Optional[str] = None
+    outcome: Optional[str] = Field(None, max_length=1000)
 
 class ContactResponse(ContactBase):
     id: UUID

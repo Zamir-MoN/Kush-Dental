@@ -2,7 +2,7 @@ import pytest
 from httpx import AsyncClient
 from datetime import datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
-from app.models import AppointmentStatus, LeadStatus
+from app.models import AppointmentStatus, LeadStatus, Lead
 from app.schemas.appointment import AppointmentCreate
 from app.schemas.lead import LeadCreate
 from app.repositories import appointment_repo, lead_repo, patient_repo
@@ -78,8 +78,12 @@ async def test_dashboard_counts_and_timezone(
     ), status=AppointmentStatus.CONFIRMED)
     
     # Leads
-    await lead_repo.create(db_session, LeadCreate(name="Lead1", phone="111", status=LeadStatus.NEW))
-    await lead_repo.create(db_session, LeadCreate(name="Lead2", phone="222", status=LeadStatus.CONTACTED))
+    await lead_repo.create(db_session, LeadCreate(name="Lead1", phone="1111111111"))
+    
+    # Actually, we need to create Lead2 with status CONTACTED. LeadCreate doesn't take status anymore.
+    # We should create it and then update the status, or bypass Pydantic for the test mock.
+    lead2 = Lead(name="Lead2", phone="2222222222", status=LeadStatus.CONTACTED, createdAt=datetime.now(timezone.utc), updatedAt=datetime.now(timezone.utc))
+    db_session.add(lead2)
     
     await db_session.commit()
     
@@ -126,3 +130,54 @@ async def test_dashboard_counts_and_timezone(
     # Ordering test (upcoming startsAt ASC)
     starts = [datetime.fromisoformat(a["startsAt"].replace('Z', '+00:00')) for a in upcoming]
     assert starts == sorted(starts)
+
+@pytest.mark.asyncio
+async def test_dashboard_urgent_visits_metric(
+    client: AsyncClient, staff_auth_headers: dict, db_session, db_patient
+):
+    from sqlalchemy import text
+    from app.models import Contact, ContactStatus, Priority
+    
+    await db_session.execute(text('DELETE FROM "Contact"'))
+    
+    # Create urgent open
+    c1 = Contact(
+        patientId=db_patient.id, 
+        priority=Priority.URGENT, 
+        status=ContactStatus.OPEN, 
+        createdAt=datetime.now(timezone.utc), 
+        updatedAt=datetime.now(timezone.utc)
+    )
+    # Create urgent in_progress
+    c2 = Contact(
+        patientId=db_patient.id, 
+        priority=Priority.URGENT, 
+        status=ContactStatus.IN_PROGRESS, 
+        createdAt=datetime.now(timezone.utc), 
+        updatedAt=datetime.now(timezone.utc)
+    )
+    # Create urgent completed (should not be counted)
+    c3 = Contact(
+        patientId=db_patient.id, 
+        priority=Priority.URGENT, 
+        status=ContactStatus.COMPLETED, 
+        createdAt=datetime.now(timezone.utc), 
+        updatedAt=datetime.now(timezone.utc)
+    )
+    # Create high open (should not be counted)
+    c4 = Contact(
+        patientId=db_patient.id, 
+        priority=Priority.HIGH, 
+        status=ContactStatus.OPEN, 
+        createdAt=datetime.now(timezone.utc), 
+        updatedAt=datetime.now(timezone.utc)
+    )
+    
+    db_session.add_all([c1, c2, c3, c4])
+    await db_session.commit()
+    
+    res = await client.get("/api/v1/dashboard", headers=staff_auth_headers)
+    assert res.status_code == 200
+    data = res.json()
+    
+    assert data["summary"]["urgentVisits"] == 2

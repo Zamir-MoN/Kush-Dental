@@ -9,7 +9,7 @@ from tests.test_dxgen import mock_dxgen_key, mock_httpx, mock_no_dxgen_key, Mock
 @pytest.mark.asyncio
 async def test_generate_universal(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/generate"
+        assert url == "http://127.0.0.1:3101/api/v1/generate"
         assert json["topic"] == "Universal"
         return MockResponse(200, {
             "success": True,
@@ -25,7 +25,7 @@ async def test_generate_universal(client: AsyncClient, doctor_auth_headers: dict
 @pytest.mark.asyncio
 async def test_generate_social(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/generate/social"
+        assert url == "http://127.0.0.1:3101/api/v1/generate/social"
         return MockResponse(200, {
             "success": True,
             "requestId": "req-2",
@@ -40,7 +40,7 @@ async def test_generate_social(client: AsyncClient, doctor_auth_headers: dict, m
 @pytest.mark.asyncio
 async def test_generate_business(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/generate/business"
+        assert url == "http://127.0.0.1:3101/api/v1/generate/business"
         return MockResponse(200, {
             "success": True,
             "requestId": "req-3",
@@ -55,7 +55,7 @@ async def test_generate_business(client: AsyncClient, doctor_auth_headers: dict,
 @pytest.mark.asyncio
 async def test_get_content(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_get(url, headers):
-        assert url == "http://51.20.121.253:3101/api/v1/content/cnt_123"
+        assert url == "http://127.0.0.1:3101/api/v1/content/cnt_123"
         return MockResponse(200, {
             "success": True,
             "contentId": "cnt_123",
@@ -70,7 +70,7 @@ async def test_get_content(client: AsyncClient, doctor_auth_headers: dict, mock_
 @pytest.mark.asyncio
 async def test_get_usage(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_get(url, headers):
-        assert url == "http://51.20.121.253:3101/api/v1/usage"
+        assert url == "http://127.0.0.1:3101/api/v1/usage"
         return MockResponse(200, {
             "model": "gemini-2.5-flash",
             "totalTokens": 1000
@@ -85,7 +85,7 @@ async def test_get_usage(client: AsyncClient, doctor_auth_headers: dict, mock_dx
 @pytest.mark.asyncio
 async def test_get_health(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_get(url, headers):
-        assert url == "http://51.20.121.253:3101/api/v1/health"
+        assert url == "http://127.0.0.1:3101/api/v1/health"
         return MockResponse(200, {
             "status": "ok",
             "service": "content-api"
@@ -120,7 +120,7 @@ async def test_get_health_upstream_failure(client: AsyncClient, doctor_auth_head
 @pytest.mark.asyncio
 async def test_generate_image_success(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/images/generate"
+        assert url == "http://127.0.0.1:3101/api/v1/images/generate"
         assert json["prompt"] == "A modern dental clinic"
         return MockResponse(200, {
             "success": True,
@@ -147,7 +147,7 @@ async def test_generate_image_success(client: AsyncClient, doctor_auth_headers: 
 @pytest.mark.asyncio
 async def test_generate_image_from_content_success(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/images/from-content"
+        assert url == "http://127.0.0.1:3101/api/v1/images/from-content"
         assert json["contentId"] == "cnt_999"
         return MockResponse(200, {
             "success": True,
@@ -170,7 +170,7 @@ async def test_generate_image_from_content_success(client: AsyncClient, doctor_a
 @pytest.mark.asyncio
 async def test_generate_blog_with_image(client: AsyncClient, doctor_auth_headers: dict, mock_dxgen_key, mock_httpx):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/generate/blog"
+        assert url == "http://127.0.0.1:3101/api/v1/generate/blog"
         assert json["includeImage"] is True
         return MockResponse(200, {
             "success": True,

@@ -54,7 +54,14 @@ const handleResponse = async (response: Response) => {
     
     try {
       const errorData = await response.json();
-      message = errorData.detail || errorData.message || message;
+      
+      let errorDetail = errorData.detail;
+      if (Array.isArray(errorDetail)) {
+        errorDetail = errorDetail.map((e: any) => `${e.loc?.slice(-1)?.[0] || 'Field'}: ${e.msg}`).join(', ');
+        errorData.detail = errorDetail;
+      }
+      
+      message = errorDetail || errorData.message || message;
       details = errorData;
     } catch (e) {
       // Not JSON
@@ -154,11 +161,11 @@ export const apiClient = async <T>(endpoint: string, options: RequestOptions = {
     }
 
     return handleResponse(response);
-  } catch (error) {
-    if (error instanceof ApiError) {
+  } catch (error: any) {
+    if (error && error.name === 'ApiError') {
       throw error;
     }
-    throw new ApiError(500, 'Network error or server unreachable');
+    throw new ApiError(0, 'Network error or server unreachable');
   }
 };
 

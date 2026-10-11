@@ -40,7 +40,10 @@ def map_appointment(row) -> Dict[str, Any]:
             "id": patient.id,
             "fullName": patient.fullName,
             "phone": patient.phone
-        },
+        } if patient else None,
+        "guestName": getattr(apt, 'guestName', None),
+        "guestPhone": getattr(apt, 'guestPhone', None),
+        "guestEmail": getattr(apt, 'guestEmail', None),
         "doctor": {
             "id": doctor.id,
             "name": doctor.email.split('@')[0]
@@ -53,7 +56,7 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
 
     # Base query for appointments
     base_apt_query = select(Appointment, Patient, User)\
-        .join(Patient, Appointment.patientId == Patient.id)\
+        .outerjoin(Patient, Appointment.patientId == Patient.id)\
         .outerjoin(User, Appointment.doctorId == User.id)\
         .where(Appointment.deletedAt.is_(None))
 
@@ -134,6 +137,18 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
         .where(Contact.deletedAt.is_(None), Contact.status == ContactStatus.IN_PROGRESS)
     count_in_progress = (await db.execute(count_in_progress_query)).scalar() or 0
 
+    from app.models import Priority
+    count_urgent_query = select(func.count())\
+        .select_from(Contact)\
+        .where(
+            Contact.deletedAt.is_(None),
+            Contact.priority == Priority.URGENT,
+            Contact.status.in_([ContactStatus.OPEN, ContactStatus.IN_PROGRESS])
+        )
+    count_urgent = (await db.execute(count_urgent_query)).scalar() or 0
+
+    now_ist = datetime.now(KOLKATA_TZ)
+    
     return DashboardResponse(
         summary={
             "todayAppointments": count_today,
@@ -141,10 +156,13 @@ async def get_dashboard_data(db: AsyncSession, current_user: User) -> DashboardR
             "confirmedToday": count_conf_today,
             "newLeads": count_new_leads,
             "openFollowUps": count_open_follow_ups,
-            "inProgressFollowUps": count_in_progress
+            "inProgressFollowUps": count_in_progress,
+            "urgentVisits": count_urgent
         },
         todayAppointments=today_appointments,
         requestedAppointments=requested_appointments,
         upcomingAppointments=upcoming_appointments,
-        recentLeads=recent_leads
+        recentLeads=recent_leads,
+        effectiveDate=now_ist,
+        effectiveDateStr=now_ist.strftime("%Y-%m-%d")
     )

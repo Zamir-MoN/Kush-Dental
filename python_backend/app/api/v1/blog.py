@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import update
@@ -30,12 +30,15 @@ async def generate_blog_draft(
 
 @router.get("", response_model=List[BlogResponse])
 async def list_blogs(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(require_roles([Role.DOCTOR]))
 ):
     """List all blogs (Draft & Published). DOCTOR only."""
     result = await db.execute(
         select(Blog).where(Blog.deletedAt.is_(None)).order_by(Blog.createdAt.desc())
+        .offset(skip).limit(limit)
     )
     return result.scalars().all()
 

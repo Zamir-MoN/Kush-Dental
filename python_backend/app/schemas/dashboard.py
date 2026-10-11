@@ -23,7 +23,10 @@ class DashboardAppointment(BaseModel):
     endsAt: datetime
     treatment: str
     status: AppointmentStatus
-    patient: DashboardPatient
+    patient: Optional[DashboardPatient] = None
+    guestName: Optional[str] = None
+    guestPhone: Optional[str] = None
+    guestEmail: Optional[str] = None
     doctor: Optional[DashboardDoctor] = None
 
     model_config = ConfigDict(from_attributes=True)
@@ -45,6 +48,7 @@ class DashboardSummary(BaseModel):
     newLeads: int
     openFollowUps: int
     inProgressFollowUps: int
+    urgentVisits: int
 
 class DashboardResponse(BaseModel):
     summary: DashboardSummary
@@ -52,3 +56,5 @@ class DashboardResponse(BaseModel):
     requestedAppointments: List[DashboardAppointment]
     upcomingAppointments: List[DashboardAppointment]
     recentLeads: List[DashboardLead]
+    effectiveDate: datetime
+    effectiveDateStr: str

@@ -7,9 +7,13 @@ if settings.NODE_ENV == 'test' and settings.TEST_DATABASE_URL:
 
 SQLALCHEMY_DATABASE_URL = url.replace("postgresql://", "postgresql+asyncpg://")
 
+from sqlalchemy.pool import NullPool
+
+kwargs = {"poolclass": NullPool} if settings.NODE_ENV == "test" else {}
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
     echo=False,
+    **kwargs
 )
 AsyncSessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 

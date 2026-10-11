@@ -87,9 +87,9 @@ export const PrecisionSection: React.FC = () => {
             return (
               <motion.div
                 key={item.num}
-                className="bg-[#1B1C20] rounded-3xl border border-white/10 hover:border-[#DCA51B]/60 p-5 sm:p-6 shadow-xl hover:shadow-[0_12px_36px_rgba(220,165,27,0.12)] transition-all duration-300 flex flex-col justify-between group cursor-default reveal-up"
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.25 }}
+                className="bg-[#1B1C20] rounded-3xl border border-white/10 hover:border-[#DCA51B]/70 p-5 sm:p-6 shadow-xl hover:shadow-[0_16px_40px_rgba(220,165,27,0.18)] transition-all duration-400 ease-out flex flex-col justify-between group cursor-default reveal-up"
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div>
                   {/* Top Card Header */}
@@ -97,8 +97,8 @@ export const PrecisionSection: React.FC = () => {
                     <span className="font-serif font-bold text-2xl sm:text-3xl text-[#DCA51B] block">
                       {item.num}
                     </span>
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] group-hover:scale-105 transition-all duration-300 shadow-inner">
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#121316] border border-white/15 flex items-center justify-center text-[#DCA51B] group-hover:bg-[#DCA51B] group-hover:text-[#121316] group-hover:scale-110 group-hover:rotate-6 transition-all duration-400 shadow-inner">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" />
                     </div>
                   </div>
 

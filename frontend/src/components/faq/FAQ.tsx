@@ -31,8 +31,8 @@ export const FAQ = () => {
             return (
               <div 
                 key={i} 
-                className={`reveal-up border rounded-2xl transition-all duration-300 ${
-                  isOpen ? 'border-[#DCA51B] bg-[#FAF7F2] shadow-sm' : 'border-[#E8E2D5] hover:border-[#DCA51B]/50 bg-white'
+                className={`reveal-up border rounded-2xl transition-all duration-300 group hover:-translate-y-0.5 ${
+                  isOpen ? 'border-[#DCA51B] bg-[#FAF7F2] shadow-md' : 'border-[#E8E2D5] hover:border-[#DCA51B]/60 hover:shadow-sm bg-white'
                 }`}
               >
                 <button
@@ -40,15 +40,15 @@ export const FAQ = () => {
                   className="w-full py-4 px-4 sm:px-6 flex justify-between items-center text-left cursor-pointer"
                 >
                   <h4 className={`font-serif font-bold text-sm sm:text-base transition-colors pr-4 ${
-                    isOpen ? 'text-[#DCA51B]' : 'text-zinc-900'
+                    isOpen ? 'text-[#DCA51B]' : 'text-zinc-900 group-hover:text-[#DCA51B]'
                   }`}>
                     {faq.question}
                   </h4>
                   <motion.div
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.25 }}
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      isOpen ? 'bg-[#DCA51B] text-[#141518]' : 'bg-[#FAF7F2] text-zinc-600'
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
+                      isOpen ? 'bg-[#DCA51B] text-[#141518]' : 'bg-[#FAF7F2] text-zinc-600 group-hover:bg-[#FAF0D8] group-hover:text-[#141518] group-hover:scale-105'
                     }`}
                   >
                     <Plus strokeWidth={2} className="w-3.5 h-3.5" />

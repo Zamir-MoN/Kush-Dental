@@ -12,7 +12,7 @@ The architecture implements a secure **Backend-as-a-Proxy** pattern:
 ```mermaid
 flowchart LR
     A[Doctor / Staff Browser] -->|Auth Cookie / JWT| B[FastAPI Backend\n/api/v1/dxgen]
-    B -->|Bearer DXGEN_API_KEY\nLocal loopback 3101| C[DXGen AI Service\n51.20.121.253:3101]
+    B -->|Bearer DXGEN_API_KEY\nLocal loopback 3101| C[DXGen AI Service\n3.109.4.37:3101]
     C -->|Gemini 2.5 Flash| D[(Google Gemini API)]
 ```
 
@@ -239,7 +239,7 @@ To ensure seamless scrolling on all devices (especially mouse-wheel users on Win
 
 ## 6. VPS Deployment Guide
 
-When pushing updates to the production VPS (`ayan` @ `51.20.121.253`):
+When pushing updates to the production VPS (`ayan` @ `3.109.4.37`):
 
 ### One-Liner Quick Deploy
 ```bash

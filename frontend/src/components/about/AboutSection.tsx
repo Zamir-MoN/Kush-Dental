@@ -1,28 +1,87 @@
 import React, { useRef } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { ToothSparkleIcon, SmileCurveIcon, DentalShieldIcon } from '../common/DentalIcons';
+import { ArrowRight } from 'lucide-react';
+import { ToothIcon, DentalShieldIcon } from '../common/DentalIcons';
+
+/**
+ * 4-Point Sparkle Icon matching the mockup
+ */
+const SparkleIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="1.8" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+);
+
+/**
+ * Circular Frosted Glass Stamp Badge ("YOUR SMILE · OUR PRIORITY")
+ * Features continuous slow rotation and center gold tooth icon
+ */
+const CircularStampBadge: React.FC<{ className?: string; mini?: boolean }> = ({ 
+  className = '', 
+  mini = false 
+}) => (
+  <div 
+    className={`relative rounded-full bg-white/85 backdrop-blur-md border border-[#E8DFC8] shadow-xl flex items-center justify-center select-none group transition-transform duration-500 hover:scale-105 ${
+      mini 
+        ? 'w-14 h-14 sm:w-16 sm:h-16 p-1' 
+        : 'w-24 h-24 sm:w-28 sm:h-28 lg:w-30 lg:h-30 xl:w-32 xl:h-32 p-1.5'
+    } ${className}`}
+  >
+    {/* Rotating Circular Text */}
+    <svg viewBox="0 0 120 120" className="w-full h-full animate-[spin_26s_linear_infinite] pointer-events-none">
+      <defs>
+        <path
+          id="stampCirclePath"
+          d="M 60,60 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"
+          fill="none"
+        />
+      </defs>
+      <text className={`${mini ? 'text-[8.5px]' : 'text-[9.5px]'} font-sans font-bold tracking-[0.26em] uppercase fill-[#8C7A5E]`}>
+        <textPath href="#stampCirclePath" startOffset="0%">
+          YOUR SMILE · OUR PRIORITY · 
+        </textPath>
+      </text>
+    </svg>
+
+    {/* Center Gold Tooth Icon */}
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className={`${
+        mini ? 'w-6 h-6' : 'w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10'
+      } rounded-full bg-[#FAF5EC] border border-[#DCA51B]/40 flex items-center justify-center text-[#DCA51B] shadow-inner group-hover:scale-110 transition-transform duration-300`}>
+        <ToothIcon className={mini ? 'w-3 h-3' : 'w-4 h-4 sm:w-5 sm:h-5'} strokeWidth={1.8} />
+      </div>
+    </div>
+  </div>
+);
 
 export const AboutSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef);
 
-  const pillars = [
+  const features = [
     {
-      icon: ToothSparkleIcon,
+      icon: ToothIcon,
       title: "Gentle, Painless Touch",
-      desc: "Painless local numbing and whisper-quiet instruments for complete comfort."
+      desc: "Painless local numbing and whisper-quiet instruments."
     },
     {
-      icon: SmileCurveIcon,
+      icon: SparkleIcon,
       title: "Natural Smile Artistry",
       desc: "Preserving natural tooth enamel with custom-matched ceramics."
     },
     {
       icon: DentalShieldIcon,
       title: "Precision 3D Diagnostics",
-      desc: "Sub-millimeter 3D imaging and computer guidance for predictable care."
+      desc: "Sub-millimeter 3D imaging and computer guidance for accuracy."
     }
   ];
 
@@ -30,113 +89,242 @@ export const AboutSection: React.FC = () => {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="py-12 sm:py-16 lg:py-18 xl:py-20 px-4 sm:px-6 lg:px-12 bg-[#FAF7F2] border-b border-[#E8E2D5] overflow-hidden relative scroll-mt-24 sm:scroll-mt-28"
+      className="py-14 sm:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8 bg-[#FAF7F2] border-b border-[#E8E2D5] overflow-hidden relative scroll-mt-24 sm:scroll-mt-28"
     >
-      {/* Warm Ambient Gradient Glows */}
-      <div className="absolute top-1/3 left-0 w-[550px] h-[550px] bg-[#DCA51B]/[0.035] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#DCA51B]/[0.025] rounded-full blur-3xl pointer-events-none" />
+      {/* ------------------------------------------------------------- */}
+      {/* SVG Clip Path Definitions for Desktop Flanking Arches         */}
+      {/* ------------------------------------------------------------- */}
+      <svg className="w-0 h-0 absolute pointer-events-none" aria-hidden="true">
+        <defs>
+          {/* Left Wing Inward Concave Arch Clip */}
+          <clipPath id="leftWingArchPath" clipPathUnits="userSpaceOnUse">
+            <path d="M 0,0 L 260,0 C 340,30 380,80 380,130 C 380,240 230,300 230,400 C 230,500 390,560 390,670 C 390,720 280,780 180,800 L 0,800 Z" />
+          </clipPath>
 
-      <div className="max-w-[1400px] mx-auto relative z-10">
-        
-        {/* 1. Asymmetrical Editorial Masthead */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mb-8 sm:mb-10 lg:mb-12">
-          <div className="lg:col-span-8 reveal-up">
+          {/* Right Wing Inward Concave Arch Clip */}
+          <clipPath id="rightWingArchPath" clipPathUnits="userSpaceOnUse">
+            <path d="M 140,0 L 400,0 L 400,800 L 220,800 C 120,780 10,720 10,670 C 10,560 170,500 170,400 C 170,300 20,240 20,130 C 20,80 60,30 140,0 Z" />
+          </clipPath>
+        </defs>
+      </svg>
 
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-[44px] xl:text-5xl text-zinc-900 leading-[1.14] tracking-tight">
-              Dentistry designed to feel <br className="hidden sm:inline" />
-              <span className="italic font-normal text-[#DCA51B]">peaceful, precise &amp; personal</span>.
-            </h2>
+      {/* ------------------------------------------------------------- */}
+      {/* DESKTOP FLANKING WINGS: Arched Photo Cutouts (lg+ screens)    */}
+      {/* ------------------------------------------------------------- */}
+
+      {/* LEFT WING: Operatory Suite */}
+      <div 
+        className="hidden lg:block absolute left-0 top-0 bottom-0 w-[26%] xl:w-[29%] 2xl:w-[32%] z-0 select-none pointer-events-none"
+      >
+        <div className="relative w-full h-full">
+          <svg 
+            viewBox="0 0 400 800" 
+            preserveAspectRatio="none" 
+            className="w-full h-full"
+          >
+            {/* Operatory Suite Image clipped to arched portal */}
+            <g clipPath="url(#leftWingArchPath)">
+              <image 
+                href="/images/about/operatory-suite.jpg" 
+                x="0" 
+                y="0" 
+                width="400" 
+                height="800" 
+                preserveAspectRatio="xMidYMid slice" 
+              />
+              {/* Soft Ambient Inner Vignette */}
+              <rect x="0" y="0" width="400" height="800" fill="url(#leftVignette)" opacity="0.3" />
+            </g>
+
+            {/* Subtle Gradient Definition */}
+            <defs>
+              <linearGradient id="leftVignette" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#000000" stopOpacity="0.3" />
+                <stop offset="80%" stopColor="#FAF7F2" stopOpacity="0" />
+                <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.4" />
+              </linearGradient>
+            </defs>
+
+            {/* Glowing Golden Rim on inner arch edge */}
+            <path 
+              d="M 260,0 C 340,30 380,80 380,130 C 380,240 230,300 230,400 C 230,500 390,560 390,670 C 390,720 280,780 180,800" 
+              fill="none" 
+              stroke="#DCA51B" 
+              strokeWidth="4" 
+              strokeOpacity="0.35" 
+            />
+            {/* Crisp Warm Cream Rim Stroke */}
+            <path 
+              d="M 260,0 C 340,30 380,80 380,130 C 380,240 230,300 230,400 C 230,500 390,560 390,670 C 390,720 280,780 180,800" 
+              fill="none" 
+              stroke="#E8DAC5" 
+              strokeWidth="2.5" 
+            />
+          </svg>
+
+          {/* Floating Glass Stamp Badge */}
+          <div className="absolute bottom-8 left-6 xl:bottom-12 xl:left-8 pointer-events-auto z-20">
+            <CircularStampBadge />
           </div>
+        </div>
+      </div>
 
-          <div className="lg:col-span-4 flex flex-col justify-end lg:pb-1 reveal-up">
-            <p className="text-zinc-600 text-xs sm:text-sm lg:text-[15px] font-sans font-light leading-relaxed border-l-2 border-[#DCA51B]/60 pl-4 sm:pl-5">
-              Calm hospitality, modern technology, and personalized care designed for your comfort.
-            </p>
+      {/* RIGHT WING: Reception Lounge */}
+      <div 
+        className="hidden lg:block absolute right-0 top-0 bottom-0 w-[26%] xl:w-[29%] 2xl:w-[32%] z-0 select-none pointer-events-none"
+      >
+        <div className="relative w-full h-full">
+          <svg 
+            viewBox="0 0 400 800" 
+            preserveAspectRatio="none" 
+            className="w-full h-full"
+          >
+            {/* Reception Lounge Image clipped to arched portal */}
+            <g clipPath="url(#rightWingArchPath)">
+              <image 
+                href="/images/about/reception-lounge.jpg" 
+                x="0" 
+                y="0" 
+                width="400" 
+                height="800" 
+                preserveAspectRatio="xMidYMid slice" 
+              />
+              {/* Soft Ambient Inner Vignette */}
+              <rect x="0" y="0" width="400" height="800" fill="url(#rightVignette)" opacity="0.3" />
+            </g>
+
+            {/* Subtle Gradient Definition */}
+            <defs>
+              <linearGradient id="rightVignette" x1="100%" y1="0%" x2="0%" y2="0%">
+                <stop offset="0%" stopColor="#000000" stopOpacity="0.3" />
+                <stop offset="80%" stopColor="#FAF7F2" stopOpacity="0" />
+                <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.4" />
+              </linearGradient>
+            </defs>
+
+            {/* Glowing Golden Rim on inner arch edge */}
+            <path 
+              d="M 140,0 C 60,30 20,80 20,130 C 20,240 170,300 170,400 C 170,500 10,560 10,670 C 10,720 120,780 220,800" 
+              fill="none" 
+              stroke="#DCA51B" 
+              strokeWidth="4" 
+              strokeOpacity="0.35" 
+            />
+            {/* Crisp Warm Cream Rim Stroke */}
+            <path 
+              d="M 140,0 C 60,30 20,80 20,130 C 20,240 170,300 170,400 C 170,500 10,560 10,670 C 10,720 120,780 220,800" 
+              fill="none" 
+              stroke="#E8DAC5" 
+              strokeWidth="2.5" 
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* ------------------------------------------------------------- */}
+      {/* CENTER STAGE CONTENT: Eyebrow, Title, Cards, CTA & Divider     */}
+      {/* ------------------------------------------------------------- */}
+      <div className="max-w-[780px] xl:max-w-[850px] mx-auto relative z-10 text-center">
+
+        {/* 1. Delicate Top Eyebrow: — MODERN DENTAL CARE — */}
+        <div className="flex items-center justify-center gap-3 mb-3 sm:mb-4 reveal-up">
+          <span className="w-8 sm:w-12 h-[1px] bg-[#DCA51B]/40" />
+          <span className="text-[10.5px] sm:text-xs font-sans font-bold tracking-[0.22em] text-[#B88A44] uppercase">
+            MODERN DENTAL CARE
+          </span>
+          <span className="w-8 sm:w-12 h-[1px] bg-[#DCA51B]/40" />
+        </div>
+
+        {/* 2. Centered Editorial Headline */}
+        <div className="mb-3 sm:mb-4 reveal-up">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[45px] xl:text-[52px] text-zinc-900 leading-[1.12] tracking-tight font-normal">
+            Dentistry designed<br />
+            <span className="italic font-normal text-[#DCA51B]">to feel peaceful, precise</span><br />
+            <span className="italic font-normal text-[#DCA51B]">&amp; personal.</span>
+          </h2>
+        </div>
+
+        {/* 3. Centered Subtitle */}
+        <div className="mb-6 sm:mb-8 lg:mb-10 reveal-up">
+          <p className="max-w-lg mx-auto text-zinc-600 text-xs sm:text-sm lg:text-[14.5px] font-sans font-light leading-relaxed">
+            Calm hospitality, modern technology, and personalized care designed for your comfort.
+          </p>
+        </div>
+
+        {/* 4. MOBILE / TABLET ARCHED SHOWCASE (< 1024px) */}
+        <div className="lg:hidden mb-7 sm:mb-9 reveal-up">
+          <div className="relative grid grid-cols-2 gap-3 sm:gap-4 p-2 sm:p-2.5 bg-white/70 backdrop-blur-xs rounded-3xl border border-[#E8E2D5] shadow-xs max-w-sm sm:max-w-md mx-auto">
+            {/* Left Photo: Operatory Suite with curved arch styling */}
+            <div className="relative h-44 sm:h-52 rounded-2xl overflow-hidden border border-[#E8E2D5] shadow-inner group">
+              <img 
+                src="/images/about/operatory-suite.jpg" 
+                alt="Kush Dental Operatory Suite" 
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              
+              {/* Miniature Stamp Badge */}
+              <div className="absolute bottom-2 left-2">
+                <CircularStampBadge mini={true} />
+              </div>
+            </div>
+
+            {/* Right Photo: Reception Lounge with glowing tooth logo */}
+            <div className="relative h-44 sm:h-52 rounded-2xl overflow-hidden border border-[#E8E2D5] shadow-inner group">
+              <img 
+                src="/images/about/reception-lounge.jpg" 
+                alt="Kush Dental Reception Lounge" 
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+            </div>
           </div>
         </div>
 
-        {/* 2. Distinct Dual-Layered Showcase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
-          
-          {/* LEFT: Multi-Layered Visual Composition (Span 7) */}
-          <div className="lg:col-span-7 relative reveal-up">
-            
-            {/* Main Operatory Suite Showcase Frame */}
-            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-[#E8E2D5] bg-white group">
-              <img 
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1400&auto=format&fit=crop" 
-                alt="Kush Dental Clinic Luxury Consultation Suite" 
-                className="w-full h-[280px] sm:h-[340px] lg:h-[380px] xl:h-[420px] object-cover filter brightness-[0.98] contrast-[1.02] transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent pointer-events-none" />
-
-              {/* Bottom Inset Pill: Doctor Credentials (Transparent Glassmorphic) */}
-              <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-md bg-black/35 backdrop-blur-md px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-between gap-3 transition-all duration-300 hover:border-[#DCA51B]/60">
-                <div className="flex items-center gap-2.5">
-                  <img 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjsF7fRecc_cpRYBxWO2uQqv6p5QiEK2qMKVen5ACqtO1EOb-RzirP3c2f40XbOSsurGlWYbyFcj1XzHMM1OOnIc6XHn2seIDn0Md_trhN2S-LX_IuS-1U1FlUX7Meoq7D_iUJM5j5HcPj0LC5aNeHyxqewceMim6JSE-TNleAq6DFd7uNO1cQpGhlTzDHwNpFqUpmhbimNJFjNbEhPBRYEiHEmbKx4ZlHBY0bqJ8_ZCmIWWS_uj0uc6JH06oCvYNAk24" 
-                    alt="Dr. Amit Kumar" 
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-[#DCA51B]/50 shadow-sm"
-                  />
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <h4 className="font-serif font-bold text-xs sm:text-sm text-white">Dr. Amit Kumar</h4>
-                      <CheckCircle2 className="w-3 h-3 text-[#DCA51B]" />
-                    </div>
-                    <p className="text-[11px] text-zinc-300 font-sans">Chief Dental Surgeon &amp; Aesthetic Specialist</p>
-                  </div>
-                </div>
-
-                <div className="hidden sm:flex items-center gap-1 text-[#DCA51B] bg-[#DCA51B]/15 border border-[#DCA51B]/35 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide shrink-0">
-                  <span>Certified</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* RIGHT: 3 Informative Philosophy Pillars + Action (Span 5) */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-4 sm:space-y-5 reveal-up">
-            
-            <div className="space-y-3 sm:space-y-3.5">
-              {pillars.map((pillar, idx) => {
-                const Icon = pillar.icon;
-                return (
-                  <div 
-                    key={idx}
-                    className="bg-white rounded-2xl border border-[#E8E2D5] hover:border-[#DCA51B]/60 p-3.5 sm:p-4 lg:p-4.5 shadow-xs hover:shadow-lg transition-all duration-300 group cursor-default flex items-start gap-3.5 sm:gap-4"
-                  >
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#FAF7F2] border border-[#DCA51B]/30 group-hover:bg-[#DCA51B] group-hover:border-[#DCA51B] flex items-center justify-center shrink-0 text-[#DCA51B] group-hover:text-[#141518] transition-all duration-300 group-hover:rotate-6 shadow-xs">
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-serif font-bold text-sm sm:text-base text-zinc-900 group-hover:text-[#DCA51B] transition-colors leading-snug mb-1">
-                        {pillar.title}
-                      </h3>
-                      <p className="text-zinc-600 text-xs sm:text-[13px] font-sans font-light leading-relaxed">
-                        {pillar.desc}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Single Primary Action Button */}
-            <div className="pt-1">
-              <Link 
-                to="/about" 
-                className="btn-gold-luxury group cursor-pointer py-3 sm:py-3.5 px-7 sm:px-8 rounded-xl inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider shadow-md shadow-[#DCA51B]/25 hover:shadow-lg hover:shadow-[#DCA51B]/35 w-full sm:w-auto justify-center"
+        {/* 5. The 3 Feature Cards (All Warm White & Cream Cards) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-4.5 mb-7 sm:mb-9 lg:mb-10 reveal-up">
+          {features.map((feature, idx) => {
+            const Icon = feature.icon;
+            return (
+              <div 
+                key={idx}
+                className="bg-white rounded-2xl sm:rounded-3xl border border-[#EBDCC8]/80 hover:border-[#DCA51B] p-5 sm:p-5.5 lg:p-6 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-400 ease-out group cursor-default text-center flex flex-col items-center justify-start"
               >
-                <span>DISCOVER OUR CLINIC</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
-              </Link>
-            </div>
+                {/* Circular Gold Icon Badge */}
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#FAF5EC] border border-[#F0DCB8] flex items-center justify-center text-[#DCA51B] mb-3 sm:mb-3.5 group-hover:scale-110 group-hover:bg-[#DCA51B] group-hover:text-[#141518] group-hover:rotate-6 transition-all duration-400 shadow-xs">
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" strokeWidth={1.8} />
+                </div>
 
+                {/* Card Title */}
+                <h3 className="font-serif font-bold text-sm sm:text-base text-zinc-900 group-hover:text-[#DCA51B] transition-colors duration-300 leading-snug mb-1.5 sm:mb-2">
+                  {feature.title}
+                </h3>
+
+                {/* Card Description */}
+                <p className="text-zinc-600 text-xs sm:text-[13px] font-sans font-light leading-relaxed">
+                  {feature.desc}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 6. Centered Solid Gold Pill Button & Tooth Divider */}
+        <div className="flex flex-col items-center justify-center gap-4 sm:gap-4.5 reveal-up">
+          <Link 
+            to="/about" 
+            className="btn-gold-solid group inline-flex items-center gap-2.5 px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-sans font-bold text-xs sm:text-[13px] tracking-wider uppercase cursor-pointer shadow-lg shadow-[#DCA51B]/20"
+          >
+            <span>DISCOVER OUR CLINIC</span>
+            <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" />
+          </Link>
+
+          {/* Delicate Bottom Accent Divider: —— 🦷 —— */}
+          <div className="flex items-center justify-center gap-3 pt-1 pointer-events-none select-none">
+            <span className="w-12 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-[#DCA51B]/50" />
+            <ToothIcon className="w-3.5 h-3.5 text-[#DCA51B]" strokeWidth={1.5} />
+            <span className="w-12 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-[#DCA51B]/50" />
           </div>
-
         </div>
 
       </div>

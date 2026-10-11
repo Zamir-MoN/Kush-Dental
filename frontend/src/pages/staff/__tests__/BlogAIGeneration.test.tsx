@@ -4,6 +4,19 @@ import { vi, describe, test, expect } from 'vitest';
 import { BlogCreate } from '../BlogCreate';
 
 
+vi.mock('gsap', () => ({
+  default: {
+    registerPlugin: vi.fn(),
+  },
+  gsap: {
+    registerPlugin: vi.fn(),
+  },
+}));
+
+vi.mock('gsap/ScrollTrigger', () => ({
+  ScrollTrigger: vi.fn(),
+}));
+
 vi.mock('../../../lib/apiClient', () => ({
   apiClient: vi.fn()
 }));

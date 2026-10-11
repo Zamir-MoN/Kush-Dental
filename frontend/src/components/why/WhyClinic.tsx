@@ -59,81 +59,76 @@ export const WhyClinic: React.FC = () => {
             <div className="absolute -right-16 -top-16 w-64 h-64 bg-radial from-[#DCA51B]/20 to-transparent rounded-full blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Animated Background Wave Lines */}
-            <svg 
-              className="absolute inset-0 w-full h-full pointer-events-none opacity-40 transition-opacity duration-500 group-hover:opacity-75"
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 900 450" 
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="p1WaveGrad1" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.05" />
-                  <stop offset="30%" stopColor="#DCA51B" stopOpacity="0.45" />
-                  <stop offset="70%" stopColor="#F5D77F" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.1" />
-                </linearGradient>
-                <linearGradient id="p1WaveGrad2" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#FAF7F2" stopOpacity="0.05" />
-                  <stop offset="40%" stopColor="#FAF7F2" stopOpacity="0.3" />
-                  <stop offset="75%" stopColor="#DCA51B" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.05" />
-                </linearGradient>
-                <linearGradient id="p1WaveGrad3" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.08" />
-                  <stop offset="50%" stopColor="#DCA51B" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.12" />
-                </linearGradient>
-              </defs>
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-40 group-hover:opacity-75 transition-opacity duration-500">
+              <style>{`
+                @keyframes whyWaveDrift1 {
+                  0% { transform: translate3d(0, 0, 0); }
+                  100% { transform: translate3d(-900px, 0, 0); }
+                }
+                @keyframes whyWaveDrift2 {
+                  0% { transform: translate3d(-700px, 0, 0); }
+                  100% { transform: translate3d(0, 0, 0); }
+                }
+                @keyframes whyWaveDrift3 {
+                  0% { transform: translate3d(0, 0, 0); }
+                  100% { transform: translate3d(-1000px, 0, 0); }
+                }
+              `}</style>
+
               {/* Wave Line 1 */}
-              <path 
-                d="M 0,180 Q 225,80 450,180 T 900,180 T 1350,180 T 1800,180 T 2250,180 T 2700,180" 
-                fill="none" 
-                stroke="url(#p1WaveGrad1)" 
-                strokeWidth="1.75" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[2700px] pointer-events-none"
+                style={{
+                  animation: 'whyWaveDrift1 20s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-900 0" 
-                  dur="15s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
+                <svg className="w-full h-full" viewBox="0 0 2700 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,180 Q 225,80 450,180 T 900,180 T 1350,180 T 1800,180 T 2250,180 T 2700,180" 
+                    fill="none" 
+                    stroke="rgba(220, 165, 27, 0.45)" 
+                    strokeWidth="1.75" 
+                  />
+                </svg>
+              </div>
+
               {/* Wave Line 2 */}
-              <path 
-                d="M 0,220 Q 175,340 350,220 T 700,220 T 1050,220 T 1400,220 T 1750,220 T 2100,220 T 2450,220 T 2800,220" 
-                fill="none" 
-                stroke="url(#p1WaveGrad2)" 
-                strokeWidth="1.5" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[2800px] pointer-events-none"
+                style={{
+                  animation: 'whyWaveDrift2 16s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-700 0" 
-                  dur="12s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
+                <svg className="w-full h-full" viewBox="0 0 2800 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,220 Q 175,340 350,220 T 700,220 T 1050,220 T 1400,220 T 1750,220 T 2100,220 T 2450,220 T 2800,220" 
+                    fill="none" 
+                    stroke="rgba(250, 247, 242, 0.28)" 
+                    strokeWidth="1.5" 
+                  />
+                </svg>
+              </div>
+
               {/* Wave Line 3 */}
-              <path 
-                d="M 0,280 Q 250,200 500,280 T 1000,280 T 1500,280 T 2000,280 T 2500,280 T 3000,280" 
-                fill="none" 
-                stroke="url(#p1WaveGrad3)" 
-                strokeWidth="2" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[3000px] pointer-events-none"
+                style={{
+                  animation: 'whyWaveDrift3 24s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-1000 0" 
-                  dur="20s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
-            </svg>
+                <svg className="w-full h-full" viewBox="0 0 3000 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,280 Q 250,200 500,280 T 1000,280 T 1500,280 T 2000,280 T 2500,280 T 3000,280" 
+                    fill="none" 
+                    stroke="rgba(220, 165, 27, 0.35)" 
+                    strokeWidth="2" 
+                  />
+                </svg>
+              </div>
+            </div>
             
             {/* Top Row */}
             <div className="relative z-10 flex items-start justify-between mb-5 sm:mb-6">
@@ -304,81 +299,76 @@ export const WhyClinic: React.FC = () => {
             <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-radial from-[#DCA51B]/20 to-transparent rounded-full blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Animated Background Wave Lines */}
-            <svg 
-              className="absolute inset-0 w-full h-full pointer-events-none opacity-40 transition-opacity duration-500 group-hover:opacity-75"
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 900 450" 
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="p4WaveGrad1" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.05" />
-                  <stop offset="30%" stopColor="#DCA51B" stopOpacity="0.45" />
-                  <stop offset="70%" stopColor="#F5D77F" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.1" />
-                </linearGradient>
-                <linearGradient id="p4WaveGrad2" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#FAF7F2" stopOpacity="0.05" />
-                  <stop offset="40%" stopColor="#FAF7F2" stopOpacity="0.3" />
-                  <stop offset="75%" stopColor="#DCA51B" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#FAF7F2" stopOpacity="0.05" />
-                </linearGradient>
-                <linearGradient id="p4WaveGrad3" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#DCA51B" stopOpacity="0.08" />
-                  <stop offset="50%" stopColor="#DCA51B" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#DCA51B" stopOpacity="0.12" />
-                </linearGradient>
-              </defs>
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-40 group-hover:opacity-75 transition-opacity duration-500">
+              <style>{`
+                @keyframes whyP4WaveDrift1 {
+                  0% { transform: translate3d(0, 0, 0); }
+                  100% { transform: translate3d(-900px, 0, 0); }
+                }
+                @keyframes whyP4WaveDrift2 {
+                  0% { transform: translate3d(-700px, 0, 0); }
+                  100% { transform: translate3d(0, 0, 0); }
+                }
+                @keyframes whyP4WaveDrift3 {
+                  0% { transform: translate3d(0, 0, 0); }
+                  100% { transform: translate3d(-1000px, 0, 0); }
+                }
+              `}</style>
+
               {/* Wave Line 1 */}
-              <path 
-                d="M 0,180 Q 225,80 450,180 T 900,180 T 1350,180 T 1800,180 T 2250,180 T 2700,180" 
-                fill="none" 
-                stroke="url(#p4WaveGrad1)" 
-                strokeWidth="1.75" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[2700px] pointer-events-none"
+                style={{
+                  animation: 'whyP4WaveDrift1 20s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-900 0" 
-                  dur="15s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
+                <svg className="w-full h-full" viewBox="0 0 2700 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,180 Q 225,80 450,180 T 900,180 T 1350,180 T 1800,180 T 2250,180 T 2700,180" 
+                    fill="none" 
+                    stroke="rgba(220, 165, 27, 0.45)" 
+                    strokeWidth="1.75" 
+                  />
+                </svg>
+              </div>
+
               {/* Wave Line 2 */}
-              <path 
-                d="M 0,220 Q 175,340 350,220 T 700,220 T 1050,220 T 1400,220 T 1750,220 T 2100,220 T 2450,220 T 2800,220" 
-                fill="none" 
-                stroke="url(#p4WaveGrad2)" 
-                strokeWidth="1.5" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[2800px] pointer-events-none"
+                style={{
+                  animation: 'whyP4WaveDrift2 16s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-700 0" 
-                  dur="12s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
+                <svg className="w-full h-full" viewBox="0 0 2800 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,220 Q 175,340 350,220 T 700,220 T 1050,220 T 1400,220 T 1750,220 T 2100,220 T 2450,220 T 2800,220" 
+                    fill="none" 
+                    stroke="rgba(250, 247, 242, 0.28)" 
+                    strokeWidth="1.5" 
+                  />
+                </svg>
+              </div>
+
               {/* Wave Line 3 */}
-              <path 
-                d="M 0,280 Q 250,200 500,280 T 1000,280 T 1500,280 T 2000,280 T 2500,280 T 3000,280" 
-                fill="none" 
-                stroke="url(#p4WaveGrad3)" 
-                strokeWidth="2" 
+              <div 
+                className="absolute top-0 left-0 h-full w-[3000px] pointer-events-none"
+                style={{
+                  animation: 'whyP4WaveDrift3 24s linear infinite',
+                  willChange: 'transform'
+                }}
               >
-                <animateTransform 
-                  attributeName="transform" 
-                  type="translate" 
-                  from="0 0" 
-                  to="-1000 0" 
-                  dur="20s" 
-                  repeatCount="indefinite" 
-                />
-              </path>
-            </svg>
+                <svg className="w-full h-full" viewBox="0 0 3000 450" fill="none" preserveAspectRatio="none">
+                  <path 
+                    d="M 0,280 Q 250,200 500,280 T 1000,280 T 1500,280 T 2000,280 T 2500,280 T 3000,280" 
+                    fill="none" 
+                    stroke="rgba(220, 165, 27, 0.35)" 
+                    strokeWidth="2" 
+                  />
+                </svg>
+              </div>
+            </div>
 
             {/* Top Row */}
             <div className="relative z-10 flex items-start justify-between mb-5 sm:mb-6">

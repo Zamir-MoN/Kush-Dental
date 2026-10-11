@@ -641,7 +641,7 @@ export const AIGenerationModal: React.FC<AIGenerationModalProps> = ({ isOpen, on
                   onWheel={(e) => {
                     e.stopPropagation();
                   }}
-                  className="bg-[#181A22] p-4 sm:p-5 rounded-2xl border border-[#2A2E3B] text-zinc-200 max-h-72 sm:max-h-80 min-h-[160px] overflow-y-auto custom-scrollbar overscroll-contain shadow-inner select-text"
+                  className="bg-[#181A22] p-4 sm:p-5 rounded-2xl border border-[#2A2E3B] text-zinc-200 max-h-72 sm:max-h-80 min-h-[160px] overflow-y-auto custom-scrollbar overscroll-contain shadow-inner select-text dark-preview"
                 >
                   <div 
                     className="article-content text-sm leading-relaxed"

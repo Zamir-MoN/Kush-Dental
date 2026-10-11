@@ -52,8 +52,49 @@ export const BlogPostDetail = () => {
 
   if (loading) {
     return (
-      <main className="pt-36 pb-20 max-w-container mx-auto px-margin-mobile text-center">
-        <h1 className="font-display font-bold text-4xl text-tertiary mb-4">Loading...</h1>
+      <main className="w-full flex-grow pt-28 md:pt-36 bg-[#FAF7F2]">
+        <div className="pb-16 sm:pb-24">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 animate-pulse">
+            {/* Breadcrumb skeleton */}
+            <div className="h-4 bg-zinc-200 rounded w-48 mb-8"></div>
+            
+            {/* Header section skeleton */}
+            <div className="mb-10 md:mb-12">
+              <div className="flex gap-3 mb-6">
+                <div className="h-6 bg-zinc-200 rounded-full w-20"></div>
+                <div className="h-6 bg-zinc-200 rounded-full w-24"></div>
+              </div>
+              <div className="h-12 sm:h-14 bg-zinc-200 rounded-xl w-3/4 mb-4"></div>
+              <div className="h-12 sm:h-14 bg-zinc-200 rounded-xl w-1/2 mb-8"></div>
+              
+              <div className="flex justify-between pt-6 border-t border-[#E8E2D5]">
+                <div className="flex gap-4 items-center">
+                  <div className="w-12 h-12 rounded-full bg-zinc-200"></div>
+                  <div>
+                    <div className="h-4 bg-zinc-200 rounded w-24 mb-2"></div>
+                    <div className="h-3 bg-zinc-200 rounded w-16"></div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="w-24 h-9 rounded-xl bg-zinc-200"></div>
+                  <div className="w-9 h-9 rounded-xl bg-zinc-200"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Image Banner skeleton */}
+            <div className="w-full h-[280px] sm:h-[380px] md:h-[480px] bg-zinc-200 rounded-3xl mb-12"></div>
+
+            {/* Content skeleton */}
+            <div className="max-w-3xl mx-auto">
+              <div className="h-4 bg-zinc-200 rounded w-full mb-4"></div>
+              <div className="h-4 bg-zinc-200 rounded w-full mb-4"></div>
+              <div className="h-4 bg-zinc-200 rounded w-5/6 mb-4"></div>
+              <div className="h-4 bg-zinc-200 rounded w-full mb-4"></div>
+              <div className="h-4 bg-zinc-200 rounded w-4/5 mb-4"></div>
+            </div>
+          </div>
+        </div>
       </main>
     );
   }

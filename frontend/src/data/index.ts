@@ -1,93 +1,212 @@
-export const services = [
+export interface ServiceItemData {
+  id: number;
+  number: string;
+  slug: string;
+  title: string;
+  category: 'Surgical' | 'Cosmetic' | 'Restorative' | 'Preventive';
+  categoryLabel: string;
+  description: string;
+  desc: string; // compatibility alias
+  benefits: string[];
+  tags: string[];
+  duration: string;
+  image: string;
+  img: string; // compatibility alias
+}
+
+export const services: ServiceItemData[] = [
   {
+    id: 1,
     number: "01",
-    title: "Cosmetic Dentistry",
-    description: "Veneers, whitening, and smile contouring for a radiant smile.",
-    tags: ["Veneers", "Whitening", "Bonding"],
-    image: "/images/services/cosmetic dentistry.png"
-  },
-  {
-    number: "02",
-    title: "Restorative Care",
-    description: "Natural-looking crowns and fillings to repair damaged teeth.",
-    tags: ["Dental Crowns", "Bridges", "Tooth Fillings"],
-    image: "/images/services/restorative care.png"
-  },
-  {
-    number: "03",
+    slug: "dental-implants",
     title: "Dental Implants",
-    description: "Permanent tooth replacements that look and chew like natural teeth.",
-    tags: ["Single Implants", "Full Arch", "Bone Grafting"],
-    image: "/images/services/dental implants.png"
+    category: "Surgical",
+    categoryLabel: "IMPLANTOLOGY & SURGERY",
+    description: "Permanent computer-guided titanium implants and lifelike ceramic crowns restoring full biting strength and jaw health.",
+    desc: "Permanent computer-guided titanium implants restoring biting strength.",
+    benefits: ["Sub-millimeter 3D guided placement", "Permanent natural tooth replacement", "Prevents bone loss & facial sagging"],
+    tags: ["Titanium Implants", "Full Arch & Single", "Bone Preservation"],
+    duration: "Phased Care",
+    image: "/images/services/dental implants.png",
+    img: "/images/services/dental implants.png"
   },
   {
-    number: "04",
+    id: 2,
+    number: "02",
+    slug: "smile-design",
+    title: "Smile Design",
+    category: "Cosmetic",
+    categoryLabel: "AESTHETIC ARCHITECTURE",
+    description: "Bespoke digital smile simulations, porcelain veneers, and facial harmony mapping designed for your ideal natural aesthetics.",
+    desc: "Bespoke digital smile simulations and custom ceramic veneers for ideal harmony.",
+    benefits: ["3D digital aesthetic preview", "Custom shade-matched porcelain", "Minimally invasive enamel preservation"],
+    tags: ["Digital Smile Analysis", "Porcelain Veneers", "Facial Harmony"],
+    duration: "2–3 Visits",
+    image: "/images/services/smile designing.png",
+    img: "/images/services/smile designing.png"
+  },
+  {
+    id: 3,
+    number: "03",
+    slug: "clear-aligners",
     title: "Clear Aligners",
-    description: "Comfortable clear trays to gently straighten your teeth.",
-    tags: ["Invisalign", "Teeth Straightening", "Comfort Fit"],
-    image: "/images/services/smile designing.png"
+    category: "Cosmetic",
+    categoryLabel: "DISCREET ORTHODONTICS",
+    description: "Virtually invisible, custom-molded transparent aligners to gently straighten teeth without metal brackets or wires.",
+    desc: "Virtually invisible transparent aligners to gently straighten teeth without wires.",
+    benefits: ["100% wire-free & removable", "Eat and brush with complete freedom", "Computer-planned progressive realignment"],
+    tags: ["Invisalign / Clear Trays", "Removable Convenience", "Discreet Straightening"],
+    duration: "6–12 Months",
+    image: "/images/services/cosmetic dentistry.png",
+    img: "/images/services/cosmetic dentistry.png"
   },
   {
+    id: 4,
+    number: "04",
+    slug: "root-canal-treatment",
+    title: "Root Canal Treatment",
+    category: "Restorative",
+    categoryLabel: "ENDODONTIC EXCELLENCE",
+    description: "Microscopic, pain-free endodontic therapy to gently eliminate deep tooth infection and permanently save your natural tooth.",
+    desc: "Microscopic, pain-free therapy to eliminate infection and save your natural tooth.",
+    benefits: ["100% painless local numbing", "High-magnification microscopic precision", "Preserves natural tooth root for life"],
+    tags: ["Painless Therapy", "Microscopic Precision", "Tooth Saving"],
+    duration: "1–2 Visits",
+    image: "/images/services/root canal.png",
+    img: "/images/services/root canal.png"
+  },
+  {
+    id: 5,
     number: "05",
-    title: "Oral Surgery",
-    description: "Gentle wisdom tooth extractions with anxiety-free sedation.",
-    tags: ["Wisdom Teeth", "Extractions", "Gentle Care"],
-    image: "/images/services/root canal.png"
+    slug: "crown-and-bridge",
+    title: "Crown and Bridge",
+    category: "Restorative",
+    categoryLabel: "PROSTHODONTICS",
+    description: "High-strength monolithic zirconia crowns and fixed bridges crafted to protect damaged teeth and fill missing gaps seamlessly.",
+    desc: "High-strength zirconia crowns and fixed bridges to protect damaged teeth.",
+    benefits: ["Sub-micron digital margin fit", "High-translucency natural ceramics", "Restores 100% chew power"],
+    tags: ["Zirconia Ceramics", "Fixed Bridgework", "Long-Term Protection"],
+    duration: "1–2 Visits",
+    image: "/images/services/restorative care.png",
+    img: "/images/services/restorative care.png"
+  },
+  {
+    id: 6,
+    number: "06",
+    slug: "wisdom-tooth-removal",
+    title: "Wisdom Tooth Removal",
+    category: "Surgical",
+    categoryLabel: "ORAL SURGERY",
+    description: "Safe, calm extraction of impacted third molars with anxiety-free sedation and advanced PRF healing protocols.",
+    desc: "Safe, calm extraction of impacted third molars with anxiety-free sedation.",
+    benefits: ["Gentle twilight sedation options", "Prevents crowding & nerve damage", "Rapid healing & minimal downtime"],
+    tags: ["Impacted Molars", "Sedation Comfort", "Fast Recovery"],
+    duration: "45–60 Mins",
+    image: "/images/services/implantology.png",
+    img: "/images/services/implantology.png"
+  },
+  {
+    id: 7,
+    number: "07",
+    slug: "minor-oral-surgery",
+    title: "Minor Oral Surgery",
+    category: "Surgical",
+    categoryLabel: "SURGICAL CARE",
+    description: "Precise clinical surgical treatments including frenectomies, cyst enucleation, biopsy, and pre-prosthetic ridge contouring.",
+    desc: "Precise clinical surgical treatments with hospital-grade sterile operating protocols.",
+    benefits: ["Sterile hospital-grade operating protocol", "Microsurgical instruments for minimal trauma", "Accelerated tissue recovery"],
+    tags: ["Frenectomy & Biopsy", "Microsurgery", "Sedation Available"],
+    duration: "30–60 Mins",
+    image: "/images/gallery/suite-1.jpg",
+    img: "/images/gallery/suite-1.jpg"
+  },
+  {
+    id: 8,
+    number: "08",
+    slug: "teeth-whitening",
+    title: "Teeth Whitening",
+    category: "Cosmetic",
+    categoryLabel: "AESTHETICS",
+    description: "Clinical laser whitening lightening enamel up to 8 shades in a single comfortable, peroxide-monitored appointment.",
+    desc: "Clinical laser whitening brightening enamel up to 8 shades in a single visit.",
+    benefits: ["Instant bright smile in one visit", "Specially formulated anti-sensitivity gel", "Long-lasting radiant enamel glow"],
+    tags: ["Laser Brightening", "Zero Tooth Sensitivity", "Instant Radiance"],
+    duration: "60 Mins",
+    image: "/images/services/service-whitening.jpg",
+    img: "/images/services/service-whitening.jpg"
+  },
+  {
+    id: 9,
+    number: "09",
+    slug: "dental-cavity-restoration",
+    title: "Dental Cavity Restoration",
+    category: "Preventive",
+    categoryLabel: "BIOMIMETIC RESTORATION",
+    description: "Mercury-free tooth-colored nano-composite restorations bonded biomimetically to reinforce tooth enamel invisibly.",
+    desc: "Mercury-free composite restorations bonded biomimetically to reinforce enamel.",
+    benefits: ["Natural enamel shade matching", "BPA-free & mercury-free composites", "Prevents recurring decay"],
+    tags: ["Composite Fillings", "Biomimetic Enamel", "Decay Protection"],
+    duration: "30–45 Mins",
+    image: "/images/services/service-cleaning.jpg",
+    img: "/images/services/service-cleaning.jpg"
+  },
+  {
+    id: 10,
+    number: "10",
+    slug: "laser-soft-tissue-treatment",
+    title: "Laser Soft Tissue Treatment",
+    category: "Preventive",
+    categoryLabel: "ADVANCED LASER",
+    description: "Minimally invasive dental diode laser therapy for gummy smile correction, aesthetic gingival sculpting, and periodontal care.",
+    desc: "Minimally invasive diode laser therapy for gummy smile correction & gum contouring.",
+    benefits: ["Virtually bloodless & stitch-free", "Immediate sterilization & fast healing", "Precision aesthetic gumline sculpting"],
+    tags: ["Diode Laser Tech", "Gingival Sculpting", "No Stitches"],
+    duration: "30–45 Mins",
+    image: "/images/gallery/suite-2.jpg",
+    img: "/images/gallery/suite-2.jpg"
+  },
+  {
+    id: 11,
+    number: "11",
+    slug: "diagnostic-opg-and-cbct",
+    title: "Diagnostic OPG and CBCT",
+    category: "Preventive",
+    categoryLabel: "DIGITAL DIAGNOSTICS",
+    description: "Ultra-low-radiation 3D Cone Beam Computed Tomography (CBCT) and full panoramic OPG radiography for clinical clarity.",
+    desc: "Ultra-low radiation 3D CBCT scans and digital panoramic OPG radiography.",
+    benefits: ["Sub-millimeter 3D bone volume imaging", "Ultra-low dose radiation technology", "Instant chairside digital report"],
+    tags: ["3D CBCT Scans", "Digital OPG", "Sub-Millimeter Accuracy"],
+    duration: "15 Mins",
+    image: "/images/gallery/suite-3.jpg",
+    img: "/images/gallery/suite-3.jpg"
+  },
+  {
+    id: 12,
+    number: "12",
+    slug: "geriatric-dental-care",
+    title: "Geriatric Dental Care",
+    category: "Preventive",
+    categoryLabel: "SENIOR DENTISTRY",
+    description: "Empathetic, specialized dental treatments for elderly patients, including custom comfortable dentures, dry mouth therapy, and gentle preventive care.",
+    desc: "Empathetic, specialized dental treatments for elderly patients and denture comfort.",
+    benefits: ["Comfort-first respectful hospitality", "Specialized denture stabilization", "Complete senior oral healthcare"],
+    tags: ["Senior Comfort", "Full & Partial Dentures", "Dry Mouth Care"],
+    duration: "Comprehensive",
+    image: "/images/gallery/suite-4.jpg",
+    img: "/images/gallery/suite-4.jpg"
   }
 ];
 
-export const treatments = [
-  {
-    title: "Porcelain Veneers",
-    subtitle: "Custom smile enhancements",
-    description: "Ultra-thin porcelain shells to fix chips, stains, and gaps naturally.",
-    benefits: [
-      "Stain-resistant and durable",
-      "Custom shade-matched enamel"
-    ],
-    metadata: ["Cosmetic", "2 Visits", "10-15 Years"]
-  },
-  {
-    title: "Teeth Whitening",
-    subtitle: "In-office laser brightening",
-    description: "In-office whitening brightening teeth up to 8 shades in one visit.",
-    benefits: [
-      "Gentle on tooth enamel",
-      "Instant bright results"
-    ],
-    metadata: ["Cosmetic", "60 Mins", "Instant Results"]
-  },
-  {
-    title: "Dental Implants",
-    subtitle: "Permanent tooth replacement",
-    description: "Permanent titanium fixture and ceramic crown for missing teeth.",
-    benefits: [
-      "Chews and feels like real teeth",
-      "Protects healthy jawbone"
-    ],
-    metadata: ["Restorative", "Phased Care", "Lifetime"]
-  },
-  {
-    title: "Invisalign Clear Aligners",
-    subtitle: "Discreet teeth straightening",
-    description: "Nearly invisible aligners that straighten teeth without metal brackets.",
-    benefits: [
-      "Removable for eating & brushing",
-      "Gentle, wire-free comfort"
-    ],
-    metadata: ["Orthodontics", "6-12 Months", "Removable"]
-  },
-  {
-    title: "Ceramic Dental Crowns",
-    subtitle: "Protective tooth restoration",
-    description: "Durable custom caps to strengthen and protect cracked or worn teeth.",
-    benefits: [
-      "Sub-micron ceramic precision",
-      "Seamless natural appearance"
-    ],
-    metadata: ["Restorative", "1-2 Visits", "Durable"]
-  }
-];
+// Top 5 services for Home Page
+export const homeServices = services.slice(0, 5);
+
+export const treatments = services.map(s => ({
+  title: s.title,
+  subtitle: s.categoryLabel,
+  description: s.description,
+  benefits: s.benefits.slice(0, 2),
+  metadata: [s.category, s.duration, s.tags[0]]
+}));
 
 export const clinicians = [
   {

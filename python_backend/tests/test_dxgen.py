@@ -94,7 +94,7 @@ class MockResponse:
 @pytest.mark.asyncio
 async def test_generate_success(client: AsyncClient, doctor_auth_headers: dict, db_session: AsyncSession, mock_dxgen_key, mock_httpx, caplog):
     async def mock_post(url, headers, json):
-        assert url == "http://51.20.121.253:3101/api/v1/generate/blog"
+        assert url == "http://127.0.0.1:3101/api/v1/generate/blog"
         assert headers["Authorization"] == "Bearer test-fake-key-123"
         assert json["topic"] == "Teeth Whitening"
         assert json["tone"] == "Professional"
@@ -177,14 +177,14 @@ async def test_generate_errors(client: AsyncClient, doctor_auth_headers: dict, m
     mock_httpx.post_mock = mock_post_500
     resp = await client.post("/api/v1/blog/generate", json={"topic": "Test"}, headers=doctor_auth_headers)
     assert resp.status_code == 502
-    assert "temporarily unavailable" in resp.json()["detail"]
+    assert "unavailable" in resp.json()["detail"]
 
     async def mock_post_timeout(url, headers, json):
         raise TimeoutException("Timeout")
     
     mock_httpx.post_mock = mock_post_timeout
     resp = await client.post("/api/v1/blog/generate", json={"topic": "Test"}, headers=doctor_auth_headers)
-    assert resp.status_code == 502
+    assert resp.status_code == 504
 
     async def mock_post_network(url, headers, json):
         raise RequestError("Network error", request=None)

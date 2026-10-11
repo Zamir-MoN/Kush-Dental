@@ -28,17 +28,17 @@ export const FinalCTA = () => {
         <div className="flex flex-wrap justify-center items-center gap-3.5 sm:gap-4">
           <Link 
             to="/book" 
-            className="btn-gold-luxury group cursor-pointer py-3 px-6 text-xs"
+            className="btn-gold-solid group cursor-pointer py-3 px-7 text-xs font-bold tracking-wider rounded-full shadow-lg shadow-[#DCA51B]/25"
           >
-            <Calendar className="w-4 h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
+            <Calendar className="w-4 h-4 shrink-0 group-hover:rotate-12 transition-transform duration-300" />
             <span>BOOK YOUR VISIT</span>
           </Link>
 
           <Link 
             to="/about" 
-            className="text-white hover:text-[#DCA51B] font-sans font-bold text-xs uppercase tracking-wider px-6 py-3 transition-all duration-300 border border-white/20 hover:border-[#DCA51B] rounded-xl cursor-pointer"
+            className="btn-gold-luxury group cursor-pointer py-3 px-7 text-xs font-bold tracking-wider rounded-full shadow-sm"
           >
-            LEARN ABOUT US
+            <span>LEARN ABOUT US</span>
           </Link>
         </div>
       </div>

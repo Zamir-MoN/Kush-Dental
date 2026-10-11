@@ -15,10 +15,10 @@ async def test_list_appointments_authorized(client: AsyncClient, doctor_auth_hea
     )
     assert response.status_code == 200
     data = response.json()
-    assert isinstance(data, list)
+    assert isinstance(data["data"], list)
     assert len(data) >= 1
     # Check deterministic ordering is at least valid list
-    assert "id" in data[0]
+    assert "id" in data["data"][0]
 
 @pytest.mark.asyncio
 async def test_get_appointment_detail(client: AsyncClient, staff_auth_headers: dict, db_appointment):

@@ -7,12 +7,13 @@ from app.models import Lead, LeadStatus
 from app.schemas.lead import LeadCreate, LeadUpdate
 
 async def get_by_id(db: AsyncSession, lead_id: UUID) -> Optional[Lead]:
-    result = await db.execute(select(Lead).where(Lead.id == lead_id))
+    result = await db.execute(select(Lead).where(Lead.id == lead_id, Lead.deletedAt.is_(None)))
     return result.scalars().first()
 
 async def get_all(db: AsyncSession, skip: int = 0, limit: int = 100) -> List[Lead]:
     result = await db.execute(
         select(Lead)
+        .where(Lead.deletedAt.is_(None))
         .order_by(Lead.createdAt.desc())
         .offset(skip)
         .limit(limit)
@@ -29,6 +30,8 @@ async def create(db: AsyncSession, lead: LeadCreate) -> Lead:
         notes=lead.notes,
         idempotencyKey=lead.idempotencyKey,
         payloadFingerprint=lead.payloadFingerprint,
+        source=lead.source,
+        priority=lead.priority,
         createdAt=datetime.now(timezone.utc),
         updatedAt=datetime.now(timezone.utc)
     )

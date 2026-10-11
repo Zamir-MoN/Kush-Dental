@@ -4,7 +4,7 @@ from app.core.config import settings
 
 @pytest.mark.asyncio
 async def test_cookie_secure_true(client: AsyncClient, doctor_user, monkeypatch):
-    monkeypatch.setattr(settings, "COOKIE_SECURE", True)
+    monkeypatch.setattr(settings, "NODE_ENV", "production")
     
     response = await client.post("/api/v1/auth/login", json={
         "email": doctor_user.email,
@@ -26,7 +26,7 @@ async def test_cookie_secure_true(client: AsyncClient, doctor_user, monkeypatch)
 
 @pytest.mark.asyncio
 async def test_cookie_secure_false(client: AsyncClient, doctor_user, monkeypatch):
-    monkeypatch.setattr(settings, "COOKIE_SECURE", False)
+    monkeypatch.setattr(settings, "NODE_ENV", "development")
     
     response = await client.post("/api/v1/auth/login", json={
         "email": doctor_user.email,

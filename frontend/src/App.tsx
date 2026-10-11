@@ -33,6 +33,9 @@ const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.S
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail').then(m => ({ default: m.BlogPostDetail })));
 const Booking = lazy(() => import('./pages/Booking').then(m => ({ default: m.Booking })));
+const UrgentVisit = lazy(() => import('./pages/UrgentVisit').then(m => ({ default: m.UrgentVisit })));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
+const TermsOfService = lazy(() => import('./pages/TermsOfService').then(m => ({ default: m.TermsOfService })));
 
 const pageVariants = {
   initial: {
@@ -96,6 +99,8 @@ const AnimatedRoutes = () => {
               <Route path="appointments/:id" element={<Appointments />} />
               <Route path="contacts" element={<ContactList />} />
               <Route path="contacts/:id" element={<ContactDetail />} />
+              <Route path="urgent-visits" element={<ContactList isUrgentQueue={true} />} />
+              <Route path="urgent-visits/:id" element={<ContactDetail isUrgentQueue={true} />} />
               <Route path="patients" element={<Patients />} />
               <Route path="patients/:id" element={<Patients />} />
               <Route path="users" element={<ProtectedRoute allowedRoles={['DOCTOR']}><Users /></ProtectedRoute>} />
@@ -141,6 +146,9 @@ const AnimatedRoutes = () => {
               <Route path="/blog/:id" element={<BlogPostDetail />} />
               <Route path="/services" element={<Services />} />
               <Route path="/book" element={<Booking />} />
+              <Route path="/urgent-visit" element={<UrgentVisit />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
@@ -189,6 +197,14 @@ function AppContent() {
         <SmoothScroll>
           {/* Top Gold Route Progress Bar */}
           <RouteProgressBar />
+
+          {/* Accessible Skip to Content Link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:z-[99999] focus:top-4 focus:left-4 bg-[#DCA51B] text-[#141518] px-4 py-2 rounded-lg font-sans font-bold shadow-xl outline-none focus:ring-2 focus:ring-[#141518] focus:ring-offset-2 focus:ring-offset-[#DCA51B]"
+          >
+            Skip to content
+          </a>
 
           {/* Persistent Stable Header */}
           <Header />

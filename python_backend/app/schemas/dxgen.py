@@ -15,7 +15,7 @@ class DXGenImage(BaseModel):
     createdAt: Optional[str] = None
 
 class DXGenGenerateRequest(BaseModel):
-    model_config = ConfigDict(extra="ignore")
+    model_config = ConfigDict(extra="forbid")
 
     topic: str = Field(..., min_length=1, max_length=500)
     contentType: Optional[str] = Field(None, max_length=100)

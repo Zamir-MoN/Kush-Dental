@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { useScrollReveal } from '../../hooks/useGsap';
 import { apiClient } from '../../lib/apiClient';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { InteractiveClinicMap } from './InteractiveClinicMap';
-import { Clock, Phone, CheckCircle2 } from 'lucide-react';
+import { Phone, CheckCircle2, Mail } from 'lucide-react';
 
 export const ContactForm = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,15 +11,22 @@ export const ContactForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   
-  const [idempotencyKey, setIdempotencyKey] = useState<string>(() => crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2) + Date.now().toString(36));
+  const generateIdempotencyKey = () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    // Fallback UUID v4 generator using crypto.getRandomValues
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c: any) =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  };
+
+  const [idempotencyKey, setIdempotencyKey] = useState<string>(generateIdempotencyKey);
 
   const handleFormChange = () => {
-    if (crypto.randomUUID) {
-      setIdempotencyKey(crypto.randomUUID());
-    } else {
-      setIdempotencyKey(Math.random().toString(36).substring(2) + Date.now().toString(36));
-    }
+    setIdempotencyKey(generateIdempotencyKey());
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +40,15 @@ export const ContactForm = () => {
       name: formData.get('fullName'),
       email: formData.get('email'),
       phone: formData.get('phone'),
+      website_url: formData.get('website_url'),
+      captcha_token: captchaToken
     };
+
+    if (!captchaToken) {
+      setError('Please wait for human verification to complete, or try reloading the page.');
+      setLoading(false);
+      return;
+    }
 
     try {
       await apiClient('/api/v1/public/leads', {
@@ -45,9 +61,7 @@ export const ContactForm = () => {
       });
       
       setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 4500);
-      form.reset();
-      handleFormChange();
+      // DO NOT reset form or success state - user must refresh page
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred.');
     } finally {
@@ -90,6 +104,12 @@ export const ContactForm = () => {
                     {error}
                   </div>
                 )}
+                
+                {/* Honeypot field for anti-spam */}
+                <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+                  <label htmlFor="website_url">Website URL</label>
+                  <input type="text" id="website_url" name="website_url" tabIndex={-1} autoComplete="off" />
+                </div>
                 <div>
                   <label htmlFor="appointment-full-name" className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1.5 font-sans">
                     Full Name
@@ -129,7 +149,7 @@ export const ContactForm = () => {
                       name="phone"
                       aria-label="Phone Number"
                       required
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="9341131921"
                       className="w-full bg-[#FAF7F2] border border-[#E8E2D5] rounded-xl px-4 py-3 focus:outline-none focus:border-[#DCA51B] focus:ring-2 focus:ring-[#DCA51B]/20 transition-all text-xs sm:text-sm text-zinc-900 font-sans" 
                       type="tel" 
                     />
@@ -140,24 +160,35 @@ export const ContactForm = () => {
                 
                 <button 
                   type="submit"
-                  disabled={loading}
-                  className="btn-gold-luxury w-full mt-2 cursor-pointer group py-3 text-xs disabled:opacity-70 disabled:cursor-not-allowed"
+                  disabled={loading || !captchaToken}
+                  className="btn-gold-solid w-full mt-2 cursor-pointer group py-3 text-xs disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
                 >
-                  <Phone className="w-4 h-4 text-[#141518] group-hover:rotate-12 transition-transform duration-300" />
+                  <Phone className="w-4 h-4 shrink-0 group-hover:rotate-12 transition-transform duration-300" />
                   <span>{loading ? 'SUBMITTING...' : 'SEND INQUIRY'}</span>
                 </button>
+                <Turnstile 
+                  siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'} 
+                  onSuccess={setCaptchaToken}
+                  options={{ action: 'submit_appointment', size: 'invisible' }}
+                />
               </form>
             )}
 
             {/* Quick Clinic Info */}
-            <div className="grid grid-cols-2 gap-4 pt-5 mt-5 border-t border-[#E8E2D5] text-[11px] sm:text-xs text-zinc-600 font-sans">
-              <div className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
-                <span>Mon – Sat: 8:00 AM – 7:00 PM</span>
+            <div className="flex flex-col sm:flex-row gap-6 pt-5 mt-5 border-t border-[#E8E2D5] text-[11px] sm:text-xs text-zinc-600 font-sans">
+              <div className="flex flex-col gap-1.5 flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <Phone className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
+                  <span className="font-semibold text-zinc-800">Contact</span>
+                </div>
+                <div className="pl-5 text-zinc-600">9341131921</div>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
-                <span>Direct: +1 (310) 555-0199</span>
+              <div className="flex flex-col gap-1.5 flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <Mail className="w-3.5 h-3.5 text-[#DCA51B] shrink-0" />
+                  <span className="font-semibold text-zinc-800">Email</span>
+                </div>
+                <div className="pl-5 text-zinc-600">bhdental23@gmail.com</div>
               </div>
             </div>
 

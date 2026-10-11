@@ -36,7 +36,7 @@ verify_test_db_safety(settings.NODE_ENV, settings.TEST_DATABASE_URL)
 from sqlalchemy.pool import NullPool
 SQLALCHEMY_DATABASE_URL = settings.TEST_DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
 
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=False, poolclass=NullPool)
+engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=False, poolclass=NullPool, connect_args={"prepared_statement_cache_size": 0})
 TestingSessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 
 import pytest_asyncio
@@ -134,3 +134,25 @@ async def db_appointment(db_session, db_patient, doctor_user):
     apt = await appointment_repo.create(db_session, apt_in)
     await db_session.commit()
     return apt
+
+import fakeredis.aioredis
+from unittest.mock import patch
+
+# Create a shared fake redis server for tests
+fake_redis_server = fakeredis.FakeServer()
+
+@pytest.fixture(autouse=True, scope="session")
+def patch_redis_from_url():
+    def mock_from_url(*args, **kwargs):
+        return fakeredis.aioredis.FakeRedis(server=fake_redis_server)
+        
+    with patch("redis.asyncio.from_url", side_effect=mock_from_url) as m:
+        yield m
+
+@pytest_asyncio.fixture(autouse=True)
+async def clear_fake_redis():
+    # Clear redis before each test to prevent rate limit state leakage across tests
+    r = fakeredis.aioredis.FakeRedis(server=fake_redis_server)
+    await r.flushall()
+    yield
+    await r.aclose()
