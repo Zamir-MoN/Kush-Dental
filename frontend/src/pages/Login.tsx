@@ -47,37 +47,33 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="portal-neumorphic flex min-h-screen items-center justify-center bg-[#FAF7F2] px-4 py-10 sm:px-6 lg:px-8 text-slate-800 font-sans selection:bg-[#DC95FF]/30 selection:text-[#3B0764] relative overflow-hidden">
-      {/* Subtle Ambient Glow Spheres (Dashboard aesthetic) */}
-      <div className="absolute -top-32 -left-32 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-[#DC95FF]/12 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-[#FFF4BF]/60 blur-3xl pointer-events-none" />
-
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#EAE4D9] via-[#E5DFD4] to-[#DFD8CC] px-4 py-10 sm:px-6 lg:px-8 text-slate-800 font-sans selection:bg-[#DC95FF]/30 selection:text-[#3B0764]">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="w-full max-w-md rounded-3xl bg-[#FAF7F2] p-7 sm:p-10 shadow-[10px_10px_26px_#E2DACB,-10px_-10px_26px_#FFFFFF] border border-white/90 relative z-10"
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="w-full max-w-md rounded-3xl bg-[#FAF7F2] p-7 sm:p-10 shadow-[14px_14px_32px_rgba(195,185,170,0.6),-10px_-10px_24px_rgba(255,255,255,0.9)] border border-[#E2DACB]/80 relative"
       >
         {/* Brand Crest with Animated Logo */}
         <div className="text-center">
           <motion.div 
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="inline-flex items-center justify-center w-18 h-18 sm:w-20 sm:h-20 rounded-3xl bg-[#FAF7F2] shadow-[6px_6px_14px_#E5DFD3,-6px_-6px_14px_#FFFFFF] border border-white/85 p-3.5 mb-4 group cursor-pointer transition-shadow hover:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF]"
+            className="inline-flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-[#FAF7F2] shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] border border-[#DDD5C5] p-3 mb-4 group cursor-pointer transition-shadow"
           >
-            <AnimatedLogo size={52} animate={true} className="w-13 h-13" />
+            <AnimatedLogo size={46} animate={true} className="w-11 h-11" />
           </motion.div>
 
           <h1 className="font-serif font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">
             Kush Dental Portal
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-500 font-medium">
+          <p className="mt-1 text-xs sm:text-sm text-slate-600 font-medium">
             Sign in to access clinical and administrative tools
           </p>
 
           <div className="mt-3 flex items-center justify-center">
-            <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#FFF4BF] text-[#713F12] border border-[#FDE68A] shadow-[inset_1.5px_1.5px_3px_#E6DC9A,inset_-1.5px_-1.5px_3px_#FFFFFF]">
-              <Sparkles size={11} className="text-[#DC95FF]" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#EFEAE2] text-[#6B21A8] border border-[#DDD5C5] shadow-[1px_1px_3px_rgba(0,0,0,0.04)]">
+              <Sparkles size={11} className="text-[#9333EA]" />
               Staff &amp; Doctor Sign In
             </span>
           </div>
@@ -90,19 +86,19 @@ export const Login: React.FC = () => {
               initial={{ opacity: 0, height: 0, scale: 0.95 }}
               animate={{ opacity: 1, height: 'auto', scale: 1 }}
               transition={{ duration: 0.2 }}
-              className="rounded-2xl bg-rose-50/90 p-3.5 border border-rose-200 text-rose-700 shadow-[inset_1.5px_1.5px_3px_#F8D7DA,inset_-1.5px_-1.5px_3px_#FFFFFF] flex items-center gap-2.5 text-xs sm:text-sm font-bold"
+              className="rounded-2xl bg-rose-50 p-3.5 border border-rose-200 text-rose-800 shadow-xs flex items-center gap-2.5 text-xs sm:text-sm font-bold"
             >
-              <AlertCircle size={18} className="text-rose-500 shrink-0" />
+              <AlertCircle size={18} className="text-rose-600 shrink-0" />
               <span>{error}</span>
             </motion.div>
           )}
 
           <div className="space-y-4">
-            {/* Email Field with Inset Neumorphic Well */}
+            {/* Email Field with Crisp White Input */}
             <div>
               <label 
                 htmlFor="email-address" 
-                className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-600 mb-1.5"
+                className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-700 mb-1.5"
               >
                 Email Address
               </label>
@@ -116,7 +112,7 @@ export const Login: React.FC = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] pl-10 pr-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-400 shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] focus:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_0_0_2px_rgba(220,149,255,0.45)] focus:border-[#DC95FF] transition-all outline-none"
+                  className="block w-full rounded-2xl bg-white border border-[#D6CDBD] pl-10 pr-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 shadow-[inset_1px_1px_3px_rgba(0,0,0,0.06)] focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 transition-all outline-none"
                   placeholder="name@kushdental.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -124,11 +120,11 @@ export const Login: React.FC = () => {
               </div>
             </div>
 
-            {/* Password Field with Inset Neumorphic Well & Visibility Toggle */}
+            {/* Password Field with Crisp White Input & Toggle */}
             <div>
               <label 
                 htmlFor="password" 
-                className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-600 mb-1.5"
+                className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-700 mb-1.5"
               >
                 Password
               </label>
@@ -142,7 +138,7 @@ export const Login: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-2xl bg-[#FAF7F2] border border-[#E8E2D5] pl-10 pr-11 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-400 shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF] focus:shadow-[inset_2.5px_2.5px_5px_#E5DFD3,inset_-2.5px_-2.5px_5px_#FFFFFF,0_0_0_2px_rgba(220,149,255,0.45)] focus:border-[#DC95FF] transition-all outline-none"
+                  className="block w-full rounded-2xl bg-white border border-[#D6CDBD] pl-10 pr-11 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 shadow-[inset_1px_1px_3px_rgba(0,0,0,0.06)] focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 transition-all outline-none"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -159,12 +155,12 @@ export const Login: React.FC = () => {
             </div>
           </div>
 
-          {/* Tactile Extruded Sign In Button */}
+          {/* High-Contrast Classic Royal Purple Button */}
           <div className="pt-2">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#DC95FF] via-[#D384FA] to-[#C084FC] py-3.5 px-6 text-sm font-black text-white tracking-wide shadow-[5px_5px_14px_#DCD5C7,-5px_-5px_14px_#FFFFFF] hover:shadow-[7px_7px_18px_#D0C7B6,-7px_-7px_18px_#FFFFFF] hover:-translate-y-0.5 active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.25)] active:translate-y-0 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#DC95FF]/50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#5B21B6] py-3.5 px-6 text-sm font-bold text-white tracking-wide shadow-[0_6px_18px_rgba(109,40,217,0.35)] hover:shadow-[0_8px_24px_rgba(109,40,217,0.45)] hover:brightness-105 active:scale-[0.99] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -179,8 +175,8 @@ export const Login: React.FC = () => {
         </form>
 
         {/* Security & Return Link Footer */}
-        <div className="mt-7 pt-5 border-t border-[#E8E2D5]/70 flex flex-col items-center gap-2 text-center">
-          <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500">
+        <div className="mt-7 pt-5 border-t border-[#E8E2D5] flex flex-col items-center gap-2 text-center">
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600">
             <ShieldCheck size={14} className="text-emerald-600" />
             <span>Encrypted Healthcare Session</span>
           </div>
